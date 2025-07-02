@@ -19,14 +19,14 @@ const currencies = [
 ];
 
 // const poStatuses = ["PO Status", "Approved", "pending", "Rejected"];
-const statuses = ["Status Select", "Active", "Inactive", "Completed","pending"];
+const statuses = ["Status Select", "Active", "Inactive", "Completed", "pending"];
 
 function AddCostEstimates() {
   const location = useLocation();
   const po = location.state?.po;
   const id = po?._id;
   console.log("po", po);
-  
+
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -70,12 +70,12 @@ function AddCostEstimates() {
 
   useEffect(() => {
     if (po && project?.data?.length) {
-let projectId = '';
-if (Array.isArray(po.projectId) && po.projectId.length > 0) {
-  projectId = po.projectId[0]._id;
-} else if (Array.isArray(po.projects) && po.projects.length > 0) {
-  projectId = po.projects[0]?.projectId || po.projects[0]?._id || "";
-}
+      let projectId = '';
+      if (Array.isArray(po.projectId) && po.projectId.length > 0) {
+        projectId = po.projectId[0]._id;
+      } else if (Array.isArray(po.projects) && po.projects.length > 0) {
+        projectId = po.projects[0]?.projectId || po.projects[0]?._id || "";
+      }
 
       let clientId = "";
       let clientName = "";
@@ -138,37 +138,37 @@ if (Array.isArray(po.projectId) && po.projectId.length > 0) {
   const tax = subtotal * taxRate;
   const total = subtotal + tax;
 
-const handleSubmit = async (e) => {
-  e.preventDefault();
-  const payload = {
-    ...formData,
-    VATRate: taxRate * 100,
-    lineItems: items,
-  };
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const payload = {
+      ...formData,
+      VATRate: taxRate * 100,
+      lineItems: items,
+    };
 
-  const isDuplicate = location.state?.isDuplicate;
-  if (isDuplicate || !id) {
-    dispatch(createCostEstimate(payload))
-      .unwrap()
-      .then(() => {
-        toast.success("Estimates created successfully!");
-        navigate(-1); // Go back to previous page
-      })
-      .catch(() => {
-        toast.error("Failed to create estimates");
-      });
-  } else {
-    dispatch(updateCostEstimate({ id, data: payload }))
-      .unwrap()
-      .then(() => {
-        toast.success("Estimates updated successfully!");
-        navigate(-1); // Go back to previous page
-      })
-      .catch(() => {
-        toast.error("Failed to update estimates");
-      });
-  }
-};
+    const isDuplicate = location.state?.isDuplicate;
+    if (isDuplicate || !id) {
+      dispatch(createCostEstimate(payload))
+        .unwrap()
+        .then(() => {
+          toast.success("Estimates created successfully!");
+          navigate(-1); // Go back to previous page
+        })
+        .catch(() => {
+          toast.error("Failed to create estimates");
+        });
+    } else {
+      dispatch(updateCostEstimate({ id, data: payload }))
+        .unwrap()
+        .then(() => {
+          toast.success("Estimates updated successfully!");
+          navigate(-1); // Go back to previous page
+        })
+        .catch(() => {
+          toast.error("Failed to update estimates");
+        });
+    }
+  };
 
 
   return (
@@ -275,7 +275,7 @@ const handleSubmit = async (e) => {
                 </select>
               </div>
 
-             
+
 
               <div className="col-md-4 mb-3">
                 <label className="form-label">Status</label>
@@ -405,13 +405,13 @@ const handleSubmit = async (e) => {
             </div>
 
             <div className="text-end mt-4">
-             <button
-  className="btn btn-light me-2"
-  type="button"
-  onClick={() => navigate(-1)}  
->
-  Cancel
-</button>
+              <button
+                className="btn btn-light me-2"
+                type="button"
+                onClick={() => navigate(-1)}
+              >
+                Cancel
+              </button>
 
               <button className="btn btn-dark" type="submit">
                 Create Estimate

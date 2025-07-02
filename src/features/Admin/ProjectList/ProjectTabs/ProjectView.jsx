@@ -9,7 +9,7 @@ import { fetchAllProposals, updateProposalStatus, updateProposalStatusLocally } 
 import { useDispatch, useSelector } from 'react-redux';
 import { MdManageAccounts } from 'react-icons/md';
 import { HiOutlineDocumentReport } from 'react-icons/hi';
-
+import { deleteproject, fetchProject } from '../../../../redux/slices/ProjectsSlice';
 
 // --- Kanban Workflow Data ---
 const initialStages = [
@@ -689,6 +689,7 @@ const ProjectView = ({ data }) => {
 
     useEffect(() => {
         dispatch(fetchAllProposals())
+           dispatch(fetchProject())
     }, [])
 
     const { reduxProposals, loading } = useSelector((state) => state?.proposal?.proposals);

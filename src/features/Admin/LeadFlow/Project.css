@@ -1,0 +1,144 @@
+.project-container {
+  padding: 20px;
+}
+
+.nav-tabs {
+  border-bottom: 1px solid #dee2e6;
+}
+
+.nav-tabs .nav-link {
+  border: none;
+  color: #6c757d;
+  padding: 0.5rem 1rem;
+  margin-right: 1rem;
+  font-weight: 500;
+}
+
+.nav-tabs .nav-link.active {
+  color: #198754;
+  border-bottom: 2px solid #198754;
+  background: none;
+}
+
+.search-box {
+  width: 280px;
+}
+
+.search-box .form-control {
+  font-size: 0.875rem;
+  padding: 8px 12px;
+  border-radius: 4px;
+}
+
+.project-table {
+  margin-top: 1.5rem;
+}
+
+.project-table th {
+  font-weight: 500;
+  color: #495057;
+  border-bottom: 1px solid #dee2e6;
+  font-size: 0.875rem;
+  padding: 12px 8px;
+}
+
+.project-table td {
+  vertical-align: middle;
+  font-size: 0.875rem;
+  color: #495057;
+  padding: 12px 8px;
+}
+
+.badge {
+  padding: 0.5em 0.75em;
+  font-weight: 500;
+}
+
+.badge-active {
+  background-color: #e8f5e9;
+  color: #2e7d32;
+  border-radius: 12px;
+  font-size: 0.75rem;
+}
+
+.badge-progress {
+  background-color: #fff3cd;
+  color: #856404;
+  border-radius: 12px;
+  font-size: 0.75rem;
+}
+
+.badge-completed {
+  background-color: #cff4fc;
+  color: #055160;
+  border-radius: 12px;
+  font-size: 0.75rem;
+}
+
+.badge-pending {
+  background-color: #e2e3e5;
+  color: #41464b;
+  border-radius: 12px;
+  font-size: 0.75rem;
+}
+
+.action-buttons button {
+  padding: 4px;
+  margin: 0 4px;
+  color: #6c757d;
+  transition: color 0.2s;
+}
+
+.action-buttons button:hover {
+  color: #2e7d32;
+}
+
+.card {
+  box-shadow: 0 1px 3px rgba(0,0,0,0.12);
+  border: none;
+  margin-bottom: 1rem;
+  border-radius: 8px;
+}
+
+.card-header {
+  background-color: #fff;
+  border-bottom: 1px solid #dee2e6;
+  font-weight: 500;
+}
+
+.progress {
+  height: 6px;
+  background-color: #e9ecef;
+  border-radius: 3px;
+}
+
+.progress-bar {
+  background-color: #2e7d32;
+}
+
+.cost-positive {
+  color: #198754;
+}
+
+.cost-negative {
+  color: #dc3545;
+}
+
+.pagination {
+  margin-bottom: 0;
+}
+
+.page-link {
+  color: #6c757d;
+  border: none;
+  padding: 0.5rem 0.75rem;
+}
+
+.page-item.active .page-link {
+  background-color: #198754;
+  border-color: #198754;
+}
+
+.table-borderless td {
+  padding: 0.5rem 0;
+}

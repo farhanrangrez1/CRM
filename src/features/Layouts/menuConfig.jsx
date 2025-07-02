@@ -18,7 +18,8 @@ import {
   FaCheckCircle,
   FaHistory,
   FaUsers,
-  FaUserCircle
+  FaUserCircle,
+  FaSitemap
 } from "react-icons/fa";
 import { FaUsersLine } from "react-icons/fa6";
 import { FaDiagramProject } from "react-icons/fa6";
@@ -61,6 +62,11 @@ export const adminMenuItems = [
     title: "Cost Estimates",
     icon: <FaFileInvoiceDollar className="menu-icon" />,
     path: "/admin/CostEstimates",
+  },
+  {
+    title: "Lead Flow",
+    icon: <FaSitemap className="menu-icon" />,
+    path: "/admin/LeadFlow",
   },
   {
     title: "Purchase Orders",
