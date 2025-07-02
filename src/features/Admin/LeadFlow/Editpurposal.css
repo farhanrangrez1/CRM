@@ -1,0 +1,143 @@
+/* Bar Group Title */
+.wwd-bar-group h6 {
+  font-weight: 600;
+  margin-bottom: 0.75rem;
+  position: relative;
+}
+
+.wwd-bar-group h6 .float-end {
+  position: absolute;
+  right: 0;
+  top: 0;
+  font-weight: 600;
+}
+
+/* Bar Container */
+.wwd-bar {
+  background-color: #f1f1f1;
+  border-radius: 4px;
+  margin: 0.5rem 0;
+  padding: 4px;
+  position: relative;
+}
+
+/* Bar Title */
+.wwd-bar span {
+  font-size: 0.8rem;
+  display: block;
+  margin-bottom: 4px;
+}
+
+/* Bar Fill */
+.wwd-bar-fill {
+  background-color: #4caf50;
+  height: 20px;
+  color: white;
+  text-align: right;
+  padding-right: 5px;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  line-height: 20px;
+}
+
+/* Color Variations for Bars */
+.wwd-bar-green {
+  background: #d4edda;
+}
+
+.wwd-bar-green .wwd-bar-fill {
+  background: #28a745;
+}
+
+.wwd-bar-light {
+  background: #e2e3e5;
+}
+
+.wwd-bar-light .wwd-bar-fill {
+  background: #6c757d;
+}
+
+.wwd-bar-sky {
+  background: #d1ecf1;
+}
+
+.wwd-bar-sky .wwd-bar-fill {
+  background: #17a2b8;
+}
+
+.wwd-bar-yellow {
+  background: #fff3cd;
+}
+
+.wwd-bar-yellow .wwd-bar-fill {
+  background: #ffc107;
+  color: #212529;
+}
+
+.wwd-bar-pink {
+  background: #f8d7da;
+}
+
+.wwd-bar-pink .wwd-bar-fill {
+  background: #dc3545;
+}
+
+/* Color variations for Bar Fill */
+.wwd-bar-green .wwd-bar-fill { background-color: #4caf50; }
+.wwd-bar-light .wwd-bar-fill { background-color: #a4d4ae; }
+.wwd-bar-sky .wwd-bar-fill { background-color: #00bcd4; }
+.wwd-bar-yellow .wwd-bar-fill { background-color: #ffc107; }
+.wwd-bar-pink .wwd-bar-fill { background-color: #e91e63; }
+
+/* Loss Circle Styling */
+.wwd-loss-circle {
+  width: 100px;
+  height: 100px;
+  border: 8px solid #dc3545;
+  border-radius: 50%;
+  display: inline-block;
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #dc3545;
+  padding-top: 30px;
+}
+
+/* Color Palette Section for Scheduling Color */
+.wwd-scheduling-color-box {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  vertical-align: middle;
+  margin-left: 8px;
+}
+
+/* Color Palette Container */
+.wwd-color-palette {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+/* Color Swatch for Palette */
+.wwd-color-swatch {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  border: 2px solid transparent;
+  cursor: pointer;
+  box-sizing: border-box;
+  transition: transform 0.2s ease-in-out;
+}
+
+/* Hover Effect on Swatches */
+.wwd-color-swatch:hover {
+  transform: scale(1.1);
+}
+
+/* Selected Color Swatch Styling */
+.wwd-color-swatch-selected {
+  border-color: #000;
+  box-shadow: 0 0 0 2px #fff, 0 0 4px rgba(0, 0, 0, 0.5);
+}
