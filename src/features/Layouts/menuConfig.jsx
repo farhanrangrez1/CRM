@@ -36,6 +36,7 @@ export const adminMenuItems = [
     icon: <FaProjectDiagram className="menu-icon" />,
     submenu: [
       { title: "Projects", path: "/admin/projectList" },
+      { title: "Project View", path: "/admin/projectView"},
       { title: "Job Tracker", path: "/admin/JobTracker" },
     ],
   },

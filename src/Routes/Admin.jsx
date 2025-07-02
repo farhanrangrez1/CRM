@@ -58,6 +58,7 @@ import DCompletedProject from "../features/Admin/Dashbord/DCompletedProject.jsx"
 import DJobsInProgress from "../features/Admin/Dashbord/DJobsInProgress.jsx";
 import ChangePassword from "../features/Layouts/ChangePassword.jsx";
 import UpdateProfile from "../features/Admin/Profile/UpdateProfile.jsx";
+import ProjectView from "../features/Admin/ProjectList/ProjectTabs/ProjectView.jsx";
 
 function Admin() {
   const [isSidebarOpen, setSidebarOpen] = useState(window.innerWidth >= 768);
@@ -104,6 +105,7 @@ function Admin() {
             <Route path="/AddIssuablePurchase" element={<ProtectedRoute><AddIssuablePurchase /></ProtectedRoute>} />
             <Route path="/projectList" element={<ProtectedRoute><ProjectList /></ProtectedRoute>} />
             <Route path="/AddProjectList" element={<ProtectedRoute><AddProjectList /></ProtectedRoute>} />
+            <Route path="/projectView" element={<ProtectedRoute><ProjectView/></ProtectedRoute>} />
             <Route path="/OvervieJobsProject" element={<ProtectedRoute><OvervieJobsProject /></ProtectedRoute>} />
             <Route path="/ProjectOverview/:id" element={<ProtectedRoute><ProjectOverview /></ProtectedRoute>} />
             <Route path="/UpdateProjectLis" element={<ProtectedRoute><UpdateProjectLis /></ProtectedRoute>} />
