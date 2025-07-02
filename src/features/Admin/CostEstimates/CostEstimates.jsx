@@ -149,7 +149,7 @@ function CostEstimates() {
   const Ponamehandle = (po) => {
     console.log(po.clients[0].clientName, po.projects[0].projectName, "ddd");
     console.log(po);
-  
+
     setSelectedClientId(po.clients[0]?.clientId || "");
     setSelectedProjectId(po.projects[0]?.projectId || "");
     setSelectedPO(po); // ✅ Save the whole PO object for later use
@@ -197,32 +197,32 @@ function CostEstimates() {
                 </Form.Select>
               </div> */}
               <div className="row justify-content-center">
-  <div className="col-md-6">
-    <Form.Label className="d-block">Project</Form.Label>
-    <Form.Select
-      value={selectedProjectId}
-      disabled
-      className="form-control"
-    >
-      <option value="">
-        {selectedPO?.projects?.find(p => p.projectId === selectedProjectId)?.projectName || "-- No Project --"}
-      </option>
-    </Form.Select>
-  </div>
+                <div className="col-md-6">
+                  <Form.Label className="d-block">Project</Form.Label>
+                  <Form.Select
+                    value={selectedProjectId}
+                    disabled
+                    className="form-control"
+                  >
+                    <option value="">
+                      {selectedPO?.projects?.find(p => p.projectId === selectedProjectId)?.projectName || "-- No Project --"}
+                    </option>
+                  </Form.Select>
+                </div>
 
-  <div className="col-md-6">
-    <Form.Label className="d-block">Client</Form.Label>
-    <Form.Select
-      value={selectedClientId}
-      disabled
-      className="form-control"
-    >
-      <option value="">
-        {selectedPO?.clients?.find(c => c.clientId === selectedClientId)?.clientName || "-- No Client --"}
-      </option>
-    </Form.Select>
-  </div>
-</div>
+                <div className="col-md-6">
+                  <Form.Label className="d-block">Client</Form.Label>
+                  <Form.Select
+                    value={selectedClientId}
+                    disabled
+                    className="form-control"
+                  >
+                    <option value="">
+                      {selectedPO?.clients?.find(c => c.clientId === selectedClientId)?.clientName || "-- No Client --"}
+                    </option>
+                  </Form.Select>
+                </div>
+              </div>
 
             </div>
           </Form.Group>
@@ -332,29 +332,29 @@ function CostEstimates() {
         return "bg-info text-dark";
       case "not started":
         return "bg-secondary text-white";
-        case "pending":
-      return "bg-warning text-dark";     // Yellow
-    case "received":
-      return "bg-info text-dark";        // Light Blue
-    case "cancelled":
-      return "bg-danger text-white";     // Red
-    case "completed":
-      return "bg-success text-white";    // Green
-    case "open":
-      return "bg-primary text-white";    // Blue
-    case "invoiced":
-      return "bg-dark text-white";       // Dark (You can change it as needed)
-    case "in progress":
-    case "in_progress":
-      return "bg-warning text-dark";
-    case "active":
-      return "bg-primary text-white";
-    case "reject":
-      return "bg-danger text-white";
-    case "review":
-      return "bg-info text-dark";
-    case "not started":
-      return "bg-secondary text-white";
+      case "pending":
+        return "bg-warning text-dark";     // Yellow
+      case "received":
+        return "bg-info text-dark";        // Light Blue
+      case "cancelled":
+        return "bg-danger text-white";     // Red
+      case "completed":
+        return "bg-success text-white";    // Green
+      case "open":
+        return "bg-primary text-white";    // Blue
+      case "invoiced":
+        return "bg-dark text-white";       // Dark (You can change it as needed)
+      case "in progress":
+      case "in_progress":
+        return "bg-warning text-dark";
+      case "active":
+        return "bg-primary text-white";
+      case "reject":
+        return "bg-danger text-white";
+      case "review":
+        return "bg-info text-dark";
+      case "not started":
+        return "bg-secondary text-white";
       default:
         return "bg-light text-dark";
     }
@@ -509,7 +509,7 @@ function CostEstimates() {
       currentY += 14;
       doc.text(`Phone: ${client?.contactPersons[0].phone || "Phone"}`, 40, currentY);
       currentY += 25;
-      
+
       // === Table Data ===
       const tableData = lineItems.map((item, index) => [
         (index + 1).toString(),
@@ -595,7 +595,8 @@ function CostEstimates() {
       className="p-4 m-2"
       style={{ backgroundColor: "white", borderRadius: "10px" }} >
       <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-        <h2 className="fw-semibold mb-3">Cost Estimates</h2>
+        {/* <h2 className="fw-semibold mb-3">Cost Estimates</h2> */}
+        <h2 className="fw-semibold mb-3">Proposals</h2>
         <Link to={"/admin/AddCostEstimates"}>
           <button id="btn-All" className=" btn-dark" style={{ border: "none", borderRadius: "10px" }}>
             <BsPlusLg className="me-2" /> New Estimate

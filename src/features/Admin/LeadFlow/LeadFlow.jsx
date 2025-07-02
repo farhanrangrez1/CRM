@@ -660,10 +660,10 @@ const ChangeOrdersUI = () => {
 };
 
 const tabs = [
-  { label: 'Active Project', value: 'Active' },
-  { label: 'Pending', value: 'Pending ' },
-  { label: 'Closed', value: 'Closed' },
-  { label: 'Rejected', value: 'Rejected' },
+  { label: 'Lead', value: 'Active' },
+  { label: 'Bidding', value: 'Pending ' },
+  { label: 'Signature', value: 'Closed' },
+  { label: 'Expired', value: 'Rejected' },
   { label: 'All', value: 'All' },
 ];
 
@@ -852,10 +852,10 @@ const LeadFlow = ({ data }) => {
     };
     // --- Kanban Columns Config ---
     let columns = [
-      { id: 'active', title: 'Active' },
-      { id: 'pending', title: 'Pending changes' },
-      { id: 'closed', title: 'Closed' },
-      { id: 'rejected', title: 'Rejected' },
+      { id: 'active', title: 'Lead' },
+      { id: 'pending', title: 'Bidding' },
+      { id: 'closed', title: 'Signature' },
+      { id: 'rejected', title: 'Expired' },
     ];
     // Reorder columns so selectedStatus is first
     if (selectedStatus && selectedStatus !== 'All') {
@@ -1097,40 +1097,43 @@ const LeadFlow = ({ data }) => {
 
             {/* Project Status Tabs */}
             <div className="project-tabs mb-4">
-              <ul className="nav nav-tabs d-none d-md-flex">
-                {tabs.map((tab) => (
-                  <li className="nav-item" key={tab.value}>
-                    <button
-                      className={`nav-link ${selectedStatus === tab.value ? 'active' : ''}`}
-                      onClick={() => setSelectedStatus(tab.value)}
-                      style={{ color: "#0d6efd", borderColor: "#0d6efd" }}
+              <ul className="nav nav-tabs d-none d-md-flex justify-content-between">
+                <div className="nav nav-tabs d-none d-md-flex">
+                  {tabs.map((tab) => (
+                    <li className="nav-item" key={tab.value}>
+                      <button
+                        className={`nav-link ${selectedStatus === tab.value ? 'active' : ''}`}
+                        onClick={() => setSelectedStatus(tab.value)}
+                        style={{ color: "#0d6efd", borderColor: "#0d6efd" }}
+                      >
+                        {tab.label}
+                      </button>
+                    </li>
+                  ))}
+                </div>
+                {/* <div className="d-flex justify-content-end " >
+                  <ButtonGroup>
+                    <Button
+                      variant={workflowView === 'workflow' ? 'primary' : 'outline-primary'}
+                      active={workflowView === 'workflow'}
+                      onClick={() => setWorkflowView('workflow')}
+                      className="d-flex align-items-center"
                     >
-                      {tab.label}
-                    </button>
-                  </li>
-                ))}
+                      <Kanban className="me-2" /> Project Contract workflow
+                    </Button>
+                    <Button
+                      variant={workflowView === 'list' ? 'primary' : 'outline-primary'}
+                      active={workflowView === 'list'}
+                      onClick={() => setWorkflowView('list')}
+                      className="d-flex align-items-center"
+                    >
+                      <List className="me-2" /> Project List
+                    </Button>
+                  </ButtonGroup>
+                </div> */}
               </ul>
 
-              <div className="col-12 col-md-6 d-flex justify-content-md-end gap-2" >
-                <ButtonGroup>
-                  <Button
-                    variant={workflowView === 'workflow' ? 'primary' : 'outline-primary'}
-                    active={workflowView === 'workflow'}
-                    onClick={() => setWorkflowView('workflow')}
-                    className="d-flex align-items-center"
-                  >
-                    <Kanban className="me-2" /> Project Contract workflow
-                  </Button>
-                  <Button
-                    variant={workflowView === 'list' ? 'primary' : 'outline-primary'}
-                    active={workflowView === 'list'}
-                    onClick={() => setWorkflowView('list')}
-                    className="d-flex align-items-center"
-                  >
-                    <List className="me-2" /> Project List
-                  </Button>
-                </ButtonGroup>
-              </div>
+              {/* <div className="col-12 col-md-6 d-flex justify-content-md-end gap-2" > */}
 
               <div className="d-flex d-md-none">
                 <Dropdown>
