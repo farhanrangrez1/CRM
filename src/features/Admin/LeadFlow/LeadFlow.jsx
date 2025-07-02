@@ -815,15 +815,15 @@ const LeadFlow = ({ data }) => {
   const ProposalWorkflowBoard = ({ onNavigate, selectedStatus }) => {
     // Defensive: always fallback to []
     const reduxProposals = useSelector((state) => state?.proposal?.proposals) || [];
-    console.log(reduxProposals, "reduxProposals in workflow board");
+    // console.log(reduxProposals, "reduxProposals in workflow board");
     const dispatch = useDispatch();
     const [isUpdating, setIsUpdating] = useState(false);
 
     const kanbanData = {
       active: project?.filter(p => p.status === "Active Project"),
-      pending:  project.filter(p => p.status === "In Progress"),
-      closed: reduxProposals.filter(p => p.status === "closed"),
-      rejected: reduxProposals.filter(p => p.status === "rejected"),
+      pending:  project?.filter(p => p.status === "In Progress"),
+      closed: reduxProposals?.filter(p => p.status === "closed"),
+      rejected: reduxProposals?.filter(p => p.status === "rejected"),
     };
 
     const handleCardDrop = async (result) => {
@@ -963,7 +963,7 @@ const LeadFlow = ({ data }) => {
   // Filter jobs based on selectedStatus
   const filteredJobs = selectedStatus === 'All'
     ? jobs
-    : jobs.filter(job => job.status === selectedStatus);
+    : jobs?.filter(job => job.status === selectedStatus);
 
   const renderTabContent = () => {
     switch (activeTab) {
@@ -982,7 +982,7 @@ const LeadFlow = ({ data }) => {
               <div className="bg-white py-3 p-4 rounded shadow-sm">
                 {/* Accordion for each job */}
                 <Accordion activeKey={expandedJobIndex !== null ? expandedJobIndex.toString() : null} alwaysOpen>
-                  {filteredJobs.length === 0 && (
+                  {filteredJobs?.length === 0 && (
                     <div className="text-center text-muted py-5">
                       <div className="mb-2">
                         <svg width="48" height="48" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" /><path d="M9 9h.01M15 9h.01M8 15c1.333-1 2.667-1 4 0" /></svg>
@@ -991,7 +991,7 @@ const LeadFlow = ({ data }) => {
                       <div className="small">Try a different status or add a new project.</div>
                     </div>
                   )}
-                  {filteredJobs.map((project, index) => (
+                  {filteredJobs?.map((project, index) => (
                     <Accordion.Item eventKey={index.toString()} key={index} className="mb-2 border rounded shadow-sm">
                       <Accordion.Header
                         onClick={() => setExpandedJobIndex(expandedJobIndex === index ? null : index)}
