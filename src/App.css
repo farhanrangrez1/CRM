@@ -1,0 +1,643 @@
+:root {
+  --primary-color: #0d6efd;
+  --danger-color: #dc3545;
+  --warning-color: #ffc107;
+  --success-color: #198754;
+  --text-muted: #6c757d;
+  --border-color: #dee2e6;
+  --bg-light: #f8f9fa;
+}
+
+a:hover {
+    color: #0e4966;
+  }
+  a{
+    text-decoration: none;
+  }
+  
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif !important;
+    background-color: var(--bg-light);
+    color: #212529;
+  }
+
+
+  /* main-app-content-start */
+  .Main-App {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    overflow: hidden;
+  }
+  
+  .Main-App-container {
+    display: flex;
+    flex: 1;
+    overflow: hidden;
+    background-color: #f4f4f4;
+  }
+  
+  .Main-App-Content {
+    flex: 1;
+    padding: 10px 20px;
+    overflow-y: auto;
+    transition: margin-left 0.3s ease;
+    background-color: #f4f4f4;
+    margin-left: 250px;
+    transition: margin-left 0.3s ease;
+  }
+  .Main-App-container.no-sidebar .navbar {
+    left: 0;
+  }
+
+  .Main-App-container.no-sidebar .Main-App-Content {
+    margin-left: 0;
+  }
+
+  .Main-App-container.no-sidebar .navbar {
+    left: 0;
+  }
+
+  .Main-App-container.no-sidebar .navbar {
+    margin-left: 0;
+  }
+
+  .Main-App-container .navbar {
+    margin-left: 260px;
+  }
+
+  .Main-App-container.no-sidebar .navbar {
+    margin-left: 0;
+  }
+
+  @media (max-width: 768px) {
+    .Main-App-Content {
+      flex: 1;
+      padding: 0px 0px;
+      overflow-y: auto;
+      transition: margin-left 0.3s ease;
+      background-color: #f4f4f4;
+
+      margin-left:0px;
+      transition: margin-left 0.3s ease;
+    }
+  }
+  /* main-app-content-end */
+
+
+
+
+
+
+  /* Login Start */
+  .main-login-container {
+    background-color: #f8f9fa;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem 1rem;
+  }
+  
+  .login-container {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    padding: 2rem;
+    width: 100%;
+    max-width: 420px;
+    margin: 0 auto;
+  }
+  
+  .form-control:focus {
+    border-color: #dee2e6;
+    box-shadow: 0 0 0 0.25rem rgba(148, 210, 204, 0.25);
+  }
+  
+  .btn-login {
+    background: #0e4966;
+    color: white;
+    border: none;
+    padding: 0.75rem 1rem;
+    border-radius: 6px;
+    font-weight: 500;
+    width: 100%;
+    transition: all 0.2s ease;
+  }
+  
+  .btn-login:hover {
+    background: #0e4966;
+    color: white;
+    transform: translateY(-1px);
+  }
+  
+  .social-login {
+    border: 1px solid #dee2e6;
+    color: #6c757d;
+    padding: 0.75rem 1rem;
+    border-radius: 6px;
+    font-weight: 500;
+    width: 100%;
+    transition: all 0.2s ease;
+    background: white;
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+  }
+  
+  .social-login:hover {
+    background: #f8f9fa;
+    transform: translateY(-1px);
+  }
+  
+  .divider {
+    display: flex;
+    align-items: center;
+    text-align: center;
+    margin: 1.5rem 0;
+    color: #6c757d;
+  }
+  
+  .divider::before,
+  .divider::after {
+    content: '';
+    flex: 1;
+    border-bottom: 1px solid #dee2e6;
+  }
+  
+  .divider span {
+    padding: 0 1rem;
+  }
+  
+  .form-floating>label {
+    color: #6c757d;
+  }
+  
+  .signup-link {
+    color: #6c757d;
+    text-decoration: none;
+    font-size: 0.875rem;
+  }
+  
+  .signup-link:hover {
+    color: #0e4966;
+  }
+  
+  /* ///signup-page/// */
+  .main-signup-page {
+    background-color: #f8f9fa;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem 1rem;
+  }
+  
+  .signup-container {
+    background: white;
+    border-radius: 12px;
+    box-shadow:  0 1px 3px rgba(0,0,0,0.05);
+    padding: 2rem;
+    width: 100%;
+    max-width: 420px;
+    margin: 0 auto;
+  }
+  
+  .form-control:focus {
+    border-color: #dee2e6;
+    box-shadow: 0 0 0 0.25rem rgba(148, 210, 204, 0.25);
+  }
+  
+  .btn-signup {
+    background: #0e4966;
+    color: white;
+    border: none;
+    padding: 0.75rem 1rem;
+    border-radius: 6px;
+    font-weight: 500;
+    width: 100%;
+    transition: all 0.2s ease;
+  }
+  
+  .btn-signup:hover {
+    background: #333;
+    color: white;
+    transform: translateY(-1px);
+  }
+  
+  .social-signup {
+    border: 1px solid #dee2e6;
+    color: #6c757d;
+    padding: 0.75rem 1rem;
+    border-radius: 6px;
+    font-weight: 500;
+    width: 100%;
+    transition: all 0.2s ease;
+    background: white;
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+  }
+  
+  .social-signup:hover {
+    background: #f8f9fa;
+    transform: translateY(-1px);
+  }
+  
+  .divider {
+    display: flex;
+    align-items: center;
+    text-align: center;
+    margin: 1.5rem 0;
+    color: #6c757d;
+  }
+  
+  .divider::before,
+  .divider::after {
+    content: '';
+    flex: 1;
+    border-bottom: 1px solid #dee2e6;
+  }
+  
+  .divider span {
+    padding: 0 1rem;
+  }
+  
+  .form-floating > label {
+    color: #6c757d;
+  }
+  
+  .login-link {
+    color: #6c757d;
+    text-decoration: none;
+    font-size: 0.875rem;
+  }
+  
+  .login-link:hover {
+    color: #0e4966;
+  }
+  
+  .form-text {
+    font-size: 0.875rem;
+    color: #6c757d;
+  }
+  
+  .role-select {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1rem;
+  }
+  
+  .role-option {
+    flex: 1;
+    border: 1px solid #dee2e6;
+    border-radius: 6px;
+    padding: 1rem;
+    cursor: pointer;
+    text-align: center;
+    transition: all 0.2s ease;
+  }
+  
+  .role-option:hover {
+    background: #f8f9fa;
+    transform: translateY(-1px);
+  }
+  
+  .role-option.active {
+    border-color: #0e4966;
+    background: #f8f9fa;
+  }
+  
+  .role-option i {
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+    color: #6c757d;
+  }
+  
+  .role-option.active i {
+    color: #0e4966;
+  }
+  
+  .role-option span {
+    display: block;
+    color: #6c757d;
+    font-size: 0.875rem;
+    font-weight: 500;
+  }
+  
+  .role-option.active span {
+    color: #0e4966;
+  }
+  /* signup-page End */
+
+
+
+  /* Dashboard Start*/
+  .bg-light-blue {
+    background-color: rgba(59, 130, 246, 0.1);
+  }
+  
+  .bg-light-green {
+    background-color: rgba(34, 197, 94, 0.1);
+  }
+  
+  .bg-light-yellow {
+    background-color: rgba(245, 158, 11, 0.1);
+  }
+  
+  .bg-light-purple {
+    background-color: rgba(147, 51, 234, 0.1);
+  }
+  
+  .bg-light-red {
+    background-color: rgba(239, 68, 68, 0.1);
+  }
+  
+  .bg-light-orange {
+    background-color: rgba(249, 115, 22, 0.1);
+  }
+  
+  .text-purple {
+    color: rgb(147, 51, 234);
+  }
+  
+  .text-orange {
+    color: rgb(249, 115, 22);
+  }
+  
+  .card {
+    transition: transform 0.2s ease-in-out;
+  }
+  
+  
+  .rounded-circle {
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .card-title {
+    color: #1a1a1a;
+    font-weight: 600;
+  }
+  
+  .shadow-sm {
+    box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+  }
+  
+  .activity-icon {
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+/* Dashboard End*/
+
+
+
+
+
+
+/* JobAssignment */
+.job-assignment {
+  background: #fff;
+}
+
+.job-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #2c3e50;
+}
+
+.assign-job-btn {
+  background-color: #000;
+  border: none;
+  padding: 0.5rem 1.5rem;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.assign-job-btn:hover {
+  background-color: #2c3e50;
+}
+
+.search-container {
+  max-width: 300px;
+}
+
+.search-input {
+  border-radius: 4px;
+  border: 1px solid #e2e8f0;
+  padding: 0.5rem 1rem;
+  font-size: 0.9rem;
+}
+
+.search-input:focus {
+  border-color: #4a5568;
+  box-shadow: none;
+}
+
+.filter-dropdown {
+  min-width: 150px;
+}
+
+.custom-dropdown {
+  width: 100%;
+  background-color: #fff;
+  border: 1px solid #e2e8f0;
+  color: #4a5568;
+  font-size: 0.9rem;
+  text-align: left;
+  padding: 0.5rem 1rem;
+}
+
+.custom-dropdown:hover,
+.custom-dropdown:focus {
+  background-color: #fff;
+  border-color: #4a5568;
+  color: #2d3748;
+}
+
+.custom-table-container {
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.sticky-header thead th {
+  position: sticky;
+  top: 0;
+  background-color: #f8f9fa;
+  z-index: 1;
+}
+
+.custom-table thead {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+
+.custom-table {
+  margin-bottom: 0;
+}
+
+.custom-table thead th {
+  background-color: #f8fafc;
+  color: #4a5568;
+  font-weight: 600;
+  font-size: 0.875rem;
+  padding: 1rem;
+  border-bottom: 2px solid #e2e8f0;
+}
+
+.custom-table tbody td {
+  padding: 1rem;
+  color: #2d3748;
+  font-size: 0.875rem;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.custom-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.text-danger {
+  color: #e53e3e !important;
+}
+
+.text-warning {
+  color: #d69e2e !important;
+}
+
+.text-success {
+  color: #38a169 !important;
+}
+
+.badge {
+  font-weight: 500;
+  font-size: 0.75rem;
+  padding: 0.25rem 0.75rem;
+  border-radius: 4px;
+}
+
+.bg-warning {
+  background-color: #fef3c7 !important;
+  color: #92400e !important;
+}
+
+.bg-info {
+  background-color: #e0f2fe !important;
+  color: #075985 !important;
+}
+
+.bg-secondary {
+  background-color: #f1f5f9 !important;
+  color: #475569 !important;
+}
+
+.action-btn {
+  padding: 0.25rem 0.5rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+}
+
+.edit-btn {
+  color: #3182ce;
+  border-color: #3182ce;
+}
+
+.edit-btn:hover {
+  background-color: #3182ce;
+  border-color: #3182ce;
+  color: #fff;
+}
+
+.delete-btn {
+  color: #e53e3e;
+  border-color: #e53e3e;
+}
+
+.delete-btn:hover {
+  background-color: #e53e3e;
+  border-color: #e53e3e;
+  color: #fff;
+}
+/* JobAssignment End*/
+
+
+
+
+/* Button color All  */
+#btn-All {
+  background-color: #0052CC;
+  color: white;
+  width: 170px;
+  height: 40px;
+}
+/* Button color All  End*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* Settings */
+.nav-tabs .nav-link {
+  color: #6c757d;
+  border: none;
+  cursor: pointer;
+}
+.nav-tabs .nav-link.active {
+  color: #000;
+  font-weight: 600;
+  border-bottom: 2px solid #000;
+  background-color: transparent;
+}
+.form-label {
+  font-weight: 500;
+}
+.fw-semibold {
+  font-weight: 600 !important;
+}
+
+
+
+/* All button color  */
+#All_btn {
+  background-color:#0052CC;
+  color: white;
+  border: none;
+}
+#icone_btn {
+  color:white;
+  border: 1px solid #0052CC;
+}
+
+/* Kanban board touch and user select fix for mobile */
+.kanban-board, .kanban-stage, .kanban-stage * {
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+}

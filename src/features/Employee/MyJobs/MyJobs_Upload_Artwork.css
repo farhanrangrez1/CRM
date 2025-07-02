@@ -1,0 +1,127 @@
+.upload-area {
+  border: 2px dashed #dee2e6;
+  border-radius: 8px;
+  padding: 2.5rem;
+  text-align: center;
+  background-color: #f8f9fa;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.upload-area.dragging {
+  border-color: #0d6efd;
+  background-color: #e9ecef;
+}
+
+.upload-icon {
+  margin-bottom: 1rem;
+}
+
+.upload-text {
+  font-size: 1rem;
+  margin-bottom: 0.5rem;
+  color: #212529;
+}
+
+.upload-formats {
+  color: #6c757d;
+  display: block;
+  margin-bottom: 1rem;
+}
+
+.uploaded-files {
+  margin-top: 2rem;
+  background: white;
+  border-radius: 8px;
+  padding: 1.5rem;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.file-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.75rem 0;
+  border-bottom: 1px solid #dee2e6;
+}
+
+.file-item:last-child {
+  border-bottom: none;
+}
+
+.file-info {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.file-icon img {
+  width: 24px;
+  height: 24px;
+}
+
+.file-name {
+  font-weight: 500;
+  color: #212529;
+  margin-bottom: 0.25rem;
+}
+
+.file-meta {
+  color: #6c757d;
+}
+
+.file-actions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.action-btn {
+  padding: 0.25rem;
+  color: #6c757d;
+}
+
+.action-btn:hover {
+  color: #212529;
+}
+
+.action-btn.delete:hover {
+  color: #dc3545;
+}
+
+.job-details {
+  background: #f8f9fa;
+  border-radius: 8px;
+  padding: 1.5rem;
+}
+
+.detail-item {
+  margin-bottom: 1rem;
+}
+
+.detail-label {
+  color: #6c757d;
+  display: block;
+  margin-bottom: 0.25rem;
+}
+
+.detail-value {
+  font-weight: 500;
+}
+
+.detail-brief {
+  line-height: 1.5;
+  color: #212529;
+}
+
+.status-badge {
+  font-weight: normal;
+  padding: 0.35rem 0.65rem;
+}
+
+.submit-btn {
+  padding: 0.75rem;
+}
+
+.draft-btn {
+  padding: 0.75rem;
+}

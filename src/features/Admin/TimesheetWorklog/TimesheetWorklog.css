@@ -1,0 +1,83 @@
+.summary-card {
+  transition: transform 0.2s;
+}
+
+.summary-card:hover {
+  transform: translateY(-2px);
+}
+
+.summary-card-primary {
+  background-color: rgba(13, 110, 253, 0.1);
+}
+
+.summary-card-success {
+  background-color: rgba(25, 135, 84, 0.1);
+}
+
+.summary-card-warning {
+  background-color: rgba(255, 193, 7, 0.1);
+}
+
+.summary-card-info {
+  background-color: rgba(13, 202, 240, 0.1);
+}
+
+.custom-table-card {
+  border: none;
+  box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+}
+
+.table > :not(caption) > * > * {
+  padding: 1rem 1.5rem;
+}
+
+.table > thead > tr > th {
+  font-weight: 600;
+  color: #495057;
+  background-color: #f8f9fa;
+  border-bottom: 1px solid #dee2e6;
+}
+
+.action-btn {
+  width: 32px;
+  height: 32px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+  transition: all 0.2s;
+}
+
+.action-btn:hover {
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
+.badge {
+  font-weight: 500;
+}
+
+.pagination .page-link {
+  border-radius: 4px;
+  margin: 0 2px;
+}
+
+.form-select,
+.form-control {
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+}
+
+.input-group-text {
+  background-color: transparent;
+  border-right: none;
+}
+
+.form-control:focus {
+  border-color: #86b7fe;
+  box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+}
+
+.btn-dark {
+  padding: 0.5rem 1rem;
+  font-weight: 500;
+}

@@ -1,0 +1,67 @@
+.in-progress-container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.custom-progress {
+  height: 8px;
+  background-color: #e9ecef;
+}
+
+.custom-progress .progress-bar {
+  background-color: #000;
+}
+
+.time-label {
+  color: #6c757d;
+  font-size: 0.875rem;
+  margin-bottom: 0.5rem;
+}
+
+.time-input {
+  border: 1px solid #ced4da;
+  border-radius: 4px;
+  padding: 0.375rem 0.75rem;
+}
+
+.file-upload-container {
+  border: 2px dashed #dee2e6 !important;
+  padding: 2rem !important;
+  background-color: #f8f9fa;
+  cursor: pointer;
+}
+
+.upload-icon {
+  color: #6c757d;
+  margin-bottom: 1rem;
+}
+
+.upload-text {
+  color: #6c757d;
+  margin-bottom: 0.5rem;
+}
+
+.browse-link {
+  color: #0d6efd;
+  text-decoration: underline;
+  padding: 0;
+}
+
+.browse-link:hover {
+  color: #0a58ca;
+}
+
+.cancel-btn {
+  border: 1px solid #dee2e6;
+  color: #212529;
+}
+
+.save-btn {
+  background-color: #000;
+  border-color: #000;
+}
+
+.save-btn:hover {
+  background-color: #212529;
+  border-color: #212529;
+}
