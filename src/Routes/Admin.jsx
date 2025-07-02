@@ -48,7 +48,7 @@ import OvervieMyJobs from "../features/Admin/MyJobs/OvervieMyJobs.jsx";
 import OvervieJobsProject from "../features/Admin/ProjectList/ProjectTabs/OvervieJobsProject.jsx";
 import Profile from "../features/Admin/Profile/Profile.jsx";
 import Extrahr from "../features/Admin/TimeLogs/Extrahr.jsx";
-import  DProjectInProgress from "../features/Admin/Dashbord/DProjectInProgress.jsx";
+import DProjectInProgress from "../features/Admin/Dashbord/DProjectInProgress.jsx";
 import DTodayJobsDue from "../features/Admin/Dashbord/DTodayJobsDue.jsx";
 import DCostEstimates from "../features/Admin/Dashbord/DCostEstimates.jsx";
 import Reports from "../features/Admin/Reports/Reports.jsx";
@@ -58,6 +58,7 @@ import DCompletedProject from "../features/Admin/Dashbord/DCompletedProject.jsx"
 import DJobsInProgress from "../features/Admin/Dashbord/DJobsInProgress.jsx";
 import ChangePassword from "../features/Layouts/ChangePassword.jsx";
 import UpdateProfile from "../features/Admin/Profile/UpdateProfile.jsx";
+import LeadFlow from "../features/Admin/LeadFlow/LeadFlow.jsx";
 
 function Admin() {
   const [isSidebarOpen, setSidebarOpen] = useState(window.innerWidth >= 768);
@@ -87,9 +88,9 @@ function Admin() {
                 </ProtectedRoute>
               }
             />
-            <Route path="/DJobsInProgress" element={<ProtectedRoute><DJobsInProgress/></ProtectedRoute>} />
+            <Route path="/DJobsInProgress" element={<ProtectedRoute><DJobsInProgress /></ProtectedRoute>} />
             <Route path="/DProjectInProgress" element={<ProtectedRoute>< DProjectInProgress /></ProtectedRoute>} />
-             <Route path="/DCompletedProject" element={<ProtectedRoute><DCompletedProject/></ProtectedRoute>} />
+            <Route path="/DCompletedProject" element={<ProtectedRoute><DCompletedProject /></ProtectedRoute>} />
             <Route path="/DTodayJobsDue" element={<ProtectedRoute><DTodayJobsDue /></ProtectedRoute>} />
             <Route path="/DCostEstimates" element={<ProtectedRoute><DCostEstimates /></ProtectedRoute>} />
 
@@ -97,6 +98,7 @@ function Admin() {
             <Route path="/AddClientManagement" element={<ProtectedRoute><AddClientManagement /></ProtectedRoute>} />
             <Route path="/ViewdetailsClientManagement" element={<ProtectedRoute><ViewdetailsClientManagement /></ProtectedRoute>} />
             <Route path="/CostEstimates" element={<ProtectedRoute><CostEstimates /></ProtectedRoute>} />
+            <Route path="/LeadFlow" element={<ProtectedRoute><LeadFlow /></ProtectedRoute>} />
             <Route path="/AddCostEstimates" element={<ProtectedRoute><AddCostEstimates /></ProtectedRoute>} />
             <Route path="/duplicate/AddCostEstimates/:id" element={<ProtectedRoute><AddCostEstimates /></ProtectedRoute>} />
             <Route path="/receivable" element={<ProtectedRoute><ReciveablePurchase /></ProtectedRoute>} />
@@ -138,8 +140,8 @@ function Admin() {
             <Route path="/Settings" element={<ProtectedRoute><Settings /></ProtectedRoute>} />
             <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
             <Route path="/Extrahr" element={<ProtectedRoute><Extrahr /></ProtectedRoute>} />
-            <Route path="/ChangePassword" element={<ProtectedRoute><ChangePassword/></ProtectedRoute>} />
-            <Route path="/UpdateProfile" element={<ProtectedRoute><UpdateProfile/></ProtectedRoute>} />
+            <Route path="/ChangePassword" element={<ProtectedRoute><ChangePassword /></ProtectedRoute>} />
+            <Route path="/UpdateProfile" element={<ProtectedRoute><UpdateProfile /></ProtectedRoute>} />
           </Routes>
         </div>
       </div>

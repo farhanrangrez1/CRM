@@ -62,6 +62,11 @@ export const adminMenuItems = [
     path: "/admin/CostEstimates",
   },
   {
+    title: "Lead Flow",
+    icon: <FaFileInvoiceDollar className="menu-icon" />,
+    path: "/admin/LeadFlow",
+  },
+  {
     title: "Purchase Orders",
     icon: <FaShoppingCart className="menu-icon" />,
     submenu: [

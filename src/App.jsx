@@ -18,8 +18,8 @@ function App() {
         <Routes>
           <Route path="/" element={<Login />} />
           <Route path="/Signup" element={<Register />} />
-          <Route path="/forgotPassword" element={<ForgotPassword/>} />
-          <Route path="/resetPassword" element={<ResetPassword/>} />
+          <Route path="/forgotPassword" element={<ForgotPassword />} />
+          <Route path="/resetPassword" element={<ResetPassword />} />
           {/* Admin Routes */}
           <Route path='/admin/*' element={<ProtectedRoute>
             <Admin />
@@ -31,7 +31,7 @@ function App() {
             <Client />
           </ProtectedRoute>} />
           <Route path='/*' element={
-            <PageNotfound/>
+            <PageNotfound />
           } />
         </Routes>
       </Router>
