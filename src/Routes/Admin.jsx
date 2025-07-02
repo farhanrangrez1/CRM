@@ -59,6 +59,7 @@ import DJobsInProgress from "../features/Admin/Dashbord/DJobsInProgress.jsx";
 import ChangePassword from "../features/Layouts/ChangePassword.jsx";
 import UpdateProfile from "../features/Admin/Profile/UpdateProfile.jsx";
 import LeadFlow from "../features/Admin/LeadFlow/LeadFlow.jsx";
+import Editpurposal from "../features/Admin/LeadFlow/Editpurposal.jsx";
 
 function Admin() {
   const [isSidebarOpen, setSidebarOpen] = useState(window.innerWidth >= 768);
@@ -99,6 +100,8 @@ function Admin() {
             <Route path="/ViewdetailsClientManagement" element={<ProtectedRoute><ViewdetailsClientManagement /></ProtectedRoute>} />
             <Route path="/CostEstimates" element={<ProtectedRoute><CostEstimates /></ProtectedRoute>} />
             <Route path="/LeadFlow" element={<ProtectedRoute><LeadFlow /></ProtectedRoute>} />
+            <Route path="/LeadFlow/Details" element={<ProtectedRoute><Editpurposal /></ProtectedRoute>} />
+
             <Route path="/AddCostEstimates" element={<ProtectedRoute><AddCostEstimates /></ProtectedRoute>} />
             <Route path="/duplicate/AddCostEstimates/:id" element={<ProtectedRoute><AddCostEstimates /></ProtectedRoute>} />
             <Route path="/receivable" element={<ProtectedRoute><ReciveablePurchase /></ProtectedRoute>} />
