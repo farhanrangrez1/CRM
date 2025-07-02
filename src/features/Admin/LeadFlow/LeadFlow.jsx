@@ -10,7 +10,7 @@ import './Project.css';
 import { useDispatch, useSelector } from 'react-redux';
 import { MdManageAccounts } from 'react-icons/md';
 import { HiOutlineDocumentReport } from 'react-icons/hi';
-
+import { fetchProject } from '../../../redux/slices/ProjectsSlice';
 
 // --- Kanban Workflow Data ---
 const initialStages = [
@@ -660,10 +660,10 @@ const ChangeOrdersUI = () => {
 };
 
 const tabs = [
-  { label: 'Lead', value: 'Active' },
-  { label: 'Bidding', value: 'Pending ' },
-  { label: 'Signature', value: 'Closed' },
-  { label: 'Expired', value: 'Rejected' },
+  { label: 'Active Project', value: 'Active' },
+  { label: 'Pending', value: 'Pending ' },
+  { label: 'Closed', value: 'Closed' },
+  { label: 'Rejected', value: 'Rejected' },
   { label: 'All', value: 'All' },
 ];
 
@@ -690,8 +690,10 @@ const LeadFlow = ({ data }) => {
 
   useEffect(() => {
     dispatch(fetchAllProposals())
+    dispatch(fetchProject())
   }, [])
-
+  const project = useSelector((state)=>state?.projects?.project?.data)
+  console.log("abc",project)
   const { reduxProposals, loading } = useSelector((state) => state?.proposal?.proposals);
   console.log(reduxProposals, "reduxProposals");
   const proposals = reduxProposals && reduxProposals.length > 0 ? reduxProposals : initialProposals;
@@ -813,15 +815,15 @@ const LeadFlow = ({ data }) => {
   const ProposalWorkflowBoard = ({ onNavigate, selectedStatus }) => {
     // Defensive: always fallback to []
     const reduxProposals = useSelector((state) => state?.proposal?.proposals) || [];
-    console.log(reduxProposals, "reduxProposals in workflow board");
+    // console.log(reduxProposals, "reduxProposals in workflow board");
     const dispatch = useDispatch();
     const [isUpdating, setIsUpdating] = useState(false);
 
     const kanbanData = {
-      active: reduxProposals.filter(p => p.status === "active"),
-      pending: reduxProposals.filter(p => p.status === "pending"),
-      closed: reduxProposals.filter(p => p.status === "closed"),
-      rejected: reduxProposals.filter(p => p.status === "rejected"),
+      active: project?.filter(p => p.status === "Active Project"),
+      pending:  project?.filter(p => p.status === "In Progress"),
+      closed: reduxProposals?.filter(p => p.status === "closed"),
+      rejected: reduxProposals?.filter(p => p.status === "rejected"),
     };
 
     const handleCardDrop = async (result) => {
@@ -852,10 +854,10 @@ const LeadFlow = ({ data }) => {
     };
     // --- Kanban Columns Config ---
     let columns = [
-      { id: 'active', title: 'Lead' },
-      { id: 'pending', title: 'Bidding' },
-      { id: 'closed', title: 'Signature' },
-      { id: 'rejected', title: 'Expired' },
+      { id: 'active', title: 'Active' },
+      { id: 'pending', title: 'Pending changes' },
+      { id: 'closed', title: 'Closed' },
+      { id: 'rejected', title: 'Rejected' },
     ];
     // Reorder columns so selectedStatus is first
     if (selectedStatus && selectedStatus !== 'All') {
@@ -902,7 +904,7 @@ const LeadFlow = ({ data }) => {
                     </div>
                     {/* Cards */}
                     {kanbanData[col.id]?.map((item, idx) => (
-                      <Draggable draggableId={String(item.id)} index={idx} key={item.id}>
+                      <Draggable draggableId={String(item._id)} index={idx} key={item._id}>
                         {(provided, snapshot) => (
                           <div
                             ref={provided.innerRef}
@@ -918,9 +920,10 @@ const LeadFlow = ({ data }) => {
                             }}
                           >
                             <div className="fw-semibold text-primary" style={{ fontSize: 15 }}>
-                              {item.job_name || item.title}
+                              {item.projectName
+ || item.title}
                             </div>
-                            <div className="text-muted small mb-1">Client: {item.client || item.client_name}</div>
+                            <div className="text-muted small mb-1">Client: {item?.clientId?.clientName}</div>
                             <div className="small text-secondary mb-1">Billing: {item.billing || item.job_type}</div>
                             <div className="small text-secondary mb-1">Phases: {item.phases}</div>
                             <div className="d-flex flex-wrap gap-2 align-items-center mb-1">
@@ -960,7 +963,7 @@ const LeadFlow = ({ data }) => {
   // Filter jobs based on selectedStatus
   const filteredJobs = selectedStatus === 'All'
     ? jobs
-    : jobs.filter(job => job.status === selectedStatus);
+    : jobs?.filter(job => job.status === selectedStatus);
 
   const renderTabContent = () => {
     switch (activeTab) {
@@ -979,7 +982,7 @@ const LeadFlow = ({ data }) => {
               <div className="bg-white py-3 p-4 rounded shadow-sm">
                 {/* Accordion for each job */}
                 <Accordion activeKey={expandedJobIndex !== null ? expandedJobIndex.toString() : null} alwaysOpen>
-                  {filteredJobs.length === 0 && (
+                  {filteredJobs?.length === 0 && (
                     <div className="text-center text-muted py-5">
                       <div className="mb-2">
                         <svg width="48" height="48" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" /><path d="M9 9h.01M15 9h.01M8 15c1.333-1 2.667-1 4 0" /></svg>
@@ -988,7 +991,7 @@ const LeadFlow = ({ data }) => {
                       <div className="small">Try a different status or add a new project.</div>
                     </div>
                   )}
-                  {filteredJobs.map((project, index) => (
+                  {filteredJobs?.map((project, index) => (
                     <Accordion.Item eventKey={index.toString()} key={index} className="mb-2 border rounded shadow-sm">
                       <Accordion.Header
                         onClick={() => setExpandedJobIndex(expandedJobIndex === index ? null : index)}
@@ -1097,43 +1100,40 @@ const LeadFlow = ({ data }) => {
 
             {/* Project Status Tabs */}
             <div className="project-tabs mb-4">
-              <ul className="nav nav-tabs d-none d-md-flex justify-content-between">
-                <div className="nav nav-tabs d-none d-md-flex">
-                  {tabs.map((tab) => (
-                    <li className="nav-item" key={tab.value}>
-                      <button
-                        className={`nav-link ${selectedStatus === tab.value ? 'active' : ''}`}
-                        onClick={() => setSelectedStatus(tab.value)}
-                        style={{ color: "#0d6efd", borderColor: "#0d6efd" }}
-                      >
-                        {tab.label}
-                      </button>
-                    </li>
-                  ))}
-                </div>
-                {/* <div className="d-flex justify-content-end " >
-                  <ButtonGroup>
-                    <Button
-                      variant={workflowView === 'workflow' ? 'primary' : 'outline-primary'}
-                      active={workflowView === 'workflow'}
-                      onClick={() => setWorkflowView('workflow')}
-                      className="d-flex align-items-center"
+              <ul className="nav nav-tabs d-none d-md-flex">
+                {tabs.map((tab) => (
+                  <li className="nav-item" key={tab.value}>
+                    <button
+                      className={`nav-link ${selectedStatus === tab.value ? 'active' : ''}`}
+                      onClick={() => setSelectedStatus(tab.value)}
+                      style={{ color: "#0d6efd", borderColor: "#0d6efd" }}
                     >
-                      <Kanban className="me-2" /> Project Contract workflow
-                    </Button>
-                    <Button
-                      variant={workflowView === 'list' ? 'primary' : 'outline-primary'}
-                      active={workflowView === 'list'}
-                      onClick={() => setWorkflowView('list')}
-                      className="d-flex align-items-center"
-                    >
-                      <List className="me-2" /> Project List
-                    </Button>
-                  </ButtonGroup>
-                </div> */}
+                      {tab.label}
+                    </button>
+                  </li>
+                ))}
               </ul>
 
-              {/* <div className="col-12 col-md-6 d-flex justify-content-md-end gap-2" > */}
+              <div className="col-12 col-md-6 d-flex justify-content-md-end gap-2" >
+                <ButtonGroup>
+                  <Button
+                    variant={workflowView === 'workflow' ? 'primary' : 'outline-primary'}
+                    active={workflowView === 'workflow'}
+                    onClick={() => setWorkflowView('workflow')}
+                    className="d-flex align-items-center"
+                  >
+                    <Kanban className="me-2" /> Project Contract workflow
+                  </Button>
+                  <Button
+                    variant={workflowView === 'list' ? 'primary' : 'outline-primary'}
+                    active={workflowView === 'list'}
+                    onClick={() => setWorkflowView('list')}
+                    className="d-flex align-items-center"
+                  >
+                    <List className="me-2" /> Project List
+                  </Button>
+                </ButtonGroup>
+              </div>
 
               <div className="d-flex d-md-none">
                 <Dropdown>
