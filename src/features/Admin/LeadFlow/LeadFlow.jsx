@@ -820,8 +820,8 @@ const LeadFlow = ({ data }) => {
     const [isUpdating, setIsUpdating] = useState(false);
 
     const kanbanData = {
-      active: reduxProposals.filter(p => p.status === "active"),
-      pending: reduxProposals.filter(p => p.status === "pending"),
+      active: project?.filter(p => p.status === "Active Project"),
+      pending:  project.filter(p => p.status === "In Progress"),
       closed: reduxProposals.filter(p => p.status === "closed"),
       rejected: reduxProposals.filter(p => p.status === "rejected"),
     };
@@ -904,7 +904,7 @@ const LeadFlow = ({ data }) => {
                     </div>
                     {/* Cards */}
                     {kanbanData[col.id]?.map((item, idx) => (
-                      <Draggable draggableId={String(item.id)} index={idx} key={item.id}>
+                      <Draggable draggableId={String(item._id)} index={idx} key={item._id}>
                         {(provided, snapshot) => (
                           <div
                             ref={provided.innerRef}
@@ -920,9 +920,10 @@ const LeadFlow = ({ data }) => {
                             }}
                           >
                             <div className="fw-semibold text-primary" style={{ fontSize: 15 }}>
-                              {item.job_name || item.title}
+                              {item.projectName
+ || item.title}
                             </div>
-                            <div className="text-muted small mb-1">Client: {item.client || item.client_name}</div>
+                            <div className="text-muted small mb-1">Client: {item?.clientId?.clientName}</div>
                             <div className="small text-secondary mb-1">Billing: {item.billing || item.job_type}</div>
                             <div className="small text-secondary mb-1">Phases: {item.phases}</div>
                             <div className="d-flex flex-wrap gap-2 align-items-center mb-1">
