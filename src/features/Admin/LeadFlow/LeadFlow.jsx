@@ -660,13 +660,12 @@ const ChangeOrdersUI = () => {
 };
 
 const tabs = [
-  { label: 'Active Project', value: 'Active' },
-  { label: 'Pending', value: 'Pending ' },
-  { label: 'Closed', value: 'Closed' },
-  { label: 'Rejected', value: 'Rejected' },
+  { label: 'Lead', value: 'Active' },
+  { label: 'Bidding', value: 'Pending ' },
+  { label: 'Signature', value: 'Closed' },
+  { label: 'Expired', value: 'Rejected' },
   { label: 'All', value: 'All' },
 ];
-
 
 const LeadFlow = ({ data }) => {
   const [stageFilter, setStageFilter] = useState(stageOptions.map(opt => opt.id)); // all checked by default
@@ -692,8 +691,8 @@ const LeadFlow = ({ data }) => {
     dispatch(fetchAllProposals())
     dispatch(fetchProject())
   }, [])
-  const project = useSelector((state)=>state?.projects?.project?.data)
-  console.log("abc",project)
+  const project = useSelector((state) => state?.projects?.project?.data)
+  console.log("abc", project)
   const { reduxProposals, loading } = useSelector((state) => state?.proposal?.proposals);
   console.log(reduxProposals, "reduxProposals");
   const proposals = reduxProposals && reduxProposals.length > 0 ? reduxProposals : initialProposals;
@@ -821,7 +820,7 @@ const LeadFlow = ({ data }) => {
 
     const kanbanData = {
       active: project?.filter(p => p.status === "Active Project"),
-      pending:  project?.filter(p => p.status === "In Progress"),
+      pending: project?.filter(p => p.status === "In Progress"),
       closed: reduxProposals?.filter(p => p.status === "closed"),
       rejected: reduxProposals?.filter(p => p.status === "rejected"),
     };
@@ -854,11 +853,12 @@ const LeadFlow = ({ data }) => {
     };
     // --- Kanban Columns Config ---
     let columns = [
-      { id: 'active', title: 'Active' },
-      { id: 'pending', title: 'Pending changes' },
-      { id: 'closed', title: 'Closed' },
-      { id: 'rejected', title: 'Rejected' },
+      { id: 'active', title: 'Lead' },
+      { id: 'pending', title: 'Bidding' },
+      { id: 'closed', title: 'Signature' },
+      { id: 'rejected', title: 'Expired' },
     ];
+
     // Reorder columns so selectedStatus is first
     if (selectedStatus && selectedStatus !== 'All') {
       const statusMap = {
@@ -921,7 +921,7 @@ const LeadFlow = ({ data }) => {
                           >
                             <div className="fw-semibold text-primary" style={{ fontSize: 15 }}>
                               {item.projectName
- || item.title}
+                                || item.title}
                             </div>
                             <div className="text-muted small mb-1">Client: {item?.clientId?.clientName}</div>
                             <div className="small text-secondary mb-1">Billing: {item.billing || item.job_type}</div>
@@ -1114,7 +1114,7 @@ const LeadFlow = ({ data }) => {
                 ))}
               </ul>
 
-              <div className="col-12 col-md-6 d-flex justify-content-md-end gap-2" >
+              {/* <div className="col-12 col-md-6 d-flex justify-content-md-end gap-2" >
                 <ButtonGroup>
                   <Button
                     variant={workflowView === 'workflow' ? 'primary' : 'outline-primary'}
@@ -1133,7 +1133,7 @@ const LeadFlow = ({ data }) => {
                     <List className="me-2" /> Project List
                   </Button>
                 </ButtonGroup>
-              </div>
+              </div> */}
 
               <div className="d-flex d-md-none">
                 <Dropdown>
