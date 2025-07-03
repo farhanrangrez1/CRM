@@ -14,6 +14,8 @@ import ReportsReducer from "../redux/slices/ReportsSlice"
 import proposalReducer from "../redux/slices/proposalSlice"
 // Employee
 import MyJobsReducer from "../redux/slices/Employee/MyJobsSlice"
+import dailyLogsReducer from "../redux/slices/dailyLogsSlice"; 
+import commentReducer from "../redux/slices/commentsSlice" 
 
 export const store = configureStore({
   reducer: {
@@ -30,6 +32,8 @@ export const store = configureStore({
     reportss:ReportsReducer,
     proposal:proposalReducer,
     //Employee
-    MyJobs:MyJobsReducer
+    MyJobs:MyJobsReducer,
+    dailyLogs : dailyLogsReducer,  
+    comments: commentReducer,
 }
 });

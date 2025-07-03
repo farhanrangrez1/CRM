@@ -1374,13 +1374,13 @@ import "./Editpurposal.css";
 import { FaArrowLeft } from "react-icons/fa";
 import { useNavigate, useLocation } from "react-router-dom";
 import { Button, Form, Row, Col } from "react-bootstrap";
-// import DailyLogs from "../LeadOpportunity/DailyLogs";
+// import `DailyLogs` from "../LeadOpportunity/DailyLogs";
 import Swal from "sweetalert2";
 import AddCostEstimates from "../CostEstimates/AddCostEstimates";
 import AddTimesheetWorklog from "../TimesheetWorklog/AddTimesheetWorklog";
 import AddInvoice from "../Invoicing_Billing/AddInvoice";
 // import DocumentList from "./DocumentList";
-
+import DailyLogs from "../../Employee/DailyLogs/DailyLogs";
 const DocumentList = () => {
   const documents = [
     { id: 1, title: "Document 1", file_urls: ["example_file_1.pdf"] },
@@ -1830,8 +1830,8 @@ const Editpurposal = () => {
       case "Logs":
         return (
           <div className="tab-content-box">
-            {/* <DailyLogs /> */}
-            <AddTimesheetWorklog />
+            <DailyLogs />
+            {/* <AddTimesheetWorklog /> */}
           </div>
         );
 
