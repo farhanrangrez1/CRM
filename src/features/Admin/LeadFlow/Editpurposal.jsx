@@ -1555,7 +1555,38 @@ const saveJob = async () => {
 
   resetForm();
 };
+ 
 
+const getBudgetSummaryByProposalId = async (proposalId) => {
+  try {
+    const response = await axios.get(
+      `https://netaai-crm-backend-production-c306.up.railway.app/api/job_planning/getBudgetSummaryByProposalId/${project_id}`
+    );
+
+    if (response.status === 200) {
+      // You can return the data or use it directly
+      console.log("Budget Summary:", response.data);
+      return response.data;
+    } else {
+      throw new Error("Failed to fetch budget summary");
+    }
+  } catch (error) {
+    console.error("Error fetching budget summary:", error.response?.data?.message || error.message);
+    return null;
+  }
+};
+
+useEffect(() => {
+  const fetchBudgetSummary = async () => {
+    const data = await getBudgetSummaryByProposalId(project_id);
+    if (data) {
+      // Handle your state update here
+      console.log(data);
+    }
+  };
+
+  fetchBudgetSummary();
+}, [saveJob]);
 
 
   // const stage = job?.p?.stage;
