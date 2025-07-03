@@ -1382,6 +1382,9 @@ import AddInvoice from "../Invoicing_Billing/AddInvoice";
 import ProposalEmailUI from "./ProposalEmailUI";
 // import DocumentList from "./DocumentList";
 import DailyLogs from "../../Employee/DailyLogs/DailyLogs";
+import axios from 'axios';
+import { fetchProject } from "../../../redux/slices/ProjectsSlice";
+import { useDispatch } from "react-redux";
 const DocumentList = () => {
   const documents = [
     { id: 1, title: "Document 1", file_urls: ["example_file_1.pdf"] },
@@ -1484,20 +1487,22 @@ const Editpurposal = () => {
       0
     ).toFixed(2);
   };
-
+  const dispatch = useDispatch()
   const handleAddLineItem = () => {
     setLineItems([
       ...lineItems,
       { description: '', amount: 0, quantity: 1, taxable: false },
     ]);
   };
-
+   useEffect(()=>{
+   dispatch(fetchProject())
+   },[])
   const handleLineChange = (index, field, value) => {
     const updatedItems = [...lineItems];
     updatedItems[index][field] = value;
     setLineItems(updatedItems);
   };
-
+  // const projectId = 
   const removeLineItem = (index) => {
     const updated = [...lineItems];
     updated.splice(index, 1);
@@ -1508,6 +1513,80 @@ const Editpurposal = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const job = location.state.item;
+  const project_id = localStorage.getItem("proposalId");
+  const resetForm = () => {
+    setPhaseName("");
+    setMaterialsBudget("");
+    setLaborBudget("");
+    setSubcontractorsBudget("");
+    setEquipmentBudget("");
+    setMiscBudget("");
+    setEstimatedStart("");
+    setEstimatedEnd("");
+  };
+const saveJob = async () => {
+  const payload = {
+    proposal_id:  project_id,
+    estimated_start: estimatedStart,
+    estimated_completion: estimatedEnd,
+    total_budget: totalBudgetedCost,
+    phase_name: phaseName,
+    materials_budget: materialsBudget,
+    labor_budget: laborBudget,
+    subcontractors_budget: subcontractorsBudget,
+    equipment_budget: equipmentBudget,
+    miscellanea_budget: miscBudget,
+  };
+
+  try {
+    const response = await axios.post(
+      'https://netaai-crm-backend-production-c306.up.railway.app/api/job_planning',
+      payload
+    );
+  console.log(payload)
+    if (response.status === 200 || response.status === 201) {
+      Swal.fire("Success", "Job planning created successfully!", "success");
+    } else {
+      throw new Error("Unexpected response status");
+    }
+  } catch (error) {
+    Swal.fire("Error", error.response?.data?.message || error.message, "error");
+  }
+
+  resetForm();
+};
+ 
+
+const getBudgetSummaryByProposalId = async (proposalId) => {
+  try {
+    const response = await axios.get(
+      `https://netaai-crm-backend-production-c306.up.railway.app/api/job_planning/getBudgetSummaryByProposalId/${project_id}`
+    );
+
+    if (response.status === 200) {
+      // You can return the data or use it directly
+      console.log("Budget Summary:", response.data);
+      return response.data;
+    } else {
+      throw new Error("Failed to fetch budget summary");
+    }
+  } catch (error) {
+    console.error("Error fetching budget summary:", error.response?.data?.message || error.message);
+    return null;
+  }
+};
+
+useEffect(() => {
+  const fetchBudgetSummary = async () => {
+    const data = await getBudgetSummaryByProposalId(project_id);
+    if (data) {
+      // Handle your state update here
+      console.log(data);
+    }
+  };
+
+  fetchBudgetSummary();
+}, [saveJob]);
 
 
   // const stage = job?.p?.stage;
@@ -1586,9 +1665,14 @@ const Editpurposal = () => {
                   {/* <p>Lead</p> */}
                   <p>{job?.status}</p>
                 </div>
-                <div className="col-md-6 mb-3">
+                {/* <div className="col-md-6 mb-3">
                   <p className="mb-1 text-muted">Job Type</p>
                   <p>{job?.job_type}</p>
+                </div> */}
+                <div className="col-md-6 mb-3">
+                  <p className="mb-1 text-muted">Total Budget</p>
+                  {/* <p>${totalBudgetedCost}</p> */}
+                  <p>${totalBudgetedCost}</p>
                 </div>
                 <div className="col-md-6 mb-3">
                   <p className="mb-1 text-muted">Estimated Start</p>
@@ -1603,13 +1687,9 @@ const Editpurposal = () => {
                   <p className="mb-1 text-muted">Estimated Completion</p>
                   <input type="date" className="form-control" value={estimatedEnd} onChange={(e) => { setEstimatedEnd(e.target.value) }} />
                 </div>
-                <div className="col-md-6 mb-3">
-                  <p className="mb-1 text-muted">Total Budget</p>
-                  {/* <p>${totalBudgetedCost}</p> */}
-                  <p>${totalBudgetedCost}</p>
-                </div>
+                
               </div>
-              <button className="btn btn-primary">Save</button>
+              <button className="btn btn-primary" onClick={saveJob}>Save</button>
             </div>
             <div className="col-md-4">
               <div className="border p-3 rounded mb-4 bg-white">
