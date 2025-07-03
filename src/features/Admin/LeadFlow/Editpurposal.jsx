@@ -1505,7 +1505,9 @@ const Editpurposal = () => {
 
   const navigate = useNavigate();
   const location = useLocation();
-  const job = location.state;
+  const job = location.state.item;
+  console.log(job);
+
   const stage = job?.p?.stage;
 
   const renderTabContent = () => {

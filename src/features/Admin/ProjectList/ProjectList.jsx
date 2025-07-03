@@ -934,7 +934,8 @@ const ProjectList = ({ data }) => {
                             <div className="mt-2">
                               <button className="btn btn-sm btn-outline-primary" onClick={() => {
                                 localStorage.setItem("proposalId", item.id);
-                                navigate("/detail");
+                                // navigate("/detail");
+                                navigate("/admin/Project/Details", { state: { item: item } });
                               }}>
                                 {col.id === 'active' ? 'Invoice' : col.id === 'pending' ? 'Edit proposal' : col.id === 'closed' ? 'View' : 'Expired'}
                               </button>
@@ -971,7 +972,7 @@ const ProjectList = ({ data }) => {
         return (
           <>
             {/* Modern Filter Bar */}
-            
+
             {/* --- Switch between List and Workflow views --- */}
             {workflowView === 'workflow' ? (
               <ProposalWorkflowBoard onNavigate={navigate} selectedStatus={selectedStatus} />
@@ -1071,26 +1072,26 @@ const ProjectList = ({ data }) => {
                 </div>
 
 
-<div className="col-12 col-md-6 d-flex justify-content-md-end gap-2 mb-3">
-  <ButtonGroup>
-    <Button
-      variant={activeTab === 'manage' ? 'primary' : 'outline-primary'}
-      active={activeTab === 'manage'}
-      onClick={() => setActiveTab('manage')}
-      className="d-flex align-items-center"
-    >
-      <MdManageAccounts className="me-2" size={18} /> Manage Project
-    </Button>
-    <Button
-      variant={activeTab === 'reports' ? 'primary' : 'outline-primary'}
-      active={activeTab === 'reports'}
-      onClick={() => setActiveTab('reports')}
-      className="d-flex align-items-center"
-    >
-      <HiOutlineDocumentReport className="me-2" size={18} /> Job Reports
-    </Button>
-  </ButtonGroup>
-</div>
+                <div className="col-12 col-md-6 d-flex justify-content-md-end gap-2 mb-3">
+                  <ButtonGroup>
+                    <Button
+                      variant={activeTab === 'manage' ? 'primary' : 'outline-primary'}
+                      active={activeTab === 'manage'}
+                      onClick={() => setActiveTab('manage')}
+                      className="d-flex align-items-center"
+                    >
+                      <MdManageAccounts className="me-2" size={18} /> Manage Project
+                    </Button>
+                    <Button
+                      variant={activeTab === 'reports' ? 'primary' : 'outline-primary'}
+                      active={activeTab === 'reports'}
+                      onClick={() => setActiveTab('reports')}
+                      className="d-flex align-items-center"
+                    >
+                      <HiOutlineDocumentReport className="me-2" size={18} /> Job Reports
+                    </Button>
+                  </ButtonGroup>
+                </div>
 
               </div>
             </div>
@@ -1112,26 +1113,26 @@ const ProjectList = ({ data }) => {
               </ul>
 
               <div className="col-12 col-md-6 d-flex justify-content-md-end gap-2" >
-              <ButtonGroup>
-                <Button
-                  variant={workflowView === 'workflow' ? 'primary' : 'outline-primary'}
-                  active={workflowView === 'workflow'}
-                  onClick={() => setWorkflowView('workflow')}
-                  className="d-flex align-items-center"
-                >
-                  <Kanban className="me-2" /> Project Contract workflow
-                </Button>
-                <Button
-                  variant={workflowView === 'list' ? 'primary' : 'outline-primary'}
-                  active={workflowView === 'list'}
-                  onClick={() => setWorkflowView('list')}
-                  className="d-flex align-items-center"
-                >
-                  <List className="me-2" /> Project List
-                </Button>
-              </ButtonGroup>
-            </div> 
-            
+                <ButtonGroup>
+                  <Button
+                    variant={workflowView === 'workflow' ? 'primary' : 'outline-primary'}
+                    active={workflowView === 'workflow'}
+                    onClick={() => setWorkflowView('workflow')}
+                    className="d-flex align-items-center"
+                  >
+                    <Kanban className="me-2" /> Project Contract workflow
+                  </Button>
+                  <Button
+                    variant={workflowView === 'list' ? 'primary' : 'outline-primary'}
+                    active={workflowView === 'list'}
+                    onClick={() => setWorkflowView('list')}
+                    className="d-flex align-items-center"
+                  >
+                    <List className="me-2" /> Project List
+                  </Button>
+                </ButtonGroup>
+              </div>
+
               <div className="d-flex d-md-none">
                 <Dropdown>
                   <Dropdown.Toggle variant="outline-primary" id="dropdown-tabs" className="w-100">

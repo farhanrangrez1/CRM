@@ -50,11 +50,11 @@ export const deleteproject = createAsyncThunk(
 
 
 export const fetchProjectById = createAsyncThunk('projects/fetchById', async (id) => {
-    const response = await fetch(`/api/projects/${id}`);
-    if (!response.ok) throw new Error("Failed to fetch project");
-    return await response.json();
-  });
-  
+  const response = await fetch(`/api/projects/${id}`);
+  if (!response.ok) throw new Error("Failed to fetch project");
+  return await response.json();
+});
+
 
 export const updateProject = createAsyncThunk(
   "projects/updateProject",
@@ -90,19 +90,19 @@ const projectsSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
-          // Add
-        //   .addCase(createProject.pending, (state) => {
-        //     state.loading = true;
-        //     state.error = null;
-        //   })
-        //   .addCase(createProject.fulfilled, (state, action) => {
-        //     state.loading = false;
-        //     state.project.push(action.payload);
-        //   })
-        //   .addCase(createProject.rejected, (state, action) => {
-        //     state.loading = false;
-        //     state.error = action.payload;
-        //   })
+      // Add
+      //   .addCase(createProject.pending, (state) => {
+      //     state.loading = true;
+      //     state.error = null;
+      //   })
+      //   .addCase(createProject.fulfilled, (state, action) => {
+      //     state.loading = false;
+      //     state.project.push(action.payload);
+      //   })
+      //   .addCase(createProject.rejected, (state, action) => {
+      //     state.loading = false;
+      //     state.error = action.payload;
+      //   })
       .addCase(fetchProject.pending, (state) => {
         state.status = 'loading';
       })
@@ -130,7 +130,7 @@ const projectsSlice = createSlice({
     //     state.status = 'failed';
     //     state.error = action.payload;
     //   })
-    
+
     //   .addCase(updateproject.fulfilled, (state, action) => {
     //     const index = state.project.findIndex(
     //       (project) => project.id === action.payload.id

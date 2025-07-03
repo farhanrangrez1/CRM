@@ -20,7 +20,7 @@ export const createProposal = createAsyncThunk(
 // ✅ Get All Proposals
 export const fetchAllProposals = createAsyncThunk(
   "proposal/fetchAll",
-  
+
   async (_, { rejectWithValue }) => {
     try {
       const res = await api.get(BASE_URL);
