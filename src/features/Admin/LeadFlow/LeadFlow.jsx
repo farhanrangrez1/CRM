@@ -940,7 +940,8 @@ const LeadFlow = ({ data }) => {
                               <div className="small text-muted mb-1">Last updated: {item.updated || item.last_updated || item.createdAt}</div>
                               <div className="mt-2">
                                 <button className="btn btn-sm btn-outline-primary" onClick={() => {
-                                  localStorage.setItem("proposalId", item.id);
+                                  localStorage.setItem("proposalId", item._id);
+                                  localStorage.setItem("invoice", JSON.stringify(item));
                                   navigate("/admin/LeadFlow/Details", { state: { item: item } });
                                 }}>
                                   {col.id === 'active' ? 'Create Proposal' : col.id === 'pending' ? 'Edit proposal' : col.id === 'closed' ? 'Send Reminder' : 'Expired/Sent'}
@@ -1099,10 +1100,10 @@ const LeadFlow = ({ data }) => {
                     >
                       <HiOutlineDocumentReport className="me-2" size={18} /> Lead Reports
                     </Button> */}
-                     <Button
+                    <Button
                       variant='primary'
                       // active={activeTab === 'reports'}
-                      onClick={() =>  navigate("/admin/AddProjectList")}
+                      onClick={() => navigate("/admin/AddProjectList")}
                       className="d-flex align-items-center"
                     >
                       Add Proposal
@@ -1168,7 +1169,7 @@ const LeadFlow = ({ data }) => {
                   </Dropdown.Menu>
                 </Dropdown>
               </div>
-              
+
             </div>
 
             {/* Loader */}
