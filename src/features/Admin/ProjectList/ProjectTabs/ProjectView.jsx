@@ -11,7 +11,7 @@ import { MdManageAccounts } from 'react-icons/md';
 import { HiOutlineDocumentReport } from 'react-icons/hi';
 import { deleteproject, fetchProject } from '../../../../redux/slices/ProjectsSlice';
 
-// --- Kanban Workflow Data ---
+//--- Kanban Workflow Data ---
 const initialStages = [
     { id: 'create-proposal', title: 'Create Proposal' },
     { id: 'client-review', title: 'Client Review' }, // Changed from 'automatic-delivery'
@@ -29,7 +29,7 @@ const initialProposals = [
         // stage: 'create-proposal',
         updated: '2025-06-07 10:30',
         logs: [
-            { by: 'Admin', at: '2025-06-07 10:30', note: 'Created proposal' }
+        { by: 'Admin', at: '2025-06-07 10:30', note: 'Created proposal' }
         ]
     },
     {
@@ -666,7 +666,6 @@ const tabs = [
     { label: 'All', value: 'All' },
 ];
 
-
 const ProjectView = ({ data }) => {
     const [stageFilter, setStageFilter] = useState(stageOptions.map(opt => opt.id)); // all checked by default
     const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -934,7 +933,7 @@ const ProjectView = ({ data }) => {
                                                         <div className="mt-2">
                                                             <button className="btn btn-sm btn-outline-primary" onClick={() => {
                                                                 localStorage.setItem("proposalId", item.id);
-                                                                navigate("/detail");
+                                                                navigate("/admin/LeadFlow/Details");
                                                             }}>
                                                                 {col.id === 'active' ? 'Invoice' : col.id === 'pending' ? 'Edit proposal' : col.id === 'closed' ? 'View' : 'Expired'}
                                                             </button>

@@ -66,7 +66,6 @@ import UpdateProfile from "../features/Admin/Profile/UpdateProfile.jsx";
 import LeadFlow from "../features/Admin/LeadFlow/LeadFlow.jsx";
 import Editpurposal from "../features/Admin/LeadFlow/Editpurposal.jsx";
 
-
 function Admin() {
   const [isSidebarOpen, setSidebarOpen] = useState(window.innerWidth >= 768);
   const toggleSidebar = () => {

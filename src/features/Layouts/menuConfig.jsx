@@ -64,7 +64,7 @@ export const adminMenuItems = [
     path: "/admin/CostEstimates",
   },
   {
-    title: "Lead Flow",
+    title: "Praposal",
     icon: <FaSitemap className="menu-icon" />,
     path: "/admin/LeadFlow",
   },
