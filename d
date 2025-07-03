@@ -67,58 +67,58 @@ function ProjectOverview() {
         <div>
           <h4 className="mb-1">{projectData.projectId}-{projectData.title}</h4>
           <div className="text-muted">
-           Client: {projectData.client}
+            Client: {projectData.client}
           </div>
         </div>
         <div>
           <button className="btn btn-outline-secondary me-2">Import File</button>
-         <Link to={"/UpdateProjectLis"}><button id='All_btn' className="btn btn-dark">Edit Project</button></Link>
+          <Link to={"/UpdateProjectLis"}><button id='All_btn' className="btn btn-dark">Edit Project</button></Link>
         </div>
       </div>
 
       {/* Navigation Tabs */}
       <ul className="nav nav-tabs mb-4">
         <li className="nav-item">
-          <button 
+          <button
             className={`nav-link ${activeTab === 'overview' ? 'active' : ''}`}
             onClick={() => setActiveTab('overview')}
-            style={{color:"#0d6efd",borderColor:"#0d6efd"}}
+            style={{ color: "#0d6efd", borderColor: "#0d6efd" }}
           >
             Overview
           </button>
         </li>
         <li className="nav-item">
-          <button 
+          <button
             className={`nav-link ${activeTab === 'jobs' ? 'active' : ''}`}
             onClick={() => setActiveTab('jobs')}
-            style={{color:"#0d6efd",borderColor:"#0d6efd"}}
+            style={{ color: "#0d6efd", borderColor: "#0d6efd" }}
           >
             Jobs
           </button>
         </li>
         <li className="nav-item">
-          <button 
+          <button
             className={`nav-link ${activeTab === 'finance' ? 'active' : ''}`}
             onClick={() => setActiveTab('finance')}
-            style={{color:"#0d6efd",borderColor:"#0d6efd"}}
+            style={{ color: "#0d6efd", borderColor: "#0d6efd" }}
           >
             Finance
           </button>
         </li>
         <li className="nav-item">
-          <button 
+          <button
             className={`nav-link ${activeTab === 'documents' ? 'active' : ''}`}
             onClick={() => setActiveTab('documents')}
-            style={{color:"#0d6efd",borderColor:"#0d6efd"}}
+            style={{ color: "#0d6efd", borderColor: "#0d6efd" }}
           >
             Documents
           </button>
         </li>
         <li className="nav-item">
-          <button 
+          <button
             className={`nav-link ${activeTab === 'team' ? 'active' : ''}`}
             onClick={() => setActiveTab('team')}
-            style={{color:"#0d6efd",borderColor:"#0d6efd"}}
+            style={{ color: "#0d6efd", borderColor: "#0d6efd" }}
           >
             Team
           </button>
@@ -144,8 +144,8 @@ export default ProjectOverview;
 
 
 status: '+$5,000',
-      isUnderBudget: true,
-      estimated: '$50,000',
+  isUnderBudget: true,
+    estimated: '$50,000',
       actual: '$45,000'
 
 
@@ -169,603 +169,603 @@ status: '+$5,000',
 
 
 
-      import React, { useEffect, useState } from 'react';
-      import { Form, Button, Container, Row, Col } from 'react-bootstrap';
-      import { useDispatch } from 'react-redux';
-      import { useNavigate, useParams } from 'react-router-dom';
-      import { createProject } from '../../../redux/slices/ProjectsSlice';
-      import { toast } from "react-toastify";
-      import "react-toastify/dist/ReactToastify.css";
-      
-      
-      function AddProjectList() {
-        const navigate = useNavigate();
-        const dispatch = useDispatch()
-        const { id } = useParams();
-      
-        
-        const [formData, setFormData] = useState({
-          projectName: '',
-          clientId: '',
-          managerId: '',
-          startDate: '',
-          endDate: '',
-          projectPriority: '',
-          description: '',
-          status: '',
-          projectRequirements: {
-            creativeDesign: false,
-            artworkAdaptation: false,
-            prepress: false,
-            POS: false,
-            mockups: false,
-            rendering: false,
-          },
-          budgetAmount: '',
-          currency: '',
-          totalTime: ''
+import React, { useEffect, useState } from 'react';
+import { Form, Button, Container, Row, Col } from 'react-bootstrap';
+import { useDispatch } from 'react-redux';
+import { useNavigate, useParams } from 'react-router-dom';
+import { createProject } from '../../../redux/slices/ProjectsSlice';
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
+
+function AddProjectList() {
+  const navigate = useNavigate();
+  const dispatch = useDispatch()
+  const { id } = useParams();
+
+
+  const [formData, setFormData] = useState({
+    projectName: '',
+    clientId: '',
+    managerId: '',
+    startDate: '',
+    endDate: '',
+    projectPriority: '',
+    description: '',
+    status: '',
+    projectRequirements: {
+      creativeDesign: false,
+      artworkAdaptation: false,
+      prepress: false,
+      POS: false,
+      mockups: false,
+      rendering: false,
+    },
+    budgetAmount: '',
+    currency: '',
+    totalTime: ''
+  });
+  useEffect(() => {
+    if (id) {
+      // dispatch(getalltool());
+    }
+  }, [id, dispatch]);
+
+  useEffect(() => {
+    if (id && tools.length > 0) {
+      const existingEntry = tools.find((entry) => entry._id === id);
+      if (existingEntry) {
+        setFormData({
+          toolID: existingEntry.toolID,
+          name: existingEntry.name,
+          manufacturer: existingEntry.manufacturer,
+          category: existingEntry.category,
+          purchaseDate: existingEntry.purchaseDate.split("T")[0],
+          condition: existingEntry.condition,
+          notes: existingEntry.notes,
+          location: existingEntry.location,
         });
-        useEffect(() => {
-          if (id) {
-            // dispatch(getalltool());
-          }
-        }, [id, dispatch]);
-      
-        useEffect(() => {
-          if (id && tools.length > 0) {
-            const existingEntry = tools.find((entry) => entry._id === id);
-            if (existingEntry) {
-              setFormData({
-                toolID: existingEntry.toolID,
-                name: existingEntry.name,
-                manufacturer: existingEntry.manufacturer,
-                category: existingEntry.category,
-                purchaseDate: existingEntry.purchaseDate.split("T")[0],
-                condition: existingEntry.condition,
-                notes: existingEntry.notes,
-                location: existingEntry.location,
-              });
-            }
-          }
-        }, [id, tools]);
-      
-        const handleInputChange = (e) => {
-          const { name, value } = e.target;
-          setFormData((prev) => ({
-            ...prev,
-            [name]: value
-          }));
-        };
-      
-      
-        const handleCheckboxChange = (e) => {
-          const { name, checked } = e.target;
-          setFormData(prev => ({
-            ...prev,
-            projectRequirements: {
-              ...prev.projectRequirements,
-              [name]: checked
-            }
-          }));
-        };
-      
-      // AddProjectList.js
-      const handleSubmit = e => {
-        e.preventDefault();
-        const payload = {
-          ...formData,
-          projectRequirements: [formData.projectRequirements]
-        };
-      
-        if (id) {
-          dispatch(updatetool({ id, updatedtool: formData }))
-            .unwrap()
-            .then(() => {
-              toast.success("Tool Updated Successfully!");
-              navigate("/plantMachinery");
-            })
-            .catch(() => {
-              toast.error("Failed to update Tool!");
-            });
-        } else {
-          dispatch(createProject(payload))
-            .unwrap()
-            .then(() => {
-              toast.success("Tool Added successfully");
-              navigate("/plantMachinery");
-            })
-            .catch(() => {
-              toast.error("Error in creating tool");
-            });
-        }
-      
-      };
-      
-        
-        
-        const handleCancel = () => {
-          // navigate(-1);
-        };
-      
-        return (
-          <Container className="py-4">
-            <div className="form-container p-4 rounded shadow-sm" style={{ backgroundColor: "white", margin: "0 auto" }}>
-              <h2 className="mb-4">New Project</h2>
-              <Form onSubmit={handleSubmit} >
-                <Row className="mb-3">
-                  <Col md={6}>
-                    <Form.Group>
-                      <Form.Label className="text-muted mb-1">Project Name</Form.Label>
-                      <Form.Control
-                        type="text"
-                        name="projectName"
-                        value={formData.projectName}
-                        onChange={handleInputChange}
-                        required
-                      />
-                    </Form.Group>
-                  </Col>
-                  <Col md={6}>
-                    <Form.Group>
-                      <Form.Label className="text-muted mb-1">Client Name</Form.Label>
-                      <Form.Select
-                        name="clientId"
-                        value={formData.clientId}
-                        onChange={handleInputChange}
-                        required
-                      >
-                        <option value="">Select Client</option>
-                        <option value="662fb9cba77b2e0012345679">662fb9cba77b2e0012345679</option>
-                        <option value="client2">Client 2</option>
-                      </Form.Select>
-                    </Form.Group>
-                  </Col>
-                </Row>
-      
-                <Row className="mb-3">
-                  <Col md={6}>
-                    <Form.Group>
-                      <Form.Label className="text-muted mb-1">Project Manager</Form.Label>
-                      <Form.Select
-                        name="managerId"
-                        value={formData.managerId}
-                        onChange={handleInputChange}
-                        required
-                      >
-                        <option value="">Select Manager</option>
-                        <option value="662fb9a2a77b2e0012345678">662fb9a2a77b2e0012345678</option>
-                        <option value="manager2">Manager 2</option>
-                      </Form.Select>
-                    </Form.Group>
-                  </Col>
-                  <Col md={6}>
-                    <Form.Group>
-                      <Form.Label className="text-muted mb-1">Start Date</Form.Label>
-                      <Form.Control
-                        type="date"
-                        name="startDate"
-                        value={formData.startDate}
-                        onChange={handleInputChange}
-                        required
-                      />
-                    </Form.Group>
-                  </Col>
-                </Row>
-      
-                <Row className="mb-3">
-                  <Col md={6}>
-                    <Form.Group>
-                      <Form.Label className="text-muted mb-1">Expected Completion Date</Form.Label>
-                      <Form.Control
-                        type="date"
-                        name="endDate"
-                        value={formData.endDate}
-                        onChange={handleInputChange}
-                        required
-                      />
-                    </Form.Group>
-                  </Col>
-                  <Col md={6}>
-                    <Form.Group>
-                      <Form.Label className="text-muted mb-1">Project Priority</Form.Label>
-                      <Form.Select
-                        name="projectPriority"
-                        value={formData.projectPriority}
-                        onChange={handleInputChange}
-                        required
-                      >
-                        <option value="">Select Priority</option>
-                        <option value="high">High</option>
-                        <option value="medium">Medium</option>
-                        <option value="low">Low</option>
-                      </Form.Select>
-                    </Form.Group>
-                  </Col>
-                </Row>
-      
-                <Row className="mb-3">
-                  <Col md={6}>
-                    <Form.Group>
-                      <Form.Label className="text-muted mb-1">Project Status</Form.Label>
-                      <Form.Select
-                        name="status"
-                        value={formData.status}
-                        onChange={handleInputChange}
-                        required
-                      >
-                        <option value="">Select Status</option>
-                        <option value="not_started">Not Started</option>
-                        <option value="in_progress">In Progress</option>
-                        <option value="completed">Completed</option>
-                        <option value="on_hold">On Hold</option>
-                      </Form.Select>
-                    </Form.Group>
-                  </Col>
-                  <Col md={6}>
-                    <Form.Group>
-                      <Form.Label className="text-muted mb-1">Total Time Logged</Form.Label>
-                      <Form.Control
-                        type="time"
-                        name="totalTime"
-                        value={formData.totalTime}
-                        onChange={handleInputChange}
-                      />
-                    </Form.Group>
-                  </Col>
-                </Row>
-      
-                <Form.Group className="mb-3">
-                  <Form.Label className="text-muted mb-1">Project Description</Form.Label>
-                  <Form.Control
-                    as="textarea"
-                    rows={4}
-                    name="description"
-                    value={formData.description}
-                    onChange={handleInputChange}
-                  />
-                </Form.Group>
-      
-                <Form.Group className="mb-3">
-                  <Form.Label className="text-muted mb-1">Project Requirements</Form.Label>
-                  <div>
-                    <Form.Check
-                      type="checkbox"
-                      label="Creative Design"
-                      name="creativeDesign"
-                      checked={formData.projectRequirements.creativeDesign}
-                      onChange={handleCheckboxChange}
-                    />
-                    <Form.Check
-                      type="checkbox"
-                      label="Artwork Adaptation"
-                      name="artworkAdaptation"
-                      checked={formData.projectRequirements.artworkAdaptation}
-                      onChange={handleCheckboxChange}
-                    />
-                    <Form.Check
-                      type="checkbox"
-                      label="Prepress/File Preparation"
-                      name="prepress"
-                      checked={formData.projectRequirements.prepress}
-                      onChange={handleCheckboxChange}
-                    />
-                    <Form.Check
-                      type="checkbox"
-                      label="POS"
-                      name="POS"
-                      checked={formData.projectRequirements.POS}
-                      onChange={handleCheckboxChange}
-                    />
-                    <Form.Check
-                      type="checkbox"
-                      label="Mockups"
-                      name="mockups"
-                      checked={formData.projectRequirements.mockups}
-                      onChange={handleCheckboxChange}
-                    />
-                    <Form.Check
-                      type="checkbox"
-                      label="3D Rendering"
-                      name="rendering"
-                      checked={formData.projectRequirements.rendering}
-                      onChange={handleCheckboxChange}
-                    />
-                  </div>
-                </Form.Group>
-      
-                <Form.Label className="text-muted mb-1">Budget Information</Form.Label>
-                <Row className="mb-3">
-                  <Col md={6}>
-                    <Form.Group>
-                      <Form.Control
-                        type="number"
-                        placeholder="Budget Amount"
-                        name="budgetAmount"
-                        value={formData.budgetAmount}
-                        onChange={handleInputChange}
-                      />
-                    </Form.Group>
-                  </Col>
-                  <Col md={6}>
-                    <Form.Group>
-                      <Form.Select
-                        name="currency"
-                        value={formData.currency}
-                        onChange={handleInputChange}
-                      >
-                        <option value="">Select Currency</option>
-                        <option value="AED">AED</option>
-                        <option value="EUR">EUR</option>
-                        <option value="GBP">GBP</option>
-                        <option value="INR">INR</option>
-                        <option value="SAR">SAR</option>
-                        <option value="USD">USD</option>
-                      </Form.Select>
-                    </Form.Group>
-                  </Col>
-                </Row>
-      
-                <div className="d-flex justify-content-end gap-2 mt-4">
-                  <Button variant="secondary" className="px-4" style={{ minWidth: "120px" }} onClick={handleCancel}>Cancel</Button>
-                  <Button variant="dark" type="submit" className="px-4" style={{ minWidth: "120px" }}>Create Project</Button>
-                </div>
-              </Form>
-            </div>
-          </Container>
-        );
       }
-      
-      export default AddProjectList;
-      
+    }
+  }, [id, tools]);
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value
+    }));
+  };
+
+
+  const handleCheckboxChange = (e) => {
+    const { name, checked } = e.target;
+    setFormData(prev => ({
+      ...prev,
+      projectRequirements: {
+        ...prev.projectRequirements,
+        [name]: checked
+      }
+    }));
+  };
+
+  // AddProjectList.js
+  const handleSubmit = e => {
+    e.preventDefault();
+    const payload = {
+      ...formData,
+      projectRequirements: [formData.projectRequirements]
+    };
+
+    if (id) {
+      dispatch(updatetool({ id, updatedtool: formData }))
+        .unwrap()
+        .then(() => {
+          toast.success("Tool Updated Successfully!");
+          navigate("/plantMachinery");
+        })
+        .catch(() => {
+          toast.error("Failed to update Tool!");
+        });
+    } else {
+      dispatch(createProject(payload))
+        .unwrap()
+        .then(() => {
+          toast.success("Tool Added successfully");
+          navigate("/plantMachinery");
+        })
+        .catch(() => {
+          toast.error("Error in creating tool");
+        });
+    }
+
+  };
 
 
 
+  const handleCancel = () => {
+    // navigate(-1);
+  };
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-      import React, { useEffect, useState } from 'react';
-      import { Table, Badge, Button, Row, Col, Card, Modal, Form, Dropdown } from 'react-bootstrap';
-      import { FaEye, FaEdit, FaUpload, FaPlus } from 'react-icons/fa';
-      import { Link } from 'react-router-dom';
-      import './Project.css';
-      import { useDispatch, useSelector } from 'react-redux';
-      import { fetchProject } from '../../../redux/slices/ProjectsSlice';
-      
-      function ProjectList() {
-        const [activeTab, setActiveTab] = useState('All');
-        const [currentPage, setCurrentPage] = useState(1);
-      
-       const dispatch =useDispatch()
-      
-        const [projects, setProjects] = useState([
-          {
-            id: '00001',
-            name: 'POS',
-            description: 'Redesign company website with new features',
-            startDate: '2025/03/01',
-            endDate: '2025/06/30',
-            totaltimelogged: '9hour',
-            client: 'JohnnySmith',
-            status: 'Active Project',
-            invoiceCreated: false
-          },
-          {
-            id: '00002',
-            name: 'CRM',
-            description: 'Developing a cross-platform mobile application',
-            startDate: '2025/04/15',
-            endDate: '2025/09/20',
-            totaltimelogged: '9hour',
-            client: 'JohnnySmith',
-            status: 'In Progress',
-            invoiceCreated: false
-          },
-          {
-            id: '00003',
-            name: 'HRM',
-            description: 'Integrating a new CRM with existing systems',
-            startDate: '2025/05/10',
-            endDate: '2025/11/05',
-            totaltimelogged: '9hour',
-            client: 'JohnnySmith',
-            status: 'Completed',
-            invoiceCreated: false
-          },
-          {
-            id: '00004',
-            name: 'Project Management',
-            description: 'Legacy System Migration',
-            startDate: '2025/01/01',
-            endDate: '2025/12/31',
-            totaltimelogged: '9hour',
-            client: 'Jane/Doe',
-            status: 'Closed',
-            invoiceCreated: true
-          },
-          {
-            id: '00005',
-            name: 'Task Management',
-            description: 'Cloud Infrastructure Setup',
-            startDate: '2025/02/15',
-            endDate: '2025/08/15',
-            totaltimelogged: '9hour',
-            client: 'TechCorp',
-            status: 'Cancelled',
-            invoiceCreated: true
-          },
-          {
-            id: '00006',
-            name: 'E-commerce',
-            description: 'AI Implementation Project',
-            startDate: '2025/06/01',
-            endDate: '2025/12/31',
-            totaltimelogged: '9hour',
-            client: 'InnovationLabs',
-            status: 'On Hold',
-            invoiceCreated: false
-          }
-        ]);
-      
-      
-      
-      
-      
-      
-        // All Projects 
-      const { project, loading, error } = useSelector((state) => state.projects);
-      console.log(project.data, "project");
-      
-      // const projectOptions = [
-      //   "All",
-      //   ...new Set(project.data.map((d) => d.project?.name).filter(Boolean)),
-      // ];
-      
-      // const statusOptions = [
-      //   "All",
-      //   ...new Set(project.data.map((d) => d.status).filter(Boolean)),
-      // ];
-      
-      useEffect(() => {
-        dispatch(fetchProject());
-      }, [dispatch]);
-      
-        const tabs = ['All', 'Active', 'In Progress', 'Completed', 'Closed', 'Cancelled', 'On Hold', 'Completed (To Be Invoiced)'];
-      
-        const filteredProjects = activeTab === 'All' 
-          ? project.data
-          : activeTab === 'Completed (To Be Invoiced)'
-            ? project.data?.filter(project => project.status === 'Completed' && !project.invoiceCreated)
-            : project.data?.filter(project => project.status === activeTab);
-      
-        const updateProjectStatus = (index, newStatus) => {
-          const updatedProjects = [...projects];
-          updatedProjects[index].status = newStatus;
-          setProjects(updatedProjects);
-        };
-      
-        const [selectedJobs, setSelectedJobs] = useState({});
-      
-        const handleCheckboxChange = (projectId) => {
-          setSelectedJobs((prev) => ({
-            ...prev,
-            [projectId]: !prev[projectId],
-          }));
-        };
-      
-      
-        return (
-          <div className="project-container">
-            {/* Header */}
-            <div className="d-flex justify-content-between align-items-center mb-3">
-              <h5 className="m-0 fw-bold">Project List</h5>
-            </div>
-      
-            {/* Project Status Tabs */}
-            <div className="project-tabs mb-4">
-              <ul className="nav nav-tabs">
-                {tabs.map((tab) => (
-                  <li className="nav-item" key={tab}>
-                    <button
-                      className={`nav-link ${activeTab === tab ? 'active' : ''}`}
-                      onClick={() => setActiveTab(tab)}
-                      style={{ color: "#0d6efd", borderColor: "#0d6efd" }}
-                    >
-                      {tab}
-                    </button>
-                  </li>
-                ))}
-              </ul>
-            </div>
-      
-            {/* Search and Actions */}
-            <div className="d-flex justify-content-between align-items-center mb-4">
-              <div className="search-box">
-                <input
+  return (
+    <Container className="py-4">
+      <div className="form-container p-4 rounded shadow-sm" style={{ backgroundColor: "white", margin: "0 auto" }}>
+        <h2 className="mb-4">New Project</h2>
+        <Form onSubmit={handleSubmit} >
+          <Row className="mb-3">
+            <Col md={6}>
+              <Form.Group>
+                <Form.Label className="text-muted mb-1">Project Name</Form.Label>
+                <Form.Control
                   type="text"
-                  className="form-control"
-                  placeholder="Search projects.."
+                  name="projectName"
+                  value={formData.projectName}
+                  onChange={handleInputChange}
+                  required
                 />
-              </div>
-              <div className="actions">
-                <Button variant="outline-secondary" size="sm" className="me-2">
-                  <FaUpload className="me-1" /> Import
-                </Button>
-                <Link to={"/AddProjectList"}>
-                  <Button id='All_btn' variant="dark" size="sm">
-                    <FaPlus className="me-1" /> Add project
-                  </Button>
-                </Link>
-              </div>
+              </Form.Group>
+            </Col>
+            <Col md={6}>
+              <Form.Group>
+                <Form.Label className="text-muted mb-1">Client Name</Form.Label>
+                <Form.Select
+                  name="clientId"
+                  value={formData.clientId}
+                  onChange={handleInputChange}
+                  required
+                >
+                  <option value="">Select Client</option>
+                  <option value="662fb9cba77b2e0012345679">662fb9cba77b2e0012345679</option>
+                  <option value="client2">Client 2</option>
+                </Form.Select>
+              </Form.Group>
+            </Col>
+          </Row>
+
+          <Row className="mb-3">
+            <Col md={6}>
+              <Form.Group>
+                <Form.Label className="text-muted mb-1">Project Manager</Form.Label>
+                <Form.Select
+                  name="managerId"
+                  value={formData.managerId}
+                  onChange={handleInputChange}
+                  required
+                >
+                  <option value="">Select Manager</option>
+                  <option value="662fb9a2a77b2e0012345678">662fb9a2a77b2e0012345678</option>
+                  <option value="manager2">Manager 2</option>
+                </Form.Select>
+              </Form.Group>
+            </Col>
+            <Col md={6}>
+              <Form.Group>
+                <Form.Label className="text-muted mb-1">Start Date</Form.Label>
+                <Form.Control
+                  type="date"
+                  name="startDate"
+                  value={formData.startDate}
+                  onChange={handleInputChange}
+                  required
+                />
+              </Form.Group>
+            </Col>
+          </Row>
+
+          <Row className="mb-3">
+            <Col md={6}>
+              <Form.Group>
+                <Form.Label className="text-muted mb-1">Expected Completion Date</Form.Label>
+                <Form.Control
+                  type="date"
+                  name="endDate"
+                  value={formData.endDate}
+                  onChange={handleInputChange}
+                  required
+                />
+              </Form.Group>
+            </Col>
+            <Col md={6}>
+              <Form.Group>
+                <Form.Label className="text-muted mb-1">Project Priority</Form.Label>
+                <Form.Select
+                  name="projectPriority"
+                  value={formData.projectPriority}
+                  onChange={handleInputChange}
+                  required
+                >
+                  <option value="">Select Priority</option>
+                  <option value="high">High</option>
+                  <option value="medium">Medium</option>
+                  <option value="low">Low</option>
+                </Form.Select>
+              </Form.Group>
+            </Col>
+          </Row>
+
+          <Row className="mb-3">
+            <Col md={6}>
+              <Form.Group>
+                <Form.Label className="text-muted mb-1">Project Status</Form.Label>
+                <Form.Select
+                  name="status"
+                  value={formData.status}
+                  onChange={handleInputChange}
+                  required
+                >
+                  <option value="">Select Status</option>
+                  <option value="not_started">Not Started</option>
+                  <option value="in_progress">In Progress</option>
+                  <option value="completed">Completed</option>
+                  <option value="on_hold">On Hold</option>
+                </Form.Select>
+              </Form.Group>
+            </Col>
+            <Col md={6}>
+              <Form.Group>
+                <Form.Label className="text-muted mb-1">Total Time Logged</Form.Label>
+                <Form.Control
+                  type="time"
+                  name="totalTime"
+                  value={formData.totalTime}
+                  onChange={handleInputChange}
+                />
+              </Form.Group>
+            </Col>
+          </Row>
+
+          <Form.Group className="mb-3">
+            <Form.Label className="text-muted mb-1">Project Description</Form.Label>
+            <Form.Control
+              as="textarea"
+              rows={4}
+              name="description"
+              value={formData.description}
+              onChange={handleInputChange}
+            />
+          </Form.Group>
+
+          <Form.Group className="mb-3">
+            <Form.Label className="text-muted mb-1">Project Requirements</Form.Label>
+            <div>
+              <Form.Check
+                type="checkbox"
+                label="Creative Design"
+                name="creativeDesign"
+                checked={formData.projectRequirements.creativeDesign}
+                onChange={handleCheckboxChange}
+              />
+              <Form.Check
+                type="checkbox"
+                label="Artwork Adaptation"
+                name="artworkAdaptation"
+                checked={formData.projectRequirements.artworkAdaptation}
+                onChange={handleCheckboxChange}
+              />
+              <Form.Check
+                type="checkbox"
+                label="Prepress/File Preparation"
+                name="prepress"
+                checked={formData.projectRequirements.prepress}
+                onChange={handleCheckboxChange}
+              />
+              <Form.Check
+                type="checkbox"
+                label="POS"
+                name="POS"
+                checked={formData.projectRequirements.POS}
+                onChange={handleCheckboxChange}
+              />
+              <Form.Check
+                type="checkbox"
+                label="Mockups"
+                name="mockups"
+                checked={formData.projectRequirements.mockups}
+                onChange={handleCheckboxChange}
+              />
+              <Form.Check
+                type="checkbox"
+                label="3D Rendering"
+                name="rendering"
+                checked={formData.projectRequirements.rendering}
+                onChange={handleCheckboxChange}
+              />
             </div>
-      
-            {/* Projects Table */}
-            <Table responsive className="project-table mb-4">
-              <thead>
-                <tr>
-                  <th>
-                    <input
-                      type="checkbox"
-                      onChange={() => {
-                        const isChecked = Object.keys(selectedJobs).length === projects.length;
-                        const newSelectedJobs = {};
-                        projects.forEach((project) => {
-                          newSelectedJobs[project.id] = !isChecked;
-                        });
-                        setSelectedJobs(newSelectedJobs);
-                      }}
-                    />
-                  </th>
-                  <th style={{ whiteSpace: "nowrap" }}>Project No</th>
-                  <th style={{ textWrap: "nowrap" }}>Project Name</th>
-                  <th>Description</th>
-                  <th>Start Date</th>
-                  <th>End Date</th>
-                  <th style={{ whiteSpace: "nowrap" }}>Total Time logged</th>
-                  <th>Client</th>
-                  <th>Status</th>
-                  <th>Actions</th>
-                </tr>
-              </thead>
-              <tbody>
-                {filteredProjects.map((project, index) => (
-                  <tr key={project.id}>
-                    <td>
-                      <input
-                        type="checkbox"
-                        checked={selectedJobs[project.id] || false}
-                        onChange={() => handleCheckboxChange(project.id)}
-                      />
-                    </td>
-                    <td><Link to={"/ProjectOverview"}>{project.id}</Link></td>
-                    <td>{project.name}</td>
-                    <td>{project.description}</td>
-                    <td>{project.startDate}</td>
-                    <td>{project.endDate}</td>
-                    <td>{project.totaltimelogged}</td>
-                    <td>{project.client}</td>
-                    <th>
-                    <Button className='mt-4' variant="success" style={{width:"150px"}} size="sm" >
-                                  {project.status || "Active"}
-                                 </Button>
-                    </th>
-                     
-                    {/* <td>
+          </Form.Group>
+
+          <Form.Label className="text-muted mb-1">Budget Information</Form.Label>
+          <Row className="mb-3">
+            <Col md={6}>
+              <Form.Group>
+                <Form.Control
+                  type="number"
+                  placeholder="Budget Amount"
+                  name="budgetAmount"
+                  value={formData.budgetAmount}
+                  onChange={handleInputChange}
+                />
+              </Form.Group>
+            </Col>
+            <Col md={6}>
+              <Form.Group>
+                <Form.Select
+                  name="currency"
+                  value={formData.currency}
+                  onChange={handleInputChange}
+                >
+                  <option value="">Select Currency</option>
+                  <option value="AED">AED</option>
+                  <option value="EUR">EUR</option>
+                  <option value="GBP">GBP</option>
+                  <option value="INR">INR</option>
+                  <option value="SAR">SAR</option>
+                  <option value="USD">USD</option>
+                </Form.Select>
+              </Form.Group>
+            </Col>
+          </Row>
+
+          <div className="d-flex justify-content-end gap-2 mt-4">
+            <Button variant="secondary" className="px-4" style={{ minWidth: "120px" }} onClick={handleCancel}>Cancel</Button>
+            <Button variant="dark" type="submit" className="px-4" style={{ minWidth: "120px" }}>Create Project</Button>
+          </div>
+        </Form>
+      </div>
+    </Container>
+  );
+}
+
+export default AddProjectList;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+import React, { useEffect, useState } from 'react';
+import { Table, Badge, Button, Row, Col, Card, Modal, Form, Dropdown } from 'react-bootstrap';
+import { FaEye, FaEdit, FaUpload, FaPlus } from 'react-icons/fa';
+import { Link } from 'react-router-dom';
+import './Project.css';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchProject } from '../../../redux/slices/ProjectsSlice';
+
+function ProjectList() {
+  const [activeTab, setActiveTab] = useState('All');
+  const [currentPage, setCurrentPage] = useState(1);
+
+  const dispatch = useDispatch()
+
+  const [projects, setProjects] = useState([
+    {
+      id: '00001',
+      name: 'POS',
+      description: 'Redesign company website with new features',
+      startDate: '2025/03/01',
+      endDate: '2025/06/30',
+      totaltimelogged: '9hour',
+      client: 'JohnnySmith',
+      status: 'Active Project',
+      invoiceCreated: false
+    },
+    {
+      id: '00002',
+      name: 'CRM',
+      description: 'Developing a cross-platform mobile application',
+      startDate: '2025/04/15',
+      endDate: '2025/09/20',
+      totaltimelogged: '9hour',
+      client: 'JohnnySmith',
+      status: 'In Progress',
+      invoiceCreated: false
+    },
+    {
+      id: '00003',
+      name: 'HRM',
+      description: 'Integrating a new CRM with existing systems',
+      startDate: '2025/05/10',
+      endDate: '2025/11/05',
+      totaltimelogged: '9hour',
+      client: 'JohnnySmith',
+      status: 'Completed',
+      invoiceCreated: false
+    },
+    {
+      id: '00004',
+      name: 'Project Management',
+      description: 'Legacy System Migration',
+      startDate: '2025/01/01',
+      endDate: '2025/12/31',
+      totaltimelogged: '9hour',
+      client: 'Jane/Doe',
+      status: 'Closed',
+      invoiceCreated: true
+    },
+    {
+      id: '00005',
+      name: 'Task Management',
+      description: 'Cloud Infrastructure Setup',
+      startDate: '2025/02/15',
+      endDate: '2025/08/15',
+      totaltimelogged: '9hour',
+      client: 'TechCorp',
+      status: 'Cancelled',
+      invoiceCreated: true
+    },
+    {
+      id: '00006',
+      name: 'E-commerce',
+      description: 'AI Implementation Project',
+      startDate: '2025/06/01',
+      endDate: '2025/12/31',
+      totaltimelogged: '9hour',
+      client: 'InnovationLabs',
+      status: 'On Hold',
+      invoiceCreated: false
+    }
+  ]);
+
+
+
+
+
+
+  // All Projects 
+  const { project, loading, error } = useSelector((state) => state.projects);
+  console.log(project.data, "project");
+
+  // const projectOptions = [
+  //   "All",
+  //   ...new Set(project.data.map((d) => d.project?.name).filter(Boolean)),
+  // ];
+
+  // const statusOptions = [
+  //   "All",
+  //   ...new Set(project.data.map((d) => d.status).filter(Boolean)),
+  // ];
+
+  useEffect(() => {
+    dispatch(fetchProject());
+  }, [dispatch]);
+
+  const tabs = ['All', 'Active', 'In Progress', 'Completed', 'Closed', 'Cancelled', 'On Hold', 'Completed (To Be Invoiced)'];
+
+  const filteredProjects = activeTab === 'All'
+    ? project.data
+    : activeTab === 'Completed (To Be Invoiced)'
+      ? project.data?.filter(project => project.status === 'Completed' && !project.invoiceCreated)
+      : project.data?.filter(project => project.status === activeTab);
+
+  const updateProjectStatus = (index, newStatus) => {
+    const updatedProjects = [...projects];
+    updatedProjects[index].status = newStatus;
+    setProjects(updatedProjects);
+  };
+
+  const [selectedJobs, setSelectedJobs] = useState({});
+
+  const handleCheckboxChange = (projectId) => {
+    setSelectedJobs((prev) => ({
+      ...prev,
+      [projectId]: !prev[projectId],
+    }));
+  };
+
+
+  return (
+    <div className="project-container">
+      {/* Header */}
+      <div className="d-flex justify-content-between align-items-center mb-3">
+        <h5 className="m-0 fw-bold">Project List</h5>
+      </div>
+
+      {/* Project Status Tabs */}
+      <div className="project-tabs mb-4">
+        <ul className="nav nav-tabs">
+          {tabs.map((tab) => (
+            <li className="nav-item" key={tab}>
+              <button
+                className={`nav-link ${activeTab === tab ? 'active' : ''}`}
+                onClick={() => setActiveTab(tab)}
+                style={{ color: "#0d6efd", borderColor: "#0d6efd" }}
+              >
+                {tab}
+              </button>
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      {/* Search and Actions */}
+      <div className="d-flex justify-content-between align-items-center mb-4">
+        <div className="search-box">
+          <input
+            type="text"
+            className="form-control"
+            placeholder="Search projects.."
+          />
+        </div>
+        <div className="actions">
+          <Button variant="outline-secondary" size="sm" className="me-2">
+            <FaUpload className="me-1" /> Import
+          </Button>
+          <Link to={"/AddProjectList"}>
+            <Button id='All_btn' variant="dark" size="sm">
+              <FaPlus className="me-1" /> Add project
+            </Button>
+          </Link>
+        </div>
+      </div>
+
+      {/* Projects Table */}
+      <Table responsive className="project-table mb-4">
+        <thead>
+          <tr>
+            <th>
+              <input
+                type="checkbox"
+                onChange={() => {
+                  const isChecked = Object.keys(selectedJobs).length === projects.length;
+                  const newSelectedJobs = {};
+                  projects.forEach((project) => {
+                    newSelectedJobs[project.id] = !isChecked;
+                  });
+                  setSelectedJobs(newSelectedJobs);
+                }}
+              />
+            </th>
+            <th style={{ whiteSpace: "nowrap" }}>Project No</th>
+            <th style={{ textWrap: "nowrap" }}>Project Name</th>
+            <th>Description</th>
+            <th>Start Date</th>
+            <th>End Date</th>
+            <th style={{ whiteSpace: "nowrap" }}>Total Time logged</th>
+            <th>Client</th>
+            <th>Status</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {filteredProjects.map((project, index) => (
+            <tr key={project.id}>
+              <td>
+                <input
+                  type="checkbox"
+                  checked={selectedJobs[project.id] || false}
+                  onChange={() => handleCheckboxChange(project.id)}
+                />
+              </td>
+              <td><Link to={"/ProjectOverview"}>{project.id}</Link></td>
+              <td>{project.name}</td>
+              <td>{project.description}</td>
+              <td>{project.startDate}</td>
+              <td>{project.endDate}</td>
+              <td>{project.totaltimelogged}</td>
+              <td>{project.client}</td>
+              <th>
+                <Button className='mt-4' variant="success" style={{ width: "150px" }} size="sm" >
+                  {project.status || "Active"}
+                </Button>
+              </th>
+
+              {/* <td>
                       <Dropdown>
                         <Dropdown.Toggle variant="success" size="sm">
                           {project.status || 'Select Status'}
@@ -781,412 +781,412 @@ status: '+$5,000',
                         </Dropdown.Menu>
                       </Dropdown>
                     </td> */}
-                    <td>
-                      <div className="action-buttons d-flex ">
-                        <Button variant="link" className="p-0 me-2">
-                          <FaEye />
-                        </Button>
-                        <Button variant="link" className="p-0 me-2">
-                          <Link to={"/UpdateProjectLis"}>
-                            <FaEdit />
-                          </Link>
-                        </Button>
-                      </div>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </Table>
-      
-            {/* Pagination */}
-            <div className="d-flex justify-content-between align-items-center mb-4">
-              <div className="text-muted small">Showing 1 to {filteredProjects.length} of {projects.length} entries</div>
-              <ul className="pagination pagination-sm mb-0">
-                <li className="page-item">
-                  <button className="page-link">Previous</button>
-                </li>
-                <li className="page-item active">
-                  <button className="page-link">1</button>
-                </li>
-                <li className="page-item">
-                  <button className="page-link">2</button>
-                </li>
-                <li className="page-item">
-                  <button className="page-link">3</button>
-                </li>
-                <li className="page-item">
-                  <button className="page-link">Next</button>
-                </li>
-              </ul>
-            </div>
-          </div>
-        );
-      }
-      
-      export default ProjectList;
-      
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-      import React, { useState, useEffect } from 'react';
-      import { Form, Button, Container, Row, Col } from 'react-bootstrap';
-      import { useDispatch, useSelector } from 'react-redux';
-      import { useNavigate, useParams } from 'react-router-dom';
-      import { createProject, fetchProjectById, updateProject } from '../../../redux/slices/ProjectsSlice';
-      import { toast } from "react-toastify";
-      import "react-toastify/dist/ReactToastify.css";
-      
-      function AddProjectList() {
-        const navigate = useNavigate();
-        const dispatch = useDispatch();
-        const { id } = useParams(); // Grab project ID from URL
-        const [formData, setFormData] = useState({
-          projectName: '',
-          clientId: '',
-          managerId: '',
-          startDate: '',
-          endDate: '',
-          projectPriority: '',
-          description: '',
-          status: '',
-          projectRequirements: {
-            creativeDesign: false,
-            artworkAdaptation: false,
-            prepress: false,
-            POS: false,
-            mockups: false,
-            rendering: false,
-          },
-          budgetAmount: '',
-          currency: '',
-          totalTime: ''
-        });
-      
-        // Load existing project data in edit mode
-        useEffect(() => {
-          if (id) {
-            dispatch(fetchProjectById(id)).then((res) => {
-              const project = res.payload;
-              if (project) {
-                setFormData({
-                  ...project,
-                  projectRequirements: project.projectRequirements?.[0] || {}
-                });
-              }
-            });
-          }
-        }, [id, dispatch]);
-      
-        const handleInputChange = (e) => {
-          const { name, value } = e.target;
-          setFormData((prev) => ({
-            ...prev,
-            [name]: value
-          }));
-        };
-      
-        const handleCheckboxChange = (e) => {
-          const { name, checked } = e.target;
-          setFormData(prev => ({
-            ...prev,
-            projectRequirements: {
-              ...prev.projectRequirements,
-              [name]: checked
-            }
-          }));
-        };
-      
-        const handleSubmit = e => {
-          e.preventDefault();
-          const payload = {
-            ...formData,
-            projectRequirements: [formData.projectRequirements]
-          };
-          if (id) {
-            dispatch(updateProject({ id, data: payload }))
-              .unwrap()
-              .then(() => {
-                toast.success("Project updated successfully!");
-                navigate("/plantMachinery");
-              })
-              .catch(() => {
-                toast.error("Failed to update project!");
-              });
-          } else {
-            dispatch(createProject(payload))
-              .unwrap()
-              .then(() => {
-                toast.success("Project created successfully!");
-                navigate("/projectList");
-              })
-              .catch(() => {
-                toast.error("Error creating project");
-              });
-          }
-        };
-      
-        const handleCancel = () => {
-          navigate("/plantMachinery");
-        };
-      
-        return (
-          <Container className="py-4">
-            <div className="form-container p-4 rounded shadow-sm" style={{ backgroundColor: "white", margin: "0 auto" }}>
-              <h2 className="mb-4">New Project</h2>
-              <Form onSubmit={handleSubmit} >
-                <Row className="mb-3">
-                  <Col md={6}>
-                    <Form.Group>
-                      <Form.Label className="text-muted mb-1">Project Name</Form.Label>
-                      <Form.Control
-                        type="text"
-                        name="projectName"
-                        value={formData.projectName}
-                        onChange={handleInputChange}
-                        required
-                      />
-                    </Form.Group>
-                  </Col>
-                  <Col md={6}>
-                    <Form.Group>
-                      <Form.Label className="text-muted mb-1">Client Name</Form.Label>
-                      <Form.Select
-                        name="clientId"
-                        value={formData.clientId}
-                        onChange={handleInputChange}
-                        required
-                      >
-                        <option value="">Select Client</option>
-                        <option value="662fb9cba77b2e0012345679">662fb9cba77b2e0012345679</option>
-                        <option value="client2">Client 2</option>
-                      </Form.Select>
-                    </Form.Group>
-                  </Col>
-                </Row>
-      
-                <Row className="mb-3">
-                  <Col md={6}>
-                    <Form.Group>
-                      <Form.Label className="text-muted mb-1">Project Manager</Form.Label>
-                      <Form.Select
-                        name="managerId"
-                        value={formData.managerId}
-                        onChange={handleInputChange}
-                        required
-                      >
-                        <option value="">Select Manager</option>
-                        <option value="662fb9a2a77b2e0012345678">662fb9a2a77b2e0012345678</option>
-                        <option value="manager2">Manager 2</option>
-                      </Form.Select>
-                    </Form.Group>
-                  </Col>
-                  <Col md={6}>
-                    <Form.Group>
-                      <Form.Label className="text-muted mb-1">Start Date</Form.Label>
-                      <Form.Control
-                        type="date"
-                        name="startDate"
-                        value={formData.startDate}
-                        onChange={handleInputChange}
-                        required
-                      />
-                    </Form.Group>
-                  </Col>
-                </Row>
-      
-                <Row className="mb-3">
-                  <Col md={6}>
-                    <Form.Group>
-                      <Form.Label className="text-muted mb-1">Expected Completion Date</Form.Label>
-                      <Form.Control
-                        type="date"
-                        name="endDate"
-                        value={formData.endDate}
-                        onChange={handleInputChange}
-                        required
-                      />
-                    </Form.Group>
-                  </Col>
-                  <Col md={6}>
-                    <Form.Group>
-                      <Form.Label className="text-muted mb-1">Project Priority</Form.Label>
-                      <Form.Select
-                        name="projectPriority"
-                        value={formData.projectPriority}
-                        onChange={handleInputChange}
-                        required
-                      >
-                        <option value="">Select Priority</option>
-                        <option value="high">High</option>
-                        <option value="medium">Medium</option>
-                        <option value="low">Low</option>
-                      </Form.Select>
-                    </Form.Group>
-                  </Col>
-                </Row>
-      
-                <Row className="mb-3">
-                  <Col md={6}>
-                    <Form.Group>
-                      <Form.Label className="text-muted mb-1">Project Status</Form.Label>
-                      <Form.Select
-                        name="status"
-                        value={formData.status}
-                        onChange={handleInputChange}
-                        required
-                      >
-                        <option value="">Select Status</option>
-                        <option value="Active Project">Active Project</option>
-                        <option value="In Progress">In Progress</option>
-                        <option value="completed">Completed</option>
-                        <option value="Completed">Closed</option>
-                        <option value="Cancelled">Cancelled</option>
-                        <option value="On Hold">On Hold</option>
-                        <option value="Completed">Completed</option>
-                      </Form.Select>
-                    </Form.Group>
-                  </Col>
-                  <Col md={6}>
-                    <Form.Group>
-                      <Form.Label className="text-muted mb-1">Total Time Logged</Form.Label>
-                      <Form.Control
-                        type="time"
-                        name="totalTime"
-                        value={formData.totalTime}
-                        onChange={handleInputChange}
-                      />
-                    </Form.Group>
-                  </Col>
-                </Row>
-      
-                <Form.Group className="mb-3">
-                  <Form.Label className="text-muted mb-1">Project Description</Form.Label>
-                  <Form.Control
-                    as="textarea"
-                    rows={4}
-                    name="description"
-                    value={formData.description}
-                    onChange={handleInputChange}
-                  />
-                </Form.Group>
-      
-                <Form.Group className="mb-3">
-                  <Form.Label className="text-muted mb-1">Project Requirements</Form.Label>
-                  <div>
-                    <Form.Check
-                      type="checkbox"
-                      label="Creative Design"
-                      name="creativeDesign"
-                      checked={formData.projectRequirements.creativeDesign}
-                      onChange={handleCheckboxChange}
-                    />
-                    <Form.Check
-                      type="checkbox"
-                      label="Artwork Adaptation"
-                      name="artworkAdaptation"
-                      checked={formData.projectRequirements.artworkAdaptation}
-                      onChange={handleCheckboxChange}
-                    />
-                    <Form.Check
-                      type="checkbox"
-                      label="Prepress/File Preparation"
-                      name="prepress"
-                      checked={formData.projectRequirements.prepress}
-                      onChange={handleCheckboxChange}
-                    />
-                    <Form.Check
-                      type="checkbox"
-                      label="POS"
-                      name="POS"
-                      checked={formData.projectRequirements.POS}
-                      onChange={handleCheckboxChange}
-                    />
-                    <Form.Check
-                      type="checkbox"
-                      label="Mockups"
-                      name="mockups"
-                      checked={formData.projectRequirements.mockups}
-                      onChange={handleCheckboxChange}
-                    />
-                    <Form.Check
-                      type="checkbox"
-                      label="3D Rendering"
-                      name="rendering"
-                      checked={formData.projectRequirements.rendering}
-                      onChange={handleCheckboxChange}
-                    />
-                  </div>
-                </Form.Group>
-      
-                <Form.Label className="text-muted mb-1">Budget Information</Form.Label>
-                <Row className="mb-3">
-                  <Col md={6}>
-                    <Form.Group>
-                      <Form.Control
-                        type="number"
-                        placeholder="Budget Amount"
-                        name="budgetAmount"
-                        value={formData.budgetAmount}
-                        onChange={handleInputChange}
-                      />
-                    </Form.Group>
-                  </Col>
-                  <Col md={6}>
-                    <Form.Group>
-                      <Form.Select
-                        name="currency"
-                        value={formData.currency}
-                        onChange={handleInputChange}
-                      >
-                        <option value="">Select Currency</option>
-                        <option value="AED">AED</option>
-                        <option value="EUR">EUR</option>
-                        <option value="GBP">GBP</option>
-                        <option value="INR">INR</option>
-                        <option value="SAR">SAR</option>
-                        <option value="USD">USD</option>
-                      </Form.Select>
-                    </Form.Group>
-                  </Col>
-                </Row>
-      
-                <div className="d-flex justify-content-end gap-2 mt-4">
-                  <Button variant="secondary" className="px-4" style={{ minWidth: "120px" }} onClick={handleCancel}>Cancel</Button>
-                  <Button variant="dark" type="submit" className="px-4" style={{ minWidth: "120px" }}>Create Project</Button>
+              <td>
+                <div className="action-buttons d-flex ">
+                  <Button variant="link" className="p-0 me-2">
+                    <FaEye />
+                  </Button>
+                  <Button variant="link" className="p-0 me-2">
+                    <Link to={"/UpdateProjectLis"}>
+                      <FaEdit />
+                    </Link>
+                  </Button>
                 </div>
-              </Form>
-            </div>
-          </Container>
-        );
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </Table>
+
+      {/* Pagination */}
+      <div className="d-flex justify-content-between align-items-center mb-4">
+        <div className="text-muted small">Showing 1 to {filteredProjects.length} of {projects.length} entries</div>
+        <ul className="pagination pagination-sm mb-0">
+          <li className="page-item">
+            <button className="page-link">Previous</button>
+          </li>
+          <li className="page-item active">
+            <button className="page-link">1</button>
+          </li>
+          <li className="page-item">
+            <button className="page-link">2</button>
+          </li>
+          <li className="page-item">
+            <button className="page-link">3</button>
+          </li>
+          <li className="page-item">
+            <button className="page-link">Next</button>
+          </li>
+        </ul>
+      </div>
+    </div>
+  );
+}
+
+export default ProjectList;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+import React, { useState, useEffect } from 'react';
+import { Form, Button, Container, Row, Col } from 'react-bootstrap';
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate, useParams } from 'react-router-dom';
+import { createProject, fetchProjectById, updateProject } from '../../../redux/slices/ProjectsSlice';
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
+function AddProjectList() {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const { id } = useParams(); // Grab project ID from URL
+  const [formData, setFormData] = useState({
+    projectName: '',
+    clientId: '',
+    managerId: '',
+    startDate: '',
+    endDate: '',
+    projectPriority: '',
+    description: '',
+    status: '',
+    projectRequirements: {
+      creativeDesign: false,
+      artworkAdaptation: false,
+      prepress: false,
+      POS: false,
+      mockups: false,
+      rendering: false,
+    },
+    budgetAmount: '',
+    currency: '',
+    totalTime: ''
+  });
+
+  // Load existing project data in edit mode
+  useEffect(() => {
+    if (id) {
+      dispatch(fetchProjectById(id)).then((res) => {
+        const project = res.payload;
+        if (project) {
+          setFormData({
+            ...project,
+            projectRequirements: project.projectRequirements?.[0] || {}
+          });
+        }
+      });
+    }
+  }, [id, dispatch]);
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value
+    }));
+  };
+
+  const handleCheckboxChange = (e) => {
+    const { name, checked } = e.target;
+    setFormData(prev => ({
+      ...prev,
+      projectRequirements: {
+        ...prev.projectRequirements,
+        [name]: checked
       }
-      
-      export default AddProjectList;
+    }));
+  };
+
+  const handleSubmit = e => {
+    e.preventDefault();
+    const payload = {
+      ...formData,
+      projectRequirements: [formData.projectRequirements]
+    };
+    if (id) {
+      dispatch(updateProject({ id, data: payload }))
+        .unwrap()
+        .then(() => {
+          toast.success("Project updated successfully!");
+          navigate("/plantMachinery");
+        })
+        .catch(() => {
+          toast.error("Failed to update project!");
+        });
+    } else {
+      dispatch(createProject(payload))
+        .unwrap()
+        .then(() => {
+          toast.success("Project created successfully!");
+          navigate("/projectList");
+        })
+        .catch(() => {
+          toast.error("Error creating project");
+        });
+    }
+  };
+
+  const handleCancel = () => {
+    navigate("/plantMachinery");
+  };
+
+  return (
+    <Container className="py-4">
+      <div className="form-container p-4 rounded shadow-sm" style={{ backgroundColor: "white", margin: "0 auto" }}>
+        <h2 className="mb-4">New Project</h2>
+        <Form onSubmit={handleSubmit} >
+          <Row className="mb-3">
+            <Col md={6}>
+              <Form.Group>
+                <Form.Label className="text-muted mb-1">Project Name</Form.Label>
+                <Form.Control
+                  type="text"
+                  name="projectName"
+                  value={formData.projectName}
+                  onChange={handleInputChange}
+                  required
+                />
+              </Form.Group>
+            </Col>
+            <Col md={6}>
+              <Form.Group>
+                <Form.Label className="text-muted mb-1">Client Name</Form.Label>
+                <Form.Select
+                  name="clientId"
+                  value={formData.clientId}
+                  onChange={handleInputChange}
+                  required
+                >
+                  <option value="">Select Client</option>
+                  <option value="662fb9cba77b2e0012345679">662fb9cba77b2e0012345679</option>
+                  <option value="client2">Client 2</option>
+                </Form.Select>
+              </Form.Group>
+            </Col>
+          </Row>
+
+          <Row className="mb-3">
+            <Col md={6}>
+              <Form.Group>
+                <Form.Label className="text-muted mb-1">Project Manager</Form.Label>
+                <Form.Select
+                  name="managerId"
+                  value={formData.managerId}
+                  onChange={handleInputChange}
+                  required
+                >
+                  <option value="">Select Manager</option>
+                  <option value="662fb9a2a77b2e0012345678">662fb9a2a77b2e0012345678</option>
+                  <option value="manager2">Manager 2</option>
+                </Form.Select>
+              </Form.Group>
+            </Col>
+            <Col md={6}>
+              <Form.Group>
+                <Form.Label className="text-muted mb-1">Start Date</Form.Label>
+                <Form.Control
+                  type="date"
+                  name="startDate"
+                  value={formData.startDate}
+                  onChange={handleInputChange}
+                  required
+                />
+              </Form.Group>
+            </Col>
+          </Row>
+
+          <Row className="mb-3">
+            <Col md={6}>
+              <Form.Group>
+                <Form.Label className="text-muted mb-1">Expected Completion Date</Form.Label>
+                <Form.Control
+                  type="date"
+                  name="endDate"
+                  value={formData.endDate}
+                  onChange={handleInputChange}
+                  required
+                />
+              </Form.Group>
+            </Col>
+            <Col md={6}>
+              <Form.Group>
+                <Form.Label className="text-muted mb-1">Project Priority</Form.Label>
+                <Form.Select
+                  name="projectPriority"
+                  value={formData.projectPriority}
+                  onChange={handleInputChange}
+                  required
+                >
+                  <option value="">Select Priority</option>
+                  <option value="high">High</option>
+                  <option value="medium">Medium</option>
+                  <option value="low">Low</option>
+                </Form.Select>
+              </Form.Group>
+            </Col>
+          </Row>
+
+          <Row className="mb-3">
+            <Col md={6}>
+              <Form.Group>
+                <Form.Label className="text-muted mb-1">Project Status</Form.Label>
+                <Form.Select
+                  name="status"
+                  value={formData.status}
+                  onChange={handleInputChange}
+                  required
+                >
+                  <option value="">Select Status</option>
+                  <option value="Active Project">Active Project</option>
+                  <option value="In Progress">In Progress</option>
+                  <option value="completed">Completed</option>
+                  <option value="Completed">Closed</option>
+                  <option value="Cancelled">Cancelled</option>
+                  <option value="On Hold">On Hold</option>
+                  <option value="Completed">Completed</option>
+                </Form.Select>
+              </Form.Group>
+            </Col>
+            <Col md={6}>
+              <Form.Group>
+                <Form.Label className="text-muted mb-1">Total Time Logged</Form.Label>
+                <Form.Control
+                  type="time"
+                  name="totalTime"
+                  value={formData.totalTime}
+                  onChange={handleInputChange}
+                />
+              </Form.Group>
+            </Col>
+          </Row>
+
+          <Form.Group className="mb-3">
+            <Form.Label className="text-muted mb-1">Project Description</Form.Label>
+            <Form.Control
+              as="textarea"
+              rows={4}
+              name="description"
+              value={formData.description}
+              onChange={handleInputChange}
+            />
+          </Form.Group>
+
+          <Form.Group className="mb-3">
+            <Form.Label className="text-muted mb-1">Project Requirements</Form.Label>
+            <div>
+              <Form.Check
+                type="checkbox"
+                label="Creative Design"
+                name="creativeDesign"
+                checked={formData.projectRequirements.creativeDesign}
+                onChange={handleCheckboxChange}
+              />
+              <Form.Check
+                type="checkbox"
+                label="Artwork Adaptation"
+                name="artworkAdaptation"
+                checked={formData.projectRequirements.artworkAdaptation}
+                onChange={handleCheckboxChange}
+              />
+              <Form.Check
+                type="checkbox"
+                label="Prepress/File Preparation"
+                name="prepress"
+                checked={formData.projectRequirements.prepress}
+                onChange={handleCheckboxChange}
+              />
+              <Form.Check
+                type="checkbox"
+                label="POS"
+                name="POS"
+                checked={formData.projectRequirements.POS}
+                onChange={handleCheckboxChange}
+              />
+              <Form.Check
+                type="checkbox"
+                label="Mockups"
+                name="mockups"
+                checked={formData.projectRequirements.mockups}
+                onChange={handleCheckboxChange}
+              />
+              <Form.Check
+                type="checkbox"
+                label="3D Rendering"
+                name="rendering"
+                checked={formData.projectRequirements.rendering}
+                onChange={handleCheckboxChange}
+              />
+            </div>
+          </Form.Group>
+
+          <Form.Label className="text-muted mb-1">Budget Information</Form.Label>
+          <Row className="mb-3">
+            <Col md={6}>
+              <Form.Group>
+                <Form.Control
+                  type="number"
+                  placeholder="Budget Amount"
+                  name="budgetAmount"
+                  value={formData.budgetAmount}
+                  onChange={handleInputChange}
+                />
+              </Form.Group>
+            </Col>
+            <Col md={6}>
+              <Form.Group>
+                <Form.Select
+                  name="currency"
+                  value={formData.currency}
+                  onChange={handleInputChange}
+                >
+                  <option value="">Select Currency</option>
+                  <option value="AED">AED</option>
+                  <option value="EUR">EUR</option>
+                  <option value="GBP">GBP</option>
+                  <option value="INR">INR</option>
+                  <option value="SAR">SAR</option>
+                  <option value="USD">USD</option>
+                </Form.Select>
+              </Form.Group>
+            </Col>
+          </Row>
+
+          <div className="d-flex justify-content-end gap-2 mt-4">
+            <Button variant="secondary" className="px-4" style={{ minWidth: "120px" }} onClick={handleCancel}>Cancel</Button>
+            <Button variant="dark" type="submit" className="px-4" style={{ minWidth: "120px" }}>Create Project</Button>
+          </div>
+        </Form>
+      </div>
+    </Container>
+  );
+}
+
+export default AddProjectList;
 
 
 
@@ -1504,8 +1504,6 @@ function AddProjectList() {
 
 export default AddProjectList;
 
-      
-      
 
 
 
@@ -1529,291 +1527,293 @@ export default AddProjectList;
 
 
 
-      import axios from 'axios';
-      import React, { useEffect, useState } from 'react';
-      import { useNavigate, useParams } from 'react-router-dom'; // ✅ Added useParams
-      import { toast, ToastContainer } from 'react-toastify';
-      import 'react-toastify/dist/ReactToastify.css';
-      import Barcode from 'react-barcode';
-      import Select from 'react-select';
-      import { useDispatch, useSelector } from 'react-redux';
-      import { fetchProject } from '../../../redux/slices/ProjectsSlice';
-      import { createjob, fetchjobById } from '../../../redux/slices/JobsSlice';
-      
-      
-      import { useLocation } from 'react-router-dom';
-      
-      function AddJobTracker() {
-        const { id } = useParams(); 
-        const navigate = useNavigate();
-        const dispatch = useDispatch();
-      
-        const { project, loading, error } = useSelector((state) => state.projects);
-      
-        useEffect(() => {
+
+
+import axios from 'axios';
+import React, { useEffect, useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom'; // ✅ Added useParams
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import Barcode from 'react-barcode';
+import Select from 'react-select';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchProject } from '../../../redux/slices/ProjectsSlice';
+import { createjob, fetchjobById } from '../../../redux/slices/JobsSlice';
+
+
+import { useLocation } from 'react-router-dom';
+
+function AddJobTracker() {
+  const { id } = useParams();
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const { project, loading, error } = useSelector((state) => state.projects);
+
+  useEffect(() => {
+    dispatch(fetchProject());
+  }, [dispatch]);
+
+  const [formData, setFormData] = useState({
+    projectsId: '',
+    brandName: '',
+    subBrand: '',
+    flavour: '',
+    packType: '',
+    packSize: '',
+    priority: '',
+    Status: '',
+    totalTime: '',
+    assign: '',
+    barcode: 'POS-123456',
+  });
+
+  const brandOptions = [
+    { value: 'Pepsi', label: 'Pepsi' },
+    { value: 'CocaCola', label: 'CocaCola' },
+    { value: 'Fanta', label: 'Fanta' },
+  ];
+
+  const flavourOptions = [
+    { value: 'Orange', label: 'Orange' },
+    { value: 'Lime', label: 'Lime' },
+    { value: 'Ginger Ale', label: 'Ginger Ale' },
+  ];
+
+  const packSizeOptions = [
+    { value: '250ml', label: '250ml' },
+    { value: '500ml', label: '500ml' },
+    { value: '1L', label: '1L' },
+  ];
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+  };
+
+  useEffect(() => {
+    if (project && !id) {
+      setFormData((prev) => ({
+        ...prev,
+        projectRequirements: project.projectRequirements?.[0] || {},
+      }));
+    } else if (id) {
+      // If editing job
+      dispatch(fetchjobById(id)).then((res) => {
+        const fetchedProject = res.payload;
+        if (fetchedProject) {
+          setFormData({
+            ...fetchedProject,
+            projectRequirements: fetchedProject.projectRequirements?.[0] || {},
+          });
+        }
+      });
+    }
+  }, [id, dispatch, project]);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    if (id) {
+      toast.info('Update logic not implemented in this code');
+    } else {
+      dispatch(createjob(formData))
+        .unwrap()
+        .then(() => {
+          navigate('/ProjectOverview', { state: { openTab: 'jobs' } });
           dispatch(fetchProject());
-        }, [dispatch]);
-      
-        const [formData, setFormData] = useState({
-          projectsId: '',
-          brandName: '',
-          subBrand: '',
-          flavour: '',
-          packType: '',
-          packSize: '',
-          priority: '',
-          Status: '',
-          totalTime: '',
-          assign: '',
-          barcode: 'POS-123456',
+          toast.success('Project created successfully!');
+        })
+        .catch(() => {
+          toast.error('Error creating project');
         });
-      
-        const brandOptions = [
-          { value: 'Pepsi', label: 'Pepsi' },
-          { value: 'CocaCola', label: 'CocaCola' },
-          { value: 'Fanta', label: 'Fanta' },
-        ];
-      
-        const flavourOptions = [
-          { value: 'Orange', label: 'Orange' },
-          { value: 'Lime', label: 'Lime' },
-          { value: 'Ginger Ale', label: 'Ginger Ale' },
-        ];
-      
-        const packSizeOptions = [
-          { value: '250ml', label: '250ml' },
-          { value: '500ml', label: '500ml' },
-          { value: '1L', label: '1L' },
-        ];
-      
-        const handleChange = (e) => {
-          const { name, value } = e.target;
-          setFormData((prev) => ({ ...prev, [name]: value }));
-        };
-      
-        useEffect(() => {
-          if (project && !id) {
-            setFormData((prev) => ({
-              ...prev,
-              projectRequirements: project.projectRequirements?.[0] || {},
-            }));
-          } else if (id) {
-            // If editing job
-            dispatch(fetchjobById(id)).then((res) => {
-              const fetchedProject = res.payload;
-              if (fetchedProject) {
-                setFormData({
-                  ...fetchedProject,
-                  projectRequirements: fetchedProject.projectRequirements?.[0] || {},
-                });
-              }
-            });
-          }
-        }, [id, dispatch, project]);
-      
-        const handleSubmit = (e) => {
-          e.preventDefault();
-      
-          if (id) {
-            toast.info('Update logic not implemented in this code');
-          } else {
-            dispatch(createjob(formData))
-              .unwrap()
-              .then(() => {
-                navigate('/ProjectOverview', { state: { openTab: 'jobs' } });
-                dispatch(fetchProject());
-                toast.success('Project created successfully!');
-              })
-              .catch(() => {
-                toast.error('Error creating project');
-              });
-          }
-        };
-      
-        const handleCancel = () => {
-          navigate('/projectList');
-        };
-      
-        
-        return (
-          <>
-            <ToastContainer />
-            <div className="container mt-5">
-              <div className="card shadow-sm">
-                <div className="card-body">
-                  <h1 className="card-title h4 mb-4">Add New Jobs</h1>
-                  <form className="row g-3" onSubmit={handleSubmit}>
-                    {/* Project Name */}
-                    <div className="col-md-6">
-                      <label className="form-label">Project Name</label>
-                      <select
-                        name="projectsId"
-                        className="form-control"
-                        value={formData.projectsId}
-                        onChange={handleChange}
-                      >
-                        <option value="" disabled>
-                          Select a project
-                        </option>
-                        {project?.data?.map((project) => (
-                          <option key={project._id} value={project._id}>
-                            {project.projectName}
-                          </option>
-                        ))}
-                      </select>
-                    </div>
-      
-                    {/* Brand Name */}
-                    <div className="col-md-6">
-                      <label className="form-label">Brand Name</label>
-                      <Select
-                        options={brandOptions}
-                        value={brandOptions.find((opt) => opt.value === formData.brandName)}
-                        onChange={(option) =>
-                          setFormData((prev) => ({ ...prev, brandName: option?.value || '' }))
-                        }
-                        isClearable
-                      />
-                    </div>
-      
-                    {/* Sub Brand */}
-                    <div className="col-md-6">
-                      <label className="form-label">Sub Brand</label>
-                      <input
-                        type="text"
-                        className="form-control"
-                        name="subBrand"
-                        value={formData.subBrand}
-                        onChange={handleChange}
-                      />
-                    </div>
-      
-                    {/* Flavour */}
-                    <div className="col-md-6">
-                      <label className="form-label">Flavour</label>
-                      <Select
-                        options={flavourOptions}
-                        value={flavourOptions.find((opt) => opt.value === formData.flavour)}
-                        onChange={(option) =>
-                          setFormData((prev) => ({ ...prev, flavour: option?.value || '' }))
-                        }
-                        isClearable
-                      />
-                    </div>
-      
-                    {/* Pack Type */}
-                    <div className="col-md-6">
-                      <label className="form-label">Pack Type</label>
-                      <input
-                        type="text"
-                        className="form-control"
-                        name="packType"
-                        value={formData.packType}
-                        onChange={handleChange}
-                      />
-                    </div>
-      
-                    {/* Pack Size */}
-                    <div className="col-md-6">
-                      <label className="form-label">Pack Size</label>
-                      <Select
-                        options={packSizeOptions}
-                        value={packSizeOptions.find((opt) => opt.value === formData.packSize)}
-                        onChange={(option) =>
-                          setFormData((prev) => ({ ...prev, packSize: option?.value || '' }))
-                        }
-                        isClearable
-                      />
-                    </div>
-      
-                    {/* Priority */}
-                    <div className="col-md-6">
-                      <label className="form-label">Priority</label>
-                      <select
-                        className="form-select"
-                        name="priority"
-                        value={formData.priority}
-                        onChange={handleChange}
-                      >
-                        <option value="">Select</option>
-                        <option value="low">Low</option>
-                        <option value="medium">Medium</option>
-                        <option value="high">High</option>
-                      </select>
-                    </div>
-      
-                    {/* Status */}
-                    <div className="col-md-6">
-                      <label className="form-label">Status</label>
-                      <select
-                        className="form-select"
-                        name="Status"
-                        value={formData.Status}
-                        onChange={handleChange}
-                      >
-                        <option value="">Select</option>
-                        <option value="open">Open</option>
-                        <option value="in_progress">In Progress</option>
-                        <option value="completed">Completed</option>
-                      </select>
-                    </div>
-      
-                    {/* Total Time Logged */}
-                    <div className="col-md-6">
-                      <label className="form-label">Total Time Logged</label>
-                      <input
-                        type="time"
-                        className="form-control"
-                        name="totalTime"
-                        value={formData.totalTime}
-                        onChange={(e) =>
-                          setFormData((prev) => ({ ...prev, totalTime: e.target.value }))
-                        }
-                      />
-                    </div>
-      
-                    {/* assign */}
-                    <div className="col-md-6">
-                      <label className="form-label">Assign</label>
-                      <select
-                        className="form-select"
-                        name="assign"
-                        value={formData.assign}
-                        onChange={handleChange}
-                      >
-                        <option value="">Select</option>
-                        <option value="Production">Production</option>
-                        <option value="Designer">Designer</option>
-                      </select>
-                    </div>
-      
-                    {/* Barcode */}
-                    <div className="col-md-1">
-                      <Barcode value={formData.barcode} />
-                    </div>
-      
-                    {/* Buttons */}
-                    <div className="col-12 d-flex justify-content-end gap-2 mt-4">
-                      <button
-                        type="button"
-                        className="btn btn-outline-secondary"
-                        onClick={handleCancel}
-                      >
-                        Cancel
-                      </button>
-                      <button type="submit" className="btn btn-dark">
-                        Add Jobs
-                      </button>
-                    </div>
-                  </form>
-                </div>
+    }
+  };
+
+  const handleCancel = () => {
+    navigate('/projectList');
+  };
+
+
+  return (
+    <>
+      <ToastContainer />
+      <div className="container mt-5">
+        <div className="card shadow-sm">
+          <div className="card-body">
+            <h1 className="card-title h4 mb-4">Add New Jobs</h1>
+            <form className="row g-3" onSubmit={handleSubmit}>
+              {/* Project Name */}
+              <div className="col-md-6">
+                <label className="form-label">Project Name</label>
+                <select
+                  name="projectsId"
+                  className="form-control"
+                  value={formData.projectsId}
+                  onChange={handleChange}
+                >
+                  <option value="" disabled>
+                    Select a project
+                  </option>
+                  {project?.data?.map((project) => (
+                    <option key={project._id} value={project._id}>
+                      {project.projectName}
+                    </option>
+                  ))}
+                </select>
               </div>
-            </div>
-          </>
-        );
-      }
-      
-      export default AddJobTracker;
+
+              {/* Brand Name */}
+              <div className="col-md-6">
+                <label className="form-label">Brand Name</label>
+                <Select
+                  options={brandOptions}
+                  value={brandOptions.find((opt) => opt.value === formData.brandName)}
+                  onChange={(option) =>
+                    setFormData((prev) => ({ ...prev, brandName: option?.value || '' }))
+                  }
+                  isClearable
+                />
+              </div>
+
+              {/* Sub Brand */}
+              <div className="col-md-6">
+                <label className="form-label">Sub Brand</label>
+                <input
+                  type="text"
+                  className="form-control"
+                  name="subBrand"
+                  value={formData.subBrand}
+                  onChange={handleChange}
+                />
+              </div>
+
+              {/* Flavour */}
+              <div className="col-md-6">
+                <label className="form-label">Flavour</label>
+                <Select
+                  options={flavourOptions}
+                  value={flavourOptions.find((opt) => opt.value === formData.flavour)}
+                  onChange={(option) =>
+                    setFormData((prev) => ({ ...prev, flavour: option?.value || '' }))
+                  }
+                  isClearable
+                />
+              </div>
+
+              {/* Pack Type */}
+              <div className="col-md-6">
+                <label className="form-label">Pack Type</label>
+                <input
+                  type="text"
+                  className="form-control"
+                  name="packType"
+                  value={formData.packType}
+                  onChange={handleChange}
+                />
+              </div>
+
+              {/* Pack Size */}
+              <div className="col-md-6">
+                <label className="form-label">Pack Size</label>
+                <Select
+                  options={packSizeOptions}
+                  value={packSizeOptions.find((opt) => opt.value === formData.packSize)}
+                  onChange={(option) =>
+                    setFormData((prev) => ({ ...prev, packSize: option?.value || '' }))
+                  }
+                  isClearable
+                />
+              </div>
+
+              {/* Priority */}
+              <div className="col-md-6">
+                <label className="form-label">Priority</label>
+                <select
+                  className="form-select"
+                  name="priority"
+                  value={formData.priority}
+                  onChange={handleChange}
+                >
+                  <option value="">Select</option>
+                  <option value="low">Low</option>
+                  <option value="medium">Medium</option>
+                  <option value="high">High</option>
+                </select>
+              </div>
+
+              {/* Status */}
+              <div className="col-md-6">
+                <label className="form-label">Status</label>
+                <select
+                  className="form-select"
+                  name="Status"
+                  value={formData.Status}
+                  onChange={handleChange}
+                >
+                  <option value="">Select</option>
+                  <option value="open">Open</option>
+                  <option value="in_progress">In Progress</option>
+                  <option value="completed">Completed</option>
+                </select>
+              </div>
+
+              {/* Total Time Logged */}
+              <div className="col-md-6">
+                <label className="form-label">Total Time Logged</label>
+                <input
+                  type="time"
+                  className="form-control"
+                  name="totalTime"
+                  value={formData.totalTime}
+                  onChange={(e) =>
+                    setFormData((prev) => ({ ...prev, totalTime: e.target.value }))
+                  }
+                />
+              </div>
+
+              {/* assign */}
+              <div className="col-md-6">
+                <label className="form-label">Assign</label>
+                <select
+                  className="form-select"
+                  name="assign"
+                  value={formData.assign}
+                  onChange={handleChange}
+                >
+                  <option value="">Select</option>
+                  <option value="Production">Production</option>
+                  <option value="Designer">Designer</option>
+                </select>
+              </div>
+
+              {/* Barcode */}
+              <div className="col-md-1">
+                <Barcode value={formData.barcode} />
+              </div>
+
+              {/* Buttons */}
+              <div className="col-12 d-flex justify-content-end gap-2 mt-4">
+                <button
+                  type="button"
+                  className="btn btn-outline-secondary"
+                  onClick={handleCancel}
+                >
+                  Cancel
+                </button>
+                <button type="submit" className="btn btn-dark">
+                  Add Jobs
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </>
+  );
+}
+
+export default AddJobTracker;
 
 
 
@@ -1826,7 +1826,7 @@ export default AddProjectList;
 
 
 
-       {/* {filteredJobs.map((job, index) => (
+{/* {filteredJobs.map((job, index) => (
               <tr key={index}>
                 <td>
                   <input
@@ -1865,8 +1865,8 @@ export default AddProjectList;
                     {job.status}
                   </span>
                 </td> */}
-                {/* <td>{job.stage}</td> */}
-                {/* <td>
+{/* <td>{job.stage}</td> */ }
+{/* <td>
                   <div className="d-flex gap-2">
                     <Button variant="outline-secondary" size="sm">
                       <FaFilePdf />
@@ -1885,18 +1885,17 @@ export default AddProjectList;
                         <FaEdit />
                       </Link>
                     </Button> */}
-                    {/* <Button variant="outline-secondary" size="sm">
+{/* <Button variant="outline-secondary" size="sm">
                     <MdDeleteOutline />
                     </Button> */}
-                  {/* </div>
+{/* </div>
                 </td>
               </tr>
             ))} */}
 
-             {/* <Button variant="outline-secondary" size="sm">
+{/* <Button variant="outline-secondary" size="sm">
                     <MdDeleteOutline />
                     </Button> */}
-      
 
 
 
@@ -1918,1149 +1917,1149 @@ export default AddProjectList;
 
 
 
-                    import axios from 'axios';
-                    import React, { useEffect, useState } from 'react';
-                    import { useLocation, useNavigate, useParams } from 'react-router-dom';
-                    import { toast, ToastContainer } from 'react-toastify';
-                    import 'react-toastify/dist/ReactToastify.css';
-                    import Barcode from 'react-barcode';
-                    import Select from 'react-select';
-                    import { useDispatch, useSelector } from 'react-redux';
-                    import { fetchProject } from '../../../redux/slices/ProjectsSlice';
-                    import { createjob, fetchjobById, updatejob } from '../../../redux/slices/JobsSlice';
-                    
-                    
-                    function AddJobTracker() {
-                      const navigate = useNavigate();
-                      const dispatch = useDispatch();
-                      const { id } = useParams(); // for edit mode
-                      const location = useLocation();
-                      const { job } = location.state || {};
-                    console.log(job);
-                    
-                      // All Projects
-                      const { project, loading, error } = useSelector((state) => state.projects);
-                    
-                      useEffect(() => {
-                        dispatch(fetchProject());
-                      }, [dispatch]);
-                    
-                      const [formData, setFormData] = useState({
-                        projectsId: '',
-                        brandName: '',
-                        subBrand: '',
-                        flavour: '',
-                        packType: '',
-                        packSize: '',
-                        priority: '',
-                        Status: '',
-                        totalTime: '',  
-                        assign: '',
-                        barcode:"POS-123456",  
+
+import axios from 'axios';
+import React, { useEffect, useState } from 'react';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import Barcode from 'react-barcode';
+import Select from 'react-select';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchProject } from '../../../redux/slices/ProjectsSlice';
+import { createjob, fetchjobById, updatejob } from '../../../redux/slices/JobsSlice';
+
+
+function AddJobTracker() {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const { id } = useParams(); // for edit mode
+  const location = useLocation();
+  const { job } = location.state || {};
+  console.log(job);
+
+  // All Projects
+  const { project, loading, error } = useSelector((state) => state.projects);
+
+  useEffect(() => {
+    dispatch(fetchProject());
+  }, [dispatch]);
+
+  const [formData, setFormData] = useState({
+    projectsId: '',
+    brandName: '',
+    subBrand: '',
+    flavour: '',
+    packType: '',
+    packSize: '',
+    priority: '',
+    Status: '',
+    totalTime: '',
+    assign: '',
+    barcode: "POS-123456",
+  });
+
+  // Static options
+  const brandOptions = [
+    { value: 'Pepsi', label: 'Pepsi' },
+    { value: 'CocaCola', label: 'CocaCola' },
+    { value: 'Fanta', label: 'Fanta' },
+  ];
+
+  const flavourOptions = [
+    { value: 'Orange', label: 'Orange' },
+    { value: 'Lime', label: 'Lime' },
+    { value: 'Ginger Ale', label: 'Ginger Ale' },
+  ];
+
+  const packSizeOptions = [
+    { value: '250ml', label: '250ml' },
+    { value: '500ml', label: '500ml' },
+    { value: '1L', label: '1L' },
+  ];
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+  };
+
+  // const handleSubmit = async (e) => {
+  //   e.preventDefault();
+  //   console.log("Form Data Submitted:", formData);
+  //   dispatch(createjob(formData))
+  // };
+
+
+  // useEffect(() => {
+  //   if (job) {
+  //     setFormData((prev) => ({
+  //       ...prev,
+  //       ...job,
+  //       projectsId: job.project?._id || job.project?.projectId || '', 
+  //     }));
+  //   } else if (id) {
+  //     dispatch(fetchjobById(id)).then((res) => {
+  //       const fetchedJob = res.payload;
+  //       if (fetchedJob) {
+  //         setFormData((prev) => ({
+  //           ...prev,
+  //           ...fetchedJob,
+  //           projectsId: fetchedJob.project?._id || fetchedJob.project?.projectId || '', 
+  //         }));
+  //       }
+  //     });
+  //   }
+  // }, [id, job, dispatch]);
+  useEffect(() => {
+    if (job) {
+      setFormData((prev) => ({
+        ...prev,
+        ...job,
+        projectsId: Array.isArray(job.projectsId)
+          ? (typeof job.projectsId[0] === 'object' ? job.projectsId[0]._id : job.projectsId[0])
+          : job.project?._id || job.project?.projectId || '',
+      }));
+    } else if (id) {
+      dispatch(fetchjobById(id)).then((res) => {
+        const fetchedJob = res.payload;
+        if (fetchedJob) {
+          setFormData((prev) => ({
+            ...prev,
+            ...fetchedJob,
+            projectsId: Array.isArray(fetchedJob.projectsId)
+              ? (typeof fetchedJob.projectsId[0] === 'object' ? fetchedJob.projectsId[0]._id : fetchedJob.projectsId[0])
+              : fetchedJob.project?._id || fetchedJob.project?.projectId || '',
+          }));
+        }
+      });
+    }
+  }, [id, job, dispatch]);
+
+
+
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({
+      ...prev,
+      [name]: value
+    }));
+  };
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    // Wrap projectsId as array
+    const payload = {
+      ...formData,
+      projectsId: [formData.projectsId],  // convert to array
+    };
+
+    if (id) {
+      dispatch(updatejob({ id, data: payload }))
+        .unwrap()
+        .then(() => {
+          toast.success("Job updated successfully!");
+          navigate('/ProjectOverview', { state: { openTab: 'jobs' } });
+          dispatch(fetchProject());
+        })
+        .catch(() => {
+          toast.error("Failed to update job!");
+        });
+    } else {
+      dispatch(createjob(payload))  // send payload with array
+        .unwrap()
+        .then(() => {
+          toast.success("Job created successfully!");
+          navigate('/ProjectOverview', { state: { openTab: 'jobs' } });
+          dispatch(fetchProject());
+        })
+        .catch(() => {
+          toast.error("Error creating job");
+        });
+    }
+  };
+
+
+  // 
+  const handleCancel = () => {
+    navigate("/projectList");
+  }
+  const Cancel = () => {
+    navigate('/ProjectOverview', { state: { openTab: 'jobs' } });
+  }
+  return (
+    <>
+      <ToastContainer />
+      <div className="container mt-5">
+        <div className="card shadow-sm">
+          <div className="card-body">
+            <h1 className="card-title h4 mb-4">Add New Jobs</h1>
+            <form className="row g-3" onSubmit={handleSubmit}>
+
+              {/* Project Name */}
+              <div className="col-md-6">
+                <label className="form-label">Project Name</label>
+                <select
+                  name="projectsId"
+                  className="form-control"
+                  value={formData.projectsId}
+                  onChange={handleChange}
+                >
+                  <option value="" disabled>Select a project</option>
+                  {project?.data?.map((project) => (
+                    <option key={project._id} value={project._id}>
+                      {project.projectName}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              {/* Brand Name */}
+              <div className="col-md-6">
+                <label className="form-label">Brand Name</label>
+                <Select
+                  options={brandOptions}
+                  value={brandOptions.find(opt => opt.value === formData.brandName)}
+                  onChange={(option) =>
+                    setFormData((prev) => ({ ...prev, brandName: option?.value || '' }))
+                  }
+                  isClearable
+                />
+              </div>
+
+              {/* Sub Brand */}
+              <div className="col-md-6">
+                <label className="form-label">Sub Brand</label>
+                <input
+                  type="text"
+                  className="form-control"
+                  name="subBrand"
+                  value={formData.subBrand}
+                  onChange={handleChange}
+                />
+              </div>
+
+              {/* Flavour */}
+              <div className="col-md-6">
+                <label className="form-label">Flavour</label>
+                <Select
+                  options={flavourOptions}
+                  value={flavourOptions.find(opt => opt.value === formData.flavour)}
+                  onChange={(option) =>
+                    setFormData((prev) => ({ ...prev, flavour: option?.value || '' }))
+                  }
+                  isClearable
+                />
+              </div>
+
+              {/* Pack Type */}
+              <div className="col-md-6">
+                <label className="form-label">Pack Type</label>
+                <input
+                  type="text"
+                  className="form-control"
+                  name="packType"
+                  value={formData.packType}
+                  onChange={handleChange}
+                />
+              </div>
+
+              {/* Pack Size */}
+              <div className="col-md-6">
+                <label className="form-label">Pack Size</label>
+                <Select
+                  options={packSizeOptions}
+                  value={packSizeOptions.find(opt => opt.value === formData.packSize)}
+                  onChange={(option) =>
+                    setFormData((prev) => ({ ...prev, packSize: option?.value || '' }))
+                  }
+                  isClearable
+                />
+              </div>
+
+              {/* Priority */}
+              <div className="col-md-6">
+                <label className="form-label">Priority</label>
+                <select
+                  className="form-select"
+                  name="priority"
+                  value={formData.priority}
+                  onChange={handleChange}
+                >
+                  <option value="">Select</option>
+                  <option value="low">Low</option>
+                  <option value="medium">Medium</option>
+                  <option value="high">High</option>
+                </select>
+              </div>
+
+              {/* Status */}
+              <div className="col-md-6">
+                <label className="form-label">Status</label>
+                <select
+                  className="form-select"
+                  name="Status"
+                  value={formData.Status}
+                  onChange={handleChange}
+                >
+                  <option value="">Select</option>
+                  <option value="open">Open</option>
+                  <option value="in_progress">In Progress</option>
+                  <option value="completed">Completed</option>
+                </select>
+              </div>
+
+              {/* Total Time Logged */}
+              <div className="col-md-6">
+                <label className="form-label">Total Time Logged</label>
+                <input
+                  type="time"
+                  className="form-control"
+                  name="totalTime"
+                  value={formData.totalTime}
+                  onChange={(e) =>
+                    setFormData((prev) => ({ ...prev, totalTime: e.target.value }))
+                  }
+                />
+              </div>
+
+              {/* assign */}
+              <div className="col-md-6">
+                <label className="form-label">assign</label>
+                <select
+                  className="form-select"
+                  name="assign"
+                  value={formData.assign}
+                  onChange={handleChange}
+                >
+                  <option value="">Select</option>
+                  <option value="Production">Production</option>
+                  <option value="Designer">Designer</option>
+                </select>
+              </div>
+
+              {/* Barcode */}
+              <div className="col-md-1">
+                <Barcode value="POS-123456" />
+              </div>
+
+              {/* Buttons */}
+              <div className="col-12 d-flex justify-content-end gap-2 mt-4">
+                <button type="button" className="btn btn-outline-secondary" onClick={() => Cancel()}>Cancel</button>
+                <button type="submit" className="btn btn-dark">Add Jobs</button>
+              </div>
+
+            </form>
+          </div>
+        </div>
+      </div>
+    </>
+  );
+}
+
+export default AddJobTracker;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+import React, { useEffect, useState } from 'react';
+import { Link, useLocation, useNavigate, useParams } from 'react-router-dom';
+import { Modal, Form, Button } from 'react-bootstrap';
+import { useDispatch, useSelector } from 'react-redux';
+import { deletejob, fetchjobs, UpdateJobAssign } from '../../../../redux/slices/JobsSlice';
+import Swal from 'sweetalert2';
+
+function ProjectJobsTab() {
+  const [selectedProduction, setSelectedProduction] = useState('');
+  const [selectedAdditional, setSelectedAdditional] = useState('');
+  const [selectedJob, setSelectedJob] = useState(null);
+  const [attachedFile, setAttachedFile] = useState(null);
+  const [selectedJobs, setSelectedJobs] = useState({});
+  const [errorMessage, setErrorMessage] = useState('');
+
+  const [showAssignModal, setShowAssignModal] = useState(false);
+  const [selectedDesigner, setSelectedDesigner] = useState('');
+  const [assignmentDescription, setAssignmentDescription] = useState('');
+
+  const jobs = [
+    {
+      id: "00001",
+      brandName: "Brand1",
+      subBrand: "SubBrand1",
+      flavour: "Flavour1",
+      packType: "Type1",
+      packSize: "Size 1ml",
+      packCode: "Code1",
+      deadline: "2024/01/20",
+      brief: "ViewBrief",
+      status: "Pending Upload",
+      statusVariant: "warning",
+    },
+    {
+      id: "00002",
+      brandName: "Brand2",
+      subBrand: "SubBrand2",
+      flavour: "Flavour2",
+      packType: "Type2",
+      packSize: "Size 2ml",
+      packCode: "Code2",
+      deadline: "2024/01/25",
+      brief: "ViewBrief",
+      status: "In Progress",
+      statusVariant: "info",
+    },
+    {
+      id: "00003",
+      brandName: "Brand3",
+      subBrand: "SubBrand3",
+      flavour: "Flavour3",
+      packType: "Type3",
+      packSize: "Size 3ml",
+      packCode: "Code3",
+      deadline: "2024/02/01",
+      brief: "ViewBrief",
+      status: "DraftSaved",
+      statusVariant: "secondary",
+    },
+  ];
+
+  const handleCheckboxChange = (jobId) => {
+    setSelectedJobs((prev) => ({
+      ...prev,
+      [jobId]: !prev[jobId],
+    }));
+  };
+
+  const handleSubmitAssignment = () => {
+    const selectedJobIds = Object.keys(selectedJobs).filter((id) => selectedJobs[id]);
+
+    if (selectedJobIds.length === 0) {
+      setErrorMessage("Please select at least 1 job to assign.");
+      setTimeout(() => setErrorMessage(""), 3000);
+      return;
+    }
+
+    if (!selectedDesigner) {
+      setErrorMessage("Please select a designer.");
+      setTimeout(() => setErrorMessage(""), 3000);
+      return;
+    }
+
+    // ✅ Now send data to handleJobAssign
+    handleJobAssign(selectedJobIds, selectedDesigner);
+
+    // Reset state and close modal
+    setShowAssignModal(false);
+    setSelectedProduction('');
+    setSelectedAdditional('');
+    setSelectedJob(null);
+    setSelectedDesigner('');
+    setAssignmentDescription('');
+  };
+
+  const handleCSVImport = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      console.log("CSV file selected:", file.name);
+    }
+  };
+
+  const getPriorityClass = (priority) => {
+    switch (priority.toLowerCase()) {
+      case "high":
+        return "text-danger";
+      case "medium":
+        return "text-warning";
+      case "low":
+        return "text-success";
+      default:
+        return "";
+    }
+  };
+  // ////////////////////////////////////////
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const location = useLocation();
+  const params = useParams();
+  const id = location.state?.id || params.id;
+  useEffect(() => {
+    console.log("Project ID:", id);
+  }, [id]);
+
+  const { job } = useSelector((state) => state.jobs);
+  console.log(job.jobs, "all jobs");
+
+  useEffect(() => {
+    dispatch(fetchjobs());
+  }, [dispatch]);
+
+
+  const handleDelete = (_id) => {
+    console.log(_id);
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        dispatch(deletejob(_id))
+          .then(() => {
+            Swal.fire("Deleted!", "The document has been deleted.", "success");
+            dispatch(fetchjobs());
+          })
+          .catch(() => {
+            Swal.fire("Error!", "Something went wrong.", "error");
+          });
+      }
+    });
+  }
+
+
+  const handleUpdate = (job) => {
+    navigate(`/AddJobTracker`, { state: { job } });
+  };
+
+  const JobDetails = (job) => {
+    navigate(`/OvervieJobsTracker`, { state: { job } });
+  }
+
+
+  const getStatusClass = (status) => {
+    switch (status.toLowerCase().trim()) {
+      case "in progress":
+      case "in_progress":
+        return "bg-warning text-dark";
+      case "review":
+        return "bg-info text-dark";
+      case "not started":
+        return "bg-secondary text-white";
+      case "completed":
+        return "bg-success text-white";
+      case "open":
+        return "bg-primary text-white";
+      default:
+        return "bg-light text-dark";
+    }
+  };
+
+  const handleJobAssign = (selectedIds, assignTo) => {
+
+    const payload = {
+      id: selectedIds,
+      assign: assignTo,
+    };
+    console.log("Assignment Payload:", payload);
+    dispatch(UpdateJobAssign(payload))
+      .then(() => {
+        // Swal.fire("Success!", "Jobs assigned successfully", "success");
+        dispatch(fetchjobs());
+      })
+      .catch(() => {
+        Swal.fire("Error!", "Something went wrong", "error");
+      });
+  };
+
+  return (
+    <div className="card">
+      <div className="card-header d-flex align-content-center justify-content-between mt-3">
+        <h5 className="card-title mb-0">Jobs List</h5>
+        <div className="text-end">
+          {/* ✅ Assign Button always enabled, shows error if none selected */}
+          <Button
+            id="All_btn"
+            className="m-2"
+            variant="primary"
+            onClick={() => {
+              const selectedJobIds = Object.keys(selectedJobs).filter((id) => selectedJobs[id]);
+              if (selectedJobIds.length === 0) {
+                setErrorMessage("Please select at least 1 job to assign.");
+                setTimeout(() => setErrorMessage(""), 3000);
+              } else {
+                handleJobAssign(selectedJobIds); // ✅ Call with selected IDs
+                setShowAssignModal(true);
+              }
+            }}
+          >
+            Assign
+          </Button>
+
+
+          <label className="btn btn-success m-2">
+            <i className="bi bi-upload"></i> Import CSV
+            <input
+              type="file"
+              accept=".csv"
+              onChange={handleCSVImport}
+              hidden
+            />
+          </label>
+
+          <Link to={"/AddJobTracker"}>
+            <button id='All_btn' className="btn btn-primary">
+              <i className="bi bi-plus"></i> Add New
+            </button>
+          </Link>
+        </div>
+      </div>
+
+      <div className="card-body">
+        {/* ✅ Error message block */}
+        {errorMessage && (
+          <div className="alert alert-danger py-2" role="alert">
+            {errorMessage}
+          </div>
+        )}
+
+        <div className="table-responsive">
+          <table className="table table-hover">
+            <thead>
+              <tr>
+                <th>
+                  <input
+                    type="checkbox"
+                    onChange={() => {
+                      const isChecked = Object.keys(selectedJobs).length === jobs.length;
+                      const newSelectedJobs = {};
+                      jobs.forEach((job) => {
+                        newSelectedJobs[job.id] = !isChecked;
                       });
-                    
-                      // Static options
-                      const brandOptions = [
-                        { value: 'Pepsi', label: 'Pepsi' },
-                        { value: 'CocaCola', label: 'CocaCola' },
-                        { value: 'Fanta', label: 'Fanta' },
-                      ];
-                    
-                      const flavourOptions = [
-                        { value: 'Orange', label: 'Orange' },
-                        { value: 'Lime', label: 'Lime' },
-                        { value: 'Ginger Ale', label: 'Ginger Ale' },
-                      ];
-                    
-                      const packSizeOptions = [
-                        { value: '250ml', label: '250ml' },
-                        { value: '500ml', label: '500ml' },
-                        { value: '1L', label: '1L' },
-                      ];
-                    
-                      const handleChange = (e) => {
-                        const { name, value } = e.target;
-                        setFormData((prev) => ({ ...prev, [name]: value }));
-                      };
-                    
-                      // const handleSubmit = async (e) => {
-                      //   e.preventDefault();
-                      //   console.log("Form Data Submitted:", formData);
-                      //   dispatch(createjob(formData))
-                      // };
-                    
-                    
-                      // useEffect(() => {
-                      //   if (job) {
-                      //     setFormData((prev) => ({
-                      //       ...prev,
-                      //       ...job,
-                      //       projectsId: job.project?._id || job.project?.projectId || '', 
-                      //     }));
-                      //   } else if (id) {
-                      //     dispatch(fetchjobById(id)).then((res) => {
-                      //       const fetchedJob = res.payload;
-                      //       if (fetchedJob) {
-                      //         setFormData((prev) => ({
-                      //           ...prev,
-                      //           ...fetchedJob,
-                      //           projectsId: fetchedJob.project?._id || fetchedJob.project?.projectId || '', 
-                      //         }));
-                      //       }
-                      //     });
-                      //   }
-                      // }, [id, job, dispatch]);
-                      useEffect(() => {
-                        if (job) {
-                          setFormData((prev) => ({
-                            ...prev,
-                            ...job,
-                            projectsId: Array.isArray(job.projectsId)
-                              ? (typeof job.projectsId[0] === 'object' ? job.projectsId[0]._id : job.projectsId[0])
-                              : job.project?._id || job.project?.projectId || '',
-                          }));
-                        } else if (id) {
-                          dispatch(fetchjobById(id)).then((res) => {
-                            const fetchedJob = res.payload;
-                            if (fetchedJob) {
-                              setFormData((prev) => ({
-                                ...prev,
-                                ...fetchedJob,
-                                projectsId: Array.isArray(fetchedJob.projectsId)
-                                  ? (typeof fetchedJob.projectsId[0] === 'object' ? fetchedJob.projectsId[0]._id : fetchedJob.projectsId[0])
-                                  : fetchedJob.project?._id || fetchedJob.project?.projectId || '',
-                              }));
-                            }
-                          });
-                        }
-                      }, [id, job, dispatch]);
-                      
-                      
-                      
-                    
-                      const handleInputChange = (e) => {
-                        const { name, value } = e.target;
-                        setFormData(prev => ({
-                          ...prev,
-                          [name]: value
-                        }));
-                      };
-                      const handleSubmit = (e) => {
-                        e.preventDefault();
-                      
-                        // Wrap projectsId as array
-                        const payload = {
-                          ...formData,
-                          projectsId: [formData.projectsId],  // convert to array
-                        };
-                      
-                        if (id) {
-                          dispatch(updatejob({ id, data: payload }))
-                            .unwrap()
-                            .then(() => {
-                              toast.success("Job updated successfully!");
-                              navigate('/ProjectOverview', { state: { openTab: 'jobs' } });
-                              dispatch(fetchProject());
-                            })
-                            .catch(() => {
-                              toast.error("Failed to update job!");
-                            });
-                        } else {
-                          dispatch(createjob(payload))  // send payload with array
-                            .unwrap()
-                            .then(() => {
-                              toast.success("Job created successfully!");
-                              navigate('/ProjectOverview', { state: { openTab: 'jobs' } });
-                              dispatch(fetchProject());
-                            })
-                            .catch(() => {
-                              toast.error("Error creating job");
-                            });
-                        }
-                      };
-                      
-                    
-                    // 
-                        const handleCancel = () => {
-                          navigate("/projectList");
-                        }
-                        const Cancel =()=>{
-                          navigate('/ProjectOverview', { state: { openTab: 'jobs' } });
-                        }
-                      return (
-                        <>
-                          <ToastContainer />
-                          <div className="container mt-5">
-                            <div className="card shadow-sm">
-                              <div className="card-body">
-                                <h1 className="card-title h4 mb-4">Add New Jobs</h1>
-                                <form className="row g-3" onSubmit={handleSubmit}>
-                    
-                                  {/* Project Name */}
-                                  <div className="col-md-6">
-                                    <label className="form-label">Project Name</label>
-                                    <select
-                                      name="projectsId"
-                                      className="form-control"
-                                      value={formData.projectsId}
-                                      onChange={handleChange}
-                                    >
-                                      <option value="" disabled>Select a project</option>
-                                      {project?.data?.map((project) => (
-                                        <option key={project._id} value={project._id}>
-                                          {project.projectName}
-                                        </option>
-                                      ))}
-                                    </select>
-                                  </div>
-                    
-                                  {/* Brand Name */}
-                                  <div className="col-md-6">
-                                    <label className="form-label">Brand Name</label>
-                                    <Select
-                                      options={brandOptions}
-                                      value={brandOptions.find(opt => opt.value === formData.brandName)}
-                                      onChange={(option) =>
-                                        setFormData((prev) => ({ ...prev, brandName: option?.value || '' }))
-                                      }
-                                      isClearable
-                                    />
-                                  </div>
-                    
-                                  {/* Sub Brand */}
-                                  <div className="col-md-6">
-                                    <label className="form-label">Sub Brand</label>
-                                    <input
-                                      type="text"
-                                      className="form-control"
-                                      name="subBrand"
-                                      value={formData.subBrand}
-                                      onChange={handleChange}
-                                    />
-                                  </div>
-                    
-                                  {/* Flavour */}
-                                  <div className="col-md-6">
-                                    <label className="form-label">Flavour</label>
-                                    <Select
-                                      options={flavourOptions}
-                                      value={flavourOptions.find(opt => opt.value === formData.flavour)}
-                                      onChange={(option) =>
-                                        setFormData((prev) => ({ ...prev, flavour: option?.value || '' }))
-                                      }
-                                      isClearable
-                                    />
-                                  </div>
-                    
-                                  {/* Pack Type */}
-                                  <div className="col-md-6">
-                                    <label className="form-label">Pack Type</label>
-                                    <input
-                                      type="text"
-                                      className="form-control"
-                                      name="packType"
-                                      value={formData.packType}
-                                      onChange={handleChange}
-                                    />
-                                  </div>
-                    
-                                  {/* Pack Size */}
-                                  <div className="col-md-6">
-                                    <label className="form-label">Pack Size</label>
-                                    <Select
-                                      options={packSizeOptions}
-                                      value={packSizeOptions.find(opt => opt.value === formData.packSize)}
-                                      onChange={(option) =>
-                                        setFormData((prev) => ({ ...prev, packSize: option?.value || '' }))
-                                      }
-                                      isClearable
-                                    />
-                                  </div>
-                    
-                                  {/* Priority */}
-                                  <div className="col-md-6">
-                                    <label className="form-label">Priority</label>
-                                    <select
-                                      className="form-select"
-                                      name="priority"
-                                      value={formData.priority}
-                                      onChange={handleChange}
-                                    >
-                                      <option value="">Select</option>
-                                      <option value="low">Low</option>
-                                      <option value="medium">Medium</option>
-                                      <option value="high">High</option>
-                                    </select>
-                                  </div>
-                    
-                                  {/* Status */}
-                                  <div className="col-md-6">
-                                    <label className="form-label">Status</label>
-                                    <select
-                                      className="form-select"
-                                      name="Status"
-                                      value={formData.Status}
-                                      onChange={handleChange}
-                                    >
-                                      <option value="">Select</option>
-                                      <option value="open">Open</option>
-                                      <option value="in_progress">In Progress</option>
-                                      <option value="completed">Completed</option>
-                                    </select>
-                                  </div>
-                    
-                                  {/* Total Time Logged */}
-                                  <div className="col-md-6">
-                                    <label className="form-label">Total Time Logged</label>
-                                    <input
-                                      type="time"
-                                      className="form-control"
-                                      name="totalTime"
-                                      value={formData.totalTime}
-                                      onChange={(e) =>
-                                        setFormData((prev) => ({ ...prev, totalTime: e.target.value }))
-                                      }
-                                    />
-                                  </div>
-                    
-                                  {/* assign */}
-                                  <div className="col-md-6">
-                                    <label className="form-label">assign</label>
-                                    <select
-                                      className="form-select"
-                                      name="assign"
-                                      value={formData.assign}
-                                      onChange={handleChange}
-                                    >
-                                      <option value="">Select</option>
-                                      <option value="Production">Production</option>
-                                      <option value="Designer">Designer</option>
-                                    </select>
-                                  </div>
-                    
-                                  {/* Barcode */}
-                                  <div className="col-md-1">
-                                    <Barcode value="POS-123456" />
-                                  </div>
-                    
-                                  {/* Buttons */}
-                                  <div className="col-12 d-flex justify-content-end gap-2 mt-4">
-                                    <button type="button" className="btn btn-outline-secondary" onClick={()=>Cancel()}>Cancel</button>
-                                    <button type="submit" className="btn btn-dark">Add Jobs</button>
-                                  </div>
-                    
-                                </form>
-                              </div>
-                            </div>
-                          </div>
-                        </>
-                      );
-                    }
-                    
-                    export default AddJobTracker;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-                    import React, { useEffect, useState } from 'react';
-                    import { Link, useLocation, useNavigate, useParams } from 'react-router-dom';
-                    import { Modal, Form, Button } from 'react-bootstrap';
-                    import { useDispatch, useSelector } from 'react-redux';
-                    import { deletejob, fetchjobs, UpdateJobAssign } from '../../../../redux/slices/JobsSlice';
-                    import Swal from 'sweetalert2';
-                    
-                    function ProjectJobsTab() {
-                      const [selectedProduction, setSelectedProduction] = useState('');
-                      const [selectedAdditional, setSelectedAdditional] = useState('');
-                      const [selectedJob, setSelectedJob] = useState(null);
-                      const [attachedFile, setAttachedFile] = useState(null);
-                      const [selectedJobs, setSelectedJobs] = useState({});
-                      const [errorMessage, setErrorMessage] = useState('');
-                    
-                      const [showAssignModal, setShowAssignModal] = useState(false);
-                      const [selectedDesigner, setSelectedDesigner] = useState('');
-                      const [assignmentDescription, setAssignmentDescription] = useState('');
-                    
-                      const jobs = [
-                        {
-                          id: "00001",
-                          brandName: "Brand1",
-                          subBrand: "SubBrand1",
-                          flavour: "Flavour1",
-                          packType: "Type1",
-                          packSize: "Size 1ml",
-                          packCode: "Code1",
-                          deadline: "2024/01/20",
-                          brief: "ViewBrief",
-                          status: "Pending Upload",
-                          statusVariant: "warning",
-                        },
-                        {
-                          id: "00002",
-                          brandName: "Brand2",
-                          subBrand: "SubBrand2",
-                          flavour: "Flavour2",
-                          packType: "Type2",
-                          packSize: "Size 2ml",
-                          packCode: "Code2",
-                          deadline: "2024/01/25",
-                          brief: "ViewBrief",
-                          status: "In Progress",
-                          statusVariant: "info",
-                        },
-                        {
-                          id: "00003",
-                          brandName: "Brand3",
-                          subBrand: "SubBrand3",
-                          flavour: "Flavour3",
-                          packType: "Type3",
-                          packSize: "Size 3ml",
-                          packCode: "Code3",
-                          deadline: "2024/02/01",
-                          brief: "ViewBrief",
-                          status: "DraftSaved",
-                          statusVariant: "secondary",
-                        },
-                      ];
-                    
-                      const handleCheckboxChange = (jobId) => {
-                        setSelectedJobs((prev) => ({
-                          ...prev,
-                          [jobId]: !prev[jobId],
-                        }));
-                      };
-                    
-                      const handleSubmitAssignment = () => {
-                        const selectedJobIds = Object.keys(selectedJobs).filter((id) => selectedJobs[id]);
-                    
-                        if (selectedJobIds.length === 0) {
-                          setErrorMessage("Please select at least 1 job to assign.");
-                          setTimeout(() => setErrorMessage(""), 3000);
-                          return;
-                        }
-                    
-                        if (!selectedDesigner) {
-                          setErrorMessage("Please select a designer.");
-                          setTimeout(() => setErrorMessage(""), 3000);
-                          return;
-                        }
-                    
-                        // ✅ Now send data to handleJobAssign
-                        handleJobAssign(selectedJobIds, selectedDesigner);
-                    
-                        // Reset state and close modal
-                        setShowAssignModal(false);
-                        setSelectedProduction('');
-                        setSelectedAdditional('');
-                        setSelectedJob(null);
-                        setSelectedDesigner('');
-                        setAssignmentDescription('');
-                      };
-                    
-                      const handleCSVImport = (event) => {
-                        const file = event.target.files[0];
-                        if (file) {
-                          console.log("CSV file selected:", file.name);
-                        }
-                      };
-                    
-                      const getPriorityClass = (priority) => {
-                        switch (priority.toLowerCase()) {
-                          case "high":
-                            return "text-danger";
-                          case "medium":
-                            return "text-warning";
-                          case "low":
-                            return "text-success";
-                          default:
-                            return "";
-                        }
-                      };
-                      // ////////////////////////////////////////
-                      const navigate = useNavigate();
-                      const dispatch = useDispatch();
-                      const location = useLocation();
-                      const params = useParams();
-                      const id = location.state?.id || params.id;
-                      useEffect(() => {
-                        console.log("Project ID:", id);
-                      }, [id]);
-                    
-                      const { job } = useSelector((state) => state.jobs);
-                      console.log(job.jobs, "all jobs");
-                    
-                      useEffect(() => {
-                        dispatch(fetchjobs());
-                      }, [dispatch]);
-                    
-                    
-                      const handleDelete = (_id) => {
-                        console.log(_id);
-                        Swal.fire({
-                          title: "Are you sure?",
-                          text: "You won't be able to revert this!",
-                          icon: "warning",
-                          showCancelButton: true,
-                          confirmButtonColor: "#3085d6",
-                          cancelButtonColor: "#d33",
-                          confirmButtonText: "Yes, delete it!",
-                        }).then((result) => {
-                          if (result.isConfirmed) {
-                            dispatch(deletejob(_id))
-                              .then(() => {
-                                Swal.fire("Deleted!", "The document has been deleted.", "success");
-                                dispatch(fetchjobs());
-                              })
-                              .catch(() => {
-                                Swal.fire("Error!", "Something went wrong.", "error");
-                              });
-                          }
-                        });
-                      }
-                    
-                    
-                      const handleUpdate = (job) => {
-                        navigate(`/AddJobTracker`, { state: { job } });
-                      };
-                    
-                      const JobDetails = (job) => {
-                        navigate(`/OvervieJobsTracker`, { state: { job } });
-                      }
-                    
-                    
-                      const getStatusClass = (status) => {
-                        switch (status.toLowerCase().trim()) {
-                          case "in progress":
-                          case "in_progress":
-                            return "bg-warning text-dark";
-                          case "review":
-                            return "bg-info text-dark";
-                          case "not started":
-                            return "bg-secondary text-white";
-                          case "completed":
-                            return "bg-success text-white";
-                          case "open":
-                            return "bg-primary text-white";
-                          default:
-                            return "bg-light text-dark";
-                        }
-                      };
-                    
-                     const handleJobAssign = (selectedIds, assignTo) => {
-                     
-                      const payload = {
-                        id: selectedIds,
-                        assign: assignTo,
-                      };
-                      console.log("Assignment Payload:", payload);
-                      dispatch(UpdateJobAssign(payload))
-                      .then(() => {
-                          // Swal.fire("Success!", "Jobs assigned successfully", "success");
-                          dispatch(fetchjobs());
-                        })
-                        .catch(() => {
-                          Swal.fire("Error!", "Something went wrong", "error");
-                        });
-                    };
-                    
-                    return (
-                        <div className="card">
-                          <div className="card-header d-flex align-content-center justify-content-between mt-3">
-                            <h5 className="card-title mb-0">Jobs List</h5>
-                            <div className="text-end">
-                              {/* ✅ Assign Button always enabled, shows error if none selected */}
-                              <Button
-                                id="All_btn"
-                                className="m-2"
-                                variant="primary"
-                                onClick={() => {
-                                  const selectedJobIds = Object.keys(selectedJobs).filter((id) => selectedJobs[id]);
-                                  if (selectedJobIds.length === 0) {
-                                    setErrorMessage("Please select at least 1 job to assign.");
-                                    setTimeout(() => setErrorMessage(""), 3000);
-                                  } else {
-                                    handleJobAssign(selectedJobIds); // ✅ Call with selected IDs
-                                    setShowAssignModal(true);
-                                  }
-                                }}
-                              >
-                                Assign
-                              </Button>
-                    
-                    
-                              <label className="btn btn-success m-2">
-                                <i className="bi bi-upload"></i> Import CSV
-                                <input
-                                  type="file"
-                                  accept=".csv"
-                                  onChange={handleCSVImport}
-                                  hidden
-                                />
-                              </label>
-                    
-                              <Link to={"/AddJobTracker"}>
-                                <button id='All_btn' className="btn btn-primary">
-                                  <i className="bi bi-plus"></i> Add New
-                                </button>
-                              </Link>
-                            </div>
-                          </div>
-                    
-                          <div className="card-body">
-                            {/* ✅ Error message block */}
-                            {errorMessage && (
-                              <div className="alert alert-danger py-2" role="alert">
-                                {errorMessage}
-                              </div>
-                            )}
-                    
-                            <div className="table-responsive">
-                              <table className="table table-hover">
-                                <thead>
-                                  <tr>
-                                    <th>
-                                      <input
-                                        type="checkbox"
-                                        onChange={() => {
-                                          const isChecked = Object.keys(selectedJobs).length === jobs.length;
-                                          const newSelectedJobs = {};
-                                          jobs.forEach((job) => {
-                                            newSelectedJobs[job.id] = !isChecked;
-                                          });
-                                          setSelectedJobs(newSelectedJobs);
-                                        }}
-                                      />
-                                    </th>
-                                    <th>JobsNo</th>
-                                    <th style={{ whiteSpace: 'nowrap' }}>Project Name</th>
-                                    <th>Brand</th>
-                                    <th>SubBrand</th>
-                                    <th>Flavour</th>
-                                    <th>PackType</th>
-                                    <th>PackSize</th>
-                                    <th>Priority</th>
-                                    <th style={{ whiteSpace: 'nowrap' }}>Due Date</th>
-                                    <th>Assing</th>
-                                    <th>TotalTime</th>
-                                    <th>Status</th>
-                                    <th>Actions</th>
-                                  </tr>
-                                </thead>
-                                <tbody>
-                                  {job?.jobs?.slice().reverse().map((job, index) => (
-                                    <tr key={job._id}>
-                                      <td>
-                                        <input
-                                          type="checkbox"
-                                          checked={selectedJobs[job._id] || false}
-                                          onChange={() => handleCheckboxChange(job._id)}
-                                        />
-                                      </td>
-                                      <td>
-                                        <Link>
-                                          {String(index + 1).padStart(4, '0')}
-                                        </Link>
-                                      </td>
-                                      <td>{job.projectId?.[0]?.projectName || 'N/A'}</td>
-                                      <td>{job.brandName}</td>
-                                      <td style={{ whiteSpace: 'nowrap' }}>{job.subBrand}</td>
-                                      <td style={{ whiteSpace: 'nowrap' }}>{job.flavour}</td>
-                                      <td>{job.packType}</td>
-                                      <td>{job.packSize}</td>
-                                      <td>
-                                        <span className={getPriorityClass(job.priority)}>
-                                          {job.priority}
-                                        </span>
-                                      </td>
-                                      <td>{new Date(job?.createdAt).toLocaleDateString('en-GB').replace(/\/20/, '/')}</td>
-                                      <td>{job.assign}</td>
-                                      <td>{job.totalTime}</td>
-                                      {/* <th>
+                      setSelectedJobs(newSelectedJobs);
+                    }}
+                  />
+                </th>
+                <th>JobsNo</th>
+                <th style={{ whiteSpace: 'nowrap' }}>Project Name</th>
+                <th>Brand</th>
+                <th>SubBrand</th>
+                <th>Flavour</th>
+                <th>PackType</th>
+                <th>PackSize</th>
+                <th>Priority</th>
+                <th style={{ whiteSpace: 'nowrap' }}>Due Date</th>
+                <th>Assing</th>
+                <th>TotalTime</th>
+                <th>Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {job?.jobs?.slice().reverse().map((job, index) => (
+                <tr key={job._id}>
+                  <td>
+                    <input
+                      type="checkbox"
+                      checked={selectedJobs[job._id] || false}
+                      onChange={() => handleCheckboxChange(job._id)}
+                    />
+                  </td>
+                  <td>
+                    <Link>
+                      {String(index + 1).padStart(4, '0')}
+                    </Link>
+                  </td>
+                  <td>{job.projectId?.[0]?.projectName || 'N/A'}</td>
+                  <td>{job.brandName}</td>
+                  <td style={{ whiteSpace: 'nowrap' }}>{job.subBrand}</td>
+                  <td style={{ whiteSpace: 'nowrap' }}>{job.flavour}</td>
+                  <td>{job.packType}</td>
+                  <td>{job.packSize}</td>
+                  <td>
+                    <span className={getPriorityClass(job.priority)}>
+                      {job.priority}
+                    </span>
+                  </td>
+                  <td>{new Date(job?.createdAt).toLocaleDateString('en-GB').replace(/\/20/, '/')}</td>
+                  <td>{job.assign}</td>
+                  <td>{job.totalTime}</td>
+                  {/* <th>
                                         <Button id='All_btn' variant="success" style={{ width: "130px" }} size="sm" >
                                           {job.Status || "Active"}
                                         </Button></th> */}
-                                      <td>
-                                        <span
-                                          className={`badge ${getStatusClass(job.Status)} px-2 py-1`}
-                                        >
-                                          {job.Status}
-                                        </span>
-                                      </td>
-                                      <td className="d-flex">
-                                        <button className="btn btn-sm btn-outline-primary me-1" onClick={() => JobDetails(job)}>
-                                          <i className="bi bi-eye"></i> View
-                                        </button>
-                                        <button className="btn btn-sm btn-outline-primary me-1" onClick={() => handleUpdate(job)}>
-                                          <i className="bi bi-pencil"></i> Edit
-                                        </button>
-                                        <button className="btn btn-sm btn-outline-danger" onClick={() => handleDelete(job._id)}>
-                                          <i className="bi bi-trash"></i> Delete
-                                        </button>
-                                      </td>
-                                    </tr>
-                                  ))}
-                                </tbody>
-                              </table>
-                            </div>
-                          </div>
-                    
-                          {/* ✅ Job Assignment Modal */}
-                          <Modal show={showAssignModal} onHide={() => setShowAssignModal(false)}>
-                            <Modal.Header closeButton>
-                              <Modal.Title>Assign Job</Modal.Title>
-                            </Modal.Header>
-                            <Modal.Body>
-                              <Form>
-                                <Form.Group className="mb-3">
-                                  <Form.Label>Select Designer</Form.Label>
-                                  <Form.Select
-                                    value={selectedDesigner}
-                                    onChange={(e) => setSelectedDesigner(e.target.value)}
-                                  >
-                                    <option value="">-- Select --</option>
-                                    <option value="production">Production</option>
-                                    <option value="designer">Designer</option>
-                                  </Form.Select>
-                                </Form.Group>
-                    
-                                <Form.Group className="mb-3">
-                                  <Form.Label>Description</Form.Label>
-                                  <Form.Control
-                                    as="textarea"
-                                    rows={3}
-                                    value={assignmentDescription}
-                                    onChange={(e) => setAssignmentDescription(e.target.value)}
-                                    placeholder="Enter assignment details or instructions..."
-                                  />
-                                </Form.Group>
-                              </Form>
-                            </Modal.Body>
-                            <Modal.Footer>
-                              <Button variant="secondary" onClick={() => setShowAssignModal(false)}>
-                                Cancel
-                              </Button>
-                              <Button variant="primary" onClick={handleSubmitAssignment}>
-                                Assign
-                              </Button>
-                            </Modal.Footer>
-                          </Modal>
-                    
-                        </div>
-                      );
+                  <td>
+                    <span
+                      className={`badge ${getStatusClass(job.Status)} px-2 py-1`}
+                    >
+                      {job.Status}
+                    </span>
+                  </td>
+                  <td className="d-flex">
+                    <button className="btn btn-sm btn-outline-primary me-1" onClick={() => JobDetails(job)}>
+                      <i className="bi bi-eye"></i> View
+                    </button>
+                    <button className="btn btn-sm btn-outline-primary me-1" onClick={() => handleUpdate(job)}>
+                      <i className="bi bi-pencil"></i> Edit
+                    </button>
+                    <button className="btn btn-sm btn-outline-danger" onClick={() => handleDelete(job._id)}>
+                      <i className="bi bi-trash"></i> Delete
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      {/* ✅ Job Assignment Modal */}
+      <Modal show={showAssignModal} onHide={() => setShowAssignModal(false)}>
+        <Modal.Header closeButton>
+          <Modal.Title>Assign Job</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Form>
+            <Form.Group className="mb-3">
+              <Form.Label>Select Designer</Form.Label>
+              <Form.Select
+                value={selectedDesigner}
+                onChange={(e) => setSelectedDesigner(e.target.value)}
+              >
+                <option value="">-- Select --</option>
+                <option value="production">Production</option>
+                <option value="designer">Designer</option>
+              </Form.Select>
+            </Form.Group>
+
+            <Form.Group className="mb-3">
+              <Form.Label>Description</Form.Label>
+              <Form.Control
+                as="textarea"
+                rows={3}
+                value={assignmentDescription}
+                onChange={(e) => setAssignmentDescription(e.target.value)}
+                placeholder="Enter assignment details or instructions..."
+              />
+            </Form.Group>
+          </Form>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={() => setShowAssignModal(false)}>
+            Cancel
+          </Button>
+          <Button variant="primary" onClick={handleSubmitAssignment}>
+            Assign
+          </Button>
+        </Modal.Footer>
+      </Modal>
+
+    </div>
+  );
+}
+
+export default ProjectJobsTab;
+
+
+
+
+
+
+
+import React, { useEffect, useState } from 'react';
+import { Link, useLocation, useNavigate, useParams } from 'react-router-dom';
+import { Modal, Form, Button } from 'react-bootstrap';
+import { useDispatch, useSelector } from 'react-redux';
+import { deletejob, fetchjobs, UpdateJobAssign } from '../../../../redux/slices/JobsSlice';
+import Swal from 'sweetalert2';
+
+function ProjectJobsTab() {
+  const [selectedProduction, setSelectedProduction] = useState('');
+  const [selectedAdditional, setSelectedAdditional] = useState('');
+  const [selectedJob, setSelectedJob] = useState(null);
+  const [attachedFile, setAttachedFile] = useState(null);
+  const [selectedJobs, setSelectedJobs] = useState({});
+  const [errorMessage, setErrorMessage] = useState('');
+
+  const [showAssignModal, setShowAssignModal] = useState(false);
+  const [selectedDesigner, setSelectedDesigner] = useState('');
+  const [assignmentDescription, setAssignmentDescription] = useState('');
+
+  const jobs = [
+    {
+      id: "00001",
+      brandName: "Brand1",
+      subBrand: "SubBrand1",
+      flavour: "Flavour1",
+      packType: "Type1",
+      packSize: "Size 1ml",
+      packCode: "Code1",
+      deadline: "2024/01/20",
+      brief: "ViewBrief",
+      status: "Pending Upload",
+      statusVariant: "warning",
+    },
+    {
+      id: "00002",
+      brandName: "Brand2",
+      subBrand: "SubBrand2",
+      flavour: "Flavour2",
+      packType: "Type2",
+      packSize: "Size 2ml",
+      packCode: "Code2",
+      deadline: "2024/01/25",
+      brief: "ViewBrief",
+      status: "In Progress",
+      statusVariant: "info",
+    },
+    {
+      id: "00003",
+      brandName: "Brand3",
+      subBrand: "SubBrand3",
+      flavour: "Flavour3",
+      packType: "Type3",
+      packSize: "Size 3ml",
+      packCode: "Code3",
+      deadline: "2024/02/01",
+      brief: "ViewBrief",
+      status: "DraftSaved",
+      statusVariant: "secondary",
+    },
+  ];
+
+  const handleCheckboxChange = (jobId) => {
+    setSelectedJobs((prev) => ({
+      ...prev,
+      [jobId]: !prev[jobId],
+    }));
+  };
+
+  const handleSubmitAssignment = () => {
+    const selectedJobIds = Object.keys(selectedJobs).filter((id) => selectedJobs[id]);
+
+    if (selectedJobIds.length === 0) {
+      setErrorMessage("Please select at least 1 job to assign.");
+      setTimeout(() => setErrorMessage(""), 3000);
+      return;
+    }
+
+    if (!selectedDesigner) {
+      setErrorMessage("Please select a designer.");
+      setTimeout(() => setErrorMessage(""), 3000);
+      return;
+    }
+
+    // ✅ Now send data to handleJobAssign
+    handleJobAssign(selectedJobIds, selectedDesigner);
+
+    // Reset state and close modal
+    setShowAssignModal(false);
+    setSelectedProduction('');
+    setSelectedAdditional('');
+    setSelectedJob(null);
+    setSelectedDesigner('');
+    setAssignmentDescription('');
+  };
+
+  const handleCSVImport = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      console.log("CSV file selected:", file.name);
+    }
+  };
+
+  const getPriorityClass = (priority) => {
+    switch (priority.toLowerCase()) {
+      case "high":
+        return "text-danger";
+      case "medium":
+        return "text-warning";
+      case "low":
+        return "text-success";
+      default:
+        return "";
+    }
+  };
+  // ////////////////////////////////////////
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const location = useLocation();
+  const params = useParams();
+  const id = location.state?.id || params.id;
+  useEffect(() => {
+    console.log("Project ID:", id);
+  }, [id]);
+
+  const { job } = useSelector((state) => state.jobs);
+  console.log(job.jobs, "all jobs");
+
+  useEffect(() => {
+    dispatch(fetchjobs());
+  }, [dispatch]);
+
+
+  const handleDelete = (_id) => {
+    console.log(_id);
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        dispatch(deletejob(_id))
+          .then(() => {
+            Swal.fire("Deleted!", "The document has been deleted.", "success");
+            dispatch(fetchjobs());
+          })
+          .catch(() => {
+            Swal.fire("Error!", "Something went wrong.", "error");
+          });
+      }
+    });
+  }
+
+
+  const handleUpdate = (job) => {
+    navigate(`/AddJobTracker`, { state: { job } });
+  };
+
+  const JobDetails = (job) => {
+    navigate(`/OvervieJobsTracker`, { state: { job } });
+  }
+
+
+  const getStatusClass = (status) => {
+    switch (status.toLowerCase().trim()) {
+      case "in progress":
+      case "in_progress":
+        return "bg-warning text-dark";
+      case "review":
+        return "bg-info text-dark";
+      case "not started":
+        return "bg-secondary text-white";
+      case "completed":
+        return "bg-success text-white";
+      case "open":
+        return "bg-primary text-white";
+      default:
+        return "bg-light text-dark";
+    }
+  };
+
+  const handleJobAssign = (selectedIds, assignTo) => {
+
+    const payload = {
+      id: selectedIds,
+      assign: assignTo,
+    };
+    console.log("Assignment Payload:", payload);
+    dispatch(UpdateJobAssign(payload))
+      .then(() => {
+        // Swal.fire("Success!", "Jobs assigned successfully", "success");
+        dispatch(fetchjobs());
+      })
+      .catch(() => {
+        Swal.fire("Error!", "Something went wrong", "error");
+      });
+  };
+
+  return (
+    <div className="card">
+      <div className="card-header d-flex align-content-center justify-content-between mt-3">
+        <h5 className="card-title mb-0">Jobs List</h5>
+        <div className="text-end">
+          {/* ✅ Assign Button always enabled, shows error if none selected */}
+          <Button
+            id="All_btn"
+            className="m-2"
+            variant="primary"
+            onClick={() => {
+              const selectedJobIds = Object.keys(selectedJobs).filter((id) => selectedJobs[id]);
+              if (selectedJobIds.length === 0) {
+                setErrorMessage("Please select at least 1 job to assign.");
+                setTimeout(() => setErrorMessage(""), 3000);
+              } else {
+                handleJobAssign(selectedJobIds); // ✅ Call with selected IDs
+                setShowAssignModal(true);
+              }
+            }}
+          >
+            Assign
+          </Button>
+
+
+          <label className="btn btn-success m-2">
+            <i className="bi bi-upload"></i> Import CSV
+            <input
+              type="file"
+              accept=".csv"
+              onChange={handleCSVImport}
+              hidden
+            />
+          </label>
+
+          <Link to={"/AddJobTracker"}>
+            <button id='All_btn' className="btn btn-primary">
+              <i className="bi bi-plus"></i> Add New
+            </button>
+          </Link>
+        </div>
+      </div>
+
+      <div className="card-body">
+        {/* ✅ Error message block */}
+        {errorMessage && (
+          <div className="alert alert-danger py-2" role="alert">
+            {errorMessage}
+          </div>
+        )}
+
+        <div className="table-responsive">
+          <table className="table table-hover">
+            <thead>
+              <tr>
+                <th>
+                  <input
+                    type="checkbox"
+                    onChange={(e) => {
+                      const checked = e.target.checked;
+                      const newSelectedJobs = {};
+                      job?.jobs?.forEach((job) => {
+                        newSelectedJobs[job._id] = checked;
+                      });
+                      setSelectedJobs(newSelectedJobs);
+                    }}
+                    checked={
+                      job?.jobs?.length > 0 &&
+                      job?.jobs?.every((j) => selectedJobs[j._id])
                     }
-                    
-                    export default ProjectJobsTab;
-                    
-                    
+                  />
+                </th>
 
-
-
-
-
-                    import React, { useEffect, useState } from 'react';
-                    import { Link, useLocation, useNavigate, useParams } from 'react-router-dom';
-                    import { Modal, Form, Button } from 'react-bootstrap';
-                    import { useDispatch, useSelector } from 'react-redux';
-                    import { deletejob, fetchjobs, UpdateJobAssign } from '../../../../redux/slices/JobsSlice';
-                    import Swal from 'sweetalert2';
-                    
-                    function ProjectJobsTab() {
-                      const [selectedProduction, setSelectedProduction] = useState('');
-                      const [selectedAdditional, setSelectedAdditional] = useState('');
-                      const [selectedJob, setSelectedJob] = useState(null);
-                      const [attachedFile, setAttachedFile] = useState(null);
-                      const [selectedJobs, setSelectedJobs] = useState({});
-                      const [errorMessage, setErrorMessage] = useState('');
-                    
-                      const [showAssignModal, setShowAssignModal] = useState(false);
-                      const [selectedDesigner, setSelectedDesigner] = useState('');
-                      const [assignmentDescription, setAssignmentDescription] = useState('');
-                    
-                      const jobs = [
-                        {
-                          id: "00001",
-                          brandName: "Brand1",
-                          subBrand: "SubBrand1",
-                          flavour: "Flavour1",
-                          packType: "Type1",
-                          packSize: "Size 1ml",
-                          packCode: "Code1",
-                          deadline: "2024/01/20",
-                          brief: "ViewBrief",
-                          status: "Pending Upload",
-                          statusVariant: "warning",
-                        },
-                        {
-                          id: "00002",
-                          brandName: "Brand2",
-                          subBrand: "SubBrand2",
-                          flavour: "Flavour2",
-                          packType: "Type2",
-                          packSize: "Size 2ml",
-                          packCode: "Code2",
-                          deadline: "2024/01/25",
-                          brief: "ViewBrief",
-                          status: "In Progress",
-                          statusVariant: "info",
-                        },
-                        {
-                          id: "00003",
-                          brandName: "Brand3",
-                          subBrand: "SubBrand3",
-                          flavour: "Flavour3",
-                          packType: "Type3",
-                          packSize: "Size 3ml",
-                          packCode: "Code3",
-                          deadline: "2024/02/01",
-                          brief: "ViewBrief",
-                          status: "DraftSaved",
-                          statusVariant: "secondary",
-                        },
-                      ];
-                    
-                      const handleCheckboxChange = (jobId) => {
-                        setSelectedJobs((prev) => ({
-                          ...prev,
-                          [jobId]: !prev[jobId],
-                        }));
-                      };
-                    
-                      const handleSubmitAssignment = () => {
-                        const selectedJobIds = Object.keys(selectedJobs).filter((id) => selectedJobs[id]);
-                    
-                        if (selectedJobIds.length === 0) {
-                          setErrorMessage("Please select at least 1 job to assign.");
-                          setTimeout(() => setErrorMessage(""), 3000);
-                          return;
-                        }
-                    
-                        if (!selectedDesigner) {
-                          setErrorMessage("Please select a designer.");
-                          setTimeout(() => setErrorMessage(""), 3000);
-                          return;
-                        }
-                    
-                        // ✅ Now send data to handleJobAssign
-                        handleJobAssign(selectedJobIds, selectedDesigner);
-                    
-                        // Reset state and close modal
-                        setShowAssignModal(false);
-                        setSelectedProduction('');
-                        setSelectedAdditional('');
-                        setSelectedJob(null);
-                        setSelectedDesigner('');
-                        setAssignmentDescription('');
-                      };
-                    
-                      const handleCSVImport = (event) => {
-                        const file = event.target.files[0];
-                        if (file) {
-                          console.log("CSV file selected:", file.name);
-                        }
-                      };
-                    
-                      const getPriorityClass = (priority) => {
-                        switch (priority.toLowerCase()) {
-                          case "high":
-                            return "text-danger";
-                          case "medium":
-                            return "text-warning";
-                          case "low":
-                            return "text-success";
-                          default:
-                            return "";
-                        }
-                      };
-                      // ////////////////////////////////////////
-                      const navigate = useNavigate();
-                      const dispatch = useDispatch();
-                      const location = useLocation();
-                      const params = useParams();
-                      const id = location.state?.id || params.id;
-                      useEffect(() => {
-                        console.log("Project ID:", id);
-                      }, [id]);
-                    
-                      const { job } = useSelector((state) => state.jobs);
-                      console.log(job.jobs, "all jobs");
-                    
-                      useEffect(() => {
-                        dispatch(fetchjobs());
-                      }, [dispatch]);
-                    
-                    
-                      const handleDelete = (_id) => {
-                        console.log(_id);
-                        Swal.fire({
-                          title: "Are you sure?",
-                          text: "You won't be able to revert this!",
-                          icon: "warning",
-                          showCancelButton: true,
-                          confirmButtonColor: "#3085d6",
-                          cancelButtonColor: "#d33",
-                          confirmButtonText: "Yes, delete it!",
-                        }).then((result) => {
-                          if (result.isConfirmed) {
-                            dispatch(deletejob(_id))
-                              .then(() => {
-                                Swal.fire("Deleted!", "The document has been deleted.", "success");
-                                dispatch(fetchjobs());
-                              })
-                              .catch(() => {
-                                Swal.fire("Error!", "Something went wrong.", "error");
-                              });
-                          }
-                        });
-                      }
-                    
-                    
-                      const handleUpdate = (job) => {
-                        navigate(`/AddJobTracker`, { state: { job } });
-                      };
-                    
-                      const JobDetails = (job) => {
-                        navigate(`/OvervieJobsTracker`, { state: { job } });
-                      }
-                    
-                    
-                      const getStatusClass = (status) => {
-                        switch (status.toLowerCase().trim()) {
-                          case "in progress":
-                          case "in_progress":
-                            return "bg-warning text-dark";
-                          case "review":
-                            return "bg-info text-dark";
-                          case "not started":
-                            return "bg-secondary text-white";
-                          case "completed":
-                            return "bg-success text-white";
-                          case "open":
-                            return "bg-primary text-white";
-                          default:
-                            return "bg-light text-dark";
-                        }
-                      };
-                    
-                      const handleJobAssign = (selectedIds, assignTo) => {
-                    
-                        const payload = {
-                          id: selectedIds,
-                          assign: assignTo,
-                        };
-                        console.log("Assignment Payload:", payload);
-                        dispatch(UpdateJobAssign(payload))
-                          .then(() => {
-                            // Swal.fire("Success!", "Jobs assigned successfully", "success");
-                            dispatch(fetchjobs());
-                          })
-                          .catch(() => {
-                            Swal.fire("Error!", "Something went wrong", "error");
-                          });
-                      };
-                    
-                      return (
-                        <div className="card">
-                          <div className="card-header d-flex align-content-center justify-content-between mt-3">
-                            <h5 className="card-title mb-0">Jobs List</h5>
-                            <div className="text-end">
-                              {/* ✅ Assign Button always enabled, shows error if none selected */}
-                              <Button
-                                id="All_btn"
-                                className="m-2"
-                                variant="primary"
-                                onClick={() => {
-                                  const selectedJobIds = Object.keys(selectedJobs).filter((id) => selectedJobs[id]);
-                                  if (selectedJobIds.length === 0) {
-                                    setErrorMessage("Please select at least 1 job to assign.");
-                                    setTimeout(() => setErrorMessage(""), 3000);
-                                  } else {
-                                    handleJobAssign(selectedJobIds); // ✅ Call with selected IDs
-                                    setShowAssignModal(true);
-                                  }
-                                }}
-                              >
-                                Assign
-                              </Button>
-                    
-                    
-                              <label className="btn btn-success m-2">
-                                <i className="bi bi-upload"></i> Import CSV
-                                <input
-                                  type="file"
-                                  accept=".csv"
-                                  onChange={handleCSVImport}
-                                  hidden
-                                />
-                              </label>
-                    
-                              <Link to={"/AddJobTracker"}>
-                                <button id='All_btn' className="btn btn-primary">
-                                  <i className="bi bi-plus"></i> Add New
-                                </button>
-                              </Link>
-                            </div>
-                          </div>
-                    
-                          <div className="card-body">
-                            {/* ✅ Error message block */}
-                            {errorMessage && (
-                              <div className="alert alert-danger py-2" role="alert">
-                                {errorMessage}
-                              </div>
-                            )}
-                    
-                            <div className="table-responsive">
-                              <table className="table table-hover">
-                                <thead>
-                                  <tr>
-                                    <th>
-                                      <input
-                                        type="checkbox"
-                                        onChange={(e) => {
-                                          const checked = e.target.checked;
-                                          const newSelectedJobs = {};
-                                          job?.jobs?.forEach((job) => {
-                                            newSelectedJobs[job._id] = checked;
-                                          });
-                                          setSelectedJobs(newSelectedJobs);
-                                        }}
-                                        checked={
-                                          job?.jobs?.length > 0 &&
-                                          job?.jobs?.every((j) => selectedJobs[j._id])
-                                        }
-                                      />
-                                    </th>
-                    
-                                    <th>JobsNo</th>
-                                    <th style={{ whiteSpace: 'nowrap' }}>Project Name</th>
-                                    <th>Brand</th>
-                                    <th>SubBrand</th>
-                                    <th>Flavour</th>
-                                    <th>PackType</th>
-                                    <th>PackSize</th>
-                                    <th>Priority</th>
-                                    <th style={{ whiteSpace: 'nowrap' }}>Due Date</th>
-                                    <th>Assing</th>
-                                    <th>TotalTime</th>
-                                    <th>Status</th>
-                                    <th>Actions</th>
-                                  </tr>
-                                </thead>
-                                <tbody>
-                                  {job?.jobs?.slice().reverse().map((job, index) => (
-                                    <tr key={job._id}>
-                                      <td>
-                                        <input
-                                          type="checkbox"
-                                          checked={selectedJobs[job._id] || false}
-                                          onChange={() => handleCheckboxChange(job._id)}
-                                        />
-                                      </td>
-                                      <td>
-                                        <Link>
-                                          {String(index + 1).padStart(4, '0')}
-                                        </Link>
-                                      </td>
-                                      <td>{job.projectId?.[0]?.projectName || 'N/A'}</td>
-                                      <td>{job.brandName}</td>
-                                      <td style={{ whiteSpace: 'nowrap' }}>{job.subBrand}</td>
-                                      <td style={{ whiteSpace: 'nowrap' }}>{job.flavour}</td>
-                                      <td>{job.packType}</td>
-                                      <td>{job.packSize}</td>
-                                      <td>
-                                        <span className={getPriorityClass(job.priority)}>
-                                          {job.priority}
-                                        </span>
-                                      </td>
-                                      <td>{new Date(job?.createdAt).toLocaleDateString('en-GB').replace(/\/20/, '/')}</td>
-                                      <td>{job.assign}</td>
-                                      <td>{job.totalTime}</td>
-                                      {/* <th>
+                <th>JobsNo</th>
+                <th style={{ whiteSpace: 'nowrap' }}>Project Name</th>
+                <th>Brand</th>
+                <th>SubBrand</th>
+                <th>Flavour</th>
+                <th>PackType</th>
+                <th>PackSize</th>
+                <th>Priority</th>
+                <th style={{ whiteSpace: 'nowrap' }}>Due Date</th>
+                <th>Assing</th>
+                <th>TotalTime</th>
+                <th>Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {job?.jobs?.slice().reverse().map((job, index) => (
+                <tr key={job._id}>
+                  <td>
+                    <input
+                      type="checkbox"
+                      checked={selectedJobs[job._id] || false}
+                      onChange={() => handleCheckboxChange(job._id)}
+                    />
+                  </td>
+                  <td>
+                    <Link>
+                      {String(index + 1).padStart(4, '0')}
+                    </Link>
+                  </td>
+                  <td>{job.projectId?.[0]?.projectName || 'N/A'}</td>
+                  <td>{job.brandName}</td>
+                  <td style={{ whiteSpace: 'nowrap' }}>{job.subBrand}</td>
+                  <td style={{ whiteSpace: 'nowrap' }}>{job.flavour}</td>
+                  <td>{job.packType}</td>
+                  <td>{job.packSize}</td>
+                  <td>
+                    <span className={getPriorityClass(job.priority)}>
+                      {job.priority}
+                    </span>
+                  </td>
+                  <td>{new Date(job?.createdAt).toLocaleDateString('en-GB').replace(/\/20/, '/')}</td>
+                  <td>{job.assign}</td>
+                  <td>{job.totalTime}</td>
+                  {/* <th>
                                         <Button id='All_btn' variant="success" style={{ width: "130px" }} size="sm" >
                                           {job.Status || "Active"}
                                         </Button></th> */}
-                                      <td>
-                                        <span
-                                          className={`badge ${getStatusClass(job.Status)} px-2 py-1`}
-                                        >
-                                          {job.Status}
-                                        </span>
-                                      </td>
-                                      <td className="d-flex">
-                                        <button className="btn btn-sm btn-outline-primary me-1" onClick={() => JobDetails(job)}>
-                                          <i className="bi bi-eye"></i> View
-                                        </button>
-                                        <button className="btn btn-sm btn-outline-primary me-1" onClick={() => handleUpdate(job)}>
-                                          <i className="bi bi-pencil"></i> Edit
-                                        </button>
-                                        <button className="btn btn-sm btn-outline-danger" onClick={() => handleDelete(job._id)}>
-                                          <i className="bi bi-trash"></i> Delete
-                                        </button>
-                                      </td>
-                                    </tr>
-                                  ))}
-                                </tbody>
-                              </table>
-                            </div>
-                          </div>
-                    
-                          {/* ✅ Job Assignment Modal */}
-                          <Modal show={showAssignModal} onHide={() => setShowAssignModal(false)}>
-                            <Modal.Header closeButton>
-                              <Modal.Title>Assign Job</Modal.Title>
-                            </Modal.Header>
-                            <Modal.Body>
-                              <Form>
-                                <Form.Group className="mb-3">
-                                  <Form.Label>Select Designer</Form.Label>
-                                  <Form.Select
-                                    value={selectedDesigner}
-                                    onChange={(e) => setSelectedDesigner(e.target.value)}
-                                  >
-                                    <option value="">-- Select --</option>
-                                    <option value="Production">Production</option>
-                                    <option value="Designer">Designer</option>
-                                  </Form.Select>
-                                </Form.Group>
-                    
-                                <Form.Group className="mb-3">
-                                  <Form.Label>Description</Form.Label>
-                                  <Form.Control
-                                    as="textarea"
-                                    rows={3}
-                                    value={assignmentDescription}
-                                    onChange={(e) => setAssignmentDescription(e.target.value)}
-                                    placeholder="Enter assignment details or instructions..."
-                                  />
-                                </Form.Group>
-                              </Form>
-                            </Modal.Body>
-                            <Modal.Footer>
-                              <Button variant="secondary" onClick={() => setShowAssignModal(false)}>
-                                Cancel
-                              </Button>
-                              <Button variant="primary" onClick={handleSubmitAssignment}>
-                                Assign
-                              </Button>
-                            </Modal.Footer>
-                          </Modal>
-                    
-                        </div>
-                      );
-                    }
-                    
-                    export default ProjectJobsTab;
-                    
+                  <td>
+                    <span
+                      className={`badge ${getStatusClass(job.Status)} px-2 py-1`}
+                    >
+                      {job.Status}
+                    </span>
+                  </td>
+                  <td className="d-flex">
+                    <button className="btn btn-sm btn-outline-primary me-1" onClick={() => JobDetails(job)}>
+                      <i className="bi bi-eye"></i> View
+                    </button>
+                    <button className="btn btn-sm btn-outline-primary me-1" onClick={() => handleUpdate(job)}>
+                      <i className="bi bi-pencil"></i> Edit
+                    </button>
+                    <button className="btn btn-sm btn-outline-danger" onClick={() => handleDelete(job._id)}>
+                      <i className="bi bi-trash"></i> Delete
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      {/* ✅ Job Assignment Modal */}
+      <Modal show={showAssignModal} onHide={() => setShowAssignModal(false)}>
+        <Modal.Header closeButton>
+          <Modal.Title>Assign Job</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Form>
+            <Form.Group className="mb-3">
+              <Form.Label>Select Designer</Form.Label>
+              <Form.Select
+                value={selectedDesigner}
+                onChange={(e) => setSelectedDesigner(e.target.value)}
+              >
+                <option value="">-- Select --</option>
+                <option value="Production">Production</option>
+                <option value="Designer">Designer</option>
+              </Form.Select>
+            </Form.Group>
+
+            <Form.Group className="mb-3">
+              <Form.Label>Description</Form.Label>
+              <Form.Control
+                as="textarea"
+                rows={3}
+                value={assignmentDescription}
+                onChange={(e) => setAssignmentDescription(e.target.value)}
+                placeholder="Enter assignment details or instructions..."
+              />
+            </Form.Group>
+          </Form>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={() => setShowAssignModal(false)}>
+            Cancel
+          </Button>
+          <Button variant="primary" onClick={handleSubmitAssignment}>
+            Assign
+          </Button>
+        </Modal.Footer>
+      </Modal>
+
+    </div>
+  );
+}
+
+export default ProjectJobsTab;
 
 
 
@@ -3089,404 +3088,761 @@ export default AddProjectList;
 
 
 
-                    // import axios from 'axios';
-                    // import React, { useState } from 'react';
-                    // import Base_Url from '../../ApiUrl/ApiUrl';
-                    // import { useNavigate } from 'react-router-dom';
-                    // import { toast, ToastContainer } from 'react-toastify';
-                    // import 'react-toastify/dist/ReactToastify.css';
-                    // function AddClientManagement() {
-                    //   const navigate = useNavigate();
-                    //   const [formData, setFormData] = useState({
-                    //     clientName: '',
-                    //     industry: '',
-                    //     clientWebsite: '',
-                    //     clientAddress: '',
-                    //     vatNumber: '',
-                    //     csrCode: '',
-                    //     clientStatus: 'active',
-                    //     contactNumber: '',
-                    //     jobTitle: '',
-                    //     email: '',
-                    //     phone: '',
-                    //     department: '',
-                    //     salesRepresentative: '',
-                    //     billingAddress: '',
-                    //     billingContact: '',
-                    //     billingEmail: '',
-                    //     billingPhone: '',
-                    //     currency: 'USD',
-                    //     paymentMethod: 'bank_transfer',
-                    //     shippingAddress: '',
-                    //     shippingContact: '',
-                    //     shippingEmail: '',
-                    //     shippingPhone: '',
-                    //     shippingMethod: 'standard',
-                    //     specialInstruction: '',
-                    //     annualRevenue: '',
-                    //     creditRating: '',
-                    //     bankName: '',
-                    //     accountNumber: '',
-                    //     fiscalYearEnd: '',
-                    //     financialContact: '',
-                    //     accountCode: '',
-                    //     accountType: 'receivable',
-                    //     openingBalance: '',
-                    //     balanceDate: '',
-                    //     taxCategory: 'standard',
-                    //     costCenter: '',
-                    //     paymentTerms: 'net30',
-                    //     creditLimit: '',
-                    //     notes: ''
-                    //   });
-                    
-                    //   const handleChange = (e) => {
-                    //     const { name, value } = e.target;
-                    //     setFormData((prev) => ({ ...prev, [name]: value }));
-                    //   };
-                    
-                    //   const handleSubmit = async (e) => {
-                    //     e.preventDefault();
-                    //     try {
-                    //       const res = await axios.post(`${Base_Url}/client/createClient`, formData);
-                    //       console.log('Client Submitted:', res.data);
-                      
-                    //       toast.success('Client created successfully!'); // optional toast
-                      
-                    //       // Reset the form
-                    //       setFormData({
-                    //         clientName: '',
-                    //         industry: '',
-                    //         clientWebsite: '',
-                    //         clientAddress: '',
-                    //         vatNumber: '',
-                    //         csrCode: '',
-                    //         clientStatus: 'active',
-                    //         contactNumber: '',
-                    //         jobTitle: '',
-                    //         email: '',
-                    //         phone: '',
-                    //         department: '',
-                    //         salesRepresentative: '',
-                    //         billingAddress: '',
-                    //         billingContact: '',
-                    //         billingEmail: '',
-                    //         billingPhone: '',
-                    //         currency: 'USD',
-                    //         paymentMethod: 'bank_transfer',
-                    //         shippingAddress: '',
-                    //         shippingContact: '',
-                    //         shippingEmail: '',
-                    //         shippingPhone: '',
-                    //         shippingMethod: 'standard',
-                    //         specialInstruction: '',
-                    //         annualRevenue: '',
-                    //         creditRating: '',
-                    //         bankName: '',
-                    //         accountNumber: '',
-                    //         fiscalYearEnd: '',
-                    //         financialContact: '',
-                    //         accountCode: '',
-                    //         accountType: 'receivable',
-                    //         openingBalance: '',
-                    //         balanceDate: '',
-                    //         taxCategory: 'standard',
-                    //         costCenter: '',
-                    //         paymentTerms: 'net30',
-                    //         creditLimit: '',
-                    //         notes: ''
-                    //       });
-                      
-                    //       // Navigate to clientManagement page after delay (optional)
-                    //       setTimeout(() => {
-                    //         navigate('/clientManagement');
-                    //       }, 1000); // delay for smoother transition
-                    //     } catch (err) {
-                    //       console.error('Submit Error:', err);
-                    //       toast.error('Failed to create client.');
-                    //     }
-                    //   };
-                    
-                    //   return (
-                    //     <>
-                    //     <ToastContainer/>
-                    //     <div className="container mt-5">
-                    //       <div className="card shadow-sm">
-                    //         <div className="card-body">
-                    //           <h1 className="card-title h4 mb-4">Add Company</h1>   
-                    //           <form className="row g-3" onSubmit={handleSubmit}>
-                    //           <div className='col-md-3'>  <h6 className="mb-3">Client/Supplier Information</h6></div>
-                    //            <div className='col-md-3'>
-                               
-                               
-                    //               <select className="form-select" name="industry" value={formData.industry} onChange={handleChange}>
-                                
-                    //                 <option value="Client">Client</option>
-                    //                 <option value="Sup">Suppliers</option>
-                    //                 <option value="Other">Other</option>
-                    //               </select></div>  <div className="col-md-6"></div>
-                    //             <div className="col-md-6">
-                    //               <label className="form-label">Name</label>
-                    //               <input type="text" name="clientName" value={formData.clientName} onChange={handleChange} className="form-control" placeholder="Enter  name" />
-                    //             </div>
-                    //             <div className="col-md-6">
-                    //               <label className="form-label">Industry</label>
-                    //               <select className="form-select" name="industry" value={formData.industry} onChange={handleChange}>
-                    //                 <option value="">Select industry</option>
-                    //                 <option value="manufacturing">Manufacturing</option>
-                    //                 <option value="tech">Technology</option>
-                    //                 <option value="retail">Retail</option>
-                    //               </select>
-                    //             </div>
-                    //             <div className="col-md-6">
-                    //               <label className="form-label">Website</label>
-                    //               <input type="url" name="clientWebsite" value={formData.clientWebsite} onChange={handleChange} className="form-control" placeholder="https://" />
-                    //             </div>
-                    //             <div className="col-md-6">
-                    //               <label className="form-label">Client Address</label>
-                    //               <textarea className="form-control" name="clientAddress" value={formData.clientAddress} onChange={handleChange}></textarea>
-                    //             </div>  
-                    //             <div className="col-md-6">
-                    //               <label className="form-label">Tax ID/VAT Number</label>
-                    //               <input type="text" name="vatNumber" value={formData.vatNumber} onChange={handleChange} className="form-control" />
-                    //             </div>
-                    //             <div className="col-md-6">
-                    //               <label className="form-label">CSR Code</label>
-                    //               <input type="text" name="csrCode" value={formData.csrCode} onChange={handleChange} className="form-control" />
-                    //             </div>
-                    //             <div className="col-md-6">
-                    //               <label className="form-label">Status</label>
-                    //               <select className="form-select" name="clientStatus" value={formData.clientStatus} onChange={handleChange}>
-                    //                 <option value="active">Active</option>
-                    //                 <option value="inactive">Inactive</option>
-                    //               </select>
-                    //             </div>
-                    
-                    //             <h5 className="mb-3 mt-4">Primary Contact</h5>
-                    //             <div className="col-md-6">
-                    //               <label className="form-label">Contact Name</label>
-                    //               <input type="text" name="contactNumber" value={formData.contactNumber} onChange={handleChange} className="form-control" />
-                    //             </div>
-                    //             <div className="col-md-6">
-                    //               <label className="form-label">Job Title</label>
-                    //               <input type="text" name="jobTitle" value={formData.jobTitle} onChange={handleChange} className="form-control" />
-                    //             </div>
-                    //             <div className="col-md-6">
-                    //               <label className="form-label">Email</label>
-                    //               <input type="email" name="email" value={formData.email} onChange={handleChange} className="form-control" />
-                    //             </div>
-                    //             <div className="col-md-6">
-                    //               <label className="form-label">Phone</label>
-                    //               <input type="tel" name="phone" value={formData.phone} onChange={handleChange} className="form-control" />
-                    //             </div>
-                    //             <div className="col-md-6">
-                    //               <label className="form-label">Department</label>
-                    //               <input type="text" name="department" value={formData.department} onChange={handleChange} className="form-control" />
-                    //             </div>
-                    //             <div className="col-md-6">
-                    //               <label className="form-label">Sales Representative</label>
-                    //               <input type="text" name="salesRepresentative" value={formData.salesRepresentative} onChange={handleChange} className="form-control" />
-                    //             </div>
-                    //   {/* Billing Information */}
-                    // <h5 className="mb-3 mt-4">Billing Information</h5>
-                    // <div className="col-md-12">
-                    //   <label className="form-label">Billing Address</label>
-                    //   <textarea className="form-control" rows="3" name="billingAddress" value={formData.billingAddress} onChange={handleChange}></textarea>
-                    // </div>
-                    // <div className="col-md-6">
-                    //   <label className="form-label">Billing Contact Name</label>
-                    //   <input type="text" className="form-control" name="billingContact" value={formData.billingContact} onChange={handleChange} />
-                    // </div>
-                    // <div className="col-md-6">
-                    //   <label className="form-label">Billing Email</label>
-                    //   <input type="email" className="form-control" name="billingEmail" value={formData.billingEmail} onChange={handleChange} />
-                    // </div>
-                    // <div className="col-md-6">
-                    //   <label className="form-label">Billing Phone</label>
-                    //   <input type="tel" className="form-control" name="billingPhone" value={formData.billingPhone} onChange={handleChange} />
-                    // </div>
-                    // <div className="col-md-6">
-                    //   <label className="form-label">Currency</label>
-                    //   <select className="form-select" name="currency" value={formData.currency} onChange={handleChange}>
-                    //     <option value="USD">USD</option>
-                    //     <option value="EUR">EUR</option>
-                    //     <option value="GBP">GBP</option>
-                    //   </select>
-                    // </div>
-                    // <div className="col-md-6">
-                    //   <label className="form-label">Preferred Payment Method</label>
-                    //   <select className="form-select" name="paymentMethod" value={formData.paymentMethod} onChange={handleChange}>
-                    //     <option value="bank_transfer">Bank Transfer</option>
-                    //     <option value="credit_card">Credit Card</option>
-                    //     <option value="check">Check</option>
-                    //   </select>
-                    // </div>
-                    
-                    // {/* Shipping Information */}
-                    // <h5 className="mb-3 mt-4">Shipping Information</h5>
-                    // <div className="col-md-12">
-                    //   <label className="form-label">Shipping Address</label>
-                    //   <textarea className="form-control" rows="3" name="shippingAddress" value={formData.shippingAddress} onChange={handleChange}></textarea>
-                    // </div>
-                    // <div className="col-md-6">
-                    //   <label className="form-label">Shipping Contact Name</label>
-                    //   <input type="text" className="form-control" name="shippingContact" value={formData.shippingContact} onChange={handleChange} />
-                    // </div>
-                    // <div className="col-md-6">
-                    //   <label className="form-label">Shipping Email</label>
-                    //   <input type="email" className="form-control" name="shippingEmail" value={formData.shippingEmail} onChange={handleChange} />
-                    // </div>
-                    // <div className="col-md-6">
-                    //   <label className="form-label">Shipping Phone</label>
-                    //   <input type="tel" className="form-control" name="shippingPhone" value={formData.shippingPhone} onChange={handleChange} />
-                    // </div>
-                    // <div className="col-md-6">
-                    //   <label className="form-label">Preferred Shipping Method</label>
-                    //   <select className="form-select" name="shippingMethod" value={formData.shippingMethod} onChange={handleChange}>
-                    //     <option value="standard">Standard Ground</option>
-                    //     <option value="express">Express</option>
-                    //     <option value="overnight">Overnight</option>
-                    //   </select>
-                    // </div>
-                    // <div className="col-md-12">
-                    //   <label className="form-label">Special Instructions</label>
-                    //   <textarea className="form-control" rows="3" name="specialInstruction" value={formData.specialInstruction} onChange={handleChange}></textarea>
-                    // </div>
-                    
-                    // {/* Financial Information */}
-                    // <h5 className="mb-3 mt-4">Financial Information</h5>
-                    // <div className="col-md-6">
-                    //   <label className="form-label">Annual Revenue</label>
-                    //   <input type="number" className="form-control" name="annualRevenue" value={formData.annualRevenue} onChange={handleChange} />
-                    // </div>
-                    // <div className="col-md-6">
-                    //   <label className="form-label">Credit Rating</label>
-                    //   <input type="text" className="form-control" name="creditRating" value={formData.creditRating} onChange={handleChange} />
-                    // </div>
-                    // <div className="col-md-6">
-                    //   <label className="form-label">Bank Name</label>
-                    //   <input type="text" className="form-control" name="bankName" value={formData.bankName} onChange={handleChange} />
-                    // </div>
-                    // <div className="col-md-6">
-                    //   <label className="form-label">Account Number</label>
-                    //   <input type="text" className="form-control" name="accountNumber" value={formData.accountNumber} onChange={handleChange} />
-                    // </div>
-                    // <div className="col-md-6">
-                    //   <label className="form-label">Fiscal Year End</label>
-                    //   <input type="date" className="form-control" name="fiscalYearEnd" value={formData.fiscalYearEnd} onChange={handleChange} />
-                    // </div>
-                    // <div className="col-md-6">
-                    //   <label className="form-label">Financial Contact</label>
-                    //   <input type="text" className="form-control" name="financialContact" value={formData.financialContact} onChange={handleChange} />
-                    // </div>
-                    
-                    // {/* Ledger Information */}
-                    // <h5 className="mb-3 mt-4">Ledger Information</h5>
-                    // <div className="col-md-6">
-                    //   <label className="form-label">Account Code</label>
-                    //   <input type="text" className="form-control" name="accountCode" value={formData.accountCode} onChange={handleChange} />
-                    // </div>
-                    // <div className="col-md-6">
-                    //   <label className="form-label">Account Type</label>
-                    //   <select className="form-select" name="accountType" value={formData.accountType} onChange={handleChange}>
-                    //     <option value="receivable">Accounts Receivable</option>
-                    //     <option value="payable">Accounts Payable</option>
-                    //   </select>
-                    // </div>
-                    // <div className="col-md-6">
-                    //   <label className="form-label">Opening Balance</label>
-                    //   <input type="number" className="form-control" name="openingBalance" value={formData.openingBalance} onChange={handleChange} />
-                    // </div>
-                    // <div className="col-md-6">
-                    //   <label className="form-label">Balance Date</label>
-                    //   <input type="date" className="form-control" name="balanceDate" value={formData.balanceDate} onChange={handleChange} />
-                    // </div>
-                    // <div className="col-md-6">
-                    //   <label className="form-label">Tax Category</label>
-                    //   <select className="form-select" name="taxCategory" value={formData.taxCategory} onChange={handleChange}>
-                    //     <option value="standard">Standard Rate</option>
-                    //     <option value="reduced">Reduced Rate</option>
-                    //     <option value="zero">Zero Rate</option>
-                    //   </select>
-                    // </div>
-                    // <div className="col-md-6">
-                    //   <label className="form-label">Cost Center</label>
-                    //   <input type="text" className="form-control" name="costCenter" value={formData.costCenter} onChange={handleChange} />
-                    // </div>
-                    
-                    // {/* Additional Information */}
-                    // <h5 className="mb-3 mt-4">Additional Information</h5>
-                    // <div className="col-md-6">
-                    //   <label className="form-label">Payment Terms</label>
-                    //   <select className="form-select" name="paymentTerms" value={formData.paymentTerms} onChange={handleChange}>
-                    //     <option value="net30">Net 30</option>
-                    //     <option value="net60">Net 60</option>
-                    //     <option value="net90">Net 90</option>
-                    //   </select>
-                    // </div>
-                    // <div className="col-md-6">
-                    //   <label className="form-label">Credit Limit</label>
-                    //   <input type="number" className="form-control" name="creditLimit" value={formData.creditLimit} onChange={handleChange} />
-                    // </div>
-                    // <div className="col-md-12">
-                    //   <label className="form-label">Notes</label>
-                    //   <textarea className="form-control" rows="3" name="notes" value={formData.notes} onChange={handleChange} placeholder="Additional notes"></textarea>
-                    // </div>
-                    
-                    
-                    //             <div className="col-12 d-flex justify-content-end gap-2 mt-4">
-                    //               <button type="button" className="btn btn-outline-secondary">Cancel</button>
-                    //               <button type="submit" id="btn-All" className="btn btn-dark">Create </button>
-                    //             </div>
-                    //           </form>
-                    //         </div>
-                    //       </div>
-                    //     </div>
-                    //     </>
-                       
-                    //   );
-                    // }
-                    
-                    // export default AddClientManagement;
-                    
-                    
+
+// import axios from 'axios';
+// import React, { useState } from 'react';
+// import Base_Url from '../../ApiUrl/ApiUrl';
+// import { useNavigate } from 'react-router-dom';
+// import { toast, ToastContainer } from 'react-toastify';
+// import 'react-toastify/dist/ReactToastify.css';
+// function AddClientManagement() {
+//   const navigate = useNavigate();
+//   const [formData, setFormData] = useState({
+//     clientName: '',
+//     industry: '',
+//     clientWebsite: '',
+//     clientAddress: '',
+//     vatNumber: '',
+//     csrCode: '',
+//     clientStatus: 'active',
+//     contactNumber: '',
+//     jobTitle: '',
+//     email: '',
+//     phone: '',
+//     department: '',
+//     salesRepresentative: '',
+//     billingAddress: '',
+//     billingContact: '',
+//     billingEmail: '',
+//     billingPhone: '',
+//     currency: 'USD',
+//     paymentMethod: 'bank_transfer',
+//     shippingAddress: '',
+//     shippingContact: '',
+//     shippingEmail: '',
+//     shippingPhone: '',
+//     shippingMethod: 'standard',
+//     specialInstruction: '',
+//     annualRevenue: '',
+//     creditRating: '',
+//     bankName: '',
+//     accountNumber: '',
+//     fiscalYearEnd: '',
+//     financialContact: '',
+//     accountCode: '',
+//     accountType: 'receivable',
+//     openingBalance: '',
+//     balanceDate: '',
+//     taxCategory: 'standard',
+//     costCenter: '',
+//     paymentTerms: 'net30',
+//     creditLimit: '',
+//     notes: ''
+//   });
+
+//   const handleChange = (e) => {
+//     const { name, value } = e.target;
+//     setFormData((prev) => ({ ...prev, [name]: value }));
+//   };
+
+//   const handleSubmit = async (e) => {
+//     e.preventDefault();
+//     try {
+//       const res = await axios.post(`${Base_Url}/client/createClient`, formData);
+//       console.log('Client Submitted:', res.data);
+
+//       toast.success('Client created successfully!'); // optional toast
+
+//       // Reset the form
+//       setFormData({
+//         clientName: '',
+//         industry: '',
+//         clientWebsite: '',
+//         clientAddress: '',
+//         vatNumber: '',
+//         csrCode: '',
+//         clientStatus: 'active',
+//         contactNumber: '',
+//         jobTitle: '',
+//         email: '',
+//         phone: '',
+//         department: '',
+//         salesRepresentative: '',
+//         billingAddress: '',
+//         billingContact: '',
+//         billingEmail: '',
+//         billingPhone: '',
+//         currency: 'USD',
+//         paymentMethod: 'bank_transfer',
+//         shippingAddress: '',
+//         shippingContact: '',
+//         shippingEmail: '',
+//         shippingPhone: '',
+//         shippingMethod: 'standard',
+//         specialInstruction: '',
+//         annualRevenue: '',
+//         creditRating: '',
+//         bankName: '',
+//         accountNumber: '',
+//         fiscalYearEnd: '',
+//         financialContact: '',
+//         accountCode: '',
+//         accountType: 'receivable',
+//         openingBalance: '',
+//         balanceDate: '',
+//         taxCategory: 'standard',
+//         costCenter: '',
+//         paymentTerms: 'net30',
+//         creditLimit: '',
+//         notes: ''
+//       });
+
+//       // Navigate to clientManagement page after delay (optional)
+//       setTimeout(() => {
+//         navigate('/clientManagement');
+//       }, 1000); // delay for smoother transition
+//     } catch (err) {
+//       console.error('Submit Error:', err);
+//       toast.error('Failed to create client.');
+//     }
+//   };
+
+//   return (
+//     <>
+//     <ToastContainer/>
+//     <div className="container mt-5">
+//       <div className="card shadow-sm">
+//         <div className="card-body">
+//           <h1 className="card-title h4 mb-4">Add Company</h1>   
+//           <form className="row g-3" onSubmit={handleSubmit}>
+//           <div className='col-md-3'>  <h6 className="mb-3">Client/Supplier Information</h6></div>
+//            <div className='col-md-3'>
+
+
+//               <select className="form-select" name="industry" value={formData.industry} onChange={handleChange}>
+
+//                 <option value="Client">Client</option>
+//                 <option value="Sup">Suppliers</option>
+//                 <option value="Other">Other</option>
+//               </select></div>  <div className="col-md-6"></div>
+//             <div className="col-md-6">
+//               <label className="form-label">Name</label>
+//               <input type="text" name="clientName" value={formData.clientName} onChange={handleChange} className="form-control" placeholder="Enter  name" />
+//             </div>
+//             <div className="col-md-6">
+//               <label className="form-label">Industry</label>
+//               <select className="form-select" name="industry" value={formData.industry} onChange={handleChange}>
+//                 <option value="">Select industry</option>
+//                 <option value="manufacturing">Manufacturing</option>
+//                 <option value="tech">Technology</option>
+//                 <option value="retail">Retail</option>
+//               </select>
+//             </div>
+//             <div className="col-md-6">
+//               <label className="form-label">Website</label>
+//               <input type="url" name="clientWebsite" value={formData.clientWebsite} onChange={handleChange} className="form-control" placeholder="https://" />
+//             </div>
+//             <div className="col-md-6">
+//               <label className="form-label">Client Address</label>
+//               <textarea className="form-control" name="clientAddress" value={formData.clientAddress} onChange={handleChange}></textarea>
+//             </div>  
+//             <div className="col-md-6">
+//               <label className="form-label">Tax ID/VAT Number</label>
+//               <input type="text" name="vatNumber" value={formData.vatNumber} onChange={handleChange} className="form-control" />
+//             </div>
+//             <div className="col-md-6">
+//               <label className="form-label">CSR Code</label>
+//               <input type="text" name="csrCode" value={formData.csrCode} onChange={handleChange} className="form-control" />
+//             </div>
+//             <div className="col-md-6">
+//               <label className="form-label">Status</label>
+//               <select className="form-select" name="clientStatus" value={formData.clientStatus} onChange={handleChange}>
+//                 <option value="active">Active</option>
+//                 <option value="inactive">Inactive</option>
+//               </select>
+//             </div>
+
+//             <h5 className="mb-3 mt-4">Primary Contact</h5>
+//             <div className="col-md-6">
+//               <label className="form-label">Contact Name</label>
+//               <input type="text" name="contactNumber" value={formData.contactNumber} onChange={handleChange} className="form-control" />
+//             </div>
+//             <div className="col-md-6">
+//               <label className="form-label">Job Title</label>
+//               <input type="text" name="jobTitle" value={formData.jobTitle} onChange={handleChange} className="form-control" />
+//             </div>
+//             <div className="col-md-6">
+//               <label className="form-label">Email</label>
+//               <input type="email" name="email" value={formData.email} onChange={handleChange} className="form-control" />
+//             </div>
+//             <div className="col-md-6">
+//               <label className="form-label">Phone</label>
+//               <input type="tel" name="phone" value={formData.phone} onChange={handleChange} className="form-control" />
+//             </div>
+//             <div className="col-md-6">
+//               <label className="form-label">Department</label>
+//               <input type="text" name="department" value={formData.department} onChange={handleChange} className="form-control" />
+//             </div>
+//             <div className="col-md-6">
+//               <label className="form-label">Sales Representative</label>
+//               <input type="text" name="salesRepresentative" value={formData.salesRepresentative} onChange={handleChange} className="form-control" />
+//             </div>
+//   {/* Billing Information */}
+// <h5 className="mb-3 mt-4">Billing Information</h5>
+// <div className="col-md-12">
+//   <label className="form-label">Billing Address</label>
+//   <textarea className="form-control" rows="3" name="billingAddress" value={formData.billingAddress} onChange={handleChange}></textarea>
+// </div>
+// <div className="col-md-6">
+//   <label className="form-label">Billing Contact Name</label>
+//   <input type="text" className="form-control" name="billingContact" value={formData.billingContact} onChange={handleChange} />
+// </div>
+// <div className="col-md-6">
+//   <label className="form-label">Billing Email</label>
+//   <input type="email" className="form-control" name="billingEmail" value={formData.billingEmail} onChange={handleChange} />
+// </div>
+// <div className="col-md-6">
+//   <label className="form-label">Billing Phone</label>
+//   <input type="tel" className="form-control" name="billingPhone" value={formData.billingPhone} onChange={handleChange} />
+// </div>
+// <div className="col-md-6">
+//   <label className="form-label">Currency</label>
+//   <select className="form-select" name="currency" value={formData.currency} onChange={handleChange}>
+//     <option value="USD">USD</option>
+//     <option value="EUR">EUR</option>
+//     <option value="GBP">GBP</option>
+//   </select>
+// </div>
+// <div className="col-md-6">
+//   <label className="form-label">Preferred Payment Method</label>
+//   <select className="form-select" name="paymentMethod" value={formData.paymentMethod} onChange={handleChange}>
+//     <option value="bank_transfer">Bank Transfer</option>
+//     <option value="credit_card">Credit Card</option>
+//     <option value="check">Check</option>
+//   </select>
+// </div>
+
+// {/* Shipping Information */}
+// <h5 className="mb-3 mt-4">Shipping Information</h5>
+// <div className="col-md-12">
+//   <label className="form-label">Shipping Address</label>
+//   <textarea className="form-control" rows="3" name="shippingAddress" value={formData.shippingAddress} onChange={handleChange}></textarea>
+// </div>
+// <div className="col-md-6">
+//   <label className="form-label">Shipping Contact Name</label>
+//   <input type="text" className="form-control" name="shippingContact" value={formData.shippingContact} onChange={handleChange} />
+// </div>
+// <div className="col-md-6">
+//   <label className="form-label">Shipping Email</label>
+//   <input type="email" className="form-control" name="shippingEmail" value={formData.shippingEmail} onChange={handleChange} />
+// </div>
+// <div className="col-md-6">
+//   <label className="form-label">Shipping Phone</label>
+//   <input type="tel" className="form-control" name="shippingPhone" value={formData.shippingPhone} onChange={handleChange} />
+// </div>
+// <div className="col-md-6">
+//   <label className="form-label">Preferred Shipping Method</label>
+//   <select className="form-select" name="shippingMethod" value={formData.shippingMethod} onChange={handleChange}>
+//     <option value="standard">Standard Ground</option>
+//     <option value="express">Express</option>
+//     <option value="overnight">Overnight</option>
+//   </select>
+// </div>
+// <div className="col-md-12">
+//   <label className="form-label">Special Instructions</label>
+//   <textarea className="form-control" rows="3" name="specialInstruction" value={formData.specialInstruction} onChange={handleChange}></textarea>
+// </div>
+
+// {/* Financial Information */}
+// <h5 className="mb-3 mt-4">Financial Information</h5>
+// <div className="col-md-6">
+//   <label className="form-label">Annual Revenue</label>
+//   <input type="number" className="form-control" name="annualRevenue" value={formData.annualRevenue} onChange={handleChange} />
+// </div>
+// <div className="col-md-6">
+//   <label className="form-label">Credit Rating</label>
+//   <input type="text" className="form-control" name="creditRating" value={formData.creditRating} onChange={handleChange} />
+// </div>
+// <div className="col-md-6">
+//   <label className="form-label">Bank Name</label>
+//   <input type="text" className="form-control" name="bankName" value={formData.bankName} onChange={handleChange} />
+// </div>
+// <div className="col-md-6">
+//   <label className="form-label">Account Number</label>
+//   <input type="text" className="form-control" name="accountNumber" value={formData.accountNumber} onChange={handleChange} />
+// </div>
+// <div className="col-md-6">
+//   <label className="form-label">Fiscal Year End</label>
+//   <input type="date" className="form-control" name="fiscalYearEnd" value={formData.fiscalYearEnd} onChange={handleChange} />
+// </div>
+// <div className="col-md-6">
+//   <label className="form-label">Financial Contact</label>
+//   <input type="text" className="form-control" name="financialContact" value={formData.financialContact} onChange={handleChange} />
+// </div>
+
+// {/* Ledger Information */}
+// <h5 className="mb-3 mt-4">Ledger Information</h5>
+// <div className="col-md-6">
+//   <label className="form-label">Account Code</label>
+//   <input type="text" className="form-control" name="accountCode" value={formData.accountCode} onChange={handleChange} />
+// </div>
+// <div className="col-md-6">
+//   <label className="form-label">Account Type</label>
+//   <select className="form-select" name="accountType" value={formData.accountType} onChange={handleChange}>
+//     <option value="receivable">Accounts Receivable</option>
+//     <option value="payable">Accounts Payable</option>
+//   </select>
+// </div>
+// <div className="col-md-6">
+//   <label className="form-label">Opening Balance</label>
+//   <input type="number" className="form-control" name="openingBalance" value={formData.openingBalance} onChange={handleChange} />
+// </div>
+// <div className="col-md-6">
+//   <label className="form-label">Balance Date</label>
+//   <input type="date" className="form-control" name="balanceDate" value={formData.balanceDate} onChange={handleChange} />
+// </div>
+// <div className="col-md-6">
+//   <label className="form-label">Tax Category</label>
+//   <select className="form-select" name="taxCategory" value={formData.taxCategory} onChange={handleChange}>
+//     <option value="standard">Standard Rate</option>
+//     <option value="reduced">Reduced Rate</option>
+//     <option value="zero">Zero Rate</option>
+//   </select>
+// </div>
+// <div className="col-md-6">
+//   <label className="form-label">Cost Center</label>
+//   <input type="text" className="form-control" name="costCenter" value={formData.costCenter} onChange={handleChange} />
+// </div>
+
+// {/* Additional Information */}
+// <h5 className="mb-3 mt-4">Additional Information</h5>
+// <div className="col-md-6">
+//   <label className="form-label">Payment Terms</label>
+//   <select className="form-select" name="paymentTerms" value={formData.paymentTerms} onChange={handleChange}>
+//     <option value="net30">Net 30</option>
+//     <option value="net60">Net 60</option>
+//     <option value="net90">Net 90</option>
+//   </select>
+// </div>
+// <div className="col-md-6">
+//   <label className="form-label">Credit Limit</label>
+//   <input type="number" className="form-control" name="creditLimit" value={formData.creditLimit} onChange={handleChange} />
+// </div>
+// <div className="col-md-12">
+//   <label className="form-label">Notes</label>
+//   <textarea className="form-control" rows="3" name="notes" value={formData.notes} onChange={handleChange} placeholder="Additional notes"></textarea>
+// </div>
+
+
+//             <div className="col-12 d-flex justify-content-end gap-2 mt-4">
+//               <button type="button" className="btn btn-outline-secondary">Cancel</button>
+//               <button type="submit" id="btn-All" className="btn btn-dark">Create </button>
+//             </div>
+//           </form>
+//         </div>
+//       </div>
+//     </div>
+//     </>
+
+//   );
+// }
+
+// export default AddClientManagement;
 
 
 
 
 
-                    // ////////////
-                    import React, { useState } from 'react';
-                    import Base_Url from '../../ApiUrl/ApiUrl';
-                    import { useLocation, useNavigate, useParams } from 'react-router-dom';
-                    import { toast, ToastContainer } from 'react-toastify';
-                    import 'react-toastify/dist/ReactToastify.css';
-                    import { useDispatch } from 'react-redux';
-                    import { createClients } from '../../../redux/slices/ClientSlice';
-                    import "react-toastify/dist/ReactToastify.css";
-                    
-                    
-                    function AddClientManagement() {
-                      const navigate = useNavigate();
-                      const dispatch = useDispatch();
-                      const { id } = useParams(); // for edit mode
-                      const location = useLocation();
-                      const { client } = location.state || {};
-                      console.log(client);
-                    
-                      // Initial form state
-                      const [formData, setFormData] = useState({
-                        clientName: '',
-                        industry: '',
-                        website: '',
-                        clientAddress: '',
-                        TaxID_VATNumber: '',
-                        CSRCode: '',
-                        Status: 'Active'
-                      });
-                    
-                      // Contact persons state
-                      const [contactPersons, setContactPersons] = useState([
+
+
+// ////////////
+import React, { useState } from 'react';
+import Base_Url from '../../ApiUrl/ApiUrl';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { useDispatch } from 'react-redux';
+import { createClients } from '../../../redux/slices/ClientSlice';
+import "react-toastify/dist/ReactToastify.css";
+
+
+function AddClientManagement() {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const { id } = useParams(); // for edit mode
+  const location = useLocation();
+  const { client } = location.state || {};
+  console.log(client);
+
+  // Initial form state
+  const [formData, setFormData] = useState({
+    clientName: '',
+    industry: '',
+    website: '',
+    clientAddress: '',
+    TaxID_VATNumber: '',
+    CSRCode: '',
+    Status: 'Active'
+  });
+
+  // Contact persons state
+  const [contactPersons, setContactPersons] = useState([
+    {
+      contactName: '',
+      jobTitle: '',
+      email: '',
+      phone: '',
+      department: '',
+      salesRepresentative: ''
+    }
+  ]);
+
+  // Billing information state
+  const [billingInformation, setBillingInformation] = useState([
+    {
+      billingAddress: '',
+      billingContactName: '',
+      billingEmail: '',
+      billingPhone: '',
+      currency: '',
+      preferredPaymentMethod: ''
+    }
+  ]);
+  // Shipping information state
+  const [shippingInformation, setShippingInformation] = useState([
+    {
+      shippingAddress: '',
+      shippingContactName: '',
+      shippingEmail: '',
+      shippingPhone: '',
+      preferredShippingMethod: '',
+      specialInstructions: ''
+    }
+  ]);
+  // Financial information state
+  const [financialInformation, setFinancialInformation] = useState([
+    {
+      annualRevenue: '',
+      creditRating: '',
+      bankName: '',
+      accountNumber: '',
+      fiscalYearEnd: '',
+      financialContact: ''
+    }
+  ]);
+
+  // Ledger information state
+  const [ledgerInformation, setLedgerInformation] = useState([
+    {
+      accountCode: '',
+      accountType: '',
+      openingBalance: '',
+      balanceDate: '',
+      taxCategory: '',
+      costCenter: ''
+    }
+  ]);
+
+  // Additional information state
+  const [additionalInformation, setAdditionalInformation] = useState({
+    paymentTerms: '',
+    creditLimit: '',
+    notes: ''
+  });
+
+
+
+
+  // Handle basic form field changes
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({
+      ...prev,
+      [name]: value
+    }));
+  };
+
+  // Handle contact person changes
+  const handleContactChange = (index, e) => {
+    const { name, value } = e.target;
+    const updatedContacts = [...contactPersons];
+    updatedContacts[index] = {
+      ...updatedContacts[index],
+      [name]: value
+    };
+    setContactPersons(updatedContacts);
+  };
+
+  // Handle billing information changes
+  const handleBillingChange = (index, e) => {
+    const { name, value } = e.target;
+    const updatedBilling = [...billingInformation];
+    updatedBilling[index] = {
+      ...updatedBilling[index],
+      [name]: value
+    };
+    setBillingInformation(updatedBilling);
+  };
+
+  // Handle shipping information changes
+  const handleShippingChange = (index, e) => {
+    const { name, value } = e.target;
+    const updatedShipping = [...shippingInformation];
+    updatedShipping[index] = {
+      ...updatedShipping[index],
+      [name]: value
+    };
+    setShippingInformation(updatedShipping);
+  };
+
+  // Handle financial information changes
+  const handleFinancialChange = (index, e) => {
+    const { name, value } = e.target;
+    const updatedFinancial = [...financialInformation];
+    updatedFinancial[index] = {
+      ...updatedFinancial[index],
+      [name]: value
+    };
+    setFinancialInformation(updatedFinancial);
+  };
+
+  // Handle ledger information changes
+  const handleLedgerChange = (index, e) => {
+    const { name, value } = e.target;
+    const updatedLedger = [...ledgerInformation];
+    updatedLedger[index] = {
+      ...updatedLedger[index],
+      [name]: value
+    };
+    setLedgerInformation(updatedLedger);
+  };
+
+
+  const handleAdditionalChange = (e) => {
+    const { name, value } = e.target;
+    setAdditionalInformation(prev => ({
+      ...prev,
+      [name]: value
+    }));
+  };
+
+  // Handle form submission
+  //   const handleSubmit = async (e) => {
+  //     e.preventDefault();
+
+  //     const fullData = {
+  //       ...formData,
+  //       contactPersons,
+  //       billingInformation,
+  //       shippingInformation,
+  //       financialInformation,
+  //       ledgerInformation,
+  //       additionalInformation
+  //     };
+
+  //     console.log('Full Data Object:', fullData);
+  //  dispatch(createClients(fullData))
+  //     if (id) {
+  //       dispatch(createClients(fullData))
+  //         .unwrap()
+  //         .then(() => {
+  //           toast.success("Project updated successfully!");
+  //           // navigate("/plantMachinery");
+  //         })
+  //         .catch(() => {
+  //           toast.error("Failed to update project!");
+  //         });
+  //     } else {
+  //           dispatch(createClients(fullData))
+  //         .unwrap()
+  //         .then(() => {
+  //           toast.success("Project created successfully!");
+  //           // navigate("/projectList");
+  //         })
+  //         .catch(() => {
+  //           toast.error("Error creating project");
+  //         });
+  //     }
+  //   };
+
+
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    const fullData = {
+      ...formData,
+      contactPersons,
+      billingInformation,
+      shippingInformation,
+      financialInformation,
+      ledgerInformation,
+      additionalInformation
+    };
+    dispatch(createClients(fullData))
+      .unwrap()
+      .then(() => {
+        toast.success("Project created successfully!");
+        navigate("/clientManagement");
+      })
+      .catch(() => {
+        toast.error("Error creating project");
+      });
+
+  };
+
+
+  return (
+    <>
+      <ToastContainer />
+      <div className="container mt-5">
+        <div className="card shadow-sm">
+          <div className="card-body">
+            <h1 className="card-title h4 mb-4">Add Company</h1>
+            <form className="row g-3" onSubmit={handleSubmit}>
+              <div className='col-md-3'>  <h6 className="mb-3">Client/Supplier Information</h6></div>
+              <div className="col-md-6"></div>
+              <div className="col-md-6">
+                <label className="form-label">Name</label>
+                <input type="text" name="clientName" value={formData.clientName} onChange={handleChange} className="form-control" placeholder="Enter  name" />
+              </div>
+              <div className="col-md-6">
+                <label className="form-label">Industry</label>
+                <select className="form-select" name="industry" value={formData.industry} onChange={handleChange}>
+                  <option value="">Select industry</option>
+                  <option value="manufacturing">Manufacturing</option>
+                  <option value="tech">Technology</option>
+                  <option value="retail">Retail</option>
+                </select>
+              </div>
+              <div className="col-md-6">
+                <label className="form-label">Website</label>
+                <input type="url" name="website" value={formData.website} onChange={handleChange} className="form-control" placeholder="https://" />
+              </div>
+              <div className="col-md-6">
+                <label className="form-label">Client Address</label>
+                <textarea className="form-control" name="clientAddress" value={formData.clientAddress} onChange={handleChange}></textarea>
+              </div>
+              <div className="col-md-6">
+                <label className="form-label">Tax ID/VAT Number</label>
+                <input type="text" name="TaxID_VATNumber" value={formData.TaxID_VATNumber} onChange={handleChange} className="form-control" />
+              </div>
+              <div className="col-md-6">
+                <label className="form-label">CSR Code</label>
+                <input type="text" name="CSRCode" value={formData.CSRCode} onChange={handleChange} className="form-control" />
+              </div>
+              <div className="col-md-6">
+                <label className="form-label">Status</label>
+                <select className="form-select" name="Status" value={formData.Status} onChange={handleChange}>
+                  <option value="active">Active</option>
+                  <option value="inactive">Inactive</option>
+                </select>
+              </div>
+              <div className='col-md-12 row'>
+                <h5 className="mb-3 mt-4">Contact Persons</h5>
+
+                {contactPersons.map((contact, index) => (
+                  <div className="border p-3 mb-3" key={index}>
+                    <div className="row">
+                      <div className="col-md-6">
+                        <label className="form-label">Contact Name</label>
+                        <input
+                          type="text"
+                          name="contactName"
+                          value={contact.contactName}
+                          onChange={(e) => handleContactChange(index, e)}
+                          className="form-control"
+                          placeholder="Enter Contact Name"
+                        />
+                      </div>
+
+                      <div className="col-md-6">
+                        <label className="form-label">Job Title</label>
+                        <input
+                          type="text"
+                          name="jobTitle"
+                          value={contact.jobTitle}
+                          onChange={(e) => handleContactChange(index, e)}
+                          className="form-control"
+                          placeholder="Enter Job Title"
+                        />
+                      </div>
+
+                      <div className="col-md-6">
+                        <label className="form-label">Email</label>
+                        <input
+                          type="email"
+                          name="email"
+                          value={contact.email}
+                          onChange={(e) => handleContactChange(index, e)}
+                          className="form-control"
+                          placeholder="Enter Email"
+                        />
+                      </div>
+
+                      <div className="col-md-6">
+                        <label className="form-label">Phone</label>
+                        <input
+                          type="tel"
+                          name="phone"
+                          value={contact.phone}
+                          onChange={(e) => handleContactChange(index, e)}
+                          className="form-control"
+                          placeholder="Enter Phone"
+                        />
+                      </div>
+
+                      <div className="col-md-6">
+                        <label className="form-label">Department</label>
+                        <input
+                          type="text"
+                          name="department"
+                          value={contact.department}
+                          onChange={(e) => handleContactChange(index, e)}
+                          className="form-control"
+                          placeholder="Enter Department"
+                        />
+                      </div>
+
+                      <div className="col-md-6">
+                        <label className="form-label">Sales Representative</label>
+                        <input
+                          type="text"
+                          name="salesRepresentative"
+                          value={contact.salesRepresentative}
+                          onChange={(e) => handleContactChange(index, e)}
+                          className="form-control"
+                          placeholder="Enter Sales Representative"
+                        />
+                      </div>
+
+                      <div className="col-md-12 mt-2 d-flex justify-content-end">
+                        {contactPersons.length > 1 && (
+                          <button
+                            type="button"
+                            className="btn btn-danger btn-sm"
+                            onClick={() => {
+                              const updatedContacts = [...contactPersons];
+                              updatedContacts.splice(index, 1);
+                              setContactPersons(updatedContacts);
+                            }}
+                          >
+                            Remove
+                          </button>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                ))}
+
+                {/* Add More Button */}
+                <div className="mb-3">
+                  <button
+                    type="button"
+                    className="btn btn-primary"
+                    onClick={() => {
+                      setContactPersons([
+                        ...contactPersons,
                         {
                           contactName: '',
                           jobTitle: '',
@@ -3496,539 +3852,180 @@ export default AddProjectList;
                           salesRepresentative: ''
                         }
                       ]);
-                    
-                      // Billing information state
-                      const [billingInformation, setBillingInformation] = useState([
-                        {
-                          billingAddress: '',
-                          billingContactName: '',
-                          billingEmail: '',
-                          billingPhone: '',
-                          currency: '',
-                          preferredPaymentMethod: ''
-                        }
-                      ]);
-                      // Shipping information state
-                      const [shippingInformation, setShippingInformation] = useState([
-                        {
-                          shippingAddress: '',
-                          shippingContactName: '',
-                          shippingEmail: '',
-                          shippingPhone: '',
-                          preferredShippingMethod: '',
-                          specialInstructions: ''
-                        }
-                      ]);
-                      // Financial information state
-                      const [financialInformation, setFinancialInformation] = useState([
-                        {
-                          annualRevenue: '',
-                          creditRating: '',
-                          bankName: '',
-                          accountNumber: '',
-                          fiscalYearEnd: '',
-                          financialContact: ''
-                        }
-                      ]);
-                    
-                      // Ledger information state
-                      const [ledgerInformation, setLedgerInformation] = useState([
-                        {
-                          accountCode: '',
-                          accountType: '',
-                          openingBalance: '',
-                          balanceDate: '',
-                          taxCategory: '',
-                          costCenter: ''
-                        }
-                      ]);
-                    
-                      // Additional information state
-                      const [additionalInformation, setAdditionalInformation] = useState({
-                        paymentTerms: '',
-                        creditLimit: '',
-                        notes: ''
-                      });
-                    
-                    
-                    
-                      
-                      // Handle basic form field changes
-                      const handleChange = (e) => {
-                        const { name, value } = e.target;
-                        setFormData(prev => ({
-                          ...prev,
-                          [name]: value
-                        }));
-                      };
-                    
-                      // Handle contact person changes
-                      const handleContactChange = (index, e) => {
-                        const { name, value } = e.target;
-                        const updatedContacts = [...contactPersons];
-                        updatedContacts[index] = {
-                          ...updatedContacts[index],
-                          [name]: value
-                        };
-                        setContactPersons(updatedContacts);
-                      };
-                    
-                      // Handle billing information changes
-                      const handleBillingChange = (index, e) => {
-                        const { name, value } = e.target;
-                        const updatedBilling = [...billingInformation];
-                        updatedBilling[index] = {
-                          ...updatedBilling[index],
-                          [name]: value
-                        };
-                        setBillingInformation(updatedBilling);
-                      };
-                    
-                      // Handle shipping information changes
-                      const handleShippingChange = (index, e) => {
-                        const { name, value } = e.target;
-                        const updatedShipping = [...shippingInformation];
-                        updatedShipping[index] = {
-                          ...updatedShipping[index],
-                          [name]: value
-                        };
-                        setShippingInformation(updatedShipping);
-                      };
-                    
-                      // Handle financial information changes
-                      const handleFinancialChange = (index, e) => {
-                        const { name, value } = e.target;
-                        const updatedFinancial = [...financialInformation];
-                        updatedFinancial[index] = {
-                          ...updatedFinancial[index],
-                          [name]: value
-                        };
-                        setFinancialInformation(updatedFinancial);
-                      };
-                    
-                      // Handle ledger information changes
-                      const handleLedgerChange = (index, e) => {
-                        const { name, value } = e.target;
-                        const updatedLedger = [...ledgerInformation];
-                        updatedLedger[index] = {
-                          ...updatedLedger[index],
-                          [name]: value
-                        };
-                        setLedgerInformation(updatedLedger);
-                      };
-                    
-                    
-                      const handleAdditionalChange = (e) => {
-                        const { name, value } = e.target;
-                        setAdditionalInformation(prev => ({
-                          ...prev,
-                          [name]: value
-                        }));
-                      };
-                    
-                      // Handle form submission
-                    //   const handleSubmit = async (e) => {
-                    //     e.preventDefault();
-                    
-                    //     const fullData = {
-                    //       ...formData,
-                    //       contactPersons,
-                    //       billingInformation,
-                    //       shippingInformation,
-                    //       financialInformation,
-                    //       ledgerInformation,
-                    //       additionalInformation
-                    //     };
-                    
-                    //     console.log('Full Data Object:', fullData);
-                    //  dispatch(createClients(fullData))
-                    //     if (id) {
-                    //       dispatch(createClients(fullData))
-                    //         .unwrap()
-                    //         .then(() => {
-                    //           toast.success("Project updated successfully!");
-                    //           // navigate("/plantMachinery");
-                    //         })
-                    //         .catch(() => {
-                    //           toast.error("Failed to update project!");
-                    //         });
-                    //     } else {
-                    //           dispatch(createClients(fullData))
-                    //         .unwrap()
-                    //         .then(() => {
-                    //           toast.success("Project created successfully!");
-                    //           // navigate("/projectList");
-                    //         })
-                    //         .catch(() => {
-                    //           toast.error("Error creating project");
-                    //         });
-                    //     }
-                    //   };
-                    
-                    
-                    
-                      const handleSubmit = async (e) => {
-                        e.preventDefault();
-                    
-                        const fullData = {
-                          ...formData,
-                          contactPersons,
-                          billingInformation,
-                          shippingInformation,
-                          financialInformation,
-                          ledgerInformation,
-                          additionalInformation
-                        };
-                              dispatch(createClients(fullData))
-                            .unwrap()
-                            .then(() => {
-                              toast.success("Project created successfully!");
-                              navigate("/clientManagement");
-                            })
-                            .catch(() => {
-                              toast.error("Error creating project");
-                            });
-                        
-                      };
-                    
-                    
-                      return (
-                        <>
-                          <ToastContainer />
-                          <div className="container mt-5">
-                            <div className="card shadow-sm">
-                              <div className="card-body">
-                                <h1 className="card-title h4 mb-4">Add Company</h1>
-                                <form className="row g-3" onSubmit={handleSubmit}>
-                                  <div className='col-md-3'>  <h6 className="mb-3">Client/Supplier Information</h6></div>
-                                  <div className="col-md-6"></div>
-                                  <div className="col-md-6">
-                                    <label className="form-label">Name</label>
-                                    <input type="text" name="clientName" value={formData.clientName} onChange={handleChange} className="form-control" placeholder="Enter  name" />
-                                  </div>
-                                  <div className="col-md-6">
-                                    <label className="form-label">Industry</label>
-                                    <select className="form-select" name="industry" value={formData.industry} onChange={handleChange}>
-                                      <option value="">Select industry</option>
-                                      <option value="manufacturing">Manufacturing</option>
-                                      <option value="tech">Technology</option>
-                                      <option value="retail">Retail</option>
-                                    </select>
-                                  </div>
-                                  <div className="col-md-6">
-                                    <label className="form-label">Website</label>
-                                    <input type="url" name="website" value={formData.website} onChange={handleChange} className="form-control" placeholder="https://" />
-                                  </div>
-                                  <div className="col-md-6">
-                                    <label className="form-label">Client Address</label>
-                                    <textarea className="form-control" name="clientAddress" value={formData.clientAddress} onChange={handleChange}></textarea>
-                                  </div>
-                                  <div className="col-md-6">
-                                    <label className="form-label">Tax ID/VAT Number</label>
-                                    <input type="text" name="TaxID_VATNumber" value={formData.TaxID_VATNumber} onChange={handleChange} className="form-control" />
-                                  </div>
-                                  <div className="col-md-6">
-                                    <label className="form-label">CSR Code</label>
-                                    <input type="text" name="CSRCode" value={formData.CSRCode} onChange={handleChange} className="form-control" />
-                                  </div>
-                                  <div className="col-md-6">
-                                    <label className="form-label">Status</label>
-                                    <select className="form-select" name="Status" value={formData.Status} onChange={handleChange}>
-                                      <option value="active">Active</option>
-                                      <option value="inactive">Inactive</option>
-                                    </select>
-                                  </div>
-                                  <div className='col-md-12 row'>
-                                    <h5 className="mb-3 mt-4">Contact Persons</h5>
-                    
-                                    {contactPersons.map((contact, index) => (
-                                      <div className="border p-3 mb-3" key={index}>
-                                        <div className="row">
-                                          <div className="col-md-6">
-                                            <label className="form-label">Contact Name</label>
-                                            <input
-                                              type="text"
-                                              name="contactName"
-                                              value={contact.contactName}
-                                              onChange={(e) => handleContactChange(index, e)}
-                                              className="form-control"
-                                              placeholder="Enter Contact Name"
-                                            />
-                                          </div>
-                    
-                                          <div className="col-md-6">
-                                            <label className="form-label">Job Title</label>
-                                            <input
-                                              type="text"
-                                              name="jobTitle"
-                                              value={contact.jobTitle}
-                                              onChange={(e) => handleContactChange(index, e)}
-                                              className="form-control"
-                                              placeholder="Enter Job Title"
-                                            />
-                                          </div>
-                    
-                                          <div className="col-md-6">
-                                            <label className="form-label">Email</label>
-                                            <input
-                                              type="email"
-                                              name="email"
-                                              value={contact.email}
-                                              onChange={(e) => handleContactChange(index, e)}
-                                              className="form-control"
-                                              placeholder="Enter Email"
-                                            />
-                                          </div>
-                    
-                                          <div className="col-md-6">
-                                            <label className="form-label">Phone</label>
-                                            <input
-                                              type="tel"
-                                              name="phone"
-                                              value={contact.phone}
-                                              onChange={(e) => handleContactChange(index, e)}
-                                              className="form-control"
-                                              placeholder="Enter Phone"
-                                            />
-                                          </div>
-                    
-                                          <div className="col-md-6">
-                                            <label className="form-label">Department</label>
-                                            <input
-                                              type="text"
-                                              name="department"
-                                              value={contact.department}
-                                              onChange={(e) => handleContactChange(index, e)}
-                                              className="form-control"
-                                              placeholder="Enter Department"
-                                            />
-                                          </div>
-                    
-                                          <div className="col-md-6">
-                                            <label className="form-label">Sales Representative</label>
-                                            <input
-                                              type="text"
-                                              name="salesRepresentative"
-                                              value={contact.salesRepresentative}
-                                              onChange={(e) => handleContactChange(index, e)}
-                                              className="form-control"
-                                              placeholder="Enter Sales Representative"
-                                            />
-                                          </div>
-                    
-                                          <div className="col-md-12 mt-2 d-flex justify-content-end">
-                                            {contactPersons.length > 1 && (
-                                              <button
-                                                type="button"
-                                                className="btn btn-danger btn-sm"
-                                                onClick={() => {
-                                                  const updatedContacts = [...contactPersons];
-                                                  updatedContacts.splice(index, 1);
-                                                  setContactPersons(updatedContacts);
-                                                }}
-                                              >
-                                                Remove
-                                              </button>
-                                            )}
-                                          </div>
-                                        </div>
-                                      </div>
-                                    ))}
-                    
-                                    {/* Add More Button */}
-                                    <div className="mb-3">
-                                      <button
-                                        type="button"
-                                        className="btn btn-primary"
-                                        onClick={() => {
-                                          setContactPersons([
-                                            ...contactPersons,
-                                            {
-                                              contactName: '',
-                                              jobTitle: '',
-                                              email: '',
-                                              phone: '',
-                                              department: '',
-                                              salesRepresentative: ''
-                                            }
-                                          ]);
-                                        }}
-                                      >
-                                        + Add Another Contact
-                                      </button>
-                                    </div>
-                                  </div>
-                    
-                                  {/* Billing Information */}
-                                  <div className='col-md-12 row'>
-                                    <h5 className="mb-3 mt-4">Billing Information</h5>
-                                    <div className="col-md-12">
-                                      <label className="form-label">Billing Address</label>
-                                      <textarea className="form-control" rows="3" name="billingAddress" value={billingInformation[0].billingAddress} onChange={(e) => handleBillingChange(0, e)}></textarea>
-                                    </div>
-                                    <div className="col-md-6">
-                                      <label className="form-label">Billing Contact Name</label>
-                                      <input type="text" className="form-control" name="billingContactName" value={billingInformation[0].billingContactName} onChange={(e) => handleBillingChange(0, e)} />
-                                    </div>
-                                    <div className="col-md-6">
-                                      <label className="form-label">Billing Email</label>
-                                      <input type="email" className="form-control" name="billingEmail" value={billingInformation[0].billingEmail} onChange={(e) => handleBillingChange(0, e)} />
-                                    </div>
-                                    <div className="col-md-6">
-                                      <label className="form-label">Billing Phone</label>
-                                      <input type="tel" className="form-control" name="billingPhone" value={billingInformation[0].billingPhone} onChange={(e) => handleBillingChange(0, e)} />
-                                    </div>
-                                    <div className="col-md-6">
-                                      <label className="form-label">Currency</label>
-                                      <select className="form-select" name="currency" value={billingInformation[0].currency} onChange={(e) => handleBillingChange(0, e)}>
-                                        <option value="USD">USD</option>
-                                        <option value="EUR">EUR</option>
-                                        <option value="GBP">GBP</option>
-                                      </select>
-                                    </div>
-                                    <div className="col-md-6">
-                                      <label className="form-label">Preferred Payment Method</label>
-                                      <select className="form-select" name="preferredPaymentMethod" value={billingInformation[0].preferredPaymentMethod} onChange={(e) => handleBillingChange(0, e)}>
-                                        <option value="">Select Payment Method</option>
-                                        <option value="BankTransfer">BankTransfer</option>
-                                        <option value="CreditCard">CreditCard</option>
-                                        <option value="Check">Check</option>
-                                      </select>
-                                    </div>
-                    
-                                    {/* Shipping Information */}
-                                    <h5 className="mb-3 mt-4">Shipping Information</h5>
-                                    <div className="col-md-12">
-                                      <label className="form-label">Shipping Address</label>
-                                      <textarea className="form-control" rows="3" name="shippingAddress" value={shippingInformation[0].shippingAddress} onChange={(e) => handleShippingChange(0, e)}></textarea>
-                                    </div>
-                                    <div className="col-md-6">
-                                      <label className="form-label">Shipping Contact Name</label>
-                                      <input type="text" className="form-control" name="shippingContactName" value={shippingInformation[0].shippingContactName} onChange={(e) => handleShippingChange(0, e)} />
-                                    </div>
-                                    <div className="col-md-6">
-                                      <label className="form-label">Shipping Email</label>
-                                      <input type="email" className="form-control" name="shippingEmail" value={shippingInformation[0].shippingEmail} onChange={(e) => handleShippingChange(0, e)} />
-                                    </div>
-                                    <div className="col-md-6">
-                                      <label className="form-label">Shipping Phone</label>
-                                      <input type="tel" className="form-control" name="shippingPhone" value={shippingInformation[0].shippingPhone} onChange={(e) => handleShippingChange(0, e)} />
-                                    </div>
-                                    <div className="col-md-6">
-                                      <label className="form-label">Preferred Shipping Method</label>
-                                      <select className="form-select" name="preferredShippingMethod" value={shippingInformation[0].preferredShippingMethod} onChange={(e) => handleShippingChange(0, e)}>
-                                        <option value="">Select Shipping Method</option>
-                                        <option value="Standard">Standard</option>
-                                        <option value="Express">Express</option>
-                                        <option value="Overnight">Overnight</option>
-                                        <option value="Ground">Ground</option>
-                                      </select>
-                                    </div>
-                                    <div className="col-md-12">
-                                      <label className="form-label">Special Instructions</label>
-                                      <textarea className="form-control" rows="3" name="specialInstructions" value={shippingInformation[0].specialInstructions} onChange={(e) => handleShippingChange(0, e)}></textarea>
-                                    </div>
-                    
-                                    {/* Financial Information */}
-                                    <h5 className="mb-3 mt-4">Financial Information</h5>
-                                    <div className="col-md-6">
-                                      <label className="form-label">Annual Revenue</label>
-                                      <input type="number" className="form-control" name="annualRevenue" value={financialInformation[0].annualRevenue} onChange={(e) => handleFinancialChange(0, e)} />
-                                    </div>
-                                    <div className="col-md-6">
-                                      <label className="form-label">Credit Rating</label>
-                                      <input type="text" className="form-control" name="creditRating" value={financialInformation[0].creditRating} onChange={(e) => handleFinancialChange(0, e)} />
-                                    </div>
-                                    <div className="col-md-6">
-                                      <label className="form-label">Bank Name</label>
-                                      <input type="text" className="form-control" name="bankName" value={financialInformation[0].bankName} onChange={(e) => handleFinancialChange(0, e)} />
-                                    </div>
-                                    <div className="col-md-6">
-                                      <label className="form-label">Account Number</label>
-                                      <input type="text" className="form-control" name="accountNumber" value={financialInformation[0].accountNumber} onChange={(e) => handleFinancialChange(0, e)} />
-                                    </div>
-                                    <div className="col-md-6">
-                                      <label className="form-label">Fiscal Year End</label>
-                                      <input type="date" className="form-control" name="fiscalYearEnd" value={financialInformation[0].fiscalYearEnd} onChange={(e) => handleFinancialChange(0, e)} />
-                                    </div>
-                                    <div className="col-md-6">
-                                      <label className="form-label">Financial Contact</label>
-                                      <input type="text" className="form-control" name="financialContact" value={financialInformation[0].financialContact} onChange={(e) => handleFinancialChange(0, e)} />
-                                    </div>
-                    
-                                    {/* Ledger Information */}
-                                    <h5 className="mb-3 mt-4">Ledger Information</h5>
-                                    <div className="col-md-6">
-                                      <label className="form-label">Account Code</label>
-                                      <input type="text" className="form-control" name="accountCode" value={ledgerInformation[0].accountCode} onChange={(e) => handleLedgerChange(0, e)} />
-                                    </div>
-                                    <div className="col-md-6">
-                                      <label className="form-label">Account Type</label>
-                                      <select className="form-select" name="accountType" value={ledgerInformation[0].accountType} onChange={(e) => handleLedgerChange(0, e)}>
-                                        <option value="">Select Account Type</option>
-                                        <option value="AccountsReceivable">AccountsReceivable</option>
-                                        <option value="AccountsPayable">AccountsPayable</option>
-                                      </select>
-                                    </div>
-                                    <div className="col-md-6">
-                                      <label className="form-label">Opening Balance</label>
-                                      <input type="number" className="form-control" name="openingBalance" value={ledgerInformation[0].openingBalance} onChange={(e) => handleLedgerChange(0, e)} />
-                                    </div>
-                                    <div className="col-md-6">
-                                      <label className="form-label">Balance Date</label>
-                                      <input type="date" className="form-control" name="balanceDate" value={ledgerInformation[0].balanceDate} onChange={(e) => handleLedgerChange(0, e)} />
-                                    </div>
-                                    <div className="col-md-6">
-                                      <label className="form-label">Tax Category</label>
-                                      <select className="form-select" name="taxCategory" value={ledgerInformation[0].taxCategory} onChange={(e) => handleLedgerChange(0, e)}>
-                                        <option value="standard">Standard Rate</option>
-                                        <option value="reduced">Reduced Rate</option>
-                                        <option value="zero">Zero Rate</option>
-                                      </select>
-                                    </div>
-                                    <div className="col-md-6">
-                                      <label className="form-label">Cost Center</label>
-                                      <input type="text" className="form-control" name="costCenter" value={ledgerInformation[0].costCenter} onChange={(e) => handleLedgerChange(0, e)} />
-                                    </div>
-                    
-                                    {/* Additional Information */}
-                                    <h5 className="mb-3 mt-4">Additional Information</h5>
-                                    <div className="col-md-6">
-                                      <label className="form-label">Payment Terms</label>
-                                      <select className="form-select" name="paymentTerms" value={additionalInformation.paymentTerms} onChange={handleAdditionalChange}>
-                                        <option value="net30">Net 30</option>
-                                        <option value="net60">Net 60</option>
-                                        <option value="net90">Net 90</option>
-                                      </select>
-                                    </div>
-                                    <div className="col-md-6">
-                                      <label className="form-label">Credit Limit</label>
-                                      <input type="number" className="form-control" name="creditLimit" value={additionalInformation.creditLimit} onChange={handleAdditionalChange} />
-                                    </div>
-                                  </div>
-                                  <div className="col-md-12">
-                                    <label className="form-label">Notes</label>
-                                    <textarea className="form-control" rows="3" name="notes" value={additionalInformation.notes} onChange={handleAdditionalChange} placeholder="Additional notes"></textarea>
-                                  </div>
-                    
-                    
-                                  <div className="col-12 d-flex justify-content-end gap-2 mt-4">
-                                    <button type="button" className="btn btn-outline-secondary">Cancel</button>
-                                    <button type="submit" id="btn-All" className="btn btn-dark">Create </button>
-                                  </div>
-                                </form>
-                              </div>
-                            </div>
-                          </div>
-                        </>
-                    
-                      );
-                    }
-                    
-                    export default AddClientManagement;
-                    
-                    
-                    
+                    }}
+                  >
+                    + Add Another Contact
+                  </button>
+                </div>
+              </div>
+
+              {/* Billing Information */}
+              <div className='col-md-12 row'>
+                <h5 className="mb-3 mt-4">Billing Information</h5>
+                <div className="col-md-12">
+                  <label className="form-label">Billing Address</label>
+                  <textarea className="form-control" rows="3" name="billingAddress" value={billingInformation[0].billingAddress} onChange={(e) => handleBillingChange(0, e)}></textarea>
+                </div>
+                <div className="col-md-6">
+                  <label className="form-label">Billing Contact Name</label>
+                  <input type="text" className="form-control" name="billingContactName" value={billingInformation[0].billingContactName} onChange={(e) => handleBillingChange(0, e)} />
+                </div>
+                <div className="col-md-6">
+                  <label className="form-label">Billing Email</label>
+                  <input type="email" className="form-control" name="billingEmail" value={billingInformation[0].billingEmail} onChange={(e) => handleBillingChange(0, e)} />
+                </div>
+                <div className="col-md-6">
+                  <label className="form-label">Billing Phone</label>
+                  <input type="tel" className="form-control" name="billingPhone" value={billingInformation[0].billingPhone} onChange={(e) => handleBillingChange(0, e)} />
+                </div>
+                <div className="col-md-6">
+                  <label className="form-label">Currency</label>
+                  <select className="form-select" name="currency" value={billingInformation[0].currency} onChange={(e) => handleBillingChange(0, e)}>
+                    <option value="USD">USD</option>
+                    <option value="EUR">EUR</option>
+                    <option value="GBP">GBP</option>
+                  </select>
+                </div>
+                <div className="col-md-6">
+                  <label className="form-label">Preferred Payment Method</label>
+                  <select className="form-select" name="preferredPaymentMethod" value={billingInformation[0].preferredPaymentMethod} onChange={(e) => handleBillingChange(0, e)}>
+                    <option value="">Select Payment Method</option>
+                    <option value="BankTransfer">BankTransfer</option>
+                    <option value="CreditCard">CreditCard</option>
+                    <option value="Check">Check</option>
+                  </select>
+                </div>
+
+                {/* Shipping Information */}
+                <h5 className="mb-3 mt-4">Shipping Information</h5>
+                <div className="col-md-12">
+                  <label className="form-label">Shipping Address</label>
+                  <textarea className="form-control" rows="3" name="shippingAddress" value={shippingInformation[0].shippingAddress} onChange={(e) => handleShippingChange(0, e)}></textarea>
+                </div>
+                <div className="col-md-6">
+                  <label className="form-label">Shipping Contact Name</label>
+                  <input type="text" className="form-control" name="shippingContactName" value={shippingInformation[0].shippingContactName} onChange={(e) => handleShippingChange(0, e)} />
+                </div>
+                <div className="col-md-6">
+                  <label className="form-label">Shipping Email</label>
+                  <input type="email" className="form-control" name="shippingEmail" value={shippingInformation[0].shippingEmail} onChange={(e) => handleShippingChange(0, e)} />
+                </div>
+                <div className="col-md-6">
+                  <label className="form-label">Shipping Phone</label>
+                  <input type="tel" className="form-control" name="shippingPhone" value={shippingInformation[0].shippingPhone} onChange={(e) => handleShippingChange(0, e)} />
+                </div>
+                <div className="col-md-6">
+                  <label className="form-label">Preferred Shipping Method</label>
+                  <select className="form-select" name="preferredShippingMethod" value={shippingInformation[0].preferredShippingMethod} onChange={(e) => handleShippingChange(0, e)}>
+                    <option value="">Select Shipping Method</option>
+                    <option value="Standard">Standard</option>
+                    <option value="Express">Express</option>
+                    <option value="Overnight">Overnight</option>
+                    <option value="Ground">Ground</option>
+                  </select>
+                </div>
+                <div className="col-md-12">
+                  <label className="form-label">Special Instructions</label>
+                  <textarea className="form-control" rows="3" name="specialInstructions" value={shippingInformation[0].specialInstructions} onChange={(e) => handleShippingChange(0, e)}></textarea>
+                </div>
+
+                {/* Financial Information */}
+                <h5 className="mb-3 mt-4">Financial Information</h5>
+                <div className="col-md-6">
+                  <label className="form-label">Annual Revenue</label>
+                  <input type="number" className="form-control" name="annualRevenue" value={financialInformation[0].annualRevenue} onChange={(e) => handleFinancialChange(0, e)} />
+                </div>
+                <div className="col-md-6">
+                  <label className="form-label">Credit Rating</label>
+                  <input type="text" className="form-control" name="creditRating" value={financialInformation[0].creditRating} onChange={(e) => handleFinancialChange(0, e)} />
+                </div>
+                <div className="col-md-6">
+                  <label className="form-label">Bank Name</label>
+                  <input type="text" className="form-control" name="bankName" value={financialInformation[0].bankName} onChange={(e) => handleFinancialChange(0, e)} />
+                </div>
+                <div className="col-md-6">
+                  <label className="form-label">Account Number</label>
+                  <input type="text" className="form-control" name="accountNumber" value={financialInformation[0].accountNumber} onChange={(e) => handleFinancialChange(0, e)} />
+                </div>
+                <div className="col-md-6">
+                  <label className="form-label">Fiscal Year End</label>
+                  <input type="date" className="form-control" name="fiscalYearEnd" value={financialInformation[0].fiscalYearEnd} onChange={(e) => handleFinancialChange(0, e)} />
+                </div>
+                <div className="col-md-6">
+                  <label className="form-label">Financial Contact</label>
+                  <input type="text" className="form-control" name="financialContact" value={financialInformation[0].financialContact} onChange={(e) => handleFinancialChange(0, e)} />
+                </div>
+
+                {/* Ledger Information */}
+                <h5 className="mb-3 mt-4">Ledger Information</h5>
+                <div className="col-md-6">
+                  <label className="form-label">Account Code</label>
+                  <input type="text" className="form-control" name="accountCode" value={ledgerInformation[0].accountCode} onChange={(e) => handleLedgerChange(0, e)} />
+                </div>
+                <div className="col-md-6">
+                  <label className="form-label">Account Type</label>
+                  <select className="form-select" name="accountType" value={ledgerInformation[0].accountType} onChange={(e) => handleLedgerChange(0, e)}>
+                    <option value="">Select Account Type</option>
+                    <option value="AccountsReceivable">AccountsReceivable</option>
+                    <option value="AccountsPayable">AccountsPayable</option>
+                  </select>
+                </div>
+                <div className="col-md-6">
+                  <label className="form-label">Opening Balance</label>
+                  <input type="number" className="form-control" name="openingBalance" value={ledgerInformation[0].openingBalance} onChange={(e) => handleLedgerChange(0, e)} />
+                </div>
+                <div className="col-md-6">
+                  <label className="form-label">Balance Date</label>
+                  <input type="date" className="form-control" name="balanceDate" value={ledgerInformation[0].balanceDate} onChange={(e) => handleLedgerChange(0, e)} />
+                </div>
+                <div className="col-md-6">
+                  <label className="form-label">Tax Category</label>
+                  <select className="form-select" name="taxCategory" value={ledgerInformation[0].taxCategory} onChange={(e) => handleLedgerChange(0, e)}>
+                    <option value="standard">Standard Rate</option>
+                    <option value="reduced">Reduced Rate</option>
+                    <option value="zero">Zero Rate</option>
+                  </select>
+                </div>
+                <div className="col-md-6">
+                  <label className="form-label">Cost Center</label>
+                  <input type="text" className="form-control" name="costCenter" value={ledgerInformation[0].costCenter} onChange={(e) => handleLedgerChange(0, e)} />
+                </div>
+
+                {/* Additional Information */}
+                <h5 className="mb-3 mt-4">Additional Information</h5>
+                <div className="col-md-6">
+                  <label className="form-label">Payment Terms</label>
+                  <select className="form-select" name="paymentTerms" value={additionalInformation.paymentTerms} onChange={handleAdditionalChange}>
+                    <option value="net30">Net 30</option>
+                    <option value="net60">Net 60</option>
+                    <option value="net90">Net 90</option>
+                  </select>
+                </div>
+                <div className="col-md-6">
+                  <label className="form-label">Credit Limit</label>
+                  <input type="number" className="form-control" name="creditLimit" value={additionalInformation.creditLimit} onChange={handleAdditionalChange} />
+                </div>
+              </div>
+              <div className="col-md-12">
+                <label className="form-label">Notes</label>
+                <textarea className="form-control" rows="3" name="notes" value={additionalInformation.notes} onChange={handleAdditionalChange} placeholder="Additional notes"></textarea>
+              </div>
+
+
+              <div className="col-12 d-flex justify-content-end gap-2 mt-4">
+                <button type="button" className="btn btn-outline-secondary">Cancel</button>
+                <button type="submit" id="btn-All" className="btn btn-dark">Create </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </>
+
+  );
+}
+
+export default AddClientManagement;
 
 
 
@@ -4044,7 +4041,10 @@ export default AddProjectList;
 
 
 
-                    
+
+
+
+
 // Api complete code api working rol ok 
 // import React, { useState } from "react";
 // import { useDispatch } from "react-redux";
@@ -4088,7 +4088,7 @@ export default AddProjectList;
 //       // }
 //       localStorage.setItem("authToken", token);
 //       localStorage.setItem("userRole", role);
-        
+
 //           toast.success("Project created successfully!");
 //       if (role === "admin") {
 //         navigate("/admin/dashboard");
@@ -4199,12 +4199,6 @@ export default AddProjectList;
 
 // export default Login;
 
-                    
-                    
-                    
-                    
-                    
-                    
 
 
 
@@ -4219,611 +4213,616 @@ export default AddProjectList;
 
 
 
-                    import React, { useState } from 'react';
-                    import UserRoleModal from './UserRoleModal';
-                    import { FaEdit, FaTrashAlt } from 'react-icons/fa';
-                    import { Link } from 'react-router-dom';
-                    
-                    function UserRoles() {
-                      const [users, setUsers] = useState([
-                        {
-                          id: 1,
-                          name: 'John Smith',
-                          email: 'john.smith@example.com',
-                          role: 'Admin',
-                          status: 'Active',
-                          permissions: 'Full Access'
-                        },
-                        {
-                          id: 2,
-                          name: 'Sarah Johnson',
-                          email: 'sarah.j@example.com',
-                          role: 'Manager',
-                          status: 'Active',
-                          permissions: 'Limited Access'
-                        },
-                        {
-                          id: 3,
-                          name: 'Michael Brown',
-                          email: 'm.brown@example.com',
-                          role: 'Designer',
-                          status: 'Pending',
-                          permissions: 'Design Tools Only'
-                        }
-                      ]);
-                    
-                      const [searchTerm, setSearchTerm] = useState('');
-                      const [currentPage, setCurrentPage] = useState(1);
-                      const itemsPerPage = 12;
-                    
-                      // Filter users based on search term
-                      const filteredUsers = users.filter(user =>
-                        user.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                        user.email.toLowerCase().includes(searchTerm.toLowerCase())
-                      );
-                    
-                      // Calculate pagination
-                      const indexOfLastItem = currentPage * itemsPerPage;
-                      const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-                      const currentUsers = filteredUsers.slice(indexOfFirstItem, indexOfLastItem);
-                      const totalPages = Math.ceil(filteredUsers.length / itemsPerPage);
-                    
-                      const handleSearch = (e) => {
-                        setSearchTerm(e.target.value);
-                        setCurrentPage(1);
-                      };
-                    
-                      const handlePageChange = (pageNumber) => {
-                        setCurrentPage(pageNumber);
-                      };
-                    
-                      const [showModal, setShowModal] = useState(false);
-                      const [editingUser, setEditingUser] = useState(null);
-                    
-                      const handleEditUser = (userId) => {
-                        const userToEdit = users.find(user => user.id === userId);
-                        setEditingUser(userToEdit);
-                        setShowModal(true);
-                      };
-                    
-                      const handleDeleteUser = (userId) => {
-                        if (window.confirm('Are you sure you want to delete this user?')) {
-                          setUsers(users.filter(user => user.id !== userId));
-                        }
-                      };
-                    
-                    
-                      return (
-                        <div className=" p-4 m-3" style={{backgroundColor:"white",borderRadius:"10px",}}>
-                          <div className="d-flex justify-content-between align-items-center mb-4">
-                            <div className="d-flex gap-2 align-items-center">
-                              <input
-                                type="text"
-                                className="form-control"
-                                placeholder="Search users..."
-                                value={searchTerm}
-                                onChange={handleSearch}
-                                style={{ width: '200px' }}
-                              />
-                              <button className="btn btn-outline-secondary">All Roles</button>
-                            </div>
-                           <Link to={"/UserRoleModal"}> <button id="All_btn" className="btn btn-dark">
-                              + Add User
-                            </button></Link>
-                          </div>
-                    
-                          <div className="card shadow-sm">
-                            <div className="card-body p-0">
-                              <div className="table-responsive">
-                                <table className="table table-hover mb-0">
-                                  <thead>
-                                    <tr>
-                                      <th>User</th>
-                                      <th>Role</th>
-                                      <th>Status</th>
-                                      <th>Permissions</th>
-                                      <th>Actions</th>
-                                    </tr>
-                                  </thead>
-                                  <tbody>
-                                    {currentUsers.map(user => (
-                                      <tr key={user.id}>
-                                        <td>
-                                          <div className="d-flex align-items-center">
-                                            <div className="rounded-circle bg-secondary text-white d-flex align-items-center justify-content-center me-2" style={{ width: '32px', height: '32px' }}>
-                                              {user.name.charAt(0)}
-                                            </div>
-                                            <div>
-                                              <div className="fw-semibold">{user.name}</div>
-                                              <div className="text-muted small">{user.email}</div>
-                                            </div>
-                                          </div>
-                                        </td>
-                                        <td>
-                                          <span className={`badge ${user.role === 'Admin' ? 'text-bg-dark' : user.role === 'Manager' ? 'text-bg-primary' : 'text-bg-info'}`}>
-                                            {user.role}
-                                          </span>
-                                        </td>
-                                        <td>
-                                          <span className={`badge ${user.status === 'Active' ? 'text-bg-success' : 'text-bg-warning'}`}>
-                                            {user.status}
-                                          </span>
-                                        </td>
-                                        <td>{user.permissions}</td>
-                                        <td>
-                                          <div className="d-flex gap-2">
-                                            <button
-                                              className="btn btn-sm btn-outline-secondary"
-                                              onClick={() => handleEditUser(user.id)}
-                                            >
-                                              <FaEdit />
-                                            </button>
-                                            <button
-                                              className="btn btn-sm btn-outline-danger"
-                                              onClick={() => handleDeleteUser(user.id)}
-                                            >
-                                              <FaTrashAlt />
-                                            </button>
-                                          </div>
-                                        </td>
-                                      </tr>
-                                    ))}
-                                  </tbody>
-                                </table>
-                              </div>
-                            </div>
-                          </div>
-                    
-                          <div className="d-flex justify-content-between align-items-center mt-3">
-                            <div className="text-muted small">
-                              Showing {indexOfFirstItem + 1} to {Math.min(indexOfLastItem, filteredUsers.length)} of {filteredUsers.length} entries
-                            </div>
-                            <nav>
-                              <ul className="pagination mb-0">
-                                <li className={`page-item ${currentPage === 1 ? 'disabled' : ''}`}>
-                                  <button className="page-link" onClick={() => handlePageChange(currentPage - 1)}>Previous</button>
-                                </li>
-                                {Array.from({ length: totalPages }, (_, i) => i + 1).map(number => (
-                                  <li key={number} className={`page-item ${currentPage === number ? 'active' : ''}`}>
-                                    <button className="page-link" onClick={() => handlePageChange(number)}>{number}</button>
-                                  </li>
-                                ))}
-                                <li className={`page-item ${currentPage === totalPages ? 'disabled' : ''}`}>
-                                  <button className="page-link" onClick={() => handlePageChange(currentPage + 1)}>Next</button>
-                                </li>
-                              </ul>
-                            </nav>
-                          </div>
-                    
-                    
-                     
+
+
+
+
+
+
+import React, { useState } from 'react';
+import UserRoleModal from './UserRoleModal';
+import { FaEdit, FaTrashAlt } from 'react-icons/fa';
+import { Link } from 'react-router-dom';
+
+function UserRoles() {
+  const [users, setUsers] = useState([
+    {
+      id: 1,
+      name: 'John Smith',
+      email: 'john.smith@example.com',
+      role: 'Admin',
+      status: 'Active',
+      permissions: 'Full Access'
+    },
+    {
+      id: 2,
+      name: 'Sarah Johnson',
+      email: 'sarah.j@example.com',
+      role: 'Manager',
+      status: 'Active',
+      permissions: 'Limited Access'
+    },
+    {
+      id: 3,
+      name: 'Michael Brown',
+      email: 'm.brown@example.com',
+      role: 'Designer',
+      status: 'Pending',
+      permissions: 'Design Tools Only'
+    }
+  ]);
+
+  const [searchTerm, setSearchTerm] = useState('');
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 12;
+
+  // Filter users based on search term
+  const filteredUsers = users.filter(user =>
+    user.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    user.email.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
+  // Calculate pagination
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentUsers = filteredUsers.slice(indexOfFirstItem, indexOfLastItem);
+  const totalPages = Math.ceil(filteredUsers.length / itemsPerPage);
+
+  const handleSearch = (e) => {
+    setSearchTerm(e.target.value);
+    setCurrentPage(1);
+  };
+
+  const handlePageChange = (pageNumber) => {
+    setCurrentPage(pageNumber);
+  };
+
+  const [showModal, setShowModal] = useState(false);
+  const [editingUser, setEditingUser] = useState(null);
+
+  const handleEditUser = (userId) => {
+    const userToEdit = users.find(user => user.id === userId);
+    setEditingUser(userToEdit);
+    setShowModal(true);
+  };
+
+  const handleDeleteUser = (userId) => {
+    if (window.confirm('Are you sure you want to delete this user?')) {
+      setUsers(users.filter(user => user.id !== userId));
+    }
+  };
+
+
+  return (
+    <div className=" p-4 m-3" style={{ backgroundColor: "white", borderRadius: "10px", }}>
+      <div className="d-flex justify-content-between align-items-center mb-4">
+        <div className="d-flex gap-2 align-items-center">
+          <input
+            type="text"
+            className="form-control"
+            placeholder="Search users..."
+            value={searchTerm}
+            onChange={handleSearch}
+            style={{ width: '200px' }}
+          />
+          <button className="btn btn-outline-secondary">All Roles</button>
+        </div>
+        <Link to={"/UserRoleModal"}> <button id="All_btn" className="btn btn-dark">
+          + Add User
+        </button></Link>
+      </div>
+
+      <div className="card shadow-sm">
+        <div className="card-body p-0">
+          <div className="table-responsive">
+            <table className="table table-hover mb-0">
+              <thead>
+                <tr>
+                  <th>User</th>
+                  <th>Role</th>
+                  <th>Status</th>
+                  <th>Permissions</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                {currentUsers.map(user => (
+                  <tr key={user.id}>
+                    <td>
+                      <div className="d-flex align-items-center">
+                        <div className="rounded-circle bg-secondary text-white d-flex align-items-center justify-content-center me-2" style={{ width: '32px', height: '32px' }}>
+                          {user.name.charAt(0)}
                         </div>
-                      );
+                        <div>
+                          <div className="fw-semibold">{user.name}</div>
+                          <div className="text-muted small">{user.email}</div>
+                        </div>
+                      </div>
+                    </td>
+                    <td>
+                      <span className={`badge ${user.role === 'Admin' ? 'text-bg-dark' : user.role === 'Manager' ? 'text-bg-primary' : 'text-bg-info'}`}>
+                        {user.role}
+                      </span>
+                    </td>
+                    <td>
+                      <span className={`badge ${user.status === 'Active' ? 'text-bg-success' : 'text-bg-warning'}`}>
+                        {user.status}
+                      </span>
+                    </td>
+                    <td>{user.permissions}</td>
+                    <td>
+                      <div className="d-flex gap-2">
+                        <button
+                          className="btn btn-sm btn-outline-secondary"
+                          onClick={() => handleEditUser(user.id)}
+                        >
+                          <FaEdit />
+                        </button>
+                        <button
+                          className="btn btn-sm btn-outline-danger"
+                          onClick={() => handleDeleteUser(user.id)}
+                        >
+                          <FaTrashAlt />
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <div className="d-flex justify-content-between align-items-center mt-3">
+        <div className="text-muted small">
+          Showing {indexOfFirstItem + 1} to {Math.min(indexOfLastItem, filteredUsers.length)} of {filteredUsers.length} entries
+        </div>
+        <nav>
+          <ul className="pagination mb-0">
+            <li className={`page-item ${currentPage === 1 ? 'disabled' : ''}`}>
+              <button className="page-link" onClick={() => handlePageChange(currentPage - 1)}>Previous</button>
+            </li>
+            {Array.from({ length: totalPages }, (_, i) => i + 1).map(number => (
+              <li key={number} className={`page-item ${currentPage === number ? 'active' : ''}`}>
+                <button className="page-link" onClick={() => handlePageChange(number)}>{number}</button>
+              </li>
+            ))}
+            <li className={`page-item ${currentPage === totalPages ? 'disabled' : ''}`}>
+              <button className="page-link" onClick={() => handlePageChange(currentPage + 1)}>Next</button>
+            </li>
+          </ul>
+        </nav>
+      </div>
+
+
+
+    </div>
+  );
+}
+
+export default UserRoles;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+import React, { useEffect, useState } from 'react';
+import { Link, useLocation, useNavigate, useParams } from 'react-router-dom';
+import { Modal, Form, Button } from 'react-bootstrap';
+import { useDispatch, useSelector } from 'react-redux';
+import { deletejob, fetchjobs, UpdateJobAssign } from '../../../../redux/slices/JobsSlice';
+import Swal from 'sweetalert2';
+
+function ProjectJobsTab() {
+  const location = useLocation();
+  const params = useParams();
+  const id = location.state?.id || params.id;
+  console.log("hello me project id", id);
+
+
+
+  const [selectedProduction, setSelectedProduction] = useState('');
+  const [selectedAdditional, setSelectedAdditional] = useState('');
+  const [selectedJob, setSelectedJob] = useState(null);
+  const [attachedFile, setAttachedFile] = useState(null);
+  const [selectedJobs, setSelectedJobs] = useState({});
+  const [errorMessage, setErrorMessage] = useState('');
+
+  const [showAssignModal, setShowAssignModal] = useState(false);
+  const [selectedDesigner, setSelectedDesigner] = useState('');
+  const [assignmentDescription, setAssignmentDescription] = useState('');
+
+  const jobs = [
+    {
+      id: "00001",
+      brandName: "Brand1",
+      subBrand: "SubBrand1",
+      flavour: "Flavour1",
+      packType: "Type1",
+      packSize: "Size 1ml",
+      packCode: "Code1",
+      deadline: "2024/01/20",
+      brief: "ViewBrief",
+      status: "Pending Upload",
+      statusVariant: "warning",
+    },
+    {
+      id: "00002",
+      brandName: "Brand2",
+      subBrand: "SubBrand2",
+      flavour: "Flavour2",
+      packType: "Type2",
+      packSize: "Size 2ml",
+      packCode: "Code2",
+      deadline: "2024/01/25",
+      brief: "ViewBrief",
+      status: "In Progress",
+      statusVariant: "info",
+    },
+    {
+      id: "00003",
+      brandName: "Brand3",
+      subBrand: "SubBrand3",
+      flavour: "Flavour3",
+      packType: "Type3",
+      packSize: "Size 3ml",
+      packCode: "Code3",
+      deadline: "2024/02/01",
+      brief: "ViewBrief",
+      status: "DraftSaved",
+      statusVariant: "secondary",
+    },
+  ];
+
+  const handleCheckboxChange = (jobId) => {
+    setSelectedJobs((prev) => ({
+      ...prev,
+      [jobId]: !prev[jobId],
+    }));
+  };
+
+  const handleSubmitAssignment = () => {
+    const selectedJobIds = Object.keys(selectedJobs).filter((id) => selectedJobs[id]);
+
+    if (selectedJobIds.length === 0) {
+      setErrorMessage("Please select at least 1 job to assign.");
+      setTimeout(() => setErrorMessage(""), 3000);
+      return;
+    }
+
+    if (!selectedDesigner) {
+      setErrorMessage("Please select a designer.");
+      setTimeout(() => setErrorMessage(""), 3000);
+      return;
+    }
+
+    // ✅ Now send data to handleJobAssign
+    handleJobAssign(selectedJobIds, selectedDesigner);
+
+    // Reset state and close modal
+    setShowAssignModal(false);
+    setSelectedProduction('');
+    setSelectedAdditional('');
+    setSelectedJob(null);
+    setSelectedDesigner('');
+    setAssignmentDescription('');
+  };
+
+  const handleCSVImport = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      console.log("CSV file selected:", file.name);
+    }
+  };
+
+  const getPriorityClass = (priority) => {
+    switch (priority.toLowerCase()) {
+      case "high":
+        return "text-danger";
+      case "medium":
+        return "text-warning";
+      case "low":
+        return "text-success";
+      default:
+        return "";
+    }
+  };
+  // ////////////////////////////////////////
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  // const location = useLocation();
+  // const params = useParams();
+  // const id = location.state?.id || params.id;
+  useEffect(() => {
+    console.log("Project ID:", id);
+  }, [id]);
+
+
+  // ///
+  const { job } = useSelector((state) => state.jobs);
+  console.log(job.jobs, "all jobs");
+
+  useEffect(() => {
+    dispatch(fetchjobs());
+  }, [dispatch]);
+
+
+  const handleDelete = (_id) => {
+    console.log(_id);
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        dispatch(deletejob(_id))
+          .then(() => {
+            Swal.fire("Deleted!", "The document has been deleted.", "success");
+            dispatch(fetchjobs());
+          })
+          .catch(() => {
+            Swal.fire("Error!", "Something went wrong.", "error");
+          });
+      }
+    });
+  }
+
+
+  const handleUpdate = (job) => {
+    navigate(`/AddJobTracker`, { state: { job } });
+  };
+
+  const JobDetails = (job) => {
+    navigate(`/OvervieJobsTracker`, { state: { job } });
+  }
+
+
+  const getStatusClass = (status) => {
+    switch (status.toLowerCase().trim()) {
+      case "in progress":
+      case "in_progress":
+        return "bg-warning text-dark";
+      case "review":
+        return "bg-info text-dark";
+      case "not started":
+        return "bg-secondary text-white";
+      case "completed":
+        return "bg-success text-white";
+      case "open":
+        return "bg-primary text-white";
+      case "cancelled":
+        return "bg-dark text-white";
+      default:
+        return "bg-light text-dark";
+    }
+  };
+
+  const handleJobAssign = (selectedIds, assignTo) => {
+
+    const payload = {
+      id: selectedIds,
+      assign: assignTo,
+    };
+    console.log("Assignment Payload:", payload);
+    dispatch(UpdateJobAssign(payload))
+      .then(() => {
+        // Swal.fire("Success!", "Jobs assigned successfully", "success");
+        dispatch(fetchjobs());
+      })
+      .catch(() => {
+        Swal.fire("Error!", "Something went wrong", "error");
+      });
+  };
+
+  return (
+    <div className="card">
+      <div className="card-header d-flex align-content-center justify-content-between mt-3">
+        <h5 className="card-title mb-0">Jobs List</h5>
+        <div className="text-end">
+          {/* ✅ Assign Button always enabled, shows error if none selected */}
+          <Button
+            id="All_btn"
+            className="m-2"
+            variant="primary"
+            onClick={() => {
+              const selectedJobIds = Object.keys(selectedJobs).filter((id) => selectedJobs[id]);
+              if (selectedJobIds.length === 0) {
+                setErrorMessage("Please select at least 1 job to assign.");
+                setTimeout(() => setErrorMessage(""), 3000);
+              } else {
+                handleJobAssign(selectedJobIds); // ✅ Call with selected IDs
+                setShowAssignModal(true);
+              }
+            }}
+          >
+            Assign
+          </Button>
+
+
+          <label className="btn btn-success m-2">
+            <i className="bi bi-upload"></i> Import CSV
+            <input
+              type="file"
+              accept=".csv"
+              onChange={handleCSVImport}
+              hidden
+            />
+          </label>
+
+          <Link
+            to="/AddJobTracker"
+            state={{ id }} // ID pass kar rahe hain yahan
+          >
+            <button id="All_btn" className="btn btn-primary">
+              <i className="bi bi-plus"></i> Add Job
+            </button>
+          </Link>
+        </div>
+      </div>
+
+      <div className="card-body">
+        {/* ✅ Error message block */}
+        {errorMessage && (
+          <div className="alert alert-danger py-2" role="alert">
+            {errorMessage}
+          </div>
+        )}
+
+        <div className="table-responsive">
+          <table className="table table-hover">
+            <thead>
+              <tr>
+                <th>
+                  <input
+                    type="checkbox"
+                    onChange={(e) => {
+                      const checked = e.target.checked;
+                      const newSelectedJobs = {};
+                      job?.jobs?.forEach((job) => {
+                        newSelectedJobs[job._id] = checked;
+                      });
+                      setSelectedJobs(newSelectedJobs);
+                    }}
+                    checked={
+                      job?.jobs?.length > 0 &&
+                      job?.jobs?.every((j) => selectedJobs[j._id])
                     }
-                    
-                    export default UserRoles;
-                    
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-                    import React, { useEffect, useState } from 'react';
-                    import { Link, useLocation, useNavigate, useParams } from 'react-router-dom';
-                    import { Modal, Form, Button } from 'react-bootstrap';
-                    import { useDispatch, useSelector } from 'react-redux';
-                    import { deletejob, fetchjobs, UpdateJobAssign } from '../../../../redux/slices/JobsSlice';
-                    import Swal from 'sweetalert2';
-                    
-                    function ProjectJobsTab() {
-                      const location = useLocation();
-                      const params = useParams();
-                      const id = location.state?.id || params.id;
-                      console.log("hello me project id", id);
-                    
-                    
-                    
-                      const [selectedProduction, setSelectedProduction] = useState('');
-                      const [selectedAdditional, setSelectedAdditional] = useState('');
-                      const [selectedJob, setSelectedJob] = useState(null);
-                      const [attachedFile, setAttachedFile] = useState(null);
-                      const [selectedJobs, setSelectedJobs] = useState({});
-                      const [errorMessage, setErrorMessage] = useState('');
-                    
-                      const [showAssignModal, setShowAssignModal] = useState(false);
-                      const [selectedDesigner, setSelectedDesigner] = useState('');
-                      const [assignmentDescription, setAssignmentDescription] = useState('');
-                    
-                      const jobs = [
-                        {
-                          id: "00001",
-                          brandName: "Brand1",
-                          subBrand: "SubBrand1",
-                          flavour: "Flavour1",
-                          packType: "Type1",
-                          packSize: "Size 1ml",
-                          packCode: "Code1",
-                          deadline: "2024/01/20",
-                          brief: "ViewBrief",
-                          status: "Pending Upload",
-                          statusVariant: "warning",
-                        },
-                        {
-                          id: "00002",
-                          brandName: "Brand2",
-                          subBrand: "SubBrand2",
-                          flavour: "Flavour2",
-                          packType: "Type2",
-                          packSize: "Size 2ml",
-                          packCode: "Code2",
-                          deadline: "2024/01/25",
-                          brief: "ViewBrief",
-                          status: "In Progress",
-                          statusVariant: "info",
-                        },
-                        {
-                          id: "00003",
-                          brandName: "Brand3",
-                          subBrand: "SubBrand3",
-                          flavour: "Flavour3",
-                          packType: "Type3",
-                          packSize: "Size 3ml",
-                          packCode: "Code3",
-                          deadline: "2024/02/01",
-                          brief: "ViewBrief",
-                          status: "DraftSaved",
-                          statusVariant: "secondary",
-                        },
-                      ];
-                    
-                      const handleCheckboxChange = (jobId) => {
-                        setSelectedJobs((prev) => ({
-                          ...prev,
-                          [jobId]: !prev[jobId],
-                        }));
-                      };
-                    
-                      const handleSubmitAssignment = () => {
-                        const selectedJobIds = Object.keys(selectedJobs).filter((id) => selectedJobs[id]);
-                    
-                        if (selectedJobIds.length === 0) {
-                          setErrorMessage("Please select at least 1 job to assign.");
-                          setTimeout(() => setErrorMessage(""), 3000);
-                          return;
-                        }
-                    
-                        if (!selectedDesigner) {
-                          setErrorMessage("Please select a designer.");
-                          setTimeout(() => setErrorMessage(""), 3000);
-                          return;
-                        }
-                    
-                        // ✅ Now send data to handleJobAssign
-                        handleJobAssign(selectedJobIds, selectedDesigner);
-                    
-                        // Reset state and close modal
-                        setShowAssignModal(false);
-                        setSelectedProduction('');
-                        setSelectedAdditional('');
-                        setSelectedJob(null);
-                        setSelectedDesigner('');
-                        setAssignmentDescription('');
-                      };
-                    
-                      const handleCSVImport = (event) => {
-                        const file = event.target.files[0];
-                        if (file) {
-                          console.log("CSV file selected:", file.name);
-                        }
-                      };
-                    
-                      const getPriorityClass = (priority) => {
-                        switch (priority.toLowerCase()) {
-                          case "high":
-                            return "text-danger";
-                          case "medium":
-                            return "text-warning";
-                          case "low":
-                            return "text-success";
-                          default:
-                            return "";
-                        }
-                      };
-                      // ////////////////////////////////////////
-                      const navigate = useNavigate();
-                      const dispatch = useDispatch();
-                      // const location = useLocation();
-                      // const params = useParams();
-                      // const id = location.state?.id || params.id;
-                      useEffect(() => {
-                        console.log("Project ID:", id);
-                      }, [id]);
-                    
-                    
-                      // ///
-                      const { job } = useSelector((state) => state.jobs);
-                      console.log(job.jobs, "all jobs");
-                    
-                      useEffect(() => {
-                        dispatch(fetchjobs());
-                      }, [dispatch]);
-                    
-                    
-                      const handleDelete = (_id) => {
-                        console.log(_id);
-                        Swal.fire({
-                          title: "Are you sure?",
-                          text: "You won't be able to revert this!",
-                          icon: "warning",
-                          showCancelButton: true,
-                          confirmButtonColor: "#3085d6",
-                          cancelButtonColor: "#d33",
-                          confirmButtonText: "Yes, delete it!",
-                        }).then((result) => {
-                          if (result.isConfirmed) {
-                            dispatch(deletejob(_id))
-                              .then(() => {
-                                Swal.fire("Deleted!", "The document has been deleted.", "success");
-                                dispatch(fetchjobs());
-                              })
-                              .catch(() => {
-                                Swal.fire("Error!", "Something went wrong.", "error");
-                              });
-                          }
-                        });
-                      }
-                    
-                    
-                      const handleUpdate = (job) => {
-                        navigate(`/AddJobTracker`, { state: { job } });
-                      };
-                    
-                      const JobDetails = (job) => {
-                        navigate(`/OvervieJobsTracker`, { state: { job } });
-                      }
-                    
-                    
-                    const getStatusClass = (status) => {
-                      switch (status.toLowerCase().trim()) {
-                        case "in progress":
-                        case "in_progress":
-                          return "bg-warning text-dark";
-                        case "review":
-                          return "bg-info text-dark";
-                        case "not started":
-                          return "bg-secondary text-white";
-                        case "completed":
-                          return "bg-success text-white";
-                        case "open":
-                          return "bg-primary text-white";
-                        case "cancelled":
-                          return "bg-dark text-white";
-                        default:
-                          return "bg-light text-dark";
-                      }
-                    };
-                    
-                      const handleJobAssign = (selectedIds, assignTo) => {
-                    
-                        const payload = {
-                          id: selectedIds,
-                          assign: assignTo,
-                        };
-                        console.log("Assignment Payload:", payload);
-                        dispatch(UpdateJobAssign(payload))
-                          .then(() => {
-                            // Swal.fire("Success!", "Jobs assigned successfully", "success");
-                            dispatch(fetchjobs());
-                          })
-                          .catch(() => {
-                            Swal.fire("Error!", "Something went wrong", "error");
-                          });
-                      };
-                    
-                      return (
-                        <div className="card">
-                          <div className="card-header d-flex align-content-center justify-content-between mt-3">
-                            <h5 className="card-title mb-0">Jobs List</h5>
-                            <div className="text-end">
-                              {/* ✅ Assign Button always enabled, shows error if none selected */}
-                              <Button
-                                id="All_btn"
-                                className="m-2"
-                                variant="primary"
-                                onClick={() => {
-                                  const selectedJobIds = Object.keys(selectedJobs).filter((id) => selectedJobs[id]);
-                                  if (selectedJobIds.length === 0) {
-                                    setErrorMessage("Please select at least 1 job to assign.");
-                                    setTimeout(() => setErrorMessage(""), 3000);
-                                  } else {
-                                    handleJobAssign(selectedJobIds); // ✅ Call with selected IDs
-                                    setShowAssignModal(true);
-                                  }
-                                }}
-                              >
-                                Assign
-                              </Button>
-                    
-                    
-                              <label className="btn btn-success m-2">
-                                <i className="bi bi-upload"></i> Import CSV
-                                <input
-                                  type="file"
-                                  accept=".csv"
-                                  onChange={handleCSVImport}
-                                  hidden
-                                />
-                              </label>
-                    
-                              <Link
-                                to="/AddJobTracker"
-                                state={{ id }} // ID pass kar rahe hain yahan
-                              >
-                                <button id="All_btn" className="btn btn-primary">
-                                  <i className="bi bi-plus"></i> Add Job
-                                </button>
-                              </Link>
-                            </div>
-                          </div>
-                    
-                          <div className="card-body">
-                            {/* ✅ Error message block */}
-                            {errorMessage && (
-                              <div className="alert alert-danger py-2" role="alert">
-                                {errorMessage}
-                              </div>
-                            )}
-                    
-                            <div className="table-responsive">
-                              <table className="table table-hover">
-                                <thead>
-                                  <tr>
-                                    <th>
-                                      <input
-                                        type="checkbox"
-                                        onChange={(e) => {
-                                          const checked = e.target.checked;
-                                          const newSelectedJobs = {};
-                                          job?.jobs?.forEach((job) => {
-                                            newSelectedJobs[job._id] = checked;
-                                          });
-                                          setSelectedJobs(newSelectedJobs);
-                                        }}
-                                        checked={
-                                          job?.jobs?.length > 0 &&
-                                          job?.jobs?.every((j) => selectedJobs[j._id])
-                                        }
-                                      />
-                                    </th>
-                                    <th>JobsNo</th>
-                                    <th style={{ whiteSpace: 'nowrap' }}>Project Name</th>
-                                    <th>Brand</th>
-                                    <th>SubBrand</th>
-                                    <th>Flavour</th>
-                                    <th>PackType</th>
-                                    <th>PackSize</th>
-                                    <th>Priority</th>
-                                    <th style={{ whiteSpace: 'nowrap' }}>Due Date</th>
-                                    <th>Assing</th>
-                                    <th>TotalTime</th>
-                                    <th>Status</th>
-                                    <th>Actions</th>
-                                  </tr>
-                                </thead>
-                                <tbody>
-                                  {job?.jobs?.slice().reverse().map((job, index) => (
-                                    <tr key={job._id}>
-                                      <td>
-                                        <input
-                                          type="checkbox"
-                                          checked={selectedJobs[job._id] || false}
-                                          onChange={() => handleCheckboxChange(job._id)}
-                                        />
-                                      </td>
-                                      <td>
-                                        <Link>
-                                          {String(index + 1).padStart(4, '0')}
-                                        </Link>
-                                      </td>
-                                      <td style={{ whiteSpace: 'nowrap' }}>{job.projectId?.[0]?.projectName || 'N/A'}</td>
-                                      <td style={{ whiteSpace: 'nowrap' }}>{job.brandName}</td>
-                                      <td style={{ whiteSpace: 'nowrap' }}>{job.subBrand}</td>
-                                      <td style={{ whiteSpace: 'nowrap' }}>{job.flavour}</td>
-                                      <td style={{ whiteSpace: 'nowrap' }}>{job.packType}</td>
-                                      <td style={{ whiteSpace: 'nowrap' }}>{job.packSize}</td>
-                                      <td>
-                                        <span className={getPriorityClass(job.priority)}>
-                                          {job.priority}
-                                        </span>
-                                      </td>
-                                      <td>{new Date(job?.createdAt).toLocaleDateString('en-GB').replace(/\/20/, '/')}</td>
-                                      <td>{job.assign}</td>
-                                      <td>{new Date(job.updatedAt).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })}</td>
-                                      {/* <th>
+                  />
+                </th>
+                <th>JobsNo</th>
+                <th style={{ whiteSpace: 'nowrap' }}>Project Name</th>
+                <th>Brand</th>
+                <th>SubBrand</th>
+                <th>Flavour</th>
+                <th>PackType</th>
+                <th>PackSize</th>
+                <th>Priority</th>
+                <th style={{ whiteSpace: 'nowrap' }}>Due Date</th>
+                <th>Assing</th>
+                <th>TotalTime</th>
+                <th>Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {job?.jobs?.slice().reverse().map((job, index) => (
+                <tr key={job._id}>
+                  <td>
+                    <input
+                      type="checkbox"
+                      checked={selectedJobs[job._id] || false}
+                      onChange={() => handleCheckboxChange(job._id)}
+                    />
+                  </td>
+                  <td>
+                    <Link>
+                      {String(index + 1).padStart(4, '0')}
+                    </Link>
+                  </td>
+                  <td style={{ whiteSpace: 'nowrap' }}>{job.projectId?.[0]?.projectName || 'N/A'}</td>
+                  <td style={{ whiteSpace: 'nowrap' }}>{job.brandName}</td>
+                  <td style={{ whiteSpace: 'nowrap' }}>{job.subBrand}</td>
+                  <td style={{ whiteSpace: 'nowrap' }}>{job.flavour}</td>
+                  <td style={{ whiteSpace: 'nowrap' }}>{job.packType}</td>
+                  <td style={{ whiteSpace: 'nowrap' }}>{job.packSize}</td>
+                  <td>
+                    <span className={getPriorityClass(job.priority)}>
+                      {job.priority}
+                    </span>
+                  </td>
+                  <td>{new Date(job?.createdAt).toLocaleDateString('en-GB').replace(/\/20/, '/')}</td>
+                  <td>{job.assign}</td>
+                  <td>{new Date(job.updatedAt).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })}</td>
+                  {/* <th>
                                         <Button id='All_btn' variant="success" style={{ width: "130px" }} size="sm" >
                                           {job.Status || "Active"}
                                         </Button></th> */}
-                                      <td>
-                                        <span
-                                          className={`badge ${getStatusClass(job.Status)} px-2 py-1`}
-                                        >
-                                          {job.Status}
-                                        </span>
-                                      </td>
-                                      <td className="d-flex">
-                                        <button className="btn btn-sm btn-outline-primary me-1" onClick={() => JobDetails(job)}>
-                                          <i className="bi bi-eye"></i> View
-                                        </button>
-                                        <button className="btn btn-sm btn-outline-primary me-1" onClick={() => handleUpdate(job)}>
-                                          <i className="bi bi-pencil"></i> Edit
-                                        </button>
-                                        <button className="btn btn-sm btn-outline-danger" onClick={() => handleDelete(job._id)}>
-                                          <i className="bi bi-trash"></i> Remove 
-                                        </button>
-                                      </td>
-                                    </tr>
-                                  ))}
-                                </tbody>
-                              </table>
-                            </div>
-                          </div>
-                    
-                          {/* ✅ Job Assignment Modal */}
-                          <Modal show={showAssignModal} onHide={() => setShowAssignModal(false)}>
-                            <Modal.Header closeButton>
-                              <Modal.Title>Assign Job</Modal.Title>
-                            </Modal.Header>
-                            <Modal.Body>
-                              <Form>
-                                <Form.Group className="mb-3">
-                                  <Form.Label>Select Designer</Form.Label>
-                                  <Form.Select
-                                    value={selectedDesigner}
-                                    onChange={(e) => setSelectedDesigner(e.target.value)}
-                                  >
-                                    <option value="">-- Select --</option>
-                                    <option value="Production">Production</option>
-                                    <option value="Designer">Designer</option>
-                                  </Form.Select>
-                                </Form.Group>
-                    
-                                <Form.Group className="mb-3">
-                                  <Form.Label>Description</Form.Label>
-                                  <Form.Control
-                                    as="textarea"
-                                    rows={3}
-                                    value={assignmentDescription}
-                                    onChange={(e) => setAssignmentDescription(e.target.value)}
-                                    placeholder="Enter assignment details or instructions..."
-                                  />
-                                </Form.Group>
-                              </Form>
-                            </Modal.Body>
-                            <Modal.Footer>
-                              <Button variant="secondary" onClick={() => setShowAssignModal(false)}>
-                                Cancel
-                              </Button>
-                              <Button variant="primary" onClick={handleSubmitAssignment}>
-                                Assign
-                              </Button>
-                            </Modal.Footer>
-                          </Modal>
-                    
-                        </div>
-                      );
-                    }
-                    
-                    export default ProjectJobsTab;
-                    
+                  <td>
+                    <span
+                      className={`badge ${getStatusClass(job.Status)} px-2 py-1`}
+                    >
+                      {job.Status}
+                    </span>
+                  </td>
+                  <td className="d-flex">
+                    <button className="btn btn-sm btn-outline-primary me-1" onClick={() => JobDetails(job)}>
+                      <i className="bi bi-eye"></i> View
+                    </button>
+                    <button className="btn btn-sm btn-outline-primary me-1" onClick={() => handleUpdate(job)}>
+                      <i className="bi bi-pencil"></i> Edit
+                    </button>
+                    <button className="btn btn-sm btn-outline-danger" onClick={() => handleDelete(job._id)}>
+                      <i className="bi bi-trash"></i> Remove
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      {/* ✅ Job Assignment Modal */}
+      <Modal show={showAssignModal} onHide={() => setShowAssignModal(false)}>
+        <Modal.Header closeButton>
+          <Modal.Title>Assign Job</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Form>
+            <Form.Group className="mb-3">
+              <Form.Label>Select Designer</Form.Label>
+              <Form.Select
+                value={selectedDesigner}
+                onChange={(e) => setSelectedDesigner(e.target.value)}
+              >
+                <option value="">-- Select --</option>
+                <option value="Production">Production</option>
+                <option value="Designer">Designer</option>
+              </Form.Select>
+            </Form.Group>
+
+            <Form.Group className="mb-3">
+              <Form.Label>Description</Form.Label>
+              <Form.Control
+                as="textarea"
+                rows={3}
+                value={assignmentDescription}
+                onChange={(e) => setAssignmentDescription(e.target.value)}
+                placeholder="Enter assignment details or instructions..."
+              />
+            </Form.Group>
+          </Form>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={() => setShowAssignModal(false)}>
+            Cancel
+          </Button>
+          <Button variant="primary" onClick={handleSubmitAssignment}>
+            Assign
+          </Button>
+        </Modal.Footer>
+      </Modal>
+
+    </div>
+  );
+}
+
+export default ProjectJobsTab;
 
 
 
@@ -4847,7 +4846,8 @@ export default AddProjectList;
 
 
 
-                    import React, { useState, useEffect } from 'react';
+
+import React, { useState, useEffect } from 'react';
 
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 
@@ -4855,9 +4855,9 @@ function UserRoleModal() {
   const navigate = useNavigate();
   const { id } = useParams();
   const location = useLocation();
-  const {user} = location.state || {};
+  const { user } = location.state || {};
   const userId = location.state?.id;
-console.log("hhhhhhhhhh",user);
+  console.log("hhhhhhhhhh", user);
 
   const [formData, setFormData] = useState({
     roleName: '',
@@ -4882,20 +4882,20 @@ console.log("hhhhhhhhhh",user);
       [name]: value
     }));
   };
- useEffect(() => {
-  if (user) {
-    setFormData(prev => ({
-      ...prev,
-      roleName: user.roleName || '',
-      roleDescription: user.roleDescription || '',
-      permissions: {
-        ...prev.permissions,
-        ...user.permissions
-      },
-      accessLevel: user.accessLevel || 'fullAccess'
-    }));
-  }
-}, [user]);
+  useEffect(() => {
+    if (user) {
+      setFormData(prev => ({
+        ...prev,
+        roleName: user.roleName || '',
+        roleDescription: user.roleDescription || '',
+        permissions: {
+          ...prev.permissions,
+          ...user.permissions
+        },
+        accessLevel: user.accessLevel || 'fullAccess'
+      }));
+    }
+  }, [user]);
 
 
   const handlePermissionChange = (e) => {
@@ -4916,7 +4916,7 @@ console.log("hhhhhhhhhh",user);
     }));
   };
 
- const handleSubmit = (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
 
     // Wrap projectsId as array
@@ -4968,7 +4968,7 @@ console.log("hhhhhhhhhh",user);
                 value={formData.roleName}
                 onChange={handleInputChange}
                 placeholder="Enter role name"
-                required/>
+                required />
             </div>
 
             <div className="mb-3">
@@ -4987,7 +4987,7 @@ console.log("hhhhhhhhhh",user);
               <div className="row g-3">
                 <div className="col-md-6">
                   <div className="form-check">
-                    <input type="checkbox"  className="form-check-input"
+                    <input type="checkbox" className="form-check-input"
                       name="dashboardAccess"
                       checked={formData.permissions.dashboardAccess}
                       onChange={handlePermissionChange}
@@ -4998,7 +4998,7 @@ console.log("hhhhhhhhhh",user);
                     <input type="checkbox" className="form-check-input"
                       name="clientManagement"
                       checked={formData.permissions.clientManagement}
-                      onChange={handlePermissionChange}/>
+                      onChange={handlePermissionChange} />
                     <label className="form-check-label">Client Management</label>
                   </div>
                   <div className="form-check">
@@ -5082,7 +5082,7 @@ console.log("hhhhhhhhhh",user);
                 </div>
                 <div className="form-check">
                   <input
-                     type="radio"
+                    type="radio"
                     className="form-check-input"
                     name="accessLevel"
                     value="limitedAccess"
@@ -5205,9 +5205,9 @@ function UserRoleModal() {
 
 
 
-   const handleSubmit = (e) => {
-      e.preventDefault();
-  
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
     const filteredPermissions = Object.fromEntries(
       Object.entries(formData.permissions).filter(([_, value]) => value === true)
     );
@@ -5220,37 +5220,37 @@ function UserRoleModal() {
     };
 
     console.log('Payload to be sent:', payload);
-    
-      // Wrap projectsId as array
-      // const payload = {
-      //   ...formData,
-      //   projectsId: [formData.projectsId],  
-      // };
-  
-      if (id) {
-        dispatch(updatejob({ id, data: payload }))
-          .unwrap()
-          .then(() => {
-            toast.success("Job updated successfully!");
-            navigate('/ProjectOverview', { state: { openTab: 'jobs' } });
-            dispatch(fetchProject());
-          })
-          .catch(() => {
-            toast.error("Failed to update job!");
-          });
-      } else {
-        dispatch(createjob(payload))  // send payload with array
-          .unwrap()
-          .then(() => {
-            toast.success("Job created successfully!");
-            navigate('/ProjectOverview', { state: { openTab: 'jobs' } });
-            dispatch(fetchProject());
-          })
-          .catch(() => {
-            toast.error("Error creating job");
-          });
-      }
-    };
+
+    // Wrap projectsId as array
+    // const payload = {
+    //   ...formData,
+    //   projectsId: [formData.projectsId],  
+    // };
+
+    if (id) {
+      dispatch(updatejob({ id, data: payload }))
+        .unwrap()
+        .then(() => {
+          toast.success("Job updated successfully!");
+          navigate('/ProjectOverview', { state: { openTab: 'jobs' } });
+          dispatch(fetchProject());
+        })
+        .catch(() => {
+          toast.error("Failed to update job!");
+        });
+    } else {
+      dispatch(createjob(payload))  // send payload with array
+        .unwrap()
+        .then(() => {
+          toast.success("Job created successfully!");
+          navigate('/ProjectOverview', { state: { openTab: 'jobs' } });
+          dispatch(fetchProject());
+        })
+        .catch(() => {
+          toast.error("Error creating job");
+        });
+    }
+  };
   // const handleSubmit = async (e) => {
   //   e.preventDefault();
 
@@ -5389,7 +5389,7 @@ function UserRoleModal() {
   const userId = location.state?.id;
   console.log("hhhhhhhhhh", user);
 
-  
+
   const [formData, setFormData] = useState({
     roleName: '',
     roleDescription: '',
@@ -5456,9 +5456,9 @@ function UserRoleModal() {
 
 
 
-   const handleSubmit = (e) => {
-      e.preventDefault();
-  
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
     const filteredPermissions = Object.fromEntries(
       Object.entries(formData.permissions).filter(([_, value]) => value === true)
     );
@@ -5471,37 +5471,37 @@ function UserRoleModal() {
     };
 
     console.log('Payload to be sent:', payload);
-    
-      // Wrap projectsId as array
-      // const payload = {
-      //   ...formData,
-      //   projectsId: [formData.projectsId],  
-      // };
-  
-      if (id) {
-        dispatch(updateuser({ id, data: payload }))
-          .unwrap()
-          .then(() => {
-            toast.success("user updated successfully!");
-            navigate('/ProjectOverview', { state: { openTab: 'users' } });
-            dispatch(fetchProject());
-          })
-          .catch(() => {
-            toast.error("Failed to update user!");
-          });
-      } else {
-        dispatch(createuser(payload))  // send payload with array
-          .unwrap()
-          .then(() => {
-            toast.success("user created successfully!");
-            navigate('/ProjectOverview', { state: { openTab: 'users' } });
-            dispatch(fetchProject());
-          })
-          .catch(() => {
-            toast.error("Error creating user");
-          });
-      }
-    };
+
+    // Wrap projectsId as array
+    // const payload = {
+    //   ...formData,
+    //   projectsId: [formData.projectsId],  
+    // };
+
+    if (id) {
+      dispatch(updateuser({ id, data: payload }))
+        .unwrap()
+        .then(() => {
+          toast.success("user updated successfully!");
+          navigate('/ProjectOverview', { state: { openTab: 'users' } });
+          dispatch(fetchProject());
+        })
+        .catch(() => {
+          toast.error("Failed to update user!");
+        });
+    } else {
+      dispatch(createuser(payload))  // send payload with array
+        .unwrap()
+        .then(() => {
+          toast.success("user created successfully!");
+          navigate('/ProjectOverview', { state: { openTab: 'users' } });
+          dispatch(fetchProject());
+        })
+        .catch(() => {
+          toast.error("Error creating user");
+        });
+    }
+  };
   // const handleSubmit = async (e) => {
   //   e.preventDefault();
 
@@ -5639,10 +5639,10 @@ function UserRoleModal() {
 
   const { id } = useParams();
   const location = useLocation();
-  const {user} = location.state || {};
+  const { user } = location.state || {};
   const userId = location.state?.id;
-  console.log("hhhhhhhhhh",user);
-  
+  console.log("hhhhhhhhhh", user);
+
   const [formData, setFormData] = useState({
     roleName: '',
     roleDescription: '',
@@ -5845,8 +5845,8 @@ const poStatuses = ["Pending", "Approved", "Rejected"];
 const statuses = ["Active", "Inactive", "Completed"];
 
 function AddCostEstimates() {
-const navigate = useNavigate();
-const dispatch = useDispatch()
+  const navigate = useNavigate();
+  const dispatch = useDispatch()
 
   const [clients, setClients] = useState([]);
   const [items, setItems] = useState([
@@ -5882,7 +5882,7 @@ const dispatch = useDispatch()
   const handleFormChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
-    
+
   const addItem = () => {
     setItems([...items, { description: "", quantity: 0, rate: 0, amount: 0 }]);
   };
@@ -6182,8 +6182,8 @@ const poStatuses = ["Pending", "Approved", "Rejected"];
 const statuses = ["Active", "Inactive", "Completed"];
 
 function AddCostEstimates() {
-const navigate = useNavigate();
-const dispatch = useDispatch()
+  const navigate = useNavigate();
+  const dispatch = useDispatch()
 
   const [clients, setClients] = useState([]);
   const [items, setItems] = useState([
@@ -6219,7 +6219,7 @@ const dispatch = useDispatch()
   const handleFormChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
-    
+
   const addItem = () => {
     setItems([...items, { description: "", quantity: 0, rate: 0, amount: 0 }]);
   };
@@ -6370,7 +6370,7 @@ const dispatch = useDispatch()
           </div>
 
           <h6 className="fw-semibold mb-3">Line Items</h6>
-           <div className="row fw-semibold text-muted mb-2 px-2">
+          <div className="row fw-semibold text-muted mb-2 px-2">
             <div className="col-md-5">Description</div>
             <div className="col-md-2">Quantity</div>
             <div className="col-md-2">Rate</div>
@@ -6534,22 +6534,22 @@ const statuses = ["Active", "Inactive", "Completed"];
 
 function AddCostEstimates() {
 
-const navigate = useNavigate();
-const dispatch = useDispatch()
+  const navigate = useNavigate();
+  const dispatch = useDispatch()
 
-// Projects al lis name   
-const { project, loading, error } = useSelector((state) => state.projects);
+  // Projects al lis name   
+  const { project, loading, error } = useSelector((state) => state.projects);
 
   const selectedProjectName = project?.data?.find(p => p._id === formData.projectsId)?.projectName || "";
 
   const reversedProjectList = project?.data?.slice().reverse() || [];
-    useEffect(() => {
-      dispatch(fetchProject());
-    }, [dispatch]);
+  useEffect(() => {
+    dispatch(fetchProject());
+  }, [dispatch]);
 
-  
 
-    // /////
+
+  // /////
   const [clients, setClients] = useState([]);
   const [items, setItems] = useState([
     { description: "", quantity: 0, rate: 0, amount: 0 },
@@ -6584,7 +6584,7 @@ const { project, loading, error } = useSelector((state) => state.projects);
   const handleFormChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
-    
+
   const addItem = () => {
     setItems([...items, { description: "", quantity: 0, rate: 0, amount: 0 }]);
   };
@@ -6650,9 +6650,9 @@ const { project, loading, error } = useSelector((state) => state.projects);
                 // onChange={handleProjectNumberChange}
                 placeholder="Enter project number"
               />
-                 <option value={selectedProjectName}>
-                    {selectedProjectName}
-                  </option>
+              <option value={selectedProjectName}>
+                {selectedProjectName}
+              </option>
             </div>
 
             <div className="col-md-4 mb-3">
@@ -6738,7 +6738,7 @@ const { project, loading, error } = useSelector((state) => state.projects);
           </div>
 
           <h6 className="fw-semibold mb-3">Line Items</h6>
-           <div className="row fw-semibold text-muted mb-2 px-2">
+          <div className="row fw-semibold text-muted mb-2 px-2">
             <div className="col-md-5">Description</div>
             <div className="col-md-2">Quantity</div>
             <div className="col-md-2">Rate</div>
@@ -6998,7 +6998,7 @@ function AddCostEstimates() {
       VATRate: taxRate * 100,
       lineItems: items,
     };
-  
+
     if (id) {
       dispatch(({ id, data: payload }))
         .unwrap()
@@ -7011,7 +7011,7 @@ function AddCostEstimates() {
           toast.error("Failed to update job!");
         });
     } else {
-     dispatch(createCostEstimate(payload))
+      dispatch(createCostEstimate(payload))
         .unwrap()
         .then(() => {
           toast.success("Job created successfully!");
@@ -7361,37 +7361,37 @@ function AddCostEstimates() {
     Status: "Active",
   });
 
- useEffect(() => {
-  if (po && project?.data?.length) {
-    let projectId = '';
-    if (Array.isArray(po.projectId) && po.projectId.length > 0) {
-      projectId = po.projectId[0]._id;
-    } else if (Array.isArray(po.projects) && po.projects.length > 0) {
-      projectId = typeof po.projects[0] === 'object'
-        ? po.projects[0]._id
-        : po.projects[0];
+  useEffect(() => {
+    if (po && project?.data?.length) {
+      let projectId = '';
+      if (Array.isArray(po.projectId) && po.projectId.length > 0) {
+        projectId = po.projectId[0]._id;
+      } else if (Array.isArray(po.projects) && po.projects.length > 0) {
+        projectId = typeof po.projects[0] === 'object'
+          ? po.projects[0]._id
+          : po.projects[0];
+      }
+
+      const clientId = Array.isArray(po.clients) && po.clients.length > 0
+        ? po.clients[0]._id
+        : "";
+
+      setFormData((prev) => ({
+        ...prev,
+        ...po,
+        projectsId: projectId ? [projectId] : [""],
+        clientId: clientId ? [clientId] : [""],
+        Notes: po.Notes || "",
+        currency: po.currency || "USD",
+        estimateDate: po.estimateDate ? po.estimateDate.substring(0, 10) : "",
+        validUntil: po.validUntil ? po.validUntil.substring(0, 10) : "",
+      }));
+
+      if (Array.isArray(po.lineItems) && po.lineItems.length > 0) {
+        setItems(po.lineItems);
+      }
     }
-
-    const clientId = Array.isArray(po.clients) && po.clients.length > 0
-      ? po.clients[0]._id
-      : "";
-
-    setFormData((prev) => ({
-      ...prev,
-      ...po,
-      projectsId: projectId ? [projectId] : [""],
-      clientId: clientId ? [clientId] : [""],
-      Notes: po.Notes || "",
-      currency: po.currency || "USD",
-      estimateDate: po.estimateDate ? po.estimateDate.substring(0, 10) : "",
-      validUntil: po.validUntil ? po.validUntil.substring(0, 10) : "",
-    }));
-
-    if (Array.isArray(po.lineItems) && po.lineItems.length > 0) {
-      setItems(po.lineItems);
-    }
-  }
-}, [po, project?.data]);
+  }, [po, project?.data]);
 
   const [taxRate, setTaxRate] = useState(0.05);
 
@@ -7425,37 +7425,37 @@ function AddCostEstimates() {
   const tax = subtotal * taxRate;
   const total = subtotal + tax;
 
- const handleSubmit = async (e) => {
-  e.preventDefault();
-  const payload = {
-    ...formData,
-    VATRate: taxRate * 100,
-    lineItems: items,
-  };
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const payload = {
+      ...formData,
+      VATRate: taxRate * 100,
+      lineItems: items,
+    };
 
-  const isDuplicate = location.state?.isDuplicate;
-  if (isDuplicate || !id) {
-    dispatch(createCostEstimate(payload))
-      .unwrap()
-      .then(() => {
-        toast.success("Estimates created successfully!");
-        navigate('/CostEstimates', { state: { openTab: 'jobs' } });
-      })
-      .catch(() => {
-        toast.error("Failed to create estimates");
-      });
-  } else {
-    dispatch(updateCostEstimate({ id, data: payload }))
-      .unwrap()
-      .then(() => {
-        toast.success("Estimates updated successfully!");
-        navigate('/CostEstimates', { state: { openTab: 'jobs' } });
-      })
-      .catch(() => {
-        toast.error("Failed to update estimates");
-      });
-  }
-};
+    const isDuplicate = location.state?.isDuplicate;
+    if (isDuplicate || !id) {
+      dispatch(createCostEstimate(payload))
+        .unwrap()
+        .then(() => {
+          toast.success("Estimates created successfully!");
+          navigate('/CostEstimates', { state: { openTab: 'jobs' } });
+        })
+        .catch(() => {
+          toast.error("Failed to create estimates");
+        });
+    } else {
+      dispatch(updateCostEstimate({ id, data: payload }))
+        .unwrap()
+        .then(() => {
+          toast.success("Estimates updated successfully!");
+          navigate('/CostEstimates', { state: { openTab: 'jobs' } });
+        })
+        .catch(() => {
+          toast.error("Failed to update estimates");
+        });
+    }
+  };
 
   return (
     <>
@@ -7716,32 +7716,34 @@ export default AddCostEstimates;
 
 
 
-     {!loading && !error && (
-        <div className="d-flex justify-content-between align-items-center mb-4">
-          <div className="text-muted small">
-            Showing {(currentPage - 1) * itemsPerPage + 1} to {Math.min(currentPage * itemsPerPage, filteredProjects?.length || 0)} of {filteredProjects?.length || 0} entries
-          </div>
-          <ul className="pagination pagination-sm mb-0">
-            <li className={`page-item ${currentPage === 1 ? 'disabled' : ''}`}>
-              <button className="page-link" onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}>
-                Previous
-              </button>
-            </li>
-            {Array.from({ length: totalPages }, (_, i) => (
-              <li key={i + 1} className={`page-item ${currentPage === i + 1 ? 'active' : ''}`}>
-                <button className="page-link" onClick={() => setCurrentPage(i + 1)}>
-                  {i + 1}
-                </button>
-              </li>
-            ))}
-            <li className={`page-item ${currentPage === totalPages ? 'disabled' : ''}`}>
-              <button className="page-link" onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}>
-                Next
-              </button>
-            </li>
-          </ul>
-        </div>
-      )}
+{
+  !loading && !error && (
+    <div className="d-flex justify-content-between align-items-center mb-4">
+      <div className="text-muted small">
+        Showing {(currentPage - 1) * itemsPerPage + 1} to {Math.min(currentPage * itemsPerPage, filteredProjects?.length || 0)} of {filteredProjects?.length || 0} entries
+      </div>
+      <ul className="pagination pagination-sm mb-0">
+        <li className={`page-item ${currentPage === 1 ? 'disabled' : ''}`}>
+          <button className="page-link" onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}>
+            Previous
+          </button>
+        </li>
+        {Array.from({ length: totalPages }, (_, i) => (
+          <li key={i + 1} className={`page-item ${currentPage === i + 1 ? 'active' : ''}`}>
+            <button className="page-link" onClick={() => setCurrentPage(i + 1)}>
+              {i + 1}
+            </button>
+          </li>
+        ))}
+        <li className={`page-item ${currentPage === totalPages ? 'disabled' : ''}`}>
+          <button className="page-link" onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}>
+            Next
+          </button>
+        </li>
+      </ul>
+    </div>
+  )
+}
 
 
 
@@ -7933,30 +7935,30 @@ function CostEstimates() {
 
 
 
-    const { project } = useSelector((state) => state.projects);
-    useEffect(() => {
-      dispatch(fetchProject());
-    }, [dispatch]);
-    const reversedProjectList = project?.data?.slice().reverse() || [];
-  
-   
-     const { Clients } = useSelector((state) => state.client);
-     useEffect(() => {
-       if (Clients && project?.data?.length) {
-         const foundProject = project.data.find(p => p._id === Clients);
-         if (foundProject) {
-           setFormData(prev => ({
-             ...prev,
-             projectsId: foundProject._id,
-           }));
-         }
-       }
-     }, [Clients, project]);
-   
-     useEffect(() => {
-       dispatch(fetchClient());
-     }, [dispatch]);
-// ///////////////////////////////////////////////////////////////////
+  const { project } = useSelector((state) => state.projects);
+  useEffect(() => {
+    dispatch(fetchProject());
+  }, [dispatch]);
+  const reversedProjectList = project?.data?.slice().reverse() || [];
+
+
+  const { Clients } = useSelector((state) => state.client);
+  useEffect(() => {
+    if (Clients && project?.data?.length) {
+      const foundProject = project.data.find(p => p._id === Clients);
+      if (foundProject) {
+        setFormData(prev => ({
+          ...prev,
+          projectsId: foundProject._id,
+        }));
+      }
+    }
+  }, [Clients, project]);
+
+  useEffect(() => {
+    dispatch(fetchClient());
+  }, [dispatch]);
+  // ///////////////////////////////////////////////////////////////////
 
   // const [purchaseOrders, setPurchaseOrders] = useState(
   //   initialPurchaseOrders.map(po => ({ ...po, invoiceStatus: 'Active' }))
@@ -8307,111 +8309,111 @@ function CostEstimates() {
 
 
       {/* Modal for Add Purchase Order */}
-<Modal show={showAddPOModal} onHide={() => setShowAddPOModal(false)} size="lg" >   {/*size="md" */}
-      <Modal.Header closeButton>
-        <Modal.Title>Add Purchase Order</Modal.Title>
-      </Modal.Header>
-      <Modal.Body>
-        <Form>
-          <Form.Group className="mb-3">
-            <Form.Label>Select Project</Form.Label>
-            <Form.Select
-              value={selectedProjectId}
-              onChange={(e) => setSelectedProjectId(e.target.value)}
-              className="form-control-sm"
-            >
-              <option value="">-- Select Project --</option>
-              {projects.map((project) => (
-                <option key={project._id} value={project._id}>
-                  {project.name}
-                </option>
-              ))}
-            </Form.Select>
-          </Form.Group>
+      <Modal show={showAddPOModal} onHide={() => setShowAddPOModal(false)} size="lg" >   {/*size="md" */}
+        <Modal.Header closeButton>
+          <Modal.Title>Add Purchase Order</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Form>
+            <Form.Group className="mb-3">
+              <Form.Label>Select Project</Form.Label>
+              <Form.Select
+                value={selectedProjectId}
+                onChange={(e) => setSelectedProjectId(e.target.value)}
+                className="form-control-sm"
+              >
+                <option value="">-- Select Project --</option>
+                {projects.map((project) => (
+                  <option key={project._id} value={project._id}>
+                    {project.name}
+                  </option>
+                ))}
+              </Form.Select>
+            </Form.Group>
 
 
 
-          {/* Assuming you want to select Client separately, 
+            {/* Assuming you want to select Client separately, 
           you might want a different state instead of selectedProjectId */}
-         <Form.Group className="mb-3">
-  <Form.Label>Select Client</Form.Label>
-  <Form.Select
-    name="clientId"
-    value={selectedProjectId}  // <-- This should ideally be different state for client
-              onChange={(e) => setSelectedProjectId(e.target.value)}
-    className="form-control-sm"
-  >
-    <option value="">-- Select Client --</option>
-    {Clients?.data?.map((client) => (
-      <option key={client._id} value={client._id}>
-        {client.clientName}
-      </option>
-    ))}
-  </Form.Select>
-</Form.Group>
+            <Form.Group className="mb-3">
+              <Form.Label>Select Client</Form.Label>
+              <Form.Select
+                name="clientId"
+                value={selectedProjectId}  // <-- This should ideally be different state for client
+                onChange={(e) => setSelectedProjectId(e.target.value)}
+                className="form-control-sm"
+              >
+                <option value="">-- Select Client --</option>
+                {Clients?.data?.map((client) => (
+                  <option key={client._id} value={client._id}>
+                    {client.clientName}
+                  </option>
+                ))}
+              </Form.Select>
+            </Form.Group>
 
 
-          <Form.Group className="mb-3">
-            <Form.Label>PO Date</Form.Label>
-            <Form.Control
-              type="date"
-              value={poDate}
-              onChange={(e) => setPODate(e.target.value)}
-              className="form-control-sm"
-            />
-          </Form.Group>
-
-          <Form.Group className="mb-3">
-            <Form.Label>Status</Form.Label>
-            <Form.Select
-              value={status}
-              onChange={(e) => setStatus(e.target.value)}
-              className="form-control-sm"
-            >
-              <option value="">-- Select Status --</option>
-              {statuses.map((s) => (
-                <option key={s} value={s}>
-                  {s}
-                </option>
-              ))}
-            </Form.Select>
-          </Form.Group>
-
-          <Form.Group className="mb-3">
-            <Form.Label>PO Amount</Form.Label>
-            <Form.Control
-              type="number"
-              value={amount}
-              onChange={(e) => setAmount(e.target.value)}
-              className="form-control-sm"
-            />
-          </Form.Group>
-
-          <Form.Group className="mb-3">
-            <Form.Label>Upload PO Document</Form.Label>
-            <div className="file-upload">
-              <input
-                type="file"
-                accept=".pdf,.doc,.docx"
-                onChange={handleFileUpload}
+            <Form.Group className="mb-3">
+              <Form.Label>PO Date</Form.Label>
+              <Form.Control
+                type="date"
+                value={poDate}
+                onChange={(e) => setPODate(e.target.value)}
                 className="form-control-sm"
               />
-              <div className="upload-info">
-                <BsUpload className="me-2" /> Upload a file (PDF, DOC up to 10MB)
+            </Form.Group>
+
+            <Form.Group className="mb-3">
+              <Form.Label>Status</Form.Label>
+              <Form.Select
+                value={status}
+                onChange={(e) => setStatus(e.target.value)}
+                className="form-control-sm"
+              >
+                <option value="">-- Select Status --</option>
+                {statuses.map((s) => (
+                  <option key={s} value={s}>
+                    {s}
+                  </option>
+                ))}
+              </Form.Select>
+            </Form.Group>
+
+            <Form.Group className="mb-3">
+              <Form.Label>PO Amount</Form.Label>
+              <Form.Control
+                type="number"
+                value={amount}
+                onChange={(e) => setAmount(e.target.value)}
+                className="form-control-sm"
+              />
+            </Form.Group>
+
+            <Form.Group className="mb-3">
+              <Form.Label>Upload PO Document</Form.Label>
+              <div className="file-upload">
+                <input
+                  type="file"
+                  accept=".pdf,.doc,.docx"
+                  onChange={handleFileUpload}
+                  className="form-control-sm"
+                />
+                <div className="upload-info">
+                  <BsUpload className="me-2" /> Upload a file (PDF, DOC up to 10MB)
+                </div>
               </div>
-            </div>
-          </Form.Group>
-        </Form>
-      </Modal.Body>
-      <Modal.Footer>
-        <Button variant="secondary" onClick={() => setShowAddPOModal(false)}>
-          Cancel
-        </Button>
-        <Button variant="primary" onClick={handleSavePO}>
-          Save PO
-        </Button>
-      </Modal.Footer>
-    </Modal>
+            </Form.Group>
+          </Form>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={() => setShowAddPOModal(false)}>
+            Cancel
+          </Button>
+          <Button variant="primary" onClick={handleSavePO}>
+            Save PO
+          </Button>
+        </Modal.Footer>
+      </Modal>
 
 
       {!loading && !error && (
@@ -8500,7 +8502,7 @@ function CostEstimates() {
   const [showAddPOModal, setShowAddPOModal] = useState(false);
   const [showInvoiceModal, setShowInvoiceModal] = useState(false);
   const [selectedPO, setSelectedPO] = useState(null);
-  
+
   // PO Form states
   const [selectedProjectId, setSelectedProjectId] = useState("");
   const [selectedClientId, setSelectedClientId] = useState("");
@@ -8694,7 +8696,7 @@ function CostEstimates() {
   return (
     <div className="p-4 m-3" style={{ backgroundColor: "white", borderRadius: "10px" }}>
       <h2 className="fw-semibold mb-3">Cost Estimates</h2>
-      
+
       {/* Search and filters */}
       <div className="d-flex justify-content-between align-items-center mb-4">
         <div className="filters d-flex flex-wrap gap-1 mb-4">
@@ -8855,7 +8857,7 @@ const getStatusClass = (status) => {
 };
 
 
-      
+
 
 
 
@@ -8898,7 +8900,7 @@ function CostEstimates() {
   const [showAddPOModal, setShowAddPOModal] = useState(false);
   const [showInvoiceModal, setShowInvoiceModal] = useState(false);
   const [selectedPO, setSelectedPO] = useState(null);
-  
+
   // PO Form states
   const [selectedProjectId, setSelectedProjectId] = useState("");
   const [selectedClientId, setSelectedClientId] = useState("");
@@ -9092,7 +9094,7 @@ function CostEstimates() {
   return (
     <div className="p-4 m-3" style={{ backgroundColor: "white", borderRadius: "10px" }}>
       <h2 className="fw-semibold mb-3">Cost Estimates</h2>
-      
+
       {/* Search and filters */}
       <div className="d-flex justify-content-between align-items-center mb-4">
         <div className="filters d-flex flex-wrap gap-1 mb-4">
@@ -9802,107 +9804,107 @@ function CostEstimates() {
       </Modal>
 
       {/* Modal for Add Purchase Order */}
-<Modal show={showAddPOModal} onHide={() => setShowAddPOModal(false)} size="md" > 
-      <Modal.Header closeButton>
-        <Modal.Title>Add Purchase Order</Modal.Title>
-      </Modal.Header>
-      <Modal.Body>
-        <Form>
-          <Form.Group className="mb-3">
-            <Form.Label>Select Project</Form.Label>
-            <Form.Select
-              value={selectedProjectId}
-              onChange={(e) => setSelectedProjectId(e.target.value)}
-              className="form-control-sm"
-            >
-              <option value="">-- Select Project --</option>
-              {projects.map((project) => (
-                <option key={project._id} value={project._id}>
-                  {project.name}
-                </option>
-              ))}
-            </Form.Select>
-          </Form.Group>
+      <Modal show={showAddPOModal} onHide={() => setShowAddPOModal(false)} size="md" >
+        <Modal.Header closeButton>
+          <Modal.Title>Add Purchase Order</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Form>
+            <Form.Group className="mb-3">
+              <Form.Label>Select Project</Form.Label>
+              <Form.Select
+                value={selectedProjectId}
+                onChange={(e) => setSelectedProjectId(e.target.value)}
+                className="form-control-sm"
+              >
+                <option value="">-- Select Project --</option>
+                {projects.map((project) => (
+                  <option key={project._id} value={project._id}>
+                    {project.name}
+                  </option>
+                ))}
+              </Form.Select>
+            </Form.Group>
 
-          {/* Assuming you want to select Client separately, 
+            {/* Assuming you want to select Client separately, 
           you might want a different state instead of selectedProjectId */}
-          <Form.Group className="mb-3">
-            <Form.Label>Select Client</Form.Label>
-            <Form.Select
-              value={selectedProjectId}  // <-- This should ideally be different state for client
-              onChange={(e) => setSelectedProjectId(e.target.value)}
-              className="form-control-sm"
-            >
-              <option value="">-- Select Client --</option>
-              {projects.map((project) => (
-                <option key={project._id} value={project._id}>
-                  {project.name}
-                </option>
-              ))}
-            </Form.Select>
-          </Form.Group>
+            <Form.Group className="mb-3">
+              <Form.Label>Select Client</Form.Label>
+              <Form.Select
+                value={selectedProjectId}  // <-- This should ideally be different state for client
+                onChange={(e) => setSelectedProjectId(e.target.value)}
+                className="form-control-sm"
+              >
+                <option value="">-- Select Client --</option>
+                {projects.map((project) => (
+                  <option key={project._id} value={project._id}>
+                    {project.name}
+                  </option>
+                ))}
+              </Form.Select>
+            </Form.Group>
 
-          <Form.Group className="mb-3">
-            <Form.Label>PO Date</Form.Label>
-            <Form.Control
-              type="date"
-              value={poDate}
-              onChange={(e) => setPODate(e.target.value)}
-              className="form-control-sm"
-            />
-          </Form.Group>
-
-          <Form.Group className="mb-3">
-            <Form.Label>Status</Form.Label>
-            <Form.Select
-              value={status}
-              onChange={(e) => setStatus(e.target.value)}
-              className="form-control-sm"
-            >
-              <option value="">-- Select Status --</option>
-              {statuses.map((s) => (
-                <option key={s} value={s}>
-                  {s}
-                </option>
-              ))}
-            </Form.Select>
-          </Form.Group>
-
-          <Form.Group className="mb-3">
-            <Form.Label>PO Amount</Form.Label>
-            <Form.Control
-              type="number"
-              value={amount}
-              onChange={(e) => setAmount(e.target.value)}
-              className="form-control-sm"
-            />
-          </Form.Group>
-
-          <Form.Group className="mb-3">
-            <Form.Label>Upload PO Document</Form.Label>
-            <div className="file-upload">
-              <input
-                type="file"
-                accept=".pdf,.doc,.docx"
-                onChange={handleFileUpload}
+            <Form.Group className="mb-3">
+              <Form.Label>PO Date</Form.Label>
+              <Form.Control
+                type="date"
+                value={poDate}
+                onChange={(e) => setPODate(e.target.value)}
                 className="form-control-sm"
               />
-              <div className="upload-info">
-                <BsUpload className="me-2" /> Upload a file (PDF, DOC up to 10MB)
+            </Form.Group>
+
+            <Form.Group className="mb-3">
+              <Form.Label>Status</Form.Label>
+              <Form.Select
+                value={status}
+                onChange={(e) => setStatus(e.target.value)}
+                className="form-control-sm"
+              >
+                <option value="">-- Select Status --</option>
+                {statuses.map((s) => (
+                  <option key={s} value={s}>
+                    {s}
+                  </option>
+                ))}
+              </Form.Select>
+            </Form.Group>
+
+            <Form.Group className="mb-3">
+              <Form.Label>PO Amount</Form.Label>
+              <Form.Control
+                type="number"
+                value={amount}
+                onChange={(e) => setAmount(e.target.value)}
+                className="form-control-sm"
+              />
+            </Form.Group>
+
+            <Form.Group className="mb-3">
+              <Form.Label>Upload PO Document</Form.Label>
+              <div className="file-upload">
+                <input
+                  type="file"
+                  accept=".pdf,.doc,.docx"
+                  onChange={handleFileUpload}
+                  className="form-control-sm"
+                />
+                <div className="upload-info">
+                  <BsUpload className="me-2" /> Upload a file (PDF, DOC up to 10MB)
+                </div>
               </div>
-            </div>
-          </Form.Group>
-        </Form>
-      </Modal.Body>
-      <Modal.Footer>
-        <Button variant="secondary" onClick={() => setShowAddPOModal(false)}>
-          Cancel
-        </Button>
-        <Button variant="primary" onClick={handleSavePO}>
-          Save PO
-        </Button>
-      </Modal.Footer>
-    </Modal>
+            </Form.Group>
+          </Form>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={() => setShowAddPOModal(false)}>
+            Cancel
+          </Button>
+          <Button variant="primary" onClick={handleSavePO}>
+            Save PO
+          </Button>
+        </Modal.Footer>
+      </Modal>
 
 
       {!loading && !error && (
@@ -10504,47 +10506,47 @@ function TimeLogs() {
         </div>
       </div>
 
-     <div className="row g-3 mb-4">
-             <div className="col-md-4">
-               <div className="input-group">
-                 <span className="input-group-text bg-white border-end-0">
-                   <FaSearch className="text-muted" />
-                 </span>
-                 <input
-                   type="text"
-                   className="form-control border-start-0"
-                   placeholder="Search time logs..."
-                   value={searchQuery}
-                   onChange={(e) => setSearchQuery(e.target.value)}
-                 />
-               </div>
-             </div>
-             <div className="col-md-4">
-               <div className="input-group">
-                 <span className="input-group-text bg-white border-end-0">
-                   <FaCalendarAlt className="text-muted" />
-                 </span>
-                 <input
-                   type="date"
-                   className="form-control border-start-0"
-                   value={selectedDate}
-                   onChange={(e) => setSelectedDate(e.target.value)}
-                 />
-               </div>
-             </div>
-             <div className="col-md-4">
-               <select
-                 className="form-select"
-                 value={selectedProject}
-                 onChange={(e) => setSelectedProject(e.target.value)}
-               >
-                 <option>All Projects</option>
-                 <option>Holiday Package Design</option>
-                 <option>Product Catalog</option>
-                 <option>Brand Guidelines</option>
-               </select>
-             </div>
-           </div>
+      <div className="row g-3 mb-4">
+        <div className="col-md-4">
+          <div className="input-group">
+            <span className="input-group-text bg-white border-end-0">
+              <FaSearch className="text-muted" />
+            </span>
+            <input
+              type="text"
+              className="form-control border-start-0"
+              placeholder="Search time logs..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+            />
+          </div>
+        </div>
+        <div className="col-md-4">
+          <div className="input-group">
+            <span className="input-group-text bg-white border-end-0">
+              <FaCalendarAlt className="text-muted" />
+            </span>
+            <input
+              type="date"
+              className="form-control border-start-0"
+              value={selectedDate}
+              onChange={(e) => setSelectedDate(e.target.value)}
+            />
+          </div>
+        </div>
+        <div className="col-md-4">
+          <select
+            className="form-select"
+            value={selectedProject}
+            onChange={(e) => setSelectedProject(e.target.value)}
+          >
+            <option>All Projects</option>
+            <option>Holiday Package Design</option>
+            <option>Product Catalog</option>
+            <option>Brand Guidelines</option>
+          </select>
+        </div>
+      </div>
 
       <div className="card shadow-sm">
         <div className="card-body p-0">
@@ -10705,707 +10707,707 @@ export default TimeLogs;
 
 
 <td style={{ color: isDiscrepant ? 'red' : 'inherit', fontWeight: isDiscrepant ? 'bold' : 'normal' }}>
-                        {log.hours}
+  {log.hours}
+</td>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+import React, { useState, useEffect } from 'react';
+import { FaSearch, FaCalendarAlt, FaPencilAlt, FaTrashAlt, FaPlus } from 'react-icons/fa';
+import { Link } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchTimeLogss } from '../../../redux/slices/TimeLogsSlice';
+import { Button, Form, Modal } from "react-bootstrap";
+
+function TimeLogs() {
+  const dispatch = useDispatch();
+
+  const [showAssignModal, setShowAssignModal] = useState(false);
+  const [selectedDesigner, setSelectedDesigner] = useState('');
+  const [assignmentDescription, setAssignmentDescription] = useState('');
+  const [selectedJobs, setSelectedJobs] = useState({});
+  const [errorMessage, setErrorMessage] = useState('');
+  const [currentPage, setCurrentPage] = useState(1);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [selectedDate, setSelectedDate] = useState('');
+  const [selectedProject, setSelectedProject] = useState('All Projects');
+
+  const { timelogs, error, loading } = useSelector((state) => state.TimeLogss);
+
+  useEffect(() => {
+    dispatch(fetchTimeLogss());
+  }, [dispatch]);
+
+  const itemsPerPage = 7;
+  const totalPages = Math.ceil((timelogs.TimeLogss?.length || 0) / itemsPerPage);
+  const paginatedTimeLogss = timelogs.TimeLogss?.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
+  );
+
+  const handleCheckboxChange = (jobId) => {
+    setSelectedJobs((prev) => ({
+      ...prev,
+      [jobId]: !prev[jobId],
+    }));
+  };
+
+  const handleSubmitAssignment = () => {
+    const selectedJobIds = Object.keys(selectedJobs).filter((id) => selectedJobs[id]);
+    if (selectedJobIds.length === 0) {
+      setErrorMessage("Please select at least 1 job to assign.");
+      setTimeout(() => setErrorMessage(""), 3000);
+      return;
+    }
+
+    if (!selectedDesigner) {
+      setErrorMessage("Please select a designer.");
+      setTimeout(() => setErrorMessage(""), 3000);
+      return;
+    }
+
+    const payload = {
+      id: selectedJobIds,
+      assign: selectedDesigner,
+      description: assignmentDescription
+    };
+
+    console.log("Assignment Payload:", payload);
+    // dispatch(UpdateJobAssign(payload)); // Uncomment when action is ready
+
+    setShowAssignModal(false);
+    setSelectedDesigner('');
+    setAssignmentDescription('');
+  };
+
+  return (
+    <div className="container py-4">
+      <div className="d-flex justify-content-between align-items-center mb-4">
+        <h4 className="mb-0">Time Logs</h4>
+        <div className="d-flex gap-3">
+          <Button
+            className="m-2"
+            variant="primary"
+            onClick={() => {
+              const selectedJobIds = Object.keys(selectedJobs).filter((id) => selectedJobs[id]);
+              if (selectedJobIds.length === 0) {
+                setErrorMessage("Please select at least 1 job to assign.");
+                setTimeout(() => setErrorMessage(""), 3000);
+              } else {
+                setShowAssignModal(true);
+              }
+            }}
+          >
+            Assign
+          </Button>
+          <Link to={"/AddTimelog"} className="text-decoration-none">
+            <button className="btn btn-dark d-flex align-items-center gap-2">
+              <FaPlus /> Add Time Log
+            </button>
+          </Link>
+        </div>
+      </div>
+
+      {errorMessage && <div className="alert alert-danger">{errorMessage}</div>}
+
+      {/* Filters */}
+      <div className="row g-3 mb-4">
+        <div className="col-md-4">
+          <div className="input-group">
+            <span className="input-group-text bg-white border-end-0">
+              <FaSearch className="text-muted" />
+            </span>
+            <input
+              type="text"
+              className="form-control border-start-0"
+              placeholder="Search time logs..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+            />
+          </div>
+        </div>
+        <div className="col-md-4">
+          <div className="input-group">
+            <span className="input-group-text bg-white border-end-0">
+              <FaCalendarAlt className="text-muted" />
+            </span>
+            <input
+              type="date"
+              className="form-control border-start-0"
+              value={selectedDate}
+              onChange={(e) => setSelectedDate(e.target.value)}
+            />
+          </div>
+        </div>
+        <div className="col-md-4">
+          <select
+            className="form-select"
+            value={selectedProject}
+            onChange={(e) => setSelectedProject(e.target.value)}
+          >
+            <option>All Projects</option>
+            <option>Holiday Package Design</option>
+            <option>Product Catalog</option>
+            <option>Brand Guidelines</option>
+          </select>
+        </div>
+      </div>
+
+      {/* Table */}
+      <div className="card shadow-sm">
+        <div className="card-body p-0">
+          <div className="table-responsive">
+            <table className="table table-hover mb-0">
+              <thead className="bg-light">
+                <tr>
+                  <th>
+                    <input
+                      type="checkbox"
+                      onChange={(e) => {
+                        const checked = e.target.checked;
+                        const newSelected = {};
+                        paginatedTimeLogss?.forEach((log) => {
+                          if (log._id) newSelected[log._id] = checked;
+                        });
+                        setSelectedJobs(newSelected);
+                      }}
+                      checked={
+                        paginatedTimeLogss?.length > 0 &&
+                        paginatedTimeLogss?.every((log) => selectedJobs[log._id])
+                      }
+                    />
+                  </th>
+                  <th>Date</th>
+                  <th>JobID</th>
+                  <th>Project</th>
+                  <th>Extra Hours</th>
+                  <th>Hours</th>
+                  <th>Task Notes</th>
+                </tr>
+              </thead>
+              <tbody>
+                {paginatedTimeLogss?.map((log, index) => (
+                  <tr key={index}>
+                    <td>
+                      <input
+                        type="checkbox"
+                        checked={selectedJobs[log._id] || false}
+                        onChange={() => handleCheckboxChange(log._id)}
+                      />
+                    </td>
+                    <td>{new Date(log.date).toLocaleDateString()}</td>
+                    <td>
+                      #JOB{String((currentPage - 1) * itemsPerPage + index + 1).padStart(4, '0')}
+                    </td>
+                    <td>{log.projectId?.[0]?.projectName || 'No Project'}</td>
+                    <td>{log.extraHours === 0 ? '-' : log.extraHours}</td>
+                    <td style={{ color: log.hours < 8 ? 'red' : 'inherit' }}>{log.hours}</td>
+                    <td>{log.taskNotes}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      {/* Pagination */}
+      {!loading && !error && (
+        <div className="d-flex justify-content-between align-items-center my-3">
+          <div className="text-muted small">
+            Showing {paginatedTimeLogss?.length || 0} of {timelogs.TimeLogss?.length || 0} entries
+          </div>
+          <ul className="pagination pagination-sm mb-0">
+            <li className={`page-item ${currentPage === 1 ? 'disabled' : ''}`}>
+              <button className="page-link" onClick={() => setCurrentPage((p) => Math.max(p - 1, 1))}>
+                Previous
+              </button>
+            </li>
+            {Array.from({ length: totalPages }, (_, i) => (
+              <li key={i} className={`page-item ${currentPage === i + 1 ? 'active' : ''}`}>
+                <button className="page-link" onClick={() => setCurrentPage(i + 1)}>
+                  {i + 1}
+                </button>
+              </li>
+            ))}
+            <li className={`page-item ${currentPage === totalPages ? 'disabled' : ''}`}>
+              <button className="page-link" onClick={() => setCurrentPage((p) => Math.min(p + 1, totalPages))}>
+                Next
+              </button>
+            </li>
+          </ul>
+        </div>
+      )}
+
+      {/* Assign Modal */}
+      <Modal show={showAssignModal} onHide={() => setShowAssignModal(false)}>
+        <Modal.Header closeButton>
+          <Modal.Title>Assign Job</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Form>
+            <Form.Group className="mb-3">
+              <Form.Label>Select Designer</Form.Label>
+              <Form.Select
+                value={selectedDesigner}
+                onChange={(e) => setSelectedDesigner(e.target.value)}
+              >
+                <option value="">-- Select --</option>
+                <option value="Production">Production</option>
+                <option value="Designer">Designer</option>
+              </Form.Select>
+            </Form.Group>
+
+            <Form.Group className="mb-3">
+              <Form.Label>Description</Form.Label>
+              <Form.Control
+                as="textarea"
+                rows={3}
+                value={assignmentDescription}
+                onChange={(e) => setAssignmentDescription(e.target.value)}
+                placeholder="Enter assignment details or instructions..."
+              />
+            </Form.Group>
+          </Form>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={() => setShowAssignModal(false)}>
+            Cancel
+          </Button>
+          <Button variant="primary" onClick={handleSubmitAssignment}>
+            Assign
+          </Button>
+        </Modal.Footer>
+      </Modal>
+    </div>
+  );
+}
+
+export default TimeLogs;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+import React, { useState, useMemo, useEffect } from 'react';
+import { FaSearch, FaCalendarAlt, FaPencilAlt, FaTrashAlt, FaPlus } from 'react-icons/fa';
+import AddTimeLog from './AddTimeLog';
+import Extrahr from './Extrahr';
+import { Link, useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { deleteTimeLogs, fetchTimeLogss, updateExtraHours } from '../../../redux/slices/TimeLogsSlice';
+import { Button, Form, Modal } from "react-bootstrap";
+import Swal from 'sweetalert2';
+
+function TimeLogs() {
+  const [showAddModal, setShowAddModal] = useState(false);
+  const [editingLog, setEditingLog] = useState(null);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [selectedDate, setSelectedDate] = useState('');
+  const [selectedProject, setSelectedProject] = useState('All Projects');
+  const [selectedLogId, setSelectedLogId] = useState(null);
+
+  const dispatch = useDispatch();
+  const navigate = useNavigate()
+
+  // ///////////////////////////////
+  const [showAssignModal, setShowAssignModal] = useState(false);
+  const [selectedDesigner, setSelectedDesigner] = useState('');
+  const [assignmentDescription, setAssignmentDescription] = useState('');
+  const [selectedJobs, setSelectedJobs] = useState({});
+  const [errorMessage, setErrorMessage] = useState('');
+  const [extraHours, setExtraHours] = useState('');
+
+
+
+  useEffect(() => {
+    dispatch(fetchTimeLogss());
+  }, [dispatch]);
+
+
+  const handleCheckboxChange = (jobId) => {
+    setSelectedJobs((prev) => ({
+      ...prev,
+      [jobId]: !prev[jobId],
+    }));
+  };
+  const handleSubmitAssignment = () => {
+    const selectedJobIds = Object.keys(selectedJobs).filter((id) => selectedJobs[id]);
+
+    if (selectedJobIds.length === 0) {
+      setErrorMessage("Please select at least 1 job to assign.");
+      setTimeout(() => setErrorMessage(""), 3000);
+      return;
+    }
+
+    if (!extraHours) {
+      setErrorMessage("Please enter extra hours.");
+      setTimeout(() => setErrorMessage(""), 3000);
+      return;
+    }
+
+    const payload = {
+      id: selectedJobIds,
+      extraHours: extraHours,
+    };
+
+    console.log("Dispatching payload:", payload);
+
+    dispatch(updateExtraHours(payload))
+      .unwrap()
+      .then(() => {
+        setSelectedJobs({});
+        dispatch(fetchTimeLogss());
+        setShowAssignModal(false);
+        setExtraHours('');
+      })
+      .catch((error) => {
+        setErrorMessage(`Failed to update: ${error}`);
+        setTimeout(() => setErrorMessage(""), 3000);
+      });
+  };
+
+
+  // ////////////////////////
+  const [timeLogs, setTimeLogs] = useState([
+    {
+      date: '2024/01/19',
+      jobId: '#JOB102',
+      project: 'Holiday Package',
+      hours: 4.5,
+      taskNotes: 'Initial concept development and sketching',
+      day: 14,
+      ExtraHours: "12"
+    },
+    {
+      date: '2024/01/19',
+      jobId: '#JOB101',
+      project: 'ProductCatalog',
+      hours: 6.0,
+      taskNotes: 'Layout design and photo editing',
+      day: "16",
+      ExtraHours: "25"
+    },
+    {
+      date: '2024/01/18',
+      jobId: '#JOB102',
+      project: 'HolidaywPackage ',
+      hours: 5.5,
+      taskNotes: 'Color palette selection and mockups',
+      day: "22",
+      ExtraHours: "9.5"
+    },
+    {
+      date: '2024/01/18',
+      jobId: '#JOB100',
+      project: 'BrandGuidelines',
+      hours: 8,
+      taskNotes: 'Typography system and logo variations',
+      day: "28",
+    }
+  ]);
+
+
+  //  all client
+  const { timelogs, error, loading } = useSelector((state) => state.TimeLogss);
+  console.log(timelogs.TimeLogss);
+
+  useEffect(() => {
+    dispatch(fetchTimeLogss());
+  }, [dispatch]);
+
+  const itemsPerPage = 7;
+  const totalPages = Math.ceil((timelogs.TimeLogss?.length || 0) / itemsPerPage);
+  const paginatedTimeLogss = timelogs.TimeLogss?.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
+  );
+
+
+  const handleEdit = (log) => {
+    navigate(`/AddTimelog`, { state: { log } });
+  };
+
+  const handleDelete = (_id) => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        dispatch(deleteTimeLogs(_id))
+          .then(() => {
+            Swal.fire("Deleted!", "The document has been deleted.", "success");
+            dispatch(fetchTimeLogss());
+          })
+          .catch(() => {
+            Swal.fire("Error!", "Something went wrong.", "error");
+          });
+      }
+    });
+  }
+  // time set am aur mp 
+
+  function formatTimeTo12Hour(time24) {
+    if (!time24) return '';
+
+    // Sometimes time might have seconds or extra parts, so just take first two parts
+    const [hourStr, minuteStr] = time24.split(':');
+    let hour = parseInt(hourStr, 10);
+    const minute = minuteStr ? minuteStr.padStart(2, '0') : '00';
+
+    const ampm = hour >= 12 ? 'PM' : 'AM';
+    hour = hour % 12;
+    if (hour === 0) hour = 12;
+
+    return `${hour}:${minute} ${ampm}`;
+  }
+
+  // Helper to convert "HH:MM" to decimal hours for comparison, e.g. "7:30" -> 7.5
+  function timeStringToDecimalHours(time24) {
+    if (!time24) return 0;
+    const [hourStr, minuteStr] = time24.split(':');
+    const hour = parseInt(hourStr, 10);
+    const minute = parseInt(minuteStr || '0', 10);
+    return hour + minute / 60;
+  }
+
+  return (
+    <div className="container py-4">
+      <div className="d-flex justify-content-between align-items-center mb-4">
+        <h3 className="mb-0">Time Logs</h3>
+        <div className="d-flex gap-3">
+
+          <Link className="text-decoration-none">
+            <Button
+              className="btn d-flex align-items-center gap-2"
+              size="sm"
+              id='All_btn'
+              variant="dark"
+              onClick={() => {
+                const selectedJobIds = Object.keys(selectedJobs).filter((id) => selectedJobs[id]);
+
+                if (selectedJobIds.length === 0) {
+                  setErrorMessage("Please select at least 1 List to assign.");
+                  setTimeout(() => setErrorMessage(""), 3000);
+                } else {
+                  const dataToSend = {
+                    id: selectedJobIds,
+                    extraHours: extraHours || "0:00",
+                  };
+
+                  // ✅ Log formatted data
+                  console.log("Payload to send:", dataToSend);
+
+                  // Optionally, send this to server here
+                  setShowAssignModal(true);
+                }
+              }}
+            >
+              <FaPlus /> ExtraTime
+            </Button>
+
+
+          </Link>
+          <Link to={"/AddTimelog"} className="text-decoration-none">
+            <button id='All_btn' className="btn btn-dark d-flex align-items-center gap-2">
+              <FaPlus /> Add Time Log
+            </button>
+          </Link>
+        </div>
+      </div>
+      {errorMessage && <div className="alert alert-danger">{errorMessage}</div>}
+
+      <div className="row g-3 mb-4">
+        <div className="col-md-4">
+          <div className="input-group">
+            <span className="input-group-text bg-white border-end-0">
+              <FaSearch className="text-muted" />
+            </span>
+            <input
+              type="text"
+              className="form-control border-start-0"
+              placeholder="Search time logs..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+            />
+          </div>
+        </div>
+        <div className="col-md-4">
+          <div className="input-group">
+            <span className="input-group-text bg-white border-end-0">
+              <FaCalendarAlt className="text-muted" />
+            </span>
+            <input
+              type="date"
+              className="form-control border-start-0"
+              value={selectedDate}
+              onChange={(e) => setSelectedDate(e.target.value)}
+            />
+          </div>
+        </div>
+        <div className="col-md-4">
+          <select
+            className="form-select"
+            value={selectedProject}
+            onChange={(e) => setSelectedProject(e.target.value)}
+          >
+            <option>All Projects</option>
+            <option>Holiday Package Design</option>
+            <option>Product Catalog</option>
+            <option>Brand Guidelines</option>
+          </select>
+        </div>
+      </div>
+
+      <div className="card shadow-sm">
+        <div className="card-body p-0">
+          <div className="table-responsive">
+            <table className="table table-hover mb-0">
+              <thead className="bg-light">
+                <tr>
+                  <th>
+                    <input
+                      type="checkbox"
+                      onChange={(e) => {
+                        const checked = e.target.checked;
+                        const newSelected = {};
+                        paginatedTimeLogss?.forEach((log) => {
+                          if (log._id) newSelected[log._id] = checked;
+                        });
+                        setSelectedJobs(newSelected);
+                      }}
+                      checked={
+                        paginatedTimeLogss?.length > 0 &&
+                        paginatedTimeLogss?.every((log) => selectedJobs[log._id])
+                      }
+                    />
+                  </th>
+                  <th>Date</th>
+                  <th>JobID</th>
+                  <th>Project</th>
+                  <th style={{ whiteSpace: 'nowrap' }}>Extra Hours</th>
+                  <th>Hours</th>
+                  <th>Task Notes</th>
+                  <th className="text-end">Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                {paginatedTimeLogss?.map((log, index) => {
+                  const extraHoursDecimal = timeStringToDecimalHours(log.extraHours);
+                  const hoursDecimal = timeStringToDecimalHours(log.hours);
+
+                  const isHoursDiscrepant = hoursDecimal < 8;
+                  const isExtraHoursDiscrepant = extraHoursDecimal < 8;
+                  return (
+                    <tr key={index}>
+                      <td>
+                        <input
+                          type="checkbox"
+                          checked={selectedJobs[log._id] || false}
+                          onChange={() => handleCheckboxChange(log._id)}
+                        />
                       </td>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-                      import React, { useState, useEffect } from 'react';
-                      import { FaSearch, FaCalendarAlt, FaPencilAlt, FaTrashAlt, FaPlus } from 'react-icons/fa';
-                      import { Link } from 'react-router-dom';
-                      import { useDispatch, useSelector } from 'react-redux';
-                      import { fetchTimeLogss } from '../../../redux/slices/TimeLogsSlice';
-                      import { Button, Form, Modal } from "react-bootstrap";
-                      
-                      function TimeLogs() {
-                        const dispatch = useDispatch();
-                      
-                        const [showAssignModal, setShowAssignModal] = useState(false);
-                        const [selectedDesigner, setSelectedDesigner] = useState('');
-                        const [assignmentDescription, setAssignmentDescription] = useState('');
-                        const [selectedJobs, setSelectedJobs] = useState({});
-                        const [errorMessage, setErrorMessage] = useState('');
-                        const [currentPage, setCurrentPage] = useState(1);
-                        const [searchQuery, setSearchQuery] = useState('');
-                        const [selectedDate, setSelectedDate] = useState('');
-                        const [selectedProject, setSelectedProject] = useState('All Projects');
-                      
-                        const { timelogs, error, loading } = useSelector((state) => state.TimeLogss);
-                      
-                        useEffect(() => {
-                          dispatch(fetchTimeLogss());
-                        }, [dispatch]);
-                      
-                        const itemsPerPage = 7;
-                        const totalPages = Math.ceil((timelogs.TimeLogss?.length || 0) / itemsPerPage);
-                        const paginatedTimeLogss = timelogs.TimeLogss?.slice(
-                          (currentPage - 1) * itemsPerPage,
-                          currentPage * itemsPerPage
-                        );
-                      
-                        const handleCheckboxChange = (jobId) => {
-                          setSelectedJobs((prev) => ({
-                            ...prev,
-                            [jobId]: !prev[jobId],
-                          }));
-                        };
-                      
-                        const handleSubmitAssignment = () => {
-                          const selectedJobIds = Object.keys(selectedJobs).filter((id) => selectedJobs[id]);
-                          if (selectedJobIds.length === 0) {
-                            setErrorMessage("Please select at least 1 job to assign.");
-                            setTimeout(() => setErrorMessage(""), 3000);
-                            return;
-                          }
-                      
-                          if (!selectedDesigner) {
-                            setErrorMessage("Please select a designer.");
-                            setTimeout(() => setErrorMessage(""), 3000);
-                            return;
-                          }
-                      
-                          const payload = {
-                            id: selectedJobIds,
-                            assign: selectedDesigner,
-                            description: assignmentDescription
-                          };
-                      
-                          console.log("Assignment Payload:", payload);
-                          // dispatch(UpdateJobAssign(payload)); // Uncomment when action is ready
-                      
-                          setShowAssignModal(false);
-                          setSelectedDesigner('');
-                          setAssignmentDescription('');
-                        };
-                      
-                        return (
-                          <div className="container py-4">
-                            <div className="d-flex justify-content-between align-items-center mb-4">
-                              <h4 className="mb-0">Time Logs</h4>
-                              <div className="d-flex gap-3">
-                                <Button
-                                  className="m-2"
-                                  variant="primary"
-                                  onClick={() => {
-                                    const selectedJobIds = Object.keys(selectedJobs).filter((id) => selectedJobs[id]);
-                                    if (selectedJobIds.length === 0) {
-                                      setErrorMessage("Please select at least 1 job to assign.");
-                                      setTimeout(() => setErrorMessage(""), 3000);
-                                    } else {
-                                      setShowAssignModal(true);
-                                    }
-                                  }}
-                                >
-                                  Assign
-                                </Button>
-                                <Link to={"/AddTimelog"} className="text-decoration-none">
-                                  <button className="btn btn-dark d-flex align-items-center gap-2">
-                                    <FaPlus /> Add Time Log
-                                  </button>
-                                </Link>
-                              </div>
-                            </div>
-                      
-                            {errorMessage && <div className="alert alert-danger">{errorMessage}</div>}
-                      
-                            {/* Filters */}
-                            <div className="row g-3 mb-4">
-                              <div className="col-md-4">
-                                <div className="input-group">
-                                  <span className="input-group-text bg-white border-end-0">
-                                    <FaSearch className="text-muted" />
-                                  </span>
-                                  <input
-                                    type="text"
-                                    className="form-control border-start-0"
-                                    placeholder="Search time logs..."
-                                    value={searchQuery}
-                                    onChange={(e) => setSearchQuery(e.target.value)}
-                                  />
-                                </div>
-                              </div>
-                              <div className="col-md-4">
-                                <div className="input-group">
-                                  <span className="input-group-text bg-white border-end-0">
-                                    <FaCalendarAlt className="text-muted" />
-                                  </span>
-                                  <input
-                                    type="date"
-                                    className="form-control border-start-0"
-                                    value={selectedDate}
-                                    onChange={(e) => setSelectedDate(e.target.value)}
-                                  />
-                                </div>
-                              </div>
-                              <div className="col-md-4">
-                                <select
-                                  className="form-select"
-                                  value={selectedProject}
-                                  onChange={(e) => setSelectedProject(e.target.value)}
-                                >
-                                  <option>All Projects</option>
-                                  <option>Holiday Package Design</option>
-                                  <option>Product Catalog</option>
-                                  <option>Brand Guidelines</option>
-                                </select>
-                              </div>
-                            </div>
-                      
-                            {/* Table */}
-                            <div className="card shadow-sm">
-                              <div className="card-body p-0">
-                                <div className="table-responsive">
-                                  <table className="table table-hover mb-0">
-                                    <thead className="bg-light">
-                                      <tr>
-                                        <th>
-                                          <input
-                                            type="checkbox"
-                                            onChange={(e) => {
-                                              const checked = e.target.checked;
-                                              const newSelected = {};
-                                              paginatedTimeLogss?.forEach((log) => {
-                                                if (log._id) newSelected[log._id] = checked;
-                                              });
-                                              setSelectedJobs(newSelected);
-                                            }}
-                                            checked={
-                                              paginatedTimeLogss?.length > 0 &&
-                                              paginatedTimeLogss?.every((log) => selectedJobs[log._id])
-                                            }
-                                          />
-                                        </th>
-                                        <th>Date</th>
-                                        <th>JobID</th>
-                                        <th>Project</th>
-                                        <th>Extra Hours</th>
-                                        <th>Hours</th>
-                                        <th>Task Notes</th>
-                                      </tr>
-                                    </thead>
-                                    <tbody>
-                                      {paginatedTimeLogss?.map((log, index) => (
-                                        <tr key={index}>
-                                          <td>
-                                            <input
-                                              type="checkbox"
-                                              checked={selectedJobs[log._id] || false}
-                                              onChange={() => handleCheckboxChange(log._id)}
-                                            />
-                                          </td>
-                                          <td>{new Date(log.date).toLocaleDateString()}</td>
-                                          <td>
-                                            #JOB{String((currentPage - 1) * itemsPerPage + index + 1).padStart(4, '0')}
-                                          </td>
-                                          <td>{log.projectId?.[0]?.projectName || 'No Project'}</td>
-                                          <td>{log.extraHours === 0 ? '-' : log.extraHours}</td>
-                                          <td style={{ color: log.hours < 8 ? 'red' : 'inherit' }}>{log.hours}</td>
-                                          <td>{log.taskNotes}</td>
-                                        </tr>
-                                      ))}
-                                    </tbody>
-                                  </table>
-                                </div>
-                              </div>
-                            </div>
-                      
-                            {/* Pagination */}
-                            {!loading && !error && (
-                              <div className="d-flex justify-content-between align-items-center my-3">
-                                <div className="text-muted small">
-                                  Showing {paginatedTimeLogss?.length || 0} of {timelogs.TimeLogss?.length || 0} entries
-                                </div>
-                                <ul className="pagination pagination-sm mb-0">
-                                  <li className={`page-item ${currentPage === 1 ? 'disabled' : ''}`}>
-                                    <button className="page-link" onClick={() => setCurrentPage((p) => Math.max(p - 1, 1))}>
-                                      Previous
-                                    </button>
-                                  </li>
-                                  {Array.from({ length: totalPages }, (_, i) => (
-                                    <li key={i} className={`page-item ${currentPage === i + 1 ? 'active' : ''}`}>
-                                      <button className="page-link" onClick={() => setCurrentPage(i + 1)}>
-                                        {i + 1}
-                                      </button>
-                                    </li>
-                                  ))}
-                                  <li className={`page-item ${currentPage === totalPages ? 'disabled' : ''}`}>
-                                    <button className="page-link" onClick={() => setCurrentPage((p) => Math.min(p + 1, totalPages))}>
-                                      Next
-                                    </button>
-                                  </li>
-                                </ul>
-                              </div>
-                            )}
-                      
-                            {/* Assign Modal */}
-                            <Modal show={showAssignModal} onHide={() => setShowAssignModal(false)}>
-                              <Modal.Header closeButton>
-                                <Modal.Title>Assign Job</Modal.Title>
-                              </Modal.Header>
-                              <Modal.Body>
-                                <Form>
-                                  <Form.Group className="mb-3">
-                                    <Form.Label>Select Designer</Form.Label>
-                                    <Form.Select
-                                      value={selectedDesigner}
-                                      onChange={(e) => setSelectedDesigner(e.target.value)}
-                                    >
-                                      <option value="">-- Select --</option>
-                                      <option value="Production">Production</option>
-                                      <option value="Designer">Designer</option>
-                                    </Form.Select>
-                                  </Form.Group>
-                      
-                                  <Form.Group className="mb-3">
-                                    <Form.Label>Description</Form.Label>
-                                    <Form.Control
-                                      as="textarea"
-                                      rows={3}
-                                      value={assignmentDescription}
-                                      onChange={(e) => setAssignmentDescription(e.target.value)}
-                                      placeholder="Enter assignment details or instructions..."
-                                    />
-                                  </Form.Group>
-                                </Form>
-                              </Modal.Body>
-                              <Modal.Footer>
-                                <Button variant="secondary" onClick={() => setShowAssignModal(false)}>
-                                  Cancel
-                                </Button>
-                                <Button variant="primary" onClick={handleSubmitAssignment}>
-                                  Assign
-                                </Button>
-                              </Modal.Footer>
-                            </Modal>
-                          </div>
-                        );
-                      }
-                      
-                      export default TimeLogs;
-                      
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-                      
-                      import React, { useState, useMemo, useEffect } from 'react';
-                      import { FaSearch, FaCalendarAlt, FaPencilAlt, FaTrashAlt, FaPlus } from 'react-icons/fa';
-                      import AddTimeLog from './AddTimeLog';
-                      import Extrahr from './Extrahr';
-                      import { Link, useNavigate } from 'react-router-dom';
-                      import { useDispatch, useSelector } from 'react-redux';
-                      import { deleteTimeLogs, fetchTimeLogss, updateExtraHours } from '../../../redux/slices/TimeLogsSlice';
-                      import { Button, Form, Modal } from "react-bootstrap";
-                      import Swal from 'sweetalert2';
-                      
-                      function TimeLogs() {
-                        const [showAddModal, setShowAddModal] = useState(false);
-                        const [editingLog, setEditingLog] = useState(null);
-                        const [currentPage, setCurrentPage] = useState(1);
-                        const [searchQuery, setSearchQuery] = useState('');
-                        const [selectedDate, setSelectedDate] = useState('');
-                        const [selectedProject, setSelectedProject] = useState('All Projects');
-                      const [selectedLogId, setSelectedLogId] = useState(null);
-                      
-                        const dispatch = useDispatch();
-                        const navigate = useNavigate()
-                      
-                        // ///////////////////////////////
-                        const [showAssignModal, setShowAssignModal] = useState(false);
-                        const [selectedDesigner, setSelectedDesigner] = useState('');
-                        const [assignmentDescription, setAssignmentDescription] = useState('');
-                        const [selectedJobs, setSelectedJobs] = useState({});
-                        const [errorMessage, setErrorMessage] = useState('');
-                        const [extraHours, setExtraHours] = useState('');
-                      
-                      
-                      
-                        useEffect(() => {
-                          dispatch(fetchTimeLogss());
-                        }, [dispatch]);
-                      
-                      
-                        const handleCheckboxChange = (jobId) => {
-                          setSelectedJobs((prev) => ({
-                            ...prev,
-                            [jobId]: !prev[jobId],
-                          }));
-                        };
-                        const handleSubmitAssignment = () => {
-                          const selectedJobIds = Object.keys(selectedJobs).filter((id) => selectedJobs[id]);
-                      
-                          if (selectedJobIds.length === 0) {
-                            setErrorMessage("Please select at least 1 job to assign.");
-                            setTimeout(() => setErrorMessage(""), 3000);
-                            return;
-                          }
-                      
-                          if (!extraHours) {
-                            setErrorMessage("Please enter extra hours.");
-                            setTimeout(() => setErrorMessage(""), 3000);
-                            return;
-                          }
-                      
-                          const payload = {
-                            id: selectedJobIds,
-                            extraHours: extraHours,
-                          };
-                      
-                          console.log("Dispatching payload:", payload);
-                      
-                          dispatch(updateExtraHours(payload))
-                            .unwrap()
-                            .then(() => {
-                              setSelectedJobs({});
-                              dispatch(fetchTimeLogss());
-                              setShowAssignModal(false);
-                              setExtraHours('');
-                            })
-                            .catch((error) => {
-                              setErrorMessage(`Failed to update: ${error}`);
-                              setTimeout(() => setErrorMessage(""), 3000);
-                            });
-                        };
-                      
-                      
-                        // ////////////////////////
-                        const [timeLogs, setTimeLogs] = useState([
-                          {
-                            date: '2024/01/19',
-                            jobId: '#JOB102',
-                            project: 'Holiday Package',
-                            hours: 4.5,
-                            taskNotes: 'Initial concept development and sketching',
-                            day: 14,
-                            ExtraHours: "12"
-                          },
-                          {
-                            date: '2024/01/19',
-                            jobId: '#JOB101',
-                            project: 'ProductCatalog',
-                            hours: 6.0,
-                            taskNotes: 'Layout design and photo editing',
-                            day: "16",
-                            ExtraHours: "25"
-                          },
-                          {
-                            date: '2024/01/18',
-                            jobId: '#JOB102',
-                            project: 'HolidaywPackage ',
-                            hours: 5.5,
-                            taskNotes: 'Color palette selection and mockups',
-                            day: "22",
-                            ExtraHours: "9.5"
-                          },
-                          {
-                            date: '2024/01/18',
-                            jobId: '#JOB100',
-                            project: 'BrandGuidelines',
-                            hours: 8,
-                            taskNotes: 'Typography system and logo variations',
-                            day: "28",
-                          }
-                        ]);
-                      
-                      
-                        //  all client
-                        const { timelogs, error, loading } = useSelector((state) => state.TimeLogss);
-                        console.log(timelogs.TimeLogss);
-                      
-                        useEffect(() => {
-                          dispatch(fetchTimeLogss());
-                        }, [dispatch]);
-                      
-                        const itemsPerPage = 7;
-                        const totalPages = Math.ceil((timelogs.TimeLogss?.length || 0) / itemsPerPage);
-                        const paginatedTimeLogss = timelogs.TimeLogss?.slice(
-                          (currentPage - 1) * itemsPerPage,
-                          currentPage * itemsPerPage
-                        );
-                      
-                      
-                        const handleEdit = (log) => {
-                          navigate(`/AddTimelog`, { state: { log } });
-                        };
-                      
-                        const handleDelete = (_id) => {
-                          Swal.fire({
-                            title: "Are you sure?",
-                            text: "You won't be able to revert this!",
-                            icon: "warning",
-                            showCancelButton: true,
-                            confirmButtonColor: "#3085d6",
-                            cancelButtonColor: "#d33",
-                            confirmButtonText: "Yes, delete it!",
-                          }).then((result) => {
-                            if (result.isConfirmed) {
-                              dispatch(deleteTimeLogs(_id))
-                                .then(() => {
-                                  Swal.fire("Deleted!", "The document has been deleted.", "success");
-                                  dispatch(fetchTimeLogss());
-                                })
-                                .catch(() => {
-                                  Swal.fire("Error!", "Something went wrong.", "error");
-                                });
-                            }
-                          });
-                        }
-                        // time set am aur mp 
-                      
-                        function formatTimeTo12Hour(time24) {
-                          if (!time24) return '';
-                      
-                          // Sometimes time might have seconds or extra parts, so just take first two parts
-                          const [hourStr, minuteStr] = time24.split(':');
-                          let hour = parseInt(hourStr, 10);
-                          const minute = minuteStr ? minuteStr.padStart(2, '0') : '00';
-                      
-                          const ampm = hour >= 12 ? 'PM' : 'AM';
-                          hour = hour % 12;
-                          if (hour === 0) hour = 12;
-                      
-                          return `${hour}:${minute} ${ampm}`;
-                        }
-                      
-                        // Helper to convert "HH:MM" to decimal hours for comparison, e.g. "7:30" -> 7.5
-                        function timeStringToDecimalHours(time24) {
-                          if (!time24) return 0;
-                          const [hourStr, minuteStr] = time24.split(':');
-                          const hour = parseInt(hourStr, 10);
-                          const minute = parseInt(minuteStr || '0', 10);
-                          return hour + minute / 60;
-                        }
-                      
-                        return (
-                          <div className="container py-4">
-                            <div className="d-flex justify-content-between align-items-center mb-4">
-                              <h3 className="mb-0">Time Logs</h3>
-                              <div className="d-flex gap-3">
-                      
-                                <Link className="text-decoration-none">
-                                  <Button
-                                    className="btn d-flex align-items-center gap-2"
-                                    size="sm"
-                                    id='All_btn'
-                                    variant="dark"
-                                    onClick={() => {
-                                      const selectedJobIds = Object.keys(selectedJobs).filter((id) => selectedJobs[id]);
-                      
-                                      if (selectedJobIds.length === 0) {
-                                        setErrorMessage("Please select at least 1 List to assign.");
-                                        setTimeout(() => setErrorMessage(""), 3000);
-                                      } else {
-                                        const dataToSend = {
-                                          id: selectedJobIds,
-                                          extraHours: extraHours || "0:00",
-                                        };
-                      
-                                        // ✅ Log formatted data
-                                        console.log("Payload to send:", dataToSend);
-                      
-                                        // Optionally, send this to server here
-                                        setShowAssignModal(true);
-                                      }
-                                    }}
-                                  >
-                                    <FaPlus /> ExtraTime
-                                  </Button>
-                      
-                      
-                                </Link>
-                                <Link to={"/AddTimelog"} className="text-decoration-none">
-                                  <button id='All_btn' className="btn btn-dark d-flex align-items-center gap-2">
-                                    <FaPlus /> Add Time Log
-                                  </button>
-                                </Link>
-                              </div>
-                            </div>
-                            {errorMessage && <div className="alert alert-danger">{errorMessage}</div>}
-                      
-                            <div className="row g-3 mb-4">
-                              <div className="col-md-4">
-                                <div className="input-group">
-                                  <span className="input-group-text bg-white border-end-0">
-                                    <FaSearch className="text-muted" />
-                                  </span>
-                                  <input
-                                    type="text"
-                                    className="form-control border-start-0"
-                                    placeholder="Search time logs..."
-                                    value={searchQuery}
-                                    onChange={(e) => setSearchQuery(e.target.value)}
-                                  />
-                                </div>
-                              </div>
-                              <div className="col-md-4">
-                                <div className="input-group">
-                                  <span className="input-group-text bg-white border-end-0">
-                                    <FaCalendarAlt className="text-muted" />
-                                  </span>
-                                  <input
-                                    type="date"
-                                    className="form-control border-start-0"
-                                    value={selectedDate}
-                                    onChange={(e) => setSelectedDate(e.target.value)}
-                                  />
-                                </div>
-                              </div>
-                              <div className="col-md-4">
-                                <select
-                                  className="form-select"
-                                  value={selectedProject}
-                                  onChange={(e) => setSelectedProject(e.target.value)}
-                                >
-                                  <option>All Projects</option>
-                                  <option>Holiday Package Design</option>
-                                  <option>Product Catalog</option>
-                                  <option>Brand Guidelines</option>
-                                </select>
-                              </div>
-                            </div>
-                      
-                            <div className="card shadow-sm">
-                              <div className="card-body p-0">
-                                <div className="table-responsive">
-                                  <table className="table table-hover mb-0">
-                                    <thead className="bg-light">
-                                      <tr>
-                                        <th>
-                                          <input
-                                            type="checkbox"
-                                            onChange={(e) => {
-                                              const checked = e.target.checked;
-                                              const newSelected = {};
-                                              paginatedTimeLogss?.forEach((log) => {
-                                                if (log._id) newSelected[log._id] = checked;
-                                              });
-                                              setSelectedJobs(newSelected);
-                                            }}
-                                            checked={
-                                              paginatedTimeLogss?.length > 0 &&
-                                              paginatedTimeLogss?.every((log) => selectedJobs[log._id])
-                                            }
-                                          />
-                                        </th>
-                                        <th>Date</th>
-                                        <th>JobID</th>
-                                        <th>Project</th>
-                                        <th style={{ whiteSpace: 'nowrap' }}>Extra Hours</th>
-                                        <th>Hours</th>
-                                        <th>Task Notes</th>
-                                        <th className="text-end">Actions</th>
-                                      </tr>
-                                    </thead>
-                                    <tbody>
-                                      {paginatedTimeLogss?.map((log, index) => {
-                                        const extraHoursDecimal = timeStringToDecimalHours(log.extraHours);
-                                        const hoursDecimal = timeStringToDecimalHours(log.hours);
-                      
-                                        const isHoursDiscrepant = hoursDecimal < 8;
-                                        const isExtraHoursDiscrepant = extraHoursDecimal < 8;
-                                        return (
-                                          <tr key={index}>
-                                            <td>
-                                              <input
-                                                type="checkbox"
-                                                checked={selectedJobs[log._id] || false}
-                                                onChange={() => handleCheckboxChange(log._id)}
-                                              />
-                                            </td>
-                      
-                                            <td>{new Date(log.date).toLocaleDateString('en-GB').replace(/\/20/, '/')}</td>
-                      
-                                            <td className="no-border-bottom">
-                                              #JOB{String((currentPage - 1) * itemsPerPage + index + 1).padStart(4, '0')}
-                                            </td>
-                                            <td style={{ whiteSpace: 'nowrap' }} key={index}>
-                                              {log.projectId?.[0]?.projectName || 'No Project Name'}
-                                            </td>
-                                            <td>
-                                              {(!log.extraHours || log.extraHours === '0' || log.extraHours === '0:00') ? '-' : formatTimeTo12Hour(log.extraHours)}
-                                            </td>
-                      
-                                            <td
-                                              style={{
-                                                color: isHoursDiscrepant ? 'red' : 'inherit',
-                                                fontWeight: isHoursDiscrepant ? 'bold' : 'normal',
-                                                whiteSpace: 'nowrap',
-                                              }}
-                                            >
-                                              {formatTimeTo12Hour(log.hours)}
-                                            </td>
-                      
-                                            <td style={{ whiteSpace: 'nowrap' }}>{log.taskNotes}</td>
-                      
-                                            <td className="text-end" style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                                              {/* <Link className="text-decoration-none">
+                      <td>{new Date(log.date).toLocaleDateString('en-GB').replace(/\/20/, '/')}</td>
+
+                      <td className="no-border-bottom">
+                        #JOB{String((currentPage - 1) * itemsPerPage + index + 1).padStart(4, '0')}
+                      </td>
+                      <td style={{ whiteSpace: 'nowrap' }} key={index}>
+                        {log.projectId?.[0]?.projectName || 'No Project Name'}
+                      </td>
+                      <td>
+                        {(!log.extraHours || log.extraHours === '0' || log.extraHours === '0:00') ? '-' : formatTimeTo12Hour(log.extraHours)}
+                      </td>
+
+                      <td
+                        style={{
+                          color: isHoursDiscrepant ? 'red' : 'inherit',
+                          fontWeight: isHoursDiscrepant ? 'bold' : 'normal',
+                          whiteSpace: 'nowrap',
+                        }}
+                      >
+                        {formatTimeTo12Hour(log.hours)}
+                      </td>
+
+                      <td style={{ whiteSpace: 'nowrap' }}>{log.taskNotes}</td>
+
+                      <td className="text-end" style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                        {/* <Link className="text-decoration-none">
                                                 <Button
                                                   className="btn d-flex align-items-center gap-2"
                                                   size="sm"
@@ -11416,880 +11418,880 @@ export default TimeLogs;
                                                   <FaPlus /> ExtraTime
                                                 </Button>
                                               </Link> */}
-                                              <button
-                                                className="btn btn-link text-dark p-0 me-3"
-                                                onClick={() => handleEdit(log)}
-                                              >
-                                                <FaPencilAlt />
-                                              </button>
-                                              <button
-                                                className="btn btn-link text-danger p-0"
-                                                onClick={() => handleDelete(log._id)}
-                                              >
-                                                <FaTrashAlt />
-                                              </button>
-                                            </td>
-                                          </tr>
-                                        );
-                                      })}
-                      
-                                    </tbody>
-                                  </table>
-                                </div>
-                              </div>
-                            </div>
-                      
-                            {!loading && !error && (
-                              <div className="d-flex justify-content-between align-items-center mb-4">
-                                <div className="text-muted small">
-                                  Showing 1 to {paginatedTimeLogss?.length || 0} of {timelogs.TimeLogss?.length || 0} entries
-                                </div>
-                      
-                                <ul className="pagination pagination-sm mb-0">
-                                  <li className={`page-item ${currentPage === 1 ? 'disabled' : ''}`}>
-                                    <button className="page-link" onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}>
-                                      Previous
-                                    </button>
-                                  </li>
-                                  {Array.from({ length: totalPages }, (_, i) => (
-                                    <li key={i + 1} className={`page-item ${currentPage === i + 1 ? 'active' : ''}`}>
-                                      <button className="page-link" onClick={() => setCurrentPage(i + 1)}>
-                                        {i + 1}
-                                      </button>
-                                    </li>
-                                  ))}
-                                  <li className={`page-item ${currentPage === totalPages ? 'disabled' : ''}`}>
-                                    <button className="page-link" onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}>
-                                      Next
-                                    </button>
-                                  </li>
-                                </ul>
-                              </div>
-                            )}
-                      
-                            {/* Assign Modal */}
-                            <Modal show={showAssignModal} onHide={() => setShowAssignModal(false)}>
-                              <Modal.Header closeButton>
-                                <Modal.Title>Extra Hours</Modal.Title>
-                              </Modal.Header>
-                              <Modal.Body>
-                                <Form>
-                                  <Form.Group className="mb-3">
-                                    <Form.Label>Extra Hours</Form.Label>
-                                    <Form.Control
-                                      type="time"
-                                      value={extraHours}
-                                      onChange={(e) => setExtraHours(e.target.value)}
-                                      placeholder="Enter extra hours"
-                                      step="60" // step in seconds — 60 = 1 min steps
-                                    />
-                                  </Form.Group>
-                      
-                                </Form>
-                              </Modal.Body>
-                              <Modal.Footer>
-                                <Button variant="secondary" onClick={() => setShowAssignModal(false)}>
-                                  Cancel
-                                </Button>
-                                <Button id='All_btn' onClick={handleSubmitAssignment}>
-                                  Save Time Log
-                                </Button>
-                              </Modal.Footer>
-                            </Modal>
-                      
-                          </div>
-                        );
-                      }
-                      
-                      export default TimeLogs;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+                        <button
+                          className="btn btn-link text-dark p-0 me-3"
+                          onClick={() => handleEdit(log)}
+                        >
+                          <FaPencilAlt />
+                        </button>
+                        <button
+                          className="btn btn-link text-danger p-0"
+                          onClick={() => handleDelete(log._id)}
+                        >
+                          <FaTrashAlt />
+                        </button>
+                      </td>
+                    </tr>
+                  );
+                })}
 
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
 
+      {!loading && !error && (
+        <div className="d-flex justify-content-between align-items-center mb-4">
+          <div className="text-muted small">
+            Showing 1 to {paginatedTimeLogss?.length || 0} of {timelogs.TimeLogss?.length || 0} entries
+          </div>
 
+          <ul className="pagination pagination-sm mb-0">
+            <li className={`page-item ${currentPage === 1 ? 'disabled' : ''}`}>
+              <button className="page-link" onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}>
+                Previous
+              </button>
+            </li>
+            {Array.from({ length: totalPages }, (_, i) => (
+              <li key={i + 1} className={`page-item ${currentPage === i + 1 ? 'active' : ''}`}>
+                <button className="page-link" onClick={() => setCurrentPage(i + 1)}>
+                  {i + 1}
+                </button>
+              </li>
+            ))}
+            <li className={`page-item ${currentPage === totalPages ? 'disabled' : ''}`}>
+              <button className="page-link" onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}>
+                Next
+              </button>
+            </li>
+          </ul>
+        </div>
+      )}
 
+      {/* Assign Modal */}
+      <Modal show={showAssignModal} onHide={() => setShowAssignModal(false)}>
+        <Modal.Header closeButton>
+          <Modal.Title>Extra Hours</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Form>
+            <Form.Group className="mb-3">
+              <Form.Label>Extra Hours</Form.Label>
+              <Form.Control
+                type="time"
+                value={extraHours}
+                onChange={(e) => setExtraHours(e.target.value)}
+                placeholder="Enter extra hours"
+                step="60" // step in seconds — 60 = 1 min steps
+              />
+            </Form.Group>
+
+          </Form>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={() => setShowAssignModal(false)}>
+            Cancel
+          </Button>
+          <Button id='All_btn' onClick={handleSubmitAssignment}>
+            Save Time Log
+          </Button>
+        </Modal.Footer>
+      </Modal>
+
+    </div>
+  );
+}
+
+export default TimeLogs;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
 
 
 
-                      import React, { useState } from 'react';
-                      import { Form, Button, Table } from 'react-bootstrap';
-                      import { FaTrash } from 'react-icons/fa';
-                      
-                      const currencies = [
-                        { value: 'USD', label: 'US Dollars/Cents', mainUnit: 'Dollars', subUnit: 'Cents' },
-                        { value: 'GBP', label: 'British Pounds/Pence', mainUnit: 'Pounds', subUnit: 'Pence' },
-                        { value: 'EUR', label: 'Euro/Cents', mainUnit: 'Euro', subUnit: 'Cents' },
-                        { value: 'INR', label: 'Rupees/Paise', mainUnit: 'Rupees', subUnit: 'Paise' },
-                        { value: 'AED', label: 'Dirham/Fils', mainUnit: 'Dirham', subUnit: 'Fils' },
-                        { value: 'SAR', label: 'Riyals/Halala', mainUnit: 'Riyals', subUnit: 'Halala' }
-                      ];
-                      
-                      const documentFormats = [
-                        { value: 'invoice', label: 'Tax Invoice' },
-                        { value: 'estimate', label: 'Invoice' },
-                        { value: 'po', label: 'Dummy Invoice' },
-                        { value: 'proforma', label: 'Proforma Invoice' }
-                      ];
-                      
-                      const formatStyles = [
-                        { value: 'format1', label: 'Format 1 (Classic)' },
-                        { value: 'format2', label: 'Format 2 (Modern)' },
-                        { value: 'format3', label: 'Format 3 (Professional)' }
-                      ];
-                      
-                      const numberToWords = (num) => {
-                        const units = ['', 'One', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight', 'Nine', 'Ten',
-                          'Eleven', 'Twelve', 'Thirteen', 'Fourteen', 'Fifteen', 'Sixteen', 'Seventeen', 'Eighteen', 'Nineteen'];
-                        const tens = ['', '', 'Twenty', 'Thirty', 'Forty', 'Fifty', 'Sixty', 'Seventy', 'Eighty', 'Ninety'];
-                        
-                        const numToWord = (n) => {
-                          if (n < 20) return units[n];
-                          const digit = n % 10;
-                          return tens[Math.floor(n / 10)] + (digit ? '-' + units[digit] : '');
-                        };
-                      
-                        if (num === 0) return 'Zero';
-                        
-                        const convert = (n) => {
-                          if (n < 100) return numToWord(n);
-                          if (n < 1000) return units[Math.floor(n / 100)] + ' Hundred' + (n % 100 ? ' ' + numToWord(n % 100) : '');
-                          if (n < 100000) return convert(Math.floor(n / 1000)) + ' Thousand' + (n % 1000 ? ' ' + convert(n % 1000) : '');
-                          return convert(Math.floor(n / 100000)) + ' Lakh' + (n % 100000 ? ' ' + convert(n % 100000) : '');
-                        };
-                        
-                        return convert(num);
-                      };
-                      
-                      function AddInvoice({ onClose, onSubmit }) {
-                        const [formData, setFormData] = useState({
-                          client: '',
-                          project: '',
-                          dueDate: '',
-                          status: 'Pending',
-                          currency: 'INR',
-                          documentType: 'invoice',
-                          formatStyle: 'format1'
-                        });
-                      
-                        const [items, setItems] = useState([
-                          { description: '', quantity: 1, rate: 0, amount: 0 }
-                        ]);
-                      
-                        const calculateAmount = (quantity, rate) => quantity * rate;
-                      
-                        const handleItemChange = (index, field, value) => {
-                          const newItems = [...items];
-                          newItems[index][field] = value;
-                          if (field === 'quantity' || field === 'rate') {
-                            newItems[index].amount = calculateAmount(
-                              field === 'quantity' ? value : newItems[index].quantity,
-                              field === 'rate' ? value : newItems[index].rate
-                            );
-                          }
-                          setItems(newItems);
-                        };
-                      
-                        const addItem = () => {
-                          setItems([...items, { description: '', quantity: 1, rate: 0, amount: 0 }]);
-                        };
-                      
-                        const removeItem = (index) => {
-                          if (items.length > 1) {
-                            const newItems = [...items];
-                            newItems.splice(index, 1);
-                            setItems(newItems);
-                          }
-                        };
-                      
-                        const subtotal = items.reduce((acc, item) => acc + item.amount, 0);
-                      
-                        const handleChange = (e) => {
-                          const { name, value } = e.target;
-                          setFormData(prev => ({
-                            ...prev,
-                            [name]: value
-                          }));
-                        };
-                      
-                        const handleSubmit = (e) => {
-                          e.preventDefault();
-                          const invoiceData = {
-                            ...formData,
-                            items,
-                            amount: subtotal
-                          };
-                          onSubmit(invoiceData);
-                        };
-                      
-                        return (
-                          <div className="container-fluid p-4" style={{backgroundColor: "white", borderRadius: "10px"}}>
-                            <div className="d-flex justify-content-between align-items-center mb-4">
-                              <h2>Generate New Invoice</h2>
-                            </div>
-                      
-                            <Form onSubmit={handleSubmit}>
-                              <div className="row mb-4">
-                                <div className="col-md-6 mb-3">
-                                  <Form.Group>
-                                    <Form.Label>Client</Form.Label>
-                                    <Form.Select
-                                      name="client"
-                                      value={formData.client}
-                                      onChange={handleChange}
-                                      required
-                                    >
-                                      <option value="">Select Client</option>
-                                      <option value="Acme Corp">Acme Corp</option>
-                                      <option value="Tech Solutions">Tech Solutions</option>
-                                      <option value="Global Inc">Global Inc</option>
-                                    </Form.Select>
-                                  </Form.Group>
-                                </div>
-                      
-                                <div className="col-md-6 mb-3">
-                                  <Form.Group>
-                                    <Form.Label>Project</Form.Label>
-                                    <Form.Control
-                                      type="text"
-                                      name="project"
-                                      value={formData.project}
-                                      onChange={handleChange}
-                                      placeholder="Enter project name"
-                                      required
-                                    />
-                                  </Form.Group>
-                                </div>
-                      
-                                <div className="col-md-6 mb-3">
-                                  <Form.Group>
-                                    <Form.Label>Due Date</Form.Label>
-                                    <Form.Control
-                                      type="date"
-                                      name="dueDate"
-                                      value={formData.dueDate}
-                                      onChange={handleChange}
-                                      required
-                                    />
-                                  </Form.Group>
-                                </div>
-                      
-                                <div className="col-md-6 mb-3">
-                                  <Form.Group>
-                                    <Form.Label>Status</Form.Label>
-                                    <Form.Select
-                                      name="status"
-                                      value={formData.status}
-                                      onChange={handleChange}
-                                      required
-                                    >
-                                      <option value="Pending">Pending</option>
-                                      <option value="Paid">Paid</option>
-                                      <option value="Overdue">Overdue</option>
-                                    </Form.Select>
-                                  </Form.Group>
-                                </div>
-                      
-                                <div className="col-md-6 mb-3">
-                                  <Form.Group>
-                                    <Form.Label>Currency</Form.Label>
-                                    <Form.Select
-                                      name="currency"
-                                      value={formData.currency}
-                                      onChange={handleChange}
-                                      required
-                                    >
-                                      {currencies.map(curr => (
-                                        <option key={curr.value} value={curr.value}>{curr.label}</option>
-                                      ))}
-                                    </Form.Select>
-                                  </Form.Group>
-                                </div>
-                      
-                                <div className="col-md-6 mb-3">
-                                  <Form.Group>
-                                    <Form.Label>Document Type</Form.Label>
-                                    <Form.Select
-                                      name="documentType"
-                                      value={formData.documentType}
-                                      onChange={handleChange}
-                                      required
-                                    >
-                                      {documentFormats.map(format => (
-                                        <option key={format.value} value={format.value}>{format.label}</option>
-                                      ))}
-                                    </Form.Select>
-                                  </Form.Group>
-                                </div>
-                                <div className="col-md-6 mb-3">
-                        <Form.Group>
-                          <Form.Label>Output Format</Form.Label>
-                          <Form.Select
-                            name="outputFormat"
-                            value={formData.outputFormat}
-                            onChange={handleChange}
-                            required
-                          >
-                            {formatStyles.map(style => (
-                              <option key={style.value} value={style.value}>
-                                {style.label}
-                              </option>
-                            ))}
-                          </Form.Select>
-                        </Form.Group>
-                      </div>
-                      
-                              </div>
-                      
-                              <h6 className="mb-3">Line Items</h6>
-                              <Table responsive className="mb-3">
-                                <thead>
-                                  <tr>
-                                    <th>Description</th>
-                                    <th>Quantity</th>
-                                    <th>Rate</th>
-                                    <th>Amount ({formData.currency})</th>
-                                    <th></th>
-                                  </tr>
-                                </thead>
-                                <tbody>
-                                  {items.map((item, index) => (
-                                    <tr key={index}>
-                                      <td>
-                                        <Form.Control
-                                          type="text"
-                                          value={item.description}
-                                          onChange={(e) => handleItemChange(index, 'description', e.target.value)}
-                                          placeholder="Item description"
-                                          required
-                                        />
-                                      </td>
-                                      <td>
-                                        <Form.Control
-                                          type="number"
-                                          min="1"
-                                          value={item.quantity}
-                                          onChange={(e) => handleItemChange(index, 'quantity', parseInt(e.target.value) || 0)}
-                                          required
-                                        />
-                                      </td>
-                                      <td>
-                                        <Form.Control
-                                          type="number"
-                                          min="0"
-                                          step="0.01"
-                                          value={item.rate}
-                                          onChange={(e) => handleItemChange(index, 'rate', parseFloat(e.target.value) || 0)}
-                                          required
-                                        />
-                                      </td>
-                                      <td>{item.amount.toFixed(2)}</td>
-                                      <td>
-                                        <Button
-                                          variant="link"
-                                          className="text-danger p-0"
-                                          onClick={() => removeItem(index)}
-                                          disabled={items.length === 1}
-                                        >
-                                          <FaTrash />
-                                        </Button>
-                                      </td>
-                                    </tr>
-                                  ))}
-                                </tbody>
-                              </Table>
-                      
-                              <Button
-                                variant="outline-secondary"
-                                className="mb-4"
-                                onClick={addItem}
-                                type="button"
-                              >
-                                + Add Line Item
-                              </Button>
-                      
-                              <div className="row mb-4">
-                                <div className="col-md-6">
-                                  <div className="mb-2">Subtotal: {formData.currency} {subtotal.toFixed(2)}</div>
-                                  <div className="mb-2" style={{ fontSize: '0.9em', color: '#666' }}>
-                        {currencies.find(c => c.value === formData.currency)?.mainUnit}{' '}
-                        {numberToWords(Math.floor(subtotal))}
-                        {subtotal % 1 > 0 &&
-                          ` and ${numberToWords(Math.round((subtotal % 1) * 100))} ${currencies.find(c => c.value === formData.currency)?.subUnit}`} Only
-                      </div>
-                      
-                                </div>
-                              </div>
-                      
-                              <div className="d-flex justify-content-end gap-2">
-                                <Button variant="light" onClick={onClose}>Cancel</Button>
-                                <Button id='All_btn' type="submit">Generate Invoice</Button>
-                              </div>
-                            </Form>
-                          </div>
-                        );
-                      }
-                      
-                      export default AddInvoice;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-                      import React, { useEffect, useState } from "react";
-                      import axios from "axios";
-                      import { Link, useLocation, useNavigate } from "react-router-dom";
-                      import { toast, ToastContainer } from "react-toastify";
-                      import "react-toastify/dist/ReactToastify.css";
-                      import { useDispatch, useSelector } from "react-redux";
-                      import { createCostEstimate, updateCostEstimate } from "../../../redux/slices/costEstimatesSlice";
-                      import { fetchProject } from "../../../redux/slices/ProjectsSlice";
-                      import { fetchClient } from "../../../redux/slices/ClientSlice";
-                      import { createInvoicingBilling } from "../../../redux/slices/InvoicingBillingSlice";
-                      
-                      const currencies = [
-                        { label: "USD - US Dollar", value: "USD" },
-                        { label: "EUR - Euro", value: "EUR" },
-                        { label: "INR - Indian Rupee", value: "INR" },
-                        { label: "GBP - British invoiceund", value: "GBP" },
-                        { label: "JPY - Japanese Yen", value: "JPY" },
-                        { label: "AED - UAE Dirham", value: "AED" },
-                        { label: "SAR - Saudi Riyal", value: "SAR" },
-                      ];
-                      
-                      const DocumentType = ["Invoice", "Dummy Invoice", "Tax Invoice","Proforma Invoice"];
-                      const OutputFormat = ["Format 1 (Classic)", "Format 2 (Modern)", "Format 3 (Professional)"];
-                      const statuses = ["Active", "Inactive", "Completed"];
-                      
-                      function AddInvoice() {
-                        const location = useLocation();
-                        const invoice = location.state?.invoice;
-                        const id = invoice?._id;
-                      
-                        console.log("hh", invoice);
-                        
-                        const navigate = useNavigate();
-                        const dispatch = useDispatch();
-                      
-                      
-                        const { project } = useSelector((state) => state.projects);
-                        useEffect(() => {
-                          dispatch(fetchProject());
-                        }, [dispatch]);
-                        const reversedProjectList = project?.data?.slice().reverse() || [];
-                      
-                        const { Clients } = useSelector((state) => state.client);
-                        useEffect(() => {
-                          if (Clients && project?.data?.length) {
-                            const foundProject = project.data.find(p => p._id === Clients);
-                            if (foundProject) {
-                              setFormData(prev => ({
-                                ...prev,
-                                projectsId: foundProject._id,
-                              }));
-                            }
-                          }
-                        }, [Clients, project]);
-                      
-                        useEffect(() => {
-                          dispatch(fetchClient());
-                        }, [dispatch]);
-                      
-                        const [items, setItems] = useState([
-                          { description: "", quantity: 0, rate: 0, amount: 0 },
-                        ]);
-                      
-                        const [formData, setFormData] = useState({
-                          clientId: [""],
-                          projectsId: [""],
-                          date: "",
-                          status: "Active",
-                          currency: "USD",
-                          documentType: "",
-                          output: "",
-                        });
-                      
-                        useEffect(() => {
-                          if (invoice && project?.data?.length) {
-                            let projectId = '';
-                            if (Array.isArray(invoice.projectId) && invoice.projectId.length > 0) {
-                              projectId = invoice.projectId[0]._id;
-                            } else if (Array.isArray(invoice.projects) && invoice.projects.length > 0) {
-                              projectId = typeof invoice.projects[0] === 'object'
-                                ? invoice.projects[0]._id
-                                : invoice.projects[0];
-                            }
-                      
-                            let clientId = "";
-                            if (invoice.clientId && typeof invoice.clientId === "object") {
-                              clientId = invoice.clientId._id;
-                            } else if (Array.isArray(invoice.clients) && invoice.clients.length > 0) {
-                              clientId = invoice.clients[0]?.clientId || "";
-                            }
-                      
-                        setFormData((prev) => ({
-                        ...prev,
-                        ...invoice,
-                        status: invoice.status && statuses.includes(invoice.status)
-                          ? invoice.status
-                          : "Active",
-                        projectsId: projectId ? [projectId] : [""],
-                        clientId: clientId ? [clientId] : [""],
-                        Notes: invoice.Notes || "",
-                        currency: invoice.currency || "USD",
-                        date: invoice.date ? invoice.date.substring(0, 10) : "",
-                        validUntil: invoice.validUntil ? invoice.validUntil.substring(0, 10) : "",
-                      }));
-                      
-                      
-                            if (Array.isArray(invoice.lineItems) && invoice.lineItems.length > 0) {
-                              setItems(invoice.lineItems);
-                            }
-                          }
-                        }, [invoice, project?.data]);
-                      
-                        const [taxRate, setTaxRate] = useState(0.05);
-                      
-                        const calculateAmount = (quantity, rate) => quantity * rate;
-                      
-                        const handleItemChange = (index, field, value) => {
-                          const newItems = [...items];
-                          newItems[index][field] = value;
-                          newItems[index].amount = calculateAmount(
-                            newItems[index].quantity,
-                            newItems[index].rate
-                          );
-                          setItems(newItems);
-                        };
-                      
-                        const handleFormChange = (e) => {
-                          setFormData({ ...formData, [e.target.name]: e.target.value });
-                        };
-                      
-                        const addItem = () => {
-                          setItems([...items, { description: "", quantity: 0, rate: 0, amount: 0 }]);
-                        };
-                      
-                        const removeItem = (index) => {
-                          const newItems = [...items];
-                          newItems.splice(index, 1);
-                          setItems(newItems);
-                        };
-                      
-                        const subtotal = items.reduce((acc, item) => acc + item.amount, 0);
-                        const tax = subtotal * taxRate;
-                        const total = subtotal + tax;
-                      
-                        const handleSubmit = async (e) => {
-                          e.preventDefault();
-                          const payload = {
-                            ...formData,
-                            VATRate: taxRate * 100,
-                            lineItems: items,
-                          };
-                      console.log("rfgrjgg", payload);
-                      
-                          const isDuplicate = location.state?.isDuplicate;
-                          if (isDuplicate || !id) {
-                            dispatch(createInvoicingBilling(payload))
-                              .unwrap()
-                              .then(() => {
-                                toast.success("Estimates created successfully!");
-                                navigate('/CostEstimates', { state: { openTab: 'jobs' } });
-                              })
-                              .catch(() => {
-                                toast.error("Failed to create estimates");
-                              });
-                          } else {
-                            dispatch(updateCostEstimate({ id, data: payload }))
-                              .unwrap()
-                              .then(() => {
-                                toast.success("Estimates updated successfully!");
-                                navigate('/CostEstimates', { state: { openTab: 'jobs' } });
-                              })
-                              .catch(() => {
-                                toast.error("Failed to update estimates");
-                              });
-                          }
-                        };
-                      
-                        return (
-                          <>
-                            <ToastContainer />
-                            <div className="container-fluid p-4" style={{ backgroundColor: "white", borderRadius: "10px" }}>
-                              <div className="d-flex justify-content-between align-items-center mb-4">
-                                <h2>Generate New Invoice</h2>
-                              </div>
-                      
-                      
-                              <div className="row mb-3">
-                                <div className="col-md-4 mb-3">
-                                  <label className="form-label">Client</label>
-                                  <select
-                                    className="form-select"
-                                    name="clientId"
-                                    value={formData.clientId[0] || ""}
-                                    onChange={(e) =>
-                                      setFormData({
-                                        ...formData,
-                                        clientId: [e.target.value],
-                                      })
-                                    }
-                                  >
-                                    <option value="">Select Client</option>
-                                    {Clients?.data?.map((client) => (
-                                      <option key={client._id} value={client._id}>
-                                        {client.clientName}
-                                      </option>
-                                    ))}
-                                  </select>
-                                </div>
-                      
-                      
-                                <div className="col-md-4 mb-3">
-                                  <label className="form-label">Project</label>
-                                  <select
-                                    className="form-select"
-                                    name="projectsId"
-                                    value={formData.projectsId[0] || ""}
-                                    onChange={(e) => {
-                                      const selectedId = e.target.value;
-                                      const selectedProject = project?.data?.find(p => p._id === selectedId);
-                                      setFormData({
-                                        ...formData,
-                                        projectsId: [selectedId],
-                                        projectName: selectedProject?.projectName || "",
-                                      });
-                                    }}
-                                  >
-                                    <option value="">Select a project</option>
-                                    {reversedProjectList.map((proj) => (
-                                      <option key={proj._id} value={proj._id}>
-                                        {proj.projectName}
-                                      </option>
-                                    ))}
-                                  </select>
-                                </div>
-                      
-                                <div className="col-md-4 mb-3">
-                                  <label className="form-label"> Due Date</label>
-                                  <input
-                                    type="date"
-                                    className="form-control"
-                                    name="date"
-                                    value={formData.date}
-                                    onChange={handleFormChange}
-                                  />
-                                </div>
-                      
-                                <div className="col-md-4 mb-3">
-                                  <label className="form-label">currency</label>
-                                  <select
-                                    className="form-select"
-                                    name="currency"
-                                    value={formData.currency}
-                                    onChange={handleFormChange}
-                                  >
-                                    {currencies.map((curr) => (
-                                      <option key={curr.value} value={curr.value}>
-                                        {curr.label}
-                                      </option>
-                                    ))}
-                                  </select>
-                                </div>
-                      
-                                <div className="col-md-4 mb-3">
-                                  <label className="form-label">Document Type</label>
-                             <select
-                        className="form-select"
-                        name="status"
-                        value={formData.status}
-                        onChange={handleFormChange}
-                      >
-                        {statuses.map((status) => (
-                          <option key={status} value={status}>
-                            {status}
-                          </option>
-                        ))}
-                      </select>
-                      
-                                </div>
-                      
-                                <div className="col-md-4 mb-3">
-                                  <label className="form-label">Output Format</label>
-                                  <select
-                                    className="form-select"
-                                    name="output"
-                                    value={formData.output}
-                                    onChange={handleFormChange}
-                                  >
-                                    {OutputFormat.map((status) => (
-                                      <option key={status} value={status}>
-                                        {status}
-                                      </option>
-                                    ))}
-                                  </select>
-                                </div>
-                                <div className="col-md-4 mb-3">
-                                  <label className="form-label">Status</label>
-                                  <select
-                                    className="form-select"
-                                    name="status"
-                                    value={formData.status}
-                                    onChange={handleFormChange}
-                                  >
-                                    {statuses.map((status) => (
-                                      <option key={status} value={status}>
-                                        {status}
-                                      </option>
-                                    ))}
-                                  </select>
-                                </div>
-                              </div>
-                      
-                              <h6 className="fw-semibold mb-3">Line Items</h6>
-                              <div className="row fw-semibold text-muted mb-2 px-2">
-                                <div className="col-md-5">Description</div>
-                                <div className="col-md-2">Quantity</div>
-                                <div className="col-md-2">Rate</div>
-                                <div className="col-md-2">Amount</div>
-                                <div className="col-md-1 text-end"></div>
-                              </div>
-                      
-                              {items.map((item, index) => (
-                                <div
-                                  className="row gx-2 gy-2 align-items-center mb-2 px-2 py-2"
-                                  key={index}
-                                  style={{ background: "#f9f9f9", borderRadius: "8px" }}
-                                >
-                                  <div className="col-md-5">
-                                    <input
-                                      type="text"
-                                      className="form-control"
-                                      placeholder="Item description"
-                                      value={item.description}
-                                      onChange={(e) =>
-                                        handleItemChange(index, "description", e.target.value)
-                                      }
-                                    />
-                                  </div>
-                                  <div className="col-md-2">
-                                    <input
-                                      type="number"
-                                      className="form-control"
-                                      value={item.quantity}
-                                      onChange={(e) =>
-                                        handleItemChange(index, "quantity", parseInt(e.target.value))
-                                      }
-                                    />
-                                  </div>
-                                  <div className="col-md-2">
-                                    <input
-                                      type="number"
-                                      className="form-control"
-                                      value={item.rate}
-                                      onChange={(e) =>
-                                        handleItemChange(index, "rate", parseFloat(e.target.value))
-                                      }
-                                    />
-                                  </div>
-                                  <div className="col-md-2">
-                                    <span>
-                                      {formData.currency} {item.amount.toFixed(2)}
-                                    </span>
-                                  </div>
-                                  <div className="col-md-1 text-end">
-                                    <button
-                                      className="btn btn-link text-danger p-0"
-                                      onClick={() => removeItem(index)}
-                                    >
-                                      remove
-                                    </button>
-                                  </div>
-                                </div>
-                              ))}
-                      
-                              <button
-                                className="btn border rounded px-3 py-1 mb-4 text-dark"
-                                onClick={addItem}
-                              >
-                                + Add Line Item
-                              </button>
-                      
-                      
-                              <div className="text-end mt-4">
-                                <Link to="/CostEstimates">
-                                  <button className="btn btn-light me-2">Cancel</button>
-                                </Link>
-                                <button className="btn btn-dark" onClick={handleSubmit}>
-                                  Create Estimate
-                                </button>
-                              </div>
-                      
-                            </div>
-                          </>
-                        );
-                      }
-                      
-                      export default AddInvoice;
-                      
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-                      import React, { useEffect, useState } from "react";
+
+
+
+
+import React, { useState } from 'react';
+import { Form, Button, Table } from 'react-bootstrap';
+import { FaTrash } from 'react-icons/fa';
+
+const currencies = [
+  { value: 'USD', label: 'US Dollars/Cents', mainUnit: 'Dollars', subUnit: 'Cents' },
+  { value: 'GBP', label: 'British Pounds/Pence', mainUnit: 'Pounds', subUnit: 'Pence' },
+  { value: 'EUR', label: 'Euro/Cents', mainUnit: 'Euro', subUnit: 'Cents' },
+  { value: 'INR', label: 'Rupees/Paise', mainUnit: 'Rupees', subUnit: 'Paise' },
+  { value: 'AED', label: 'Dirham/Fils', mainUnit: 'Dirham', subUnit: 'Fils' },
+  { value: 'SAR', label: 'Riyals/Halala', mainUnit: 'Riyals', subUnit: 'Halala' }
+];
+
+const documentFormats = [
+  { value: 'invoice', label: 'Tax Invoice' },
+  { value: 'estimate', label: 'Invoice' },
+  { value: 'po', label: 'Dummy Invoice' },
+  { value: 'proforma', label: 'Proforma Invoice' }
+];
+
+const formatStyles = [
+  { value: 'format1', label: 'Format 1 (Classic)' },
+  { value: 'format2', label: 'Format 2 (Modern)' },
+  { value: 'format3', label: 'Format 3 (Professional)' }
+];
+
+const numberToWords = (num) => {
+  const units = ['', 'One', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight', 'Nine', 'Ten',
+    'Eleven', 'Twelve', 'Thirteen', 'Fourteen', 'Fifteen', 'Sixteen', 'Seventeen', 'Eighteen', 'Nineteen'];
+  const tens = ['', '', 'Twenty', 'Thirty', 'Forty', 'Fifty', 'Sixty', 'Seventy', 'Eighty', 'Ninety'];
+
+  const numToWord = (n) => {
+    if (n < 20) return units[n];
+    const digit = n % 10;
+    return tens[Math.floor(n / 10)] + (digit ? '-' + units[digit] : '');
+  };
+
+  if (num === 0) return 'Zero';
+
+  const convert = (n) => {
+    if (n < 100) return numToWord(n);
+    if (n < 1000) return units[Math.floor(n / 100)] + ' Hundred' + (n % 100 ? ' ' + numToWord(n % 100) : '');
+    if (n < 100000) return convert(Math.floor(n / 1000)) + ' Thousand' + (n % 1000 ? ' ' + convert(n % 1000) : '');
+    return convert(Math.floor(n / 100000)) + ' Lakh' + (n % 100000 ? ' ' + convert(n % 100000) : '');
+  };
+
+  return convert(num);
+};
+
+function AddInvoice({ onClose, onSubmit }) {
+  const [formData, setFormData] = useState({
+    client: '',
+    project: '',
+    dueDate: '',
+    status: 'Pending',
+    currency: 'INR',
+    documentType: 'invoice',
+    formatStyle: 'format1'
+  });
+
+  const [items, setItems] = useState([
+    { description: '', quantity: 1, rate: 0, amount: 0 }
+  ]);
+
+  const calculateAmount = (quantity, rate) => quantity * rate;
+
+  const handleItemChange = (index, field, value) => {
+    const newItems = [...items];
+    newItems[index][field] = value;
+    if (field === 'quantity' || field === 'rate') {
+      newItems[index].amount = calculateAmount(
+        field === 'quantity' ? value : newItems[index].quantity,
+        field === 'rate' ? value : newItems[index].rate
+      );
+    }
+    setItems(newItems);
+  };
+
+  const addItem = () => {
+    setItems([...items, { description: '', quantity: 1, rate: 0, amount: 0 }]);
+  };
+
+  const removeItem = (index) => {
+    if (items.length > 1) {
+      const newItems = [...items];
+      newItems.splice(index, 1);
+      setItems(newItems);
+    }
+  };
+
+  const subtotal = items.reduce((acc, item) => acc + item.amount, 0);
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({
+      ...prev,
+      [name]: value
+    }));
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const invoiceData = {
+      ...formData,
+      items,
+      amount: subtotal
+    };
+    onSubmit(invoiceData);
+  };
+
+  return (
+    <div className="container-fluid p-4" style={{ backgroundColor: "white", borderRadius: "10px" }}>
+      <div className="d-flex justify-content-between align-items-center mb-4">
+        <h2>Generate New Invoice</h2>
+      </div>
+
+      <Form onSubmit={handleSubmit}>
+        <div className="row mb-4">
+          <div className="col-md-6 mb-3">
+            <Form.Group>
+              <Form.Label>Client</Form.Label>
+              <Form.Select
+                name="client"
+                value={formData.client}
+                onChange={handleChange}
+                required
+              >
+                <option value="">Select Client</option>
+                <option value="Acme Corp">Acme Corp</option>
+                <option value="Tech Solutions">Tech Solutions</option>
+                <option value="Global Inc">Global Inc</option>
+              </Form.Select>
+            </Form.Group>
+          </div>
+
+          <div className="col-md-6 mb-3">
+            <Form.Group>
+              <Form.Label>Project</Form.Label>
+              <Form.Control
+                type="text"
+                name="project"
+                value={formData.project}
+                onChange={handleChange}
+                placeholder="Enter project name"
+                required
+              />
+            </Form.Group>
+          </div>
+
+          <div className="col-md-6 mb-3">
+            <Form.Group>
+              <Form.Label>Due Date</Form.Label>
+              <Form.Control
+                type="date"
+                name="dueDate"
+                value={formData.dueDate}
+                onChange={handleChange}
+                required
+              />
+            </Form.Group>
+          </div>
+
+          <div className="col-md-6 mb-3">
+            <Form.Group>
+              <Form.Label>Status</Form.Label>
+              <Form.Select
+                name="status"
+                value={formData.status}
+                onChange={handleChange}
+                required
+              >
+                <option value="Pending">Pending</option>
+                <option value="Paid">Paid</option>
+                <option value="Overdue">Overdue</option>
+              </Form.Select>
+            </Form.Group>
+          </div>
+
+          <div className="col-md-6 mb-3">
+            <Form.Group>
+              <Form.Label>Currency</Form.Label>
+              <Form.Select
+                name="currency"
+                value={formData.currency}
+                onChange={handleChange}
+                required
+              >
+                {currencies.map(curr => (
+                  <option key={curr.value} value={curr.value}>{curr.label}</option>
+                ))}
+              </Form.Select>
+            </Form.Group>
+          </div>
+
+          <div className="col-md-6 mb-3">
+            <Form.Group>
+              <Form.Label>Document Type</Form.Label>
+              <Form.Select
+                name="documentType"
+                value={formData.documentType}
+                onChange={handleChange}
+                required
+              >
+                {documentFormats.map(format => (
+                  <option key={format.value} value={format.value}>{format.label}</option>
+                ))}
+              </Form.Select>
+            </Form.Group>
+          </div>
+          <div className="col-md-6 mb-3">
+            <Form.Group>
+              <Form.Label>Output Format</Form.Label>
+              <Form.Select
+                name="outputFormat"
+                value={formData.outputFormat}
+                onChange={handleChange}
+                required
+              >
+                {formatStyles.map(style => (
+                  <option key={style.value} value={style.value}>
+                    {style.label}
+                  </option>
+                ))}
+              </Form.Select>
+            </Form.Group>
+          </div>
+
+        </div>
+
+        <h6 className="mb-3">Line Items</h6>
+        <Table responsive className="mb-3">
+          <thead>
+            <tr>
+              <th>Description</th>
+              <th>Quantity</th>
+              <th>Rate</th>
+              <th>Amount ({formData.currency})</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            {items.map((item, index) => (
+              <tr key={index}>
+                <td>
+                  <Form.Control
+                    type="text"
+                    value={item.description}
+                    onChange={(e) => handleItemChange(index, 'description', e.target.value)}
+                    placeholder="Item description"
+                    required
+                  />
+                </td>
+                <td>
+                  <Form.Control
+                    type="number"
+                    min="1"
+                    value={item.quantity}
+                    onChange={(e) => handleItemChange(index, 'quantity', parseInt(e.target.value) || 0)}
+                    required
+                  />
+                </td>
+                <td>
+                  <Form.Control
+                    type="number"
+                    min="0"
+                    step="0.01"
+                    value={item.rate}
+                    onChange={(e) => handleItemChange(index, 'rate', parseFloat(e.target.value) || 0)}
+                    required
+                  />
+                </td>
+                <td>{item.amount.toFixed(2)}</td>
+                <td>
+                  <Button
+                    variant="link"
+                    className="text-danger p-0"
+                    onClick={() => removeItem(index)}
+                    disabled={items.length === 1}
+                  >
+                    <FaTrash />
+                  </Button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </Table>
+
+        <Button
+          variant="outline-secondary"
+          className="mb-4"
+          onClick={addItem}
+          type="button"
+        >
+          + Add Line Item
+        </Button>
+
+        <div className="row mb-4">
+          <div className="col-md-6">
+            <div className="mb-2">Subtotal: {formData.currency} {subtotal.toFixed(2)}</div>
+            <div className="mb-2" style={{ fontSize: '0.9em', color: '#666' }}>
+              {currencies.find(c => c.value === formData.currency)?.mainUnit}{' '}
+              {numberToWords(Math.floor(subtotal))}
+              {subtotal % 1 > 0 &&
+                ` and ${numberToWords(Math.round((subtotal % 1) * 100))} ${currencies.find(c => c.value === formData.currency)?.subUnit}`} Only
+            </div>
+
+          </div>
+        </div>
+
+        <div className="d-flex justify-content-end gap-2">
+          <Button variant="light" onClick={onClose}>Cancel</Button>
+          <Button id='All_btn' type="submit">Generate Invoice</Button>
+        </div>
+      </Form>
+    </div>
+  );
+}
+
+export default AddInvoice;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+import React, { useEffect, useState } from "react";
+import axios from "axios";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { useDispatch, useSelector } from "react-redux";
+import { createCostEstimate, updateCostEstimate } from "../../../redux/slices/costEstimatesSlice";
+import { fetchProject } from "../../../redux/slices/ProjectsSlice";
+import { fetchClient } from "../../../redux/slices/ClientSlice";
+import { createInvoicingBilling } from "../../../redux/slices/InvoicingBillingSlice";
+
+const currencies = [
+  { label: "USD - US Dollar", value: "USD" },
+  { label: "EUR - Euro", value: "EUR" },
+  { label: "INR - Indian Rupee", value: "INR" },
+  { label: "GBP - British invoiceund", value: "GBP" },
+  { label: "JPY - Japanese Yen", value: "JPY" },
+  { label: "AED - UAE Dirham", value: "AED" },
+  { label: "SAR - Saudi Riyal", value: "SAR" },
+];
+
+const DocumentType = ["Invoice", "Dummy Invoice", "Tax Invoice", "Proforma Invoice"];
+const OutputFormat = ["Format 1 (Classic)", "Format 2 (Modern)", "Format 3 (Professional)"];
+const statuses = ["Active", "Inactive", "Completed"];
+
+function AddInvoice() {
+  const location = useLocation();
+  const invoice = location.state?.invoice;
+  const id = invoice?._id;
+
+  console.log("hh", invoice);
+
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+
+  const { project } = useSelector((state) => state.projects);
+  useEffect(() => {
+    dispatch(fetchProject());
+  }, [dispatch]);
+  const reversedProjectList = project?.data?.slice().reverse() || [];
+
+  const { Clients } = useSelector((state) => state.client);
+  useEffect(() => {
+    if (Clients && project?.data?.length) {
+      const foundProject = project.data.find(p => p._id === Clients);
+      if (foundProject) {
+        setFormData(prev => ({
+          ...prev,
+          projectsId: foundProject._id,
+        }));
+      }
+    }
+  }, [Clients, project]);
+
+  useEffect(() => {
+    dispatch(fetchClient());
+  }, [dispatch]);
+
+  const [items, setItems] = useState([
+    { description: "", quantity: 0, rate: 0, amount: 0 },
+  ]);
+
+  const [formData, setFormData] = useState({
+    clientId: [""],
+    projectsId: [""],
+    date: "",
+    status: "Active",
+    currency: "USD",
+    documentType: "",
+    output: "",
+  });
+
+  useEffect(() => {
+    if (invoice && project?.data?.length) {
+      let projectId = '';
+      if (Array.isArray(invoice.projectId) && invoice.projectId.length > 0) {
+        projectId = invoice.projectId[0]._id;
+      } else if (Array.isArray(invoice.projects) && invoice.projects.length > 0) {
+        projectId = typeof invoice.projects[0] === 'object'
+          ? invoice.projects[0]._id
+          : invoice.projects[0];
+      }
+
+      let clientId = "";
+      if (invoice.clientId && typeof invoice.clientId === "object") {
+        clientId = invoice.clientId._id;
+      } else if (Array.isArray(invoice.clients) && invoice.clients.length > 0) {
+        clientId = invoice.clients[0]?.clientId || "";
+      }
+
+      setFormData((prev) => ({
+        ...prev,
+        ...invoice,
+        status: invoice.status && statuses.includes(invoice.status)
+          ? invoice.status
+          : "Active",
+        projectsId: projectId ? [projectId] : [""],
+        clientId: clientId ? [clientId] : [""],
+        Notes: invoice.Notes || "",
+        currency: invoice.currency || "USD",
+        date: invoice.date ? invoice.date.substring(0, 10) : "",
+        validUntil: invoice.validUntil ? invoice.validUntil.substring(0, 10) : "",
+      }));
+
+
+      if (Array.isArray(invoice.lineItems) && invoice.lineItems.length > 0) {
+        setItems(invoice.lineItems);
+      }
+    }
+  }, [invoice, project?.data]);
+
+  const [taxRate, setTaxRate] = useState(0.05);
+
+  const calculateAmount = (quantity, rate) => quantity * rate;
+
+  const handleItemChange = (index, field, value) => {
+    const newItems = [...items];
+    newItems[index][field] = value;
+    newItems[index].amount = calculateAmount(
+      newItems[index].quantity,
+      newItems[index].rate
+    );
+    setItems(newItems);
+  };
+
+  const handleFormChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const addItem = () => {
+    setItems([...items, { description: "", quantity: 0, rate: 0, amount: 0 }]);
+  };
+
+  const removeItem = (index) => {
+    const newItems = [...items];
+    newItems.splice(index, 1);
+    setItems(newItems);
+  };
+
+  const subtotal = items.reduce((acc, item) => acc + item.amount, 0);
+  const tax = subtotal * taxRate;
+  const total = subtotal + tax;
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const payload = {
+      ...formData,
+      VATRate: taxRate * 100,
+      lineItems: items,
+    };
+    console.log("rfgrjgg", payload);
+
+    const isDuplicate = location.state?.isDuplicate;
+    if (isDuplicate || !id) {
+      dispatch(createInvoicingBilling(payload))
+        .unwrap()
+        .then(() => {
+          toast.success("Estimates created successfully!");
+          navigate('/CostEstimates', { state: { openTab: 'jobs' } });
+        })
+        .catch(() => {
+          toast.error("Failed to create estimates");
+        });
+    } else {
+      dispatch(updateCostEstimate({ id, data: payload }))
+        .unwrap()
+        .then(() => {
+          toast.success("Estimates updated successfully!");
+          navigate('/CostEstimates', { state: { openTab: 'jobs' } });
+        })
+        .catch(() => {
+          toast.error("Failed to update estimates");
+        });
+    }
+  };
+
+  return (
+    <>
+      <ToastContainer />
+      <div className="container-fluid p-4" style={{ backgroundColor: "white", borderRadius: "10px" }}>
+        <div className="d-flex justify-content-between align-items-center mb-4">
+          <h2>Generate New Invoice</h2>
+        </div>
+
+
+        <div className="row mb-3">
+          <div className="col-md-4 mb-3">
+            <label className="form-label">Client</label>
+            <select
+              className="form-select"
+              name="clientId"
+              value={formData.clientId[0] || ""}
+              onChange={(e) =>
+                setFormData({
+                  ...formData,
+                  clientId: [e.target.value],
+                })
+              }
+            >
+              <option value="">Select Client</option>
+              {Clients?.data?.map((client) => (
+                <option key={client._id} value={client._id}>
+                  {client.clientName}
+                </option>
+              ))}
+            </select>
+          </div>
+
+
+          <div className="col-md-4 mb-3">
+            <label className="form-label">Project</label>
+            <select
+              className="form-select"
+              name="projectsId"
+              value={formData.projectsId[0] || ""}
+              onChange={(e) => {
+                const selectedId = e.target.value;
+                const selectedProject = project?.data?.find(p => p._id === selectedId);
+                setFormData({
+                  ...formData,
+                  projectsId: [selectedId],
+                  projectName: selectedProject?.projectName || "",
+                });
+              }}
+            >
+              <option value="">Select a project</option>
+              {reversedProjectList.map((proj) => (
+                <option key={proj._id} value={proj._id}>
+                  {proj.projectName}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          <div className="col-md-4 mb-3">
+            <label className="form-label"> Due Date</label>
+            <input
+              type="date"
+              className="form-control"
+              name="date"
+              value={formData.date}
+              onChange={handleFormChange}
+            />
+          </div>
+
+          <div className="col-md-4 mb-3">
+            <label className="form-label">currency</label>
+            <select
+              className="form-select"
+              name="currency"
+              value={formData.currency}
+              onChange={handleFormChange}
+            >
+              {currencies.map((curr) => (
+                <option key={curr.value} value={curr.value}>
+                  {curr.label}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          <div className="col-md-4 mb-3">
+            <label className="form-label">Document Type</label>
+            <select
+              className="form-select"
+              name="status"
+              value={formData.status}
+              onChange={handleFormChange}
+            >
+              {statuses.map((status) => (
+                <option key={status} value={status}>
+                  {status}
+                </option>
+              ))}
+            </select>
+
+          </div>
+
+          <div className="col-md-4 mb-3">
+            <label className="form-label">Output Format</label>
+            <select
+              className="form-select"
+              name="output"
+              value={formData.output}
+              onChange={handleFormChange}
+            >
+              {OutputFormat.map((status) => (
+                <option key={status} value={status}>
+                  {status}
+                </option>
+              ))}
+            </select>
+          </div>
+          <div className="col-md-4 mb-3">
+            <label className="form-label">Status</label>
+            <select
+              className="form-select"
+              name="status"
+              value={formData.status}
+              onChange={handleFormChange}
+            >
+              {statuses.map((status) => (
+                <option key={status} value={status}>
+                  {status}
+                </option>
+              ))}
+            </select>
+          </div>
+        </div>
+
+        <h6 className="fw-semibold mb-3">Line Items</h6>
+        <div className="row fw-semibold text-muted mb-2 px-2">
+          <div className="col-md-5">Description</div>
+          <div className="col-md-2">Quantity</div>
+          <div className="col-md-2">Rate</div>
+          <div className="col-md-2">Amount</div>
+          <div className="col-md-1 text-end"></div>
+        </div>
+
+        {items.map((item, index) => (
+          <div
+            className="row gx-2 gy-2 align-items-center mb-2 px-2 py-2"
+            key={index}
+            style={{ background: "#f9f9f9", borderRadius: "8px" }}
+          >
+            <div className="col-md-5">
+              <input
+                type="text"
+                className="form-control"
+                placeholder="Item description"
+                value={item.description}
+                onChange={(e) =>
+                  handleItemChange(index, "description", e.target.value)
+                }
+              />
+            </div>
+            <div className="col-md-2">
+              <input
+                type="number"
+                className="form-control"
+                value={item.quantity}
+                onChange={(e) =>
+                  handleItemChange(index, "quantity", parseInt(e.target.value))
+                }
+              />
+            </div>
+            <div className="col-md-2">
+              <input
+                type="number"
+                className="form-control"
+                value={item.rate}
+                onChange={(e) =>
+                  handleItemChange(index, "rate", parseFloat(e.target.value))
+                }
+              />
+            </div>
+            <div className="col-md-2">
+              <span>
+                {formData.currency} {item.amount.toFixed(2)}
+              </span>
+            </div>
+            <div className="col-md-1 text-end">
+              <button
+                className="btn btn-link text-danger p-0"
+                onClick={() => removeItem(index)}
+              >
+                remove
+              </button>
+            </div>
+          </div>
+        ))}
+
+        <button
+          className="btn border rounded px-3 py-1 mb-4 text-dark"
+          onClick={addItem}
+        >
+          + Add Line Item
+        </button>
+
+
+        <div className="text-end mt-4">
+          <Link to="/CostEstimates">
+            <button className="btn btn-light me-2">Cancel</button>
+          </Link>
+          <button className="btn btn-dark" onClick={handleSubmit}>
+            Create Estimate
+          </button>
+        </div>
+
+      </div>
+    </>
+  );
+}
+
+export default AddInvoice;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "./Sidebar.css";
 import { FaHome, FaFileInvoiceDollar, FaShoppingCart, FaProjectDiagram, FaTasks, FaIndustry, FaPencilRuler, FaFileAlt, FaClock, FaBell, FaChartLine, FaUsersCog, FaCog } from 'react-icons/fa';
@@ -12329,7 +12331,7 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
       submenu: [
         { title: "My Jobs", path: "/admin/MyJobs" },
         { title: "Time Logs", path: "/admin/TimeLogs" },
-      // { title: "Designers", path: "/DesignerPanel" },
+        // { title: "Designers", path: "/DesignerPanel" },
       ]
     },
     {
@@ -12370,7 +12372,7 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
       icon: <FaUsersCog className="menu-icon" />,
       path: "/admin/UserRoles"
     },
-     {
+    {
       title: "Notiifcations",
       icon: <FaBell className="menu-icon" />,
       path: "/admin/Notiifcations"
@@ -12396,14 +12398,14 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
     navigate(path);
   };
 
-  useEffect(()=>{
-    const Role= localStorage.getItem("userRole")
-     if(Role){
-     setRoleData(Role)
-     }else{
+  useEffect(() => {
+    const Role = localStorage.getItem("userRole")
+    if (Role) {
+      setRoleData(Role)
+    } else {
       setRoleData()
-     }
-  },[])
+    }
+  }, [])
   return (
     <>
       <div className={`sidebar ${isOpen ? "expanded" : "collapsed"}`}>
@@ -12465,293 +12467,280 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
       </div>
     </>
   );
-       {/* client-dashboard */}
-       {roledata === "client" && (
-       <>
-       <li
-        className={`menu-item ${openMenuIndex === 6 ? "open" : ""} ${
-          activeMenuIndex === 6 ? "active" : ""
-        }`}
-        onClick={() => handlesubmenuclick(6, "/client-home")}>
-        <div className="menu-link menu-i">
-          <i  className="nav-icon fas fa-home menu-icon"
-            style={{ color: "#64748b" }}/>
-          {isOpen && <span className="menu-text">  Dashboard </span>}
-        
-        </div>
-      </li>
-      <li
-        className={`menu-item ${openMenuIndex === 7 ? "open" : ""} ${
-          activeMenuIndex === 7 ? "active" : ""
-        }`}
-        onClick={() => handlesubmenuclick(7, "/select-project")}>
-        <div className="menu-link menu-i">
-          <i  className="nav-icon fa-solid fa-diagram-project menu-icon"
-            style={{ color: "#64748b" }}/>
-          {isOpen && <span className="menu-text">  Select Project </span>}
-        
-        </div>
-      </li>
-      <li
-        className={`menu-item ${openMenuIndex === 8 ? "open" : ""} ${
-          activeMenuIndex === 8 ? "active" : ""
-        }`}
-        onClick={() => handlesubmenuclick(8, "/select-job")}>
-        <div className="menu-link menu-i">
-          <i className="nav-icon fa-solid fa-users-line menu-icon"
-            style={{ color: "#64748b" }}/>
-          {isOpen && <span className="menu-text">  Select Job </span>}
-        
-        </div>
-      </li>
-      <li
-        className={`menu-item ${openMenuIndex === 9 ? "open" : ""} ${
-          activeMenuIndex ===9 ? "active" : ""
-        }`}
-        onClick={() => handlesubmenuclick(9, "/notification")}>
-        <div className="menu-link menu-i"> 
-          <i className="nav-icon fa-regular fa-bell menu-icon"
-            style={{ color: "#64748b" }}/>
-          {isOpen && <span className="menu-text">Notification </span>}
-        
-        </div>
-      </li>
-      <li
-        className={`menu-item ${openMenuIndex === 10 ? "open" : ""} ${
-          activeMenuIndex ===10 ? "active" : ""
-        }`}
-        onClick={() => handlesubmenuclick(10, "/new-projects")}>
-        <div className="menu-link menu-i">
-          <i  className="nav-icon fa-solid fa-diagram-project menu-icon"
-            style={{ color: "#64748b" }}/>
-          {isOpen && <span className="menu-text">New Project </span>}
-        
-        </div>
-      </li>
+  {/* client-dashboard */ }
+  {
+    roledata === "client" && (
+      <>
+        <li
+          className={`menu-item ${openMenuIndex === 6 ? "open" : ""} ${activeMenuIndex === 6 ? "active" : ""
+            }`}
+          onClick={() => handlesubmenuclick(6, "/client-home")}>
+          <div className="menu-link menu-i">
+            <i className="nav-icon fas fa-home menu-icon"
+              style={{ color: "#64748b" }} />
+            {isOpen && <span className="menu-text">  Dashboard </span>}
+
+          </div>
+        </li>
+        <li
+          className={`menu-item ${openMenuIndex === 7 ? "open" : ""} ${activeMenuIndex === 7 ? "active" : ""
+            }`}
+          onClick={() => handlesubmenuclick(7, "/select-project")}>
+          <div className="menu-link menu-i">
+            <i className="nav-icon fa-solid fa-diagram-project menu-icon"
+              style={{ color: "#64748b" }} />
+            {isOpen && <span className="menu-text">  Select Project </span>}
+
+          </div>
+        </li>
+        <li
+          className={`menu-item ${openMenuIndex === 8 ? "open" : ""} ${activeMenuIndex === 8 ? "active" : ""
+            }`}
+          onClick={() => handlesubmenuclick(8, "/select-job")}>
+          <div className="menu-link menu-i">
+            <i className="nav-icon fa-solid fa-users-line menu-icon"
+              style={{ color: "#64748b" }} />
+            {isOpen && <span className="menu-text">  Select Job </span>}
+
+          </div>
+        </li>
+        <li
+          className={`menu-item ${openMenuIndex === 9 ? "open" : ""} ${activeMenuIndex === 9 ? "active" : ""
+            }`}
+          onClick={() => handlesubmenuclick(9, "/notification")}>
+          <div className="menu-link menu-i">
+            <i className="nav-icon fa-regular fa-bell menu-icon"
+              style={{ color: "#64748b" }} />
+            {isOpen && <span className="menu-text">Notification </span>}
+
+          </div>
+        </li>
+        <li
+          className={`menu-item ${openMenuIndex === 10 ? "open" : ""} ${activeMenuIndex === 10 ? "active" : ""
+            }`}
+          onClick={() => handlesubmenuclick(10, "/new-projects")}>
+          <div className="menu-link menu-i">
+            <i className="nav-icon fa-solid fa-diagram-project menu-icon"
+              style={{ color: "#64748b" }} />
+            {isOpen && <span className="menu-text">New Project </span>}
+
+          </div>
+        </li>
       </>
-       )}
+    )
+  }
 
-      {/* employee-dashboard */}
-      {(roledata === "employee" || roledata === "designer") && (
-         <>
-         <li
-            className={`menu-item ${openMenuIndex === 11 ? "open" : ""} ${
-              activeMenuIndex === 11 ? "active" : ""
+  {/* employee-dashboard */ }
+  {
+    (roledata === "employee" || roledata === "designer") && (
+      <>
+        <li
+          className={`menu-item ${openMenuIndex === 11 ? "open" : ""} ${activeMenuIndex === 11 ? "active" : ""
             }`}
-            onClick={() => handlesubmenuclick(11, "/emoloyeedashboard")}
-          >
-            <div className="menu-link menu-i">
-              <i
-                className="nav-icon fas fa-home menu-icon"
-                style={{ color: "#64748b" }}
-              />
-              {isOpen && <span className="menu-text">Employee Dashboard</span>}
-             
-            </div>
-          </li>
-          <li
-            className={`menu-item ${openMenuIndex === 12 ? "open" : ""} ${
-              activeMenuIndex === 12 ? "active" : ""
+          onClick={() => handlesubmenuclick(11, "/emoloyeedashboard")}
+        >
+          <div className="menu-link menu-i">
+            <i
+              className="nav-icon fas fa-home menu-icon"
+              style={{ color: "#64748b" }}
+            />
+            {isOpen && <span className="menu-text">Employee Dashboard</span>}
+
+          </div>
+        </li>
+        <li
+          className={`menu-item ${openMenuIndex === 12 ? "open" : ""} ${activeMenuIndex === 12 ? "active" : ""
             }`}
-            onClick={() => handlesubmenuclick(12, "/task")}
-          >
-            <div className="menu-link menu-i">
-              <i
-                className="fa-solid fa-bars-progress menu-icon"
-                style={{ color: "#64748b" }}
-              />
-              {isOpen && <span className="menu-text"> My Tasks</span>}
-           
-            </div>
-          </li>
-          <li
-            className={`menu-item ${openMenuIndex === 13 ? "open" : ""} ${
-              activeMenuIndex === 13 ? "active" : ""
+          onClick={() => handlesubmenuclick(12, "/task")}
+        >
+          <div className="menu-link menu-i">
+            <i
+              className="fa-solid fa-bars-progress menu-icon"
+              style={{ color: "#64748b" }}
+            />
+            {isOpen && <span className="menu-text"> My Tasks</span>}
+
+          </div>
+        </li>
+        <li
+          className={`menu-item ${openMenuIndex === 13 ? "open" : ""} ${activeMenuIndex === 13 ? "active" : ""
             }`}
-            onClick={() => handlesubmenuclick(13, "/picktask")}
-          >
-            <div className="menu-link menu-i">
-              <i
-                className="fa-solid fa-list-check menu-icon"
-                style={{ color: "#64748b" }}
-              />
-              {isOpen && <span className="menu-text">Pick Task</span>}
-          
-            </div>
-          </li>
-          <li
-            className={`menu-item ${openMenuIndex === 14 ? "open" : ""} ${
-              activeMenuIndex === 14 ? "active" : ""
+          onClick={() => handlesubmenuclick(13, "/picktask")}
+        >
+          <div className="menu-link menu-i">
+            <i
+              className="fa-solid fa-list-check menu-icon"
+              style={{ color: "#64748b" }}
+            />
+            {isOpen && <span className="menu-text">Pick Task</span>}
+
+          </div>
+        </li>
+        <li
+          className={`menu-item ${openMenuIndex === 14 ? "open" : ""} ${activeMenuIndex === 14 ? "active" : ""
             }`}
-            onClick={() => handlesubmenuclick(14, "/submittask")}
-          >
-            <div className="menu-link menu-i">
-              <i
-                className="fa-solid fa-closed-captioning menu-icon"
-                style={{ color: "#64748b" }}
-              />
-              {isOpen && <span className="menu-text">Submit Task</span>}
-            
-            </div>
-          </li>
-          <li
-            className={`menu-item ${openMenuIndex === 15 ? "open" : ""} ${
-              activeMenuIndex === 15 ? "active" : ""
+          onClick={() => handlesubmenuclick(14, "/submittask")}
+        >
+          <div className="menu-link menu-i">
+            <i
+              className="fa-solid fa-closed-captioning menu-icon"
+              style={{ color: "#64748b" }}
+            />
+            {isOpen && <span className="menu-text">Submit Task</span>}
+
+          </div>
+        </li>
+        <li
+          className={`menu-item ${openMenuIndex === 15 ? "open" : ""} ${activeMenuIndex === 15 ? "active" : ""
             }`}
-            onClick={() => handlesubmenuclick(15, "/projectdetail")}
-          >
-            <div className="menu-link menu-i">
-              <i
-                className="fa-solid fa-street-view menu-icon"
-                style={{ color: "#64748b" }}
-              />
-              {isOpen && (
-                <span className="menu-text">View Project Details</span>
-              )}
-           
-            </div>
-          </li>
-          <li
-            className={`menu-item ${openMenuIndex === 16 ? "open" : ""} ${
-              activeMenuIndex === 16 ? "active" : ""
+          onClick={() => handlesubmenuclick(15, "/projectdetail")}
+        >
+          <div className="menu-link menu-i">
+            <i
+              className="fa-solid fa-street-view menu-icon"
+              style={{ color: "#64748b" }}
+            />
+            {isOpen && (
+              <span className="menu-text">View Project Details</span>
+            )}
+
+          </div>
+        </li>
+        <li
+          className={`menu-item ${openMenuIndex === 16 ? "open" : ""} ${activeMenuIndex === 16 ? "active" : ""
             }`}
-            onClick={() => handlesubmenuclick(16, "/jobhistory")}
-          >
-            <div className="menu-link menu-i">
-              <i
-                className="fa-solid fa-clock-rotate-left menu-icon"
-                style={{ color: "#64748b" }}
-              />
-              {isOpen && <span className="menu-text">Job History</span>}
-            
-            </div>
-          </li>
-          <li
-            className={`menu-item ${openMenuIndex === 17 ? "open" : ""} ${
-              activeMenuIndex === 17 ? "active" : ""
+          onClick={() => handlesubmenuclick(16, "/jobhistory")}
+        >
+          <div className="menu-link menu-i">
+            <i
+              className="fa-solid fa-clock-rotate-left menu-icon"
+              style={{ color: "#64748b" }}
+            />
+            {isOpen && <span className="menu-text">Job History</span>}
+
+          </div>
+        </li>
+        <li
+          className={`menu-item ${openMenuIndex === 17 ? "open" : ""} ${activeMenuIndex === 17 ? "active" : ""
             }`}
-            onClick={() => handlesubmenuclick(17, "/timetracking")}
-          >
-            <div className="menu-link menu-i ">
-              <i
-                className="fa-solid fa-timeline menu-icon"
-                style={{ color: "#64748b" }}
-              />
-              {isOpen && <span className="menu-text">Time Tracking</span>}
-            
-            </div>
-          </li>
-          </>
-       )}
+          onClick={() => handlesubmenuclick(17, "/timetracking")}
+        >
+          <div className="menu-link menu-i ">
+            <i
+              className="fa-solid fa-timeline menu-icon"
+              style={{ color: "#64748b" }}
+            />
+            {isOpen && <span className="menu-text">Time Tracking</span>}
+
+          </div>
+        </li>
+      </>
+    )
+  }
 
 
-        {/* ProductionManager */}
-       {(roledata === "productionManager" ) && (
-  <>
-    <li
-      className={`menu-item ${openMenuIndex === 18 ? "open" : ""} ${
-        activeMenuIndex === 18 ? "active" : ""
-      }`}
-      onClick={() => handlesubmenuclick(18, "/productiondasboard")}
-    >
-      <div className="menu-link menu-i">
-        <i
-          className="nav-icon fas fa-home menu-icon"
-          style={{ color: "#64748b" }}
-        />
-        {isOpen && <span className="menu-text">Production Dashboard</span>}
-      </div>
-    </li>
+  {/* ProductionManager */ }
+  {
+    (roledata === "productionManager") && (
+      <>
+        <li
+          className={`menu-item ${openMenuIndex === 18 ? "open" : ""} ${activeMenuIndex === 18 ? "active" : ""
+            }`}
+          onClick={() => handlesubmenuclick(18, "/productiondasboard")}
+        >
+          <div className="menu-link menu-i">
+            <i
+              className="nav-icon fas fa-home menu-icon"
+              style={{ color: "#64748b" }}
+            />
+            {isOpen && <span className="menu-text">Production Dashboard</span>}
+          </div>
+        </li>
 
-    <li
-      className={`menu-item ${openMenuIndex === 19 ? "open" : ""} ${
-        activeMenuIndex === 19 ? "active" : ""
-      }`}
-      onClick={() => handlesubmenuclick(19, "/ProductionProjects")}
-    >
-      <div className="menu-link menu-i">
-        <i
-          className="fa-solid fa-diagram-project menu-icon"
-          style={{ color: "#64748b" }}
-        />
-        {isOpen && <span className="menu-text">Projects</span>}
-      </div>
-    </li>
+        <li
+          className={`menu-item ${openMenuIndex === 19 ? "open" : ""} ${activeMenuIndex === 19 ? "active" : ""
+            }`}
+          onClick={() => handlesubmenuclick(19, "/ProductionProjects")}
+        >
+          <div className="menu-link menu-i">
+            <i
+              className="fa-solid fa-diagram-project menu-icon"
+              style={{ color: "#64748b" }}
+            />
+            {isOpen && <span className="menu-text">Projects</span>}
+          </div>
+        </li>
 
-    <li
-      className={`menu-item ${openMenuIndex === 20 ? "open" : ""} ${
-        activeMenuIndex === 20 ? "active" : ""
-      }`}
-      onClick={() => handlesubmenuclick(20, "/ProductionJobs")}
-    >
-      <div className="menu-link menu-i">
-        <i
-          className="fa-solid fa-users menu-icon"
-          style={{ color: "#64748b" }}
-        />
-        {isOpen && <span className="menu-text">Jobs</span>}
-      </div>
-    </li>
-    <li
-      className={`menu-item ${openMenuIndex === 21 ? "open" : ""} ${
-        activeMenuIndex === 21 ? "active" : ""
-      }`}
-      onClick={() => handlesubmenuclick(21, "/ProductioneMployees")}
-    >
-      <div className="menu-link menu-i">
-        <i
-          className="fa-solid fa-tasks menu-icon"
-          style={{ color: "#64748b" }}
-        />
-        {isOpen && <span className="menu-text">Eployees</span>}
-      </div>
-    </li>
-    <li
-      className={`menu-item ${openMenuIndex === 22 ? "open" : ""} ${
-        activeMenuIndex === 22 ? "active" : ""
-      }`}
-      onClick={() => handlesubmenuclick(22, "/ProductionClients")}
-    >
-      <div className="menu-link menu-i">
-        <i
-          className="fa-solid fa-chart-line menu-icon"
-          style={{ color: "#64748b" }}
-        />
-        {isOpen && <span className="menu-text">Clients</span>}
-      </div>
-    </li>
+        <li
+          className={`menu-item ${openMenuIndex === 20 ? "open" : ""} ${activeMenuIndex === 20 ? "active" : ""
+            }`}
+          onClick={() => handlesubmenuclick(20, "/ProductionJobs")}
+        >
+          <div className="menu-link menu-i">
+            <i
+              className="fa-solid fa-users menu-icon"
+              style={{ color: "#64748b" }}
+            />
+            {isOpen && <span className="menu-text">Jobs</span>}
+          </div>
+        </li>
+        <li
+          className={`menu-item ${openMenuIndex === 21 ? "open" : ""} ${activeMenuIndex === 21 ? "active" : ""
+            }`}
+          onClick={() => handlesubmenuclick(21, "/ProductioneMployees")}
+        >
+          <div className="menu-link menu-i">
+            <i
+              className="fa-solid fa-tasks menu-icon"
+              style={{ color: "#64748b" }}
+            />
+            {isOpen && <span className="menu-text">Eployees</span>}
+          </div>
+        </li>
+        <li
+          className={`menu-item ${openMenuIndex === 22 ? "open" : ""} ${activeMenuIndex === 22 ? "active" : ""
+            }`}
+          onClick={() => handlesubmenuclick(22, "/ProductionClients")}
+        >
+          <div className="menu-link menu-i">
+            <i
+              className="fa-solid fa-chart-line menu-icon"
+              style={{ color: "#64748b" }}
+            />
+            {isOpen && <span className="menu-text">Clients</span>}
+          </div>
+        </li>
 
-    <li
-      className={`menu-item ${openMenuIndex === 23 ? "open" : ""} ${
-        activeMenuIndex === 23 ? "active" : ""
-      }`}
-      onClick={() => handlesubmenuclick(23, "/ProductionTimeline")}
-    >
-      <div className="menu-link menu-i">
-        <i
-          className="fa-solid fa-calendar-alt menu-icon"
-          style={{ color: "#64748b" }}
-        />
-        {isOpen && <span className="menu-text">Timeline</span>}
-      </div>
-    </li>
+        <li
+          className={`menu-item ${openMenuIndex === 23 ? "open" : ""} ${activeMenuIndex === 23 ? "active" : ""
+            }`}
+          onClick={() => handlesubmenuclick(23, "/ProductionTimeline")}
+        >
+          <div className="menu-link menu-i">
+            <i
+              className="fa-solid fa-calendar-alt menu-icon"
+              style={{ color: "#64748b" }}
+            />
+            {isOpen && <span className="menu-text">Timeline</span>}
+          </div>
+        </li>
 
-    <li
-      className={`menu-item ${openMenuIndex === 24 ? "open" : ""} ${
-        activeMenuIndex === 24 ? "active" : ""
-      }`}
-      onClick={() => handlesubmenuclick(24, "/ProductionReports")}
-    >
-      <div className="menu-link menu-i">
-        <i
-          className="fa-solid fa-check-circle menu-icon"
-          style={{ color: "#64748b" }}
-        />
-        {isOpen && <span className="menu-text">Reports</span>}
-      </div>
-    </li>
-  </>
-)}
+        <li
+          className={`menu-item ${openMenuIndex === 24 ? "open" : ""} ${activeMenuIndex === 24 ? "active" : ""
+            }`}
+          onClick={() => handlesubmenuclick(24, "/ProductionReports")}
+        >
+          <div className="menu-link menu-i">
+            <i
+              className="fa-solid fa-check-circle menu-icon"
+              style={{ color: "#64748b" }}
+            />
+            {isOpen && <span className="menu-text">Reports</span>}
+          </div>
+        </li>
+      </>
+    )
+  }
 
 
 };
@@ -13044,7 +13033,7 @@ const EmployeeDashboard = () => {
     },
     {
       title: 'Q2 Sales Report',
-      priority: 'Medium', 
+      priority: 'Medium',
       dueDate: 'Friday',
       assignedTo: 'James Wilson',
       time: '3:00 PM'
@@ -13077,7 +13066,7 @@ const EmployeeDashboard = () => {
   };
 
   const getPriorityClass = (priority) => {
-    switch(priority.toLowerCase()) {
+    switch (priority.toLowerCase()) {
       case 'high': return 'danger';
       case 'medium': return 'warning';
       case 'normal': return 'success';
@@ -13086,7 +13075,7 @@ const EmployeeDashboard = () => {
   };
 
   const getPriorityBgClass = (priority) => {
-    switch(priority.toLowerCase()) {
+    switch (priority.toLowerCase()) {
       case 'high': return 'bg-danger-subtle text-danger';
       case 'medium': return 'bg-warning-subtle text-warning';
       case 'normal': return 'bg-success-subtle text-success';
@@ -13095,7 +13084,7 @@ const EmployeeDashboard = () => {
   };
 
   const getDueDateClass = (dueDate) => {
-    switch(dueDate.toLowerCase()) {
+    switch (dueDate.toLowerCase()) {
       case 'tomorrow': return 'bg-danger-subtle text-danger';
       case 'friday': return 'bg-warning-subtle text-warning';
       default: return 'bg-warning-subtle text-warning';
@@ -13166,7 +13155,7 @@ const EmployeeDashboard = () => {
           </Card>
         </Col>
       </Row>
-      
+
       <Row className="g-4">
         {/* Productivity Leaderboard */}
         <Col md={6}>
@@ -13195,14 +13184,14 @@ const EmployeeDashboard = () => {
                 }}>
                   <div className="d-flex align-items-center">
                     <div className="me-3" style={{ fontWeight: '700', color: '#212B36', fontSize: '16px' }}>{index + 1}</div>
-                    <div className="rounded-circle me-3 d-flex align-items-center justify-content-center" 
-                         style={{
-                           width: '40px',
-                           height: '40px',
-                           backgroundColor: index === 0 ? '#FFB020' : '#F4F6F8',
-                           color: index === 0 ? 'white' : '#637381',
-                           fontWeight: '600'
-                         }}>
+                    <div className="rounded-circle me-3 d-flex align-items-center justify-content-center"
+                      style={{
+                        width: '40px',
+                        height: '40px',
+                        backgroundColor: index === 0 ? '#FFB020' : '#F4F6F8',
+                        color: index === 0 ? 'white' : '#637381',
+                        fontWeight: '600'
+                      }}>
                       {user.avatar}
                     </div>
                     <div className="flex-grow-1">
@@ -13210,8 +13199,8 @@ const EmployeeDashboard = () => {
                         <div className="d-flex align-items-center">
                           <h6 className="mb-0" style={{ color: '#212B36', fontWeight: '600' }}>{user.name}</h6>
                           {user.isTopPerformer && (
-                            <span className="ms-2 px-2 py-1" style={{ 
-                              color: '#FFB020', 
+                            <span className="ms-2 px-2 py-1" style={{
+                              color: '#FFB020',
                               fontSize: '12px',
                               backgroundColor: '#FFF7CD',
                               borderRadius: '6px',
@@ -13219,8 +13208,8 @@ const EmployeeDashboard = () => {
                             }}>Top Performer</span>
                           )}
                           {user.positionChange && (
-                            <span className="ms-2 px-2 py-1" style={{ 
-                              color: '#36B37E', 
+                            <span className="ms-2 px-2 py-1" style={{
+                              color: '#36B37E',
                               fontSize: '12px',
                               backgroundColor: '#E8FFF3',
                               borderRadius: '6px',
@@ -13230,8 +13219,8 @@ const EmployeeDashboard = () => {
                         </div>
                         <span style={{ fontWeight: '700', color: index === 0 ? '#FFB020' : '#2065D1', fontSize: '16px' }}>{user.efficiency}%</span>
                       </div>
-                      <ProgressBar 
-                        now={user.efficiency} 
+                      <ProgressBar
+                        now={user.efficiency}
                         style={{
                           height: '8px',
                           backgroundColor: '#F4F6F8',
@@ -13352,12 +13341,12 @@ const EmployeeDashboard = () => {
                   <div style={{ color: '#637381', fontSize: '14px' }}>Pending</div>
                 </div>
               </div>
-              <ProgressBar 
+              <ProgressBar
                 style={{ height: '8px', backgroundColor: '#F4F6F8', borderRadius: '4px' }}
                 className="mb-2">
-                <ProgressBar 
-                  variant="success" 
-                  now={taskOverview.completionPercentage} 
+                <ProgressBar
+                  variant="success"
+                  now={taskOverview.completionPercentage}
                   style={{ backgroundColor: '#36B37E', borderRadius: '4px' }}
                 />
               </ProgressBar>
@@ -13386,12 +13375,12 @@ const EmployeeDashboard = () => {
                   </span>
                 </div>
               </div>
-              <ProgressBar 
+              <ProgressBar
                 style={{ height: '8px', backgroundColor: '#F4F6F8', borderRadius: '4px' }}
                 className="mb-2">
-                <ProgressBar 
-                  variant="primary" 
-                  now={todaysPerformance.weeklyHours.percentage} 
+                <ProgressBar
+                  variant="primary"
+                  now={todaysPerformance.weeklyHours.percentage}
                   style={{ backgroundColor: '#2065D1', borderRadius: '4px' }}
                 />
               </ProgressBar>
@@ -13419,75 +13408,75 @@ export default EmployeeDashboard;
 
 
 
-import { BsCalendar, BsClock, BsCheckCircle, BsThreeDotsVertical, BsChevronDown,BsFilter  } from 'react-icons/bs';
+import { BsCalendar, BsClock, BsCheckCircle, BsThreeDotsVertical, BsChevronDown, BsFilter } from 'react-icons/bs';
 
 
-  // Mock data for task overview
-  const taskOverview = {
-    total: 26,
-    completed: 14,
-    pending: 12,
-    completionPercentage: 54
-  };
+// Mock data for task overview
+const taskOverview = {
+  total: 26,
+  completed: 14,
+  pending: 12,
+  completionPercentage: 54
+};
 
 <Col md={6}>
-<div className="task-list-container">
-  <div className="task-list-header">
-    <h5 className="task-list-title">Task Overview</h5>
-    <button className="task-filter-btn">
-      <BsFilter size={18} />
-      Filter Tasks
-    </button>
-  </div>
-  
-  <div className="task-item">
-    <div className="task-icon task-icon-blue">
-      <FaTasks size={24} />
+  <div className="task-list-container">
+    <div className="task-list-header">
+      <h5 className="task-list-title">Task Overview</h5>
+      <button className="task-filter-btn">
+        <BsFilter size={18} />
+        Filter Tasks
+      </button>
     </div>
-    <div className="task-content">
-      <div className="task-name">Total Tasks</div>
-      <div className="task-meta">
-        <span className="task-stat-badge task-stat-badge-blue">{taskOverview.total}</span>
-        <span>Tasks in progress</span>
-      </div>
-    </div>
-    <div className="task-progress">
-      <div className="task-progress-bar">
-        <div 
-          className="task-progress-value" 
-          style={{ width: `${taskOverview.completionPercentage}%` }}
-        />
-      </div>
-      <div className="task-progress-text">{taskOverview.completionPercentage}% Done</div>
-    </div>
-  </div>
 
-  <div className="task-item">
-    <div className="task-icon task-icon-green">
-      <BsCheckCircle size={24} />
-    </div>
-    <div className="task-content">
-      <div className="task-name">Completed Tasks</div>
-      <div className="task-meta">
-        <span className="task-stat-badge task-stat-badge-green">{taskOverview.completed}</span>
-        <span>Tasks completed</span>
+    <div className="task-item">
+      <div className="task-icon task-icon-blue">
+        <FaTasks size={24} />
+      </div>
+      <div className="task-content">
+        <div className="task-name">Total Tasks</div>
+        <div className="task-meta">
+          <span className="task-stat-badge task-stat-badge-blue">{taskOverview.total}</span>
+          <span>Tasks in progress</span>
+        </div>
+      </div>
+      <div className="task-progress">
+        <div className="task-progress-bar">
+          <div
+            className="task-progress-value"
+            style={{ width: `${taskOverview.completionPercentage}%` }}
+          />
+        </div>
+        <div className="task-progress-text">{taskOverview.completionPercentage}% Done</div>
       </div>
     </div>
-  </div>
 
-  <div className="task-item">
-    <div className="task-icon task-icon-yellow">
-      <BsCalendar size={24} />
+    <div className="task-item">
+      <div className="task-icon task-icon-green">
+        <BsCheckCircle size={24} />
+      </div>
+      <div className="task-content">
+        <div className="task-name">Completed Tasks</div>
+        <div className="task-meta">
+          <span className="task-stat-badge task-stat-badge-green">{taskOverview.completed}</span>
+          <span>Tasks completed</span>
+        </div>
+      </div>
     </div>
-    <div className="task-content">
-      <div className="task-name">Pending Tasks</div>
-      <div className="task-meta">
-        <span className="task-stat-badge task-stat-badge-yellow">{taskOverview.pending}</span>
-        <span>Tasks pending</span>
+
+    <div className="task-item">
+      <div className="task-icon task-icon-yellow">
+        <BsCalendar size={24} />
+      </div>
+      <div className="task-content">
+        <div className="task-name">Pending Tasks</div>
+        <div className="task-meta">
+          <span className="task-stat-badge task-stat-badge-yellow">{taskOverview.pending}</span>
+          <span>Tasks pending</span>
+        </div>
       </div>
     </div>
   </div>
-</div>
 </Col>
 
 
@@ -13508,7 +13497,7 @@ import { BsCalendar, BsClock, BsCheckCircle, BsThreeDotsVertical, BsChevronDown,
 
 import React, { useState } from 'react';
 import { Card, Row, Col, Badge, ProgressBar, Dropdown } from 'react-bootstrap';
-import { BsCalendar, BsClock, BsCheckCircle, BsThreeDotsVertical, BsChevronDown,BsFilter  } from 'react-icons/bs';
+import { BsCalendar, BsClock, BsCheckCircle, BsThreeDotsVertical, BsChevronDown, BsFilter } from 'react-icons/bs';
 import { FaTrophy, FaRegCalendarAlt, FaTasks } from 'react-icons/fa';
 
 // Import Inter font
@@ -13563,7 +13552,7 @@ const EmployeeDashboard = () => {
     },
     {
       title: 'Q2 Sales Report',
-      priority: 'Medium', 
+      priority: 'Medium',
       dueDate: 'Friday',
       assignedTo: 'James Wilson',
       time: '3:00 PM'
@@ -13596,7 +13585,7 @@ const EmployeeDashboard = () => {
   };
 
   const getPriorityClass = (priority) => {
-    switch(priority.toLowerCase()) {
+    switch (priority.toLowerCase()) {
       case 'high': return 'danger';
       case 'medium': return 'warning';
       case 'normal': return 'success';
@@ -13605,7 +13594,7 @@ const EmployeeDashboard = () => {
   };
 
   const getPriorityBgClass = (priority) => {
-    switch(priority.toLowerCase()) {
+    switch (priority.toLowerCase()) {
       case 'high': return 'bg-danger-subtle text-danger';
       case 'medium': return 'bg-warning-subtle text-warning';
       case 'normal': return 'bg-success-subtle text-success';
@@ -13614,7 +13603,7 @@ const EmployeeDashboard = () => {
   };
 
   const getDueDateClass = (dueDate) => {
-    switch(dueDate.toLowerCase()) {
+    switch (dueDate.toLowerCase()) {
       case 'tomorrow': return 'bg-danger-subtle text-danger';
       case 'friday': return 'bg-warning-subtle text-warning';
       default: return 'bg-warning-subtle text-warning';
@@ -13685,7 +13674,7 @@ const EmployeeDashboard = () => {
           </Card>
         </Col>
       </Row>
-      
+
       <Row className="g-4">
         {/* Productivity Leaderboard */}
         <Col md={6}>
@@ -13714,14 +13703,14 @@ const EmployeeDashboard = () => {
                 }}>
                   <div className="d-flex align-items-center">
                     <div className="me-3" style={{ fontWeight: '700', color: '#212B36', fontSize: '16px' }}>{index + 1}</div>
-                    <div className="rounded-circle me-3 d-flex align-items-center justify-content-center" 
-                         style={{
-                           width: '40px',
-                           height: '40px',
-                           backgroundColor: index === 0 ? '#FFB020' : '#F4F6F8',
-                           color: index === 0 ? 'white' : '#637381',
-                           fontWeight: '600'
-                         }}>
+                    <div className="rounded-circle me-3 d-flex align-items-center justify-content-center"
+                      style={{
+                        width: '40px',
+                        height: '40px',
+                        backgroundColor: index === 0 ? '#FFB020' : '#F4F6F8',
+                        color: index === 0 ? 'white' : '#637381',
+                        fontWeight: '600'
+                      }}>
                       {user.avatar}
                     </div>
                     <div className="flex-grow-1">
@@ -13729,8 +13718,8 @@ const EmployeeDashboard = () => {
                         <div className="d-flex align-items-center">
                           <h6 className="mb-0" style={{ color: '#212B36', fontWeight: '600' }}>{user.name}</h6>
                           {user.isTopPerformer && (
-                            <span className="ms-2 px-2 py-1" style={{ 
-                              color: '#FFB020', 
+                            <span className="ms-2 px-2 py-1" style={{
+                              color: '#FFB020',
                               fontSize: '12px',
                               backgroundColor: '#FFF7CD',
                               borderRadius: '6px',
@@ -13738,8 +13727,8 @@ const EmployeeDashboard = () => {
                             }}>Top Performer</span>
                           )}
                           {user.positionChange && (
-                            <span className="ms-2 px-2 py-1" style={{ 
-                              color: '#36B37E', 
+                            <span className="ms-2 px-2 py-1" style={{
+                              color: '#36B37E',
                               fontSize: '12px',
                               backgroundColor: '#E8FFF3',
                               borderRadius: '6px',
@@ -13749,8 +13738,8 @@ const EmployeeDashboard = () => {
                         </div>
                         <span style={{ fontWeight: '700', color: index === 0 ? '#FFB020' : '#2065D1', fontSize: '16px' }}>{user.efficiency}%</span>
                       </div>
-                      <ProgressBar 
-                        now={user.efficiency} 
+                      <ProgressBar
+                        now={user.efficiency}
                         style={{
                           height: '8px',
                           backgroundColor: '#F4F6F8',
@@ -13866,7 +13855,7 @@ const EmployeeDashboard = () => {
                 Filter Tasks
               </button>
             </div>
-            
+
             <div className="task-item">
               <div className="task-icon task-icon-blue">
                 <FaTasks size={24} />
@@ -13880,8 +13869,8 @@ const EmployeeDashboard = () => {
               </div>
               <div className="task-progress">
                 <div className="task-progress-bar">
-                  <div 
-                    className="task-progress-value" 
+                  <div
+                    className="task-progress-value"
                     style={{ width: `${taskOverview.completionPercentage}%` }}
                   />
                 </div>
@@ -13937,11 +13926,11 @@ const EmployeeDashboard = () => {
                   </span>
                 </div>
               </div>
-              <ProgressBar 
+              <ProgressBar
                 className="progress-bar-container mb-2">
-                <ProgressBar 
-                  variant="primary" 
-                  now={todaysPerformance.weeklyHours.percentage} 
+                <ProgressBar
+                  variant="primary"
+                  now={todaysPerformance.weeklyHours.percentage}
                   className="progress-bar-primary"
                 />
               </ProgressBar>
@@ -14094,7 +14083,7 @@ function ProjectJobsTab() {
   // Your submit handler (just a placeholder)
   const handleSubmitAssignment = (data) => {
     console.log(data);
-    
+
     // You can send selectedDesigner, selectedEmployee, assignmentDescription here
     console.log({
       selectedDesigner,
@@ -14553,7 +14542,7 @@ function ProjectJobsTab() {
                 {paginatedAssignment.map((emp) => (
                   <option key={emp._id} value={emp._id}>
                     {emp.firstName || 'Unnamed Employee'}_
-                      {emp.lastName || 'Unnamed Employee'}
+                    {emp.lastName || 'Unnamed Employee'}
                   </option>
 
                 ))}
@@ -14721,7 +14710,7 @@ function ProjectJobsTab() {
   // Your submit handler (just a placeholder)
   const handleSubmitAssignment = (data) => {
     console.log(data);
-    
+
     // You can send selectedDesigner, selectedEmployee, assignmentDescription here
     console.log({
       selectedDesigner,
@@ -15180,7 +15169,7 @@ function ProjectJobsTab() {
                 {paginatedAssignment.map((emp) => (
                   <option key={emp._id} value={emp._id}>
                     {emp.firstName || 'Unnamed Employee'}_
-                      {emp.lastName || 'Unnamed Employee'}
+                    {emp.lastName || 'Unnamed Employee'}
                   </option>
 
                 ))}
@@ -15427,8 +15416,8 @@ function ProjectJobsTab() {
   const { ProjectJob } = useSelector((state) => state.jobs);
   console.log(ProjectJob, "all jobs");
 
-useEffect(() => {
-    dispatch(Project_job_Id(id)); 
+  useEffect(() => {
+    dispatch(Project_job_Id(id));
   }, [dispatch, id]);
 
 
@@ -15606,107 +15595,107 @@ useEffect(() => {
 
         <div className="table-responsive">
           {paginatedProjects.length === 0 ? (
-  <div className="text-center text-muted my-5">
-    No jobs found.
-  </div>
-) : (
-          <table className="table table-hover">
-            <thead>
-              <tr>
-                <th>
-                  <input
-                    type="checkbox"
-                    onChange={(e) => {
-                      const checked = e.target.checked;
-                      const newSelectedJobs = {};
-                      job?.jobs?.forEach((job) => {
-                        newSelectedJobs[job._id] = checked;
-                      });
-                      setSelectedJobs(newSelectedJobs);
-                    }}
-                    checked={
-                      job?.jobs?.length > 0 &&
-                      job?.jobs?.every((j) => selectedJobs[j._id])
-                    }
-                  />
-                </th>
-                <th>JobsNo</th>
-                <th style={{ whiteSpace: 'nowrap' }}>Project Name</th>
-                <th>Brand</th>
-                <th>SubBrand</th>
-                <th>Flavour</th>
-                <th>PackType</th>
-                <th>PackSize</th>
-                <th>PackCode</th>
-                <th>Priority</th>
-                <th style={{ whiteSpace: 'nowrap' }}>Due Date</th>
-                <th>Assing</th>
-                <th>TotalTime</th>
-                <th>Status</th>
-                <th>Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {paginatedProjects?.map((job, index) => (
-                <tr key={job._id}>
-                  <td>
+            <div className="text-center text-muted my-5">
+              No jobs found.
+            </div>
+          ) : (
+            <table className="table table-hover">
+              <thead>
+                <tr>
+                  <th>
                     <input
                       type="checkbox"
-                      checked={selectedJobs[job._id] || false}
-                      onChange={() => handleCheckboxChange(job._id)}
+                      onChange={(e) => {
+                        const checked = e.target.checked;
+                        const newSelectedJobs = {};
+                        job?.jobs?.forEach((job) => {
+                          newSelectedJobs[job._id] = checked;
+                        });
+                        setSelectedJobs(newSelectedJobs);
+                      }}
+                      checked={
+                        job?.jobs?.length > 0 &&
+                        job?.jobs?.every((j) => selectedJobs[j._id])
+                      }
                     />
-                  </td>
-                  {/* <td>
+                  </th>
+                  <th>JobsNo</th>
+                  <th style={{ whiteSpace: 'nowrap' }}>Project Name</th>
+                  <th>Brand</th>
+                  <th>SubBrand</th>
+                  <th>Flavour</th>
+                  <th>PackType</th>
+                  <th>PackSize</th>
+                  <th>PackCode</th>
+                  <th>Priority</th>
+                  <th style={{ whiteSpace: 'nowrap' }}>Due Date</th>
+                  <th>Assing</th>
+                  <th>TotalTime</th>
+                  <th>Status</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                {paginatedProjects?.map((job, index) => (
+                  <tr key={job._id}>
+                    <td>
+                      <input
+                        type="checkbox"
+                        checked={selectedJobs[job._id] || false}
+                        onChange={() => handleCheckboxChange(job._id)}
+                      />
+                    </td>
+                    {/* <td>
                     <Link>
                       {String(index + 1).padStart(4, '0')}
                     </Link>
                   </td> */}
-                  <td onClick={() => JobDetails(job)}>
-                    <Link>
-                      {String((currentPage - 1) * itemsPerPage + index + 1).padStart(4, '0')}</Link>
-                  </td>
-                  <td style={{ whiteSpace: 'nowrap' }}>{job.projectId?.[0]?.projectName || 'N/A'}</td>
-                  <td style={{ whiteSpace: 'nowrap' }}>{job.brandName}</td>
-                  <td style={{ whiteSpace: 'nowrap' }}>{job.subBrand}</td>
-                  <td style={{ whiteSpace: 'nowrap' }}>{job.flavour}</td>
-                  <td style={{ whiteSpace: 'nowrap' }}>{job.packType}</td>
-                  <td style={{ whiteSpace: 'nowrap' }}>{job.packSize}</td>
-                  <td style={{ whiteSpace: 'nowrap' }}>{job?.packCode}</td>
-                  <td>
-                    <span className={getPriorityClass(job.priority)}>
-                      {job.priority}
-                    </span>
-                  </td>
-                  <td>{new Date(job?.createdAt).toLocaleDateString('en-GB').replace(/\/20/, '/')}</td>
-                  <td style={{ whiteSpace: 'nowrap' }}>{job.assign}</td>
-                  <td>{new Date(job.updatedAt).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })}</td>
-                  {/* <th>
+                    <td onClick={() => JobDetails(job)}>
+                      <Link>
+                        {String((currentPage - 1) * itemsPerPage + index + 1).padStart(4, '0')}</Link>
+                    </td>
+                    <td style={{ whiteSpace: 'nowrap' }}>{job.projectId?.[0]?.projectName || 'N/A'}</td>
+                    <td style={{ whiteSpace: 'nowrap' }}>{job.brandName}</td>
+                    <td style={{ whiteSpace: 'nowrap' }}>{job.subBrand}</td>
+                    <td style={{ whiteSpace: 'nowrap' }}>{job.flavour}</td>
+                    <td style={{ whiteSpace: 'nowrap' }}>{job.packType}</td>
+                    <td style={{ whiteSpace: 'nowrap' }}>{job.packSize}</td>
+                    <td style={{ whiteSpace: 'nowrap' }}>{job?.packCode}</td>
+                    <td>
+                      <span className={getPriorityClass(job.priority)}>
+                        {job.priority}
+                      </span>
+                    </td>
+                    <td>{new Date(job?.createdAt).toLocaleDateString('en-GB').replace(/\/20/, '/')}</td>
+                    <td style={{ whiteSpace: 'nowrap' }}>{job.assign}</td>
+                    <td>{new Date(job.updatedAt).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })}</td>
+                    {/* <th>
                                         <Button id='All_btn' variant="success" style={{ width: "130px" }} size="sm" >
                                           {job.Status || "Active"}
                                         </Button></th> */}
-                  <td>
-                    <span
-                      className={`badge ${getStatusClass(job.Status)} px-2 py-1`}
-                    >
-                      {job.Status}
-                    </span>
-                  </td>
-                  <td className="d-flex">
-                    <button className="btn btn-sm btn-outline-primary me-1" onClick={() => JobDetails(job)}>
-                      <i className="bi bi-eye"></i> View
-                    </button>
-                    <button className="btn btn-sm btn-outline-primary me-1" onClick={() => handleUpdate(job)}>
-                      <i className="bi bi-pencil"></i> Edit
-                    </button>
-                    <button className="btn btn-sm btn-outline-danger" onClick={() => handleDelete(job._id)}>
-                      <i className="bi bi-trash"></i> Cancelled
-                    </button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-)}
+                    <td>
+                      <span
+                        className={`badge ${getStatusClass(job.Status)} px-2 py-1`}
+                      >
+                        {job.Status}
+                      </span>
+                    </td>
+                    <td className="d-flex">
+                      <button className="btn btn-sm btn-outline-primary me-1" onClick={() => JobDetails(job)}>
+                        <i className="bi bi-eye"></i> View
+                      </button>
+                      <button className="btn btn-sm btn-outline-primary me-1" onClick={() => handleUpdate(job)}>
+                        <i className="bi bi-pencil"></i> Edit
+                      </button>
+                      <button className="btn btn-sm btn-outline-danger" onClick={() => handleDelete(job._id)}>
+                        <i className="bi bi-trash"></i> Cancelled
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          )}
           {error && (
             <div className="text-danger text-center my-5">
               Failed to load projects. Please try again later.
@@ -15852,7 +15841,7 @@ function ProjectJobsTab() {
   const id = location.state?.id || params.id;
   console.log("hello me project id", id);
 
-const  dispatch = useDispatch()
+  const dispatch = useDispatch()
 
   const [selectedProduction, setSelectedProduction] = useState('');
   const [selectedAdditional, setSelectedAdditional] = useState('');
@@ -15907,55 +15896,55 @@ const  dispatch = useDispatch()
     },
   ];
 
- 
-    // holds "Production" or "Designer"  
-    const [selectedEmployee, setSelectedEmployee] = useState("");
-    const { userAll } = useSelector((state) => state.user);
-    console.log("data user", userAll?.data?.users);
-  
-    useEffect(() => {
-      dispatch(fetchusers());
-    }, [dispatch]);
-    const [currentAssignment, setCurrentAssignment] = useState(1);
-    const itemsAssignment = 10;
 
-    // Filter users dynamically based on selectedDesigner value
-    const filteredAssignment = (userAll?.data?.users || []).filter(
-      (j) =>
-        ((j?.assign || "").toString().toLowerCase() ===
-          selectedDesigner.toLowerCase()) &&
-        selectedDesigner !== ""
-    );
-  
-    // Pagination of filtered users (optional, keeps 10 per page)
-    const paginatedAssignment = filteredAssignment.slice(
-      (currentAssignment - 1) * itemsAssignment,
-      currentAssignment * itemsAssignment
-    );
-  
-    // Your submit handler (just a placeholder)
-    const handleSubmitAssignment = (data) => {
-      console.log(data);
-      
-      // You can send selectedDesigner, selectedEmployee, assignmentDescription here
-      console.log({
-        selectedDesigner,
-        selectedEmployee,
-        assignmentDescription,
-      });
-      // Close modal after submission
-      setShowAssignModal(false);
-    };
-  
-  
-  
-    const employees = [
-      { _id: "123", name: "John Doe" },
-      { _id: "456", name: "Jane Smith" },
-      // aur bhi employees
-    ];
-  
-  
+  // holds "Production" or "Designer"  
+  const [selectedEmployee, setSelectedEmployee] = useState("");
+  const { userAll } = useSelector((state) => state.user);
+  console.log("data user", userAll?.data?.users);
+
+  useEffect(() => {
+    dispatch(fetchusers());
+  }, [dispatch]);
+  const [currentAssignment, setCurrentAssignment] = useState(1);
+  const itemsAssignment = 10;
+
+  // Filter users dynamically based on selectedDesigner value
+  const filteredAssignment = (userAll?.data?.users || []).filter(
+    (j) =>
+      ((j?.assign || "").toString().toLowerCase() ===
+        selectedDesigner.toLowerCase()) &&
+      selectedDesigner !== ""
+  );
+
+  // Pagination of filtered users (optional, keeps 10 per page)
+  const paginatedAssignment = filteredAssignment.slice(
+    (currentAssignment - 1) * itemsAssignment,
+    currentAssignment * itemsAssignment
+  );
+
+  // Your submit handler (just a placeholder)
+  const handleSubmitAssignment = (data) => {
+    console.log(data);
+
+    // You can send selectedDesigner, selectedEmployee, assignmentDescription here
+    console.log({
+      selectedDesigner,
+      selectedEmployee,
+      assignmentDescription,
+    });
+    // Close modal after submission
+    setShowAssignModal(false);
+  };
+
+
+
+  const employees = [
+    { _id: "123", name: "John Doe" },
+    { _id: "456", name: "Jane Smith" },
+    // aur bhi employees
+  ];
+
+
 
   const handleCheckboxChange = (jobId) => {
     setSelectedJobs((prev) => ({
@@ -16001,36 +15990,36 @@ const  dispatch = useDispatch()
   const { ProjectJob } = useSelector((state) => state.jobs);
   console.log(ProjectJob, "all jobs");
 
-useEffect(() => {
-    dispatch(Project_job_Id(id)); 
+  useEffect(() => {
+    dispatch(Project_job_Id(id));
   }, [dispatch, id]);
 
 
-const handleDelete = (_id) => {
-  console.log(_id);
-  Swal.fire({
-    title: "Are you sure?",
-    text: "You want to mark this job as Cancelled?",
-    icon: "warning",
-    showCancelButton: true,
-    confirmButtonColor: "#3085d6",
-    cancelButtonColor: "#d33",
-    confirmButtonText: "Yes, mark as Cancelled!",
-  }).then((result) => {
-    if (result.isConfirmed) {
-      // dispatch(deletejob({ id: _id, data: { status: "Cancelled" } }))
-      dispatch(updatejob({ id: _id, data: { Status: "Cancelled" } }))
-        .unwrap()
-        .then(() => {
-          Swal.fire("Updated!", "The job has been marked as Cancelled.", "success");
-          dispatch(fetchjobs());
-        })
-        .catch(() => {
-          Swal.fire("Error!", "Something went wrong while updating.", "error");
-        });
-    }
-  });
-};
+  const handleDelete = (_id) => {
+    console.log(_id);
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You want to mark this job as Cancelled?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, mark as Cancelled!",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        // dispatch(deletejob({ id: _id, data: { status: "Cancelled" } }))
+        dispatch(updatejob({ id: _id, data: { Status: "Cancelled" } }))
+          .unwrap()
+          .then(() => {
+            Swal.fire("Updated!", "The job has been marked as Cancelled.", "success");
+            dispatch(fetchjobs());
+          })
+          .catch(() => {
+            Swal.fire("Error!", "Something went wrong while updating.", "error");
+          });
+      }
+    });
+  };
 
 
   const handleUpdate = (job) => {
@@ -16170,7 +16159,7 @@ const handleDelete = (_id) => {
       )}
 
       {/* Error */}
-     
+
       <div className="card-body">
         {/* ✅ Error message block */}
         {errorMessage && (
@@ -16276,76 +16265,76 @@ const handleDelete = (_id) => {
               ))}
             </tbody>
           </table>
-           {error && (
-        <div className="text-danger text-center my-5">
-          Failed to load projects. Please try again later.
-        </div>
-      )}
+          {error && (
+            <div className="text-danger text-center my-5">
+              Failed to load projects. Please try again later.
+            </div>
+          )}
         </div>
       </div>
 
       {/* ✅ Job Assignment Modal */}
-         <Modal show={showAssignModal} onHide={() => setShowAssignModal(false)}>
-           <Modal.Header closeButton>
-             <Modal.Title>Assign Job</Modal.Title>
-           </Modal.Header>
-           <Modal.Body>
-             <Form>
-               <Form.Group className="mb-3">
-                 <Form.Label>Select Designer</Form.Label>
-                 <Form.Select
-                   value={selectedDesigner}
-                   onChange={(e) => {
-                     setSelectedDesigner(e.target.value);
-                     setSelectedEmployee(""); 
-                   }}
-                 >
-                   <option value="">-- Select --</option>
-                   <option value="Production">Production</option>
-                   <option value="Designer">Designer</option>
-                 </Form.Select>
-               </Form.Group>
-   
-               <Form.Group className="mb-3">
-                 <Form.Label>Select Employee</Form.Label>
-                 <Form.Select
-                   value={selectedEmployee}
-                   onChange={(e) => setSelectedEmployee(e.target.value)}
-                   disabled={!selectedDesigner}
-                 >
-                   <option value="">-- Select Employee --</option>
-                   {paginatedAssignment.map((emp) => (
-                     <option key={emp._id} value={emp._id}>
-                       {emp.firstName || 'Unnamed Employee'}_
-                         {emp.lastName || 'Unnamed Employee'}
-                     </option>
-   
-                   ))}
-                 </Form.Select>
-               </Form.Group>
-   
-               <Form.Group className="mb-3">
-                 <Form.Label>Description</Form.Label>
-                 <Form.Control
-                   as="textarea"
-                   rows={3}
-                   value={assignmentDescription}
-                   onChange={(e) => setAssignmentDescription(e.target.value)}
-                   placeholder="Enter assignment details or instructions..."
-                 />
-               </Form.Group>
-             </Form>
-           </Modal.Body>
-           <Modal.Footer>
-             <Button variant="secondary" onClick={() => setShowAssignModal(false)}>
-               Cancel
-             </Button>
-             <Button variant="primary" onClick={handleSubmitAssignment}>
-               Assign
-             </Button>
-           </Modal.Footer>
-         </Modal>
-   
+      <Modal show={showAssignModal} onHide={() => setShowAssignModal(false)}>
+        <Modal.Header closeButton>
+          <Modal.Title>Assign Job</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Form>
+            <Form.Group className="mb-3">
+              <Form.Label>Select Designer</Form.Label>
+              <Form.Select
+                value={selectedDesigner}
+                onChange={(e) => {
+                  setSelectedDesigner(e.target.value);
+                  setSelectedEmployee("");
+                }}
+              >
+                <option value="">-- Select --</option>
+                <option value="Production">Production</option>
+                <option value="Designer">Designer</option>
+              </Form.Select>
+            </Form.Group>
+
+            <Form.Group className="mb-3">
+              <Form.Label>Select Employee</Form.Label>
+              <Form.Select
+                value={selectedEmployee}
+                onChange={(e) => setSelectedEmployee(e.target.value)}
+                disabled={!selectedDesigner}
+              >
+                <option value="">-- Select Employee --</option>
+                {paginatedAssignment.map((emp) => (
+                  <option key={emp._id} value={emp._id}>
+                    {emp.firstName || 'Unnamed Employee'}_
+                    {emp.lastName || 'Unnamed Employee'}
+                  </option>
+
+                ))}
+              </Form.Select>
+            </Form.Group>
+
+            <Form.Group className="mb-3">
+              <Form.Label>Description</Form.Label>
+              <Form.Control
+                as="textarea"
+                rows={3}
+                value={assignmentDescription}
+                onChange={(e) => setAssignmentDescription(e.target.value)}
+                placeholder="Enter assignment details or instructions..."
+              />
+            </Form.Group>
+          </Form>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={() => setShowAssignModal(false)}>
+            Cancel
+          </Button>
+          <Button variant="primary" onClick={handleSubmitAssignment}>
+            Assign
+          </Button>
+        </Modal.Footer>
+      </Modal>
+
 
 
       {!loading && !error && (
@@ -16356,8 +16345,8 @@ const handleDelete = (_id) => {
           <ul className="pagination pagination-sm mb-0">
             <li className={`page-item ${currentPage === 1 ? 'disabled' : ''}`}>
               <button className="page-link" onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}>
-              <span aria-hidden="true">&laquo;</span>
-                
+                <span aria-hidden="true">&laquo;</span>
+
               </button>
             </li>
             {Array.from({ length: totalPages }, (_, i) => (
@@ -16369,8 +16358,8 @@ const handleDelete = (_id) => {
             ))}
             <li className={`page-item ${currentPage === totalPages ? 'disabled' : ''}`}>
               <button className="page-link" onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}>
-               
-                    <span aria-hidden="true">&raquo;</span>
+
+                <span aria-hidden="true">&raquo;</span>
               </button>
             </li>
           </ul>
@@ -16587,7 +16576,7 @@ function TimeLogs() {
               <FaPlus /> ExtraTime
             </Button>
           </Link>
-            <Link to={"/admin/AddTimesheetWorklog"} className="text-decoration-none">
+          <Link to={"/admin/AddTimesheetWorklog"} className="text-decoration-none">
             <button id='All_btn' className="btn btn-dark d-flex align-items-center gap-2">
               <FaPlus /> Add Time Log
             </button>
@@ -16597,7 +16586,7 @@ function TimeLogs() {
               <FaPlus /> Add Time Log
             </button>
           </Link> */}
-           <Button
+          <Button
             className="d-md-none d-flex align-items-center gap-2 mb-2"
             size="sm"
             variant="secondary"
@@ -16912,14 +16901,14 @@ function TimeLogs() {
   //   dispatch(fetchTimeLogss());
   // }, [dispatch]);
 
-   const { timesheetWorklog, loading, error } = useSelector((state) => state.TimesheetWorklogs);
-   console.log(timesheetWorklog);
-  
-    useEffect(() => {
-      dispatch(fetchTimesheetWorklogs());
-    }, [dispatch]);
+  const { timesheetWorklog, loading, error } = useSelector((state) => state.TimesheetWorklogs);
+  console.log(timesheetWorklog);
 
-    
+  useEffect(() => {
+    dispatch(fetchTimesheetWorklogs());
+  }, [dispatch]);
+
+
 
   const itemsPerPage = 7;
   const totalPages = Math.ceil((timesheetWorklog.TimeLogss?.length || 0) / itemsPerPage);
@@ -17008,7 +16997,7 @@ function TimeLogs() {
               <FaPlus /> ExtraTime
             </Button> */}
           </Link>
-            <Link to={"/admin/AddTimesheetWorklog"} className="text-decoration-none">
+          <Link to={"/admin/AddTimesheetWorklog"} className="text-decoration-none">
             <button id='All_btn' className="btn btn-dark d-flex align-items-center gap-2">
               <FaPlus /> Add Time Log
             </button>
@@ -17018,7 +17007,7 @@ function TimeLogs() {
               <FaPlus /> Add Time Log
             </button>
           </Link> */}
-           <Button
+          <Button
             className="d-md-none d-flex align-items-center gap-2 mb-2"
             size="sm"
             variant="secondary"
@@ -17100,7 +17089,7 @@ function TimeLogs() {
                         paginatedTimeLogss?.every((log) => selectedJobs[log._id])
                       }
                     /> */}
-                  </th>    
+                  </th>
                   <th>JobID</th>
                   <th>Project Name</th>
                   <th>Employee Name</th>
@@ -17404,7 +17393,7 @@ function MyJobs() {
               <th>Actions</th>
             </tr>
           </thead>
-          <tbody style={{zIndex:"auto"}}>
+          <tbody style={{ zIndex: "auto" }}>
             {paginatedProjects.map((job) => (
               <React.Fragment key={job._id}>
                 <tr onClick={() => handleRowClick(job._id)} style={{ cursor: "pointer" }}>
@@ -17765,7 +17754,7 @@ function MyJobs() {
                 </tr>
                 {expandedJob === job._id && (
                   <td>
-                      <td>Additional Details for {job.jobId?.JobNo}: {job.additionalDetails}</td>
+                    <td>Additional Details for {job.jobId?.JobNo}: {job.additionalDetails}</td>
                   </td>
                 )}
               </React.Fragment>
@@ -17849,90 +17838,90 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 import { apiUrl } from "../../utils/config";
 
-export const  loginUser = createAsyncThunk(
-    'auth/login',
-    async (credentials, { rejectWithValue }) => {
-        try {
-            const response = await axios.post(${apiUrl}/login, credentials, {
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            });
-            if (response.status !== 200) {
-            return rejectWithValue(response.data.message || 'Login failed');
-            }
-            console.log("login response ", response)
+export const loginUser = createAsyncThunk(
+  'auth/login',
+  async (credentials, { rejectWithValue }) => {
+    try {
+      const response = await axios.post(${ apiUrl } / login, credentials, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      if (response.status !== 200) {
+        return rejectWithValue(response.data.message || 'Login failed');
+      }
+      console.log("login response ", response)
 
-            localStorage.setItem('token', response.data.token);
-            localStorage.setItem('user', JSON.stringify(response.data.data.user));
-            // localStorage.setItem('user', JSON.stringify(response.data.data.user?.id));
-            localStorage.setItem('role', JSON.stringify(response.data.data.user?.role));
-            localStorage.setItem('permissions', JSON.stringify(response.data.data.user?.permissions));
-            
-           
-           
-            return response.data;  
-        } catch (err) {
-            return rejectWithValue(err.response?.data?.message || 'Login failed');
-        }
-    })
+      localStorage.setItem('token', response.data.token);
+      localStorage.setItem('user', JSON.stringify(response.data.data.user));
+      // localStorage.setItem('user', JSON.stringify(response.data.data.user?.id));
+      localStorage.setItem('role', JSON.stringify(response.data.data.user?.role));
+      localStorage.setItem('permissions', JSON.stringify(response.data.data.user?.permissions));
 
 
 
-    const initialState= {
-        user: JSON.parse(localStorage.getItem('user')) || null,
-        token: localStorage.getItem('token') || null,
-        role: localStorage.getItem('role') || null,
-        permissions: JSON.parse(localStorage.getItem('permissions')) || null,
-        loading: false,
-        error: null,
+      return response.data;
+    } catch (err) {
+      return rejectWithValue(err.response?.data?.message || 'Login failed');
     }
-
-
-    const authSlice = createSlice({
-        name: 'auth',
-        initialState,
-        reducers: {
-            logout: (state) => {
-                localStorage.removeItem('user');
-                localStorage.removeItem('token');
-                localStorage.removeItem('role');
-                localStorage.removeItem('permissions');
-                state.user = null;
-                state.token = null;
-                state.role = null;
-                state.permissions = null;
-            },
-            clearMessages: (state) => {
-                state.error = null;
-            },
-        },
-        extraReducers: (builder) => {
-            builder
-                .addCase(loginUser.pending, (state) => {
-                    state.loading = true;
-                })
-                .addCase(loginUser.fulfilled, (state, action) => {
-                    state.loading = false;
-                    state.user = action.payload.user;
-                    state.token = action.payload.token;
-                    state.role = action.payload.role; 
-                    state.permissions = action.payload.permissions; response
-                    state.error = null;
-                })
-                .addCase(loginUser.rejected, (state, action) => {
-                    state.loading = false;
-                    state.error = action.payload;
-                });
-        },
+  })
 
 
 
-    })
+const initialState = {
+  user: JSON.parse(localStorage.getItem('user')) || null,
+  token: localStorage.getItem('token') || null,
+  role: localStorage.getItem('role') || null,
+  permissions: JSON.parse(localStorage.getItem('permissions')) || null,
+  loading: false,
+  error: null,
+}
 
 
-    export const { logout, clearMessages } = authSlice.actions;
-    export default authSlice.reducer;
+const authSlice = createSlice({
+  name: 'auth',
+  initialState,
+  reducers: {
+    logout: (state) => {
+      localStorage.removeItem('user');
+      localStorage.removeItem('token');
+      localStorage.removeItem('role');
+      localStorage.removeItem('permissions');
+      state.user = null;
+      state.token = null;
+      state.role = null;
+      state.permissions = null;
+    },
+    clearMessages: (state) => {
+      state.error = null;
+    },
+  },
+  extraReducers: (builder) => {
+    builder
+      .addCase(loginUser.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(loginUser.fulfilled, (state, action) => {
+        state.loading = false;
+        state.user = action.payload.user;
+        state.token = action.payload.token;
+        state.role = action.payload.role;
+        state.permissions = action.payload.permissions; response
+        state.error = null;
+      })
+      .addCase(loginUser.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      });
+  },
+
+
+
+})
+
+
+export const { logout, clearMessages } = authSlice.actions;
+export default authSlice.reducer;
 
 
 
@@ -17947,42 +17936,42 @@ import { Navigate, useLocation } from 'react-router-dom';
 import { decryptToken } from './decode';
 
 const ProtectedRoute = ({ children }) => {
-     const pathname = useLocation()
-     console.log(pathname);
-     
-    const [isAuthenticated, setIsAuthenticated] = useState(null);
+  const pathname = useLocation()
+  console.log(pathname);
+
+  const [isAuthenticated, setIsAuthenticated] = useState(null);
 
 
-    useEffect(() => {
-        const checkAuth = async () => {
-            // Retrieve the encrypted token and IV from localStorage
-            const myToken = localStorage.getItem('encode');
-            const iv = localStorage.getItem('iv'); // Assuming you have stored the IV in localStorage
+  useEffect(() => {
+    const checkAuth = async () => {
+      // Retrieve the encrypted token and IV from localStorage
+      const myToken = localStorage.getItem('encode');
+      const iv = localStorage.getItem('iv'); // Assuming you have stored the IV in localStorage
 
-            if (myToken && iv) {
-                // Decrypt the token using the token and IV
-                const decryptTokens = await decryptToken(myToken, iv);
-                console.log(JSON.parse(decryptTokens))
-                if (JSON.parse(decryptTokens) && JSON.parse(decryptTokens).startsWith("ey")) {
-                    setIsAuthenticated(true);  // Token is valid
-                    console.log("isAuthenticated",isAuthenticated)
-                } else {
-                    setIsAuthenticated(false); // Invalid token
-                }
-            } else {
-                setIsAuthenticated(false);  // No token or IV found
-            }
-        };
+      if (myToken && iv) {
+        // Decrypt the token using the token and IV
+        const decryptTokens = await decryptToken(myToken, iv);
+        console.log(JSON.parse(decryptTokens))
+        if (JSON.parse(decryptTokens) && JSON.parse(decryptTokens).startsWith("ey")) {
+          setIsAuthenticated(true);  // Token is valid
+          console.log("isAuthenticated", isAuthenticated)
+        } else {
+          setIsAuthenticated(false); // Invalid token
+        }
+      } else {
+        setIsAuthenticated(false);  // No token or IV found
+      }
+    };
 
-        checkAuth();
-    }, []);  // This effect runs only once, when the component is mounted
+    checkAuth();
+  }, []);  // This effect runs only once, when the component is mounted
 
-    if (isAuthenticated === null) {
-        // Optionally, you can return a loading spinner or message until the check is done
-        return <div>Loading...</div>;
-    }
+  if (isAuthenticated === null) {
+    // Optionally, you can return a loading spinner or message until the check is done
+    return <div>Loading...</div>;
+  }
 
-    return isAuthenticated ? children : <Navigate to="/" />;
+  return isAuthenticated ? children : <Navigate to="/" />;
 };
 
 export default ProtectedRoute;
@@ -17997,7 +17986,7 @@ export default ProtectedRoute;
 // ///////////////////////////Doenlod PDF code 
 
 
-  // PDF Downlod CostEstimates
+// PDF Downlod CostEstimates
 // ... existing code ...
 // const handleDownloadPDF = (po) => {
 //   if (!po) {
@@ -18120,7 +18109,7 @@ export default ProtectedRoute;
 //   const invoiceToBoxWidth = 250;
 //   doc.setDrawColor(0,0,0);
 //   doc.rect(margin, finalY, invoiceToBoxWidth, 100, 'S'); // Border for the box
-  
+
 //   doc.setFontSize(10);
 //   doc.setFont('helvetica', 'bold');
 //   doc.text('Invoice To', margin + 5, finalY + 15);
@@ -18138,7 +18127,7 @@ export default ProtectedRoute;
 //   doc.text(`Contact: ${clientDetails.contactPerson}`, margin + 5, textY);
 //   textY += 12;
 //   doc.text(`Email: ${clientDetails.email}`, margin + 5, textY);
-  
+
 //   finalY += 100 + 10; // Height of the box + padding
 
 //   // 6. TRN, Cost Est. No., P.O. No., Project Table (Full Width)
@@ -18231,7 +18220,7 @@ export default ProtectedRoute;
 //   //   totalsData.push([`VAT (${(vatRate * 100).toFixed(0)}%)`, vatAmount.toFixed(2)]);
 //   // }
 //   // totalsData.push(['GRAND TOTAL (USD)', grandTotal.toFixed(2)]);
-  
+
 //   // Since the image only has one item and one 'Amount (USD)' column, 
 //   // we might not need a separate totals box if the items table itself sums up.
 //   // However, if you want a separate box like typical invoices:
@@ -18495,7 +18484,7 @@ export default ProtectedRoute;
 //         totalsTableY = data.cursor.y; // Update Y for next element if it spans pages
 //     }
 //   });
-  
+
 //   // Update finalY to be the bottom of either amountInWords or totalsTable, whichever is lower
 //   finalY = Math.max(amountInWordsY + 10, totalsTableY + 10); 
 
@@ -18586,10 +18575,10 @@ function AddTimeLog() {
   const { job } = useSelector(state => state.jobs);
   const { userAll, loading, error } = useSelector((state) => state.user);
 
-const getTodayDate = () => {
-  const today = new Date();
-  return today.toISOString().split("T")[0]; // 'YYYY-MM-DD'
-};
+  const getTodayDate = () => {
+    const today = new Date();
+    return today.toISOString().split("T")[0]; // 'YYYY-MM-DD'
+  };
 
   const [formData, setFormData] = useState({
     projectId: '',
@@ -18607,9 +18596,9 @@ const getTodayDate = () => {
 
   useEffect(() => {
     if (entry) {
-   const parsedDate = entry.date
-      ? new Date(entry.date).toISOString().split('T')[0]
-      : getTodayDate();
+      const parsedDate = entry.date
+        ? new Date(entry.date).toISOString().split('T')[0]
+        : getTodayDate();
       setFormData({
         date: parsedDate,
         projectId: Array.isArray(entry.projectId) ? entry.projectId[0]._id : '',
@@ -18715,7 +18704,7 @@ const getTodayDate = () => {
   };
 
 
-// Project Jobs Employee ye pora data araha hai 
+  // Project Jobs Employee ye pora data araha hai 
   const { myjobs } = useSelector((state) => state.MyJobs);
   const MynewJobsdata = myjobs && myjobs.assignments && myjobs.assignments.length > 0 ? myjobs.assignments[0].jobId : [];
 
@@ -18738,7 +18727,7 @@ const getTodayDate = () => {
   const reversedEmployeeList = (userAll?.data?.users || []).filter(user => user.role === "employee").reverse();
 
 
-  
+
   return (
     <div className="container py-4">
       <div className="row justify-content-center">
@@ -18969,7 +18958,7 @@ import {
   FaClock,
   FaEdit,
 } from "react-icons/fa";
-import { Dropdown,Table } from "react-bootstrap";
+import { Dropdown, Table } from "react-bootstrap";
 // import Swal from 'sweetalert2';
 // import { fetchusers } from "../../../redux/slices/userSlice";
 // import { createAssigns } from "../../../redux/slices/AssignSlice";
@@ -18993,289 +18982,289 @@ import "react-toastify/dist/ReactToastify.css";
 import { Project_job_Id } from "../../../redux/slices/JobsSlice";
 import { fetchusers } from "../../../redux/slices/userSlice";
 
-function NewJobsList() {  
-// /////////////////////////////////
-    const location = useLocation();
-    const params = useParams();
-    console.log("hello me project id", params);
-    const id = location.state?.id || params.id;
-  
-    const dispatch = useDispatch()
-    const navigate = useNavigate()
-    const [selectedProduction, setSelectedProduction] = useState('');
-    const [selectedAdditional, setSelectedAdditional] = useState('');
-    const [selectedJob, setSelectedJob] = useState(null);
-    const [attachedFile, setAttachedFile] = useState(null);
-    const [selectedJobs, setSelectedJobs] = useState({});
-    const [errorMessage, setErrorMessage] = useState('');
-  
-    const [showAssignModal, setShowAssignModal] = useState(false);
-    const [selectedDesigner, setSelectedDesigner] = useState('');
-    const [assignmentDescription, setAssignmentDescription] = useState('');
-  
-    const jobs = [
-      {
-        id: "00001",
-        brandName: "Brand1",
-        subBrand: "SubBrand1",
-        flavour: "Flavour1",
-        packType: "Type1",
-        packSize: "Size 1ml",
-        packCode: "Code1",
-        deadline: "2024/01/20",
-        brief: "ViewBrief",
-        status: "Pending Upload",
-        statusVariant: "warning",
-      },
-      {
-        id: "00002",
-        brandName: "Brand2",
-        subBrand: "SubBrand2",
-        flavour: "Flavour2",
-        packType: "Type2",
-        packSize: "Size 2ml",
-        packCode: "Code2",
-        deadline: "2024/01/25",
-        brief: "ViewBrief",
-        status: "In Progress",
-        statusVariant: "info",
-      },
-      {
-        id: "00003",
-        brandName: "Brand3",
-        subBrand: "SubBrand3",
-        flavour: "Flavour3",
-        packType: "Type3",
-        packSize: "Size 3ml",
-        packCode: "Code3",
-        deadline: "2024/02/01",
-        brief: "ViewBrief",
-        status: "DraftSaved",
-        statusVariant: "secondary",
-      },
-    ];
-  
-    const [selectedEmployee, setSelectedEmployee] = useState("");
-    const { userAll } = useSelector((state) => state.user);
-    console.log("data user", userAll?.data?.users);
-  
-    useEffect(() => {
-      dispatch(fetchusers());
-    }, [dispatch]);
+function NewJobsList() {
+  // /////////////////////////////////
+  const location = useLocation();
+  const params = useParams();
+  console.log("hello me project id", params);
+  const id = location.state?.id || params.id;
 
-      const { job, loading, error } = useSelector((state) => state.jobs);
-    console.log("gggggg",job);
-    
-      useEffect(() => {
-        dispatch(fetchjobs());
-      }, [dispatch]);
-    
-      
-    const [currentAssignment, setCurrentAssignment] = useState(1);
-    const itemsAssignment = 10;
-  
-    const filteredAssignment = (userAll?.data?.users || []).filter(
-      (j) =>
-        ((j?.assign || "").toString().toLowerCase() ===
-          selectedDesigner.toLowerCase()) &&
-        selectedDesigner !== ""
-    );
-  
-    const paginatedAssignment = filteredAssignment.slice(
-      (currentAssignment - 1) * itemsAssignment,
-      currentAssignment * itemsAssignment
-    );
-  
-    const handleSubmitAssignment = () => {
-      const selectedJobIds = Object.keys(selectedJobs).filter((id) => selectedJobs[id]);
-      const payload = {
-        employeeId: [selectedEmployee],
-        jobId: selectedJobIds,
-        selectDesigner: selectedDesigner,
-        description: assignmentDescription,
-      };
-  
-      console.log("Assignment Payload:", payload);
-  
-      if (id) {
-        dispatch(createAssigns(payload))
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
+  const [selectedProduction, setSelectedProduction] = useState('');
+  const [selectedAdditional, setSelectedAdditional] = useState('');
+  const [selectedJob, setSelectedJob] = useState(null);
+  const [attachedFile, setAttachedFile] = useState(null);
+  const [selectedJobs, setSelectedJobs] = useState({});
+  const [errorMessage, setErrorMessage] = useState('');
+
+  const [showAssignModal, setShowAssignModal] = useState(false);
+  const [selectedDesigner, setSelectedDesigner] = useState('');
+  const [assignmentDescription, setAssignmentDescription] = useState('');
+
+  const jobs = [
+    {
+      id: "00001",
+      brandName: "Brand1",
+      subBrand: "SubBrand1",
+      flavour: "Flavour1",
+      packType: "Type1",
+      packSize: "Size 1ml",
+      packCode: "Code1",
+      deadline: "2024/01/20",
+      brief: "ViewBrief",
+      status: "Pending Upload",
+      statusVariant: "warning",
+    },
+    {
+      id: "00002",
+      brandName: "Brand2",
+      subBrand: "SubBrand2",
+      flavour: "Flavour2",
+      packType: "Type2",
+      packSize: "Size 2ml",
+      packCode: "Code2",
+      deadline: "2024/01/25",
+      brief: "ViewBrief",
+      status: "In Progress",
+      statusVariant: "info",
+    },
+    {
+      id: "00003",
+      brandName: "Brand3",
+      subBrand: "SubBrand3",
+      flavour: "Flavour3",
+      packType: "Type3",
+      packSize: "Size 3ml",
+      packCode: "Code3",
+      deadline: "2024/02/01",
+      brief: "ViewBrief",
+      status: "DraftSaved",
+      statusVariant: "secondary",
+    },
+  ];
+
+  const [selectedEmployee, setSelectedEmployee] = useState("");
+  const { userAll } = useSelector((state) => state.user);
+  console.log("data user", userAll?.data?.users);
+
+  useEffect(() => {
+    dispatch(fetchusers());
+  }, [dispatch]);
+
+  const { job, loading, error } = useSelector((state) => state.jobs);
+  console.log("gggggg", job);
+
+  useEffect(() => {
+    dispatch(fetchjobs());
+  }, [dispatch]);
+
+
+  const [currentAssignment, setCurrentAssignment] = useState(1);
+  const itemsAssignment = 10;
+
+  const filteredAssignment = (userAll?.data?.users || []).filter(
+    (j) =>
+      ((j?.assign || "").toString().toLowerCase() ===
+        selectedDesigner.toLowerCase()) &&
+      selectedDesigner !== ""
+  );
+
+  const paginatedAssignment = filteredAssignment.slice(
+    (currentAssignment - 1) * itemsAssignment,
+    currentAssignment * itemsAssignment
+  );
+
+  const handleSubmitAssignment = () => {
+    const selectedJobIds = Object.keys(selectedJobs).filter((id) => selectedJobs[id]);
+    const payload = {
+      employeeId: [selectedEmployee],
+      jobId: selectedJobIds,
+      selectDesigner: selectedDesigner,
+      description: assignmentDescription,
+    };
+
+    console.log("Assignment Payload:", payload);
+
+    if (id) {
+      dispatch(createAssigns(payload))
+        .unwrap()
+        .then((response) => {
+          console.log("API Response:", response);
+          // ✅ Agar API success ho to navigate kare
+          if (response.success) {
+            toast.success(response.message || "Project Assigned Successfully!");
+            setShowAssignModal(false);
+            setSelectedJobs(false);
+            navigate("/admin/MyJobs");
+          } else {
+            setShowAssignModal(false);
+            toast.error(response.message || "Assignment failed!");
+          }
+        })
+        .catch((error) => {
+          console.error("API Error:", error);
+          toast.error(error.message || "Failed to update project!");
+        });
+    }
+  };
+
+  const handleJobAssign = (selectedIds, assignTo) => {
+    const payload = {
+      id: selectedIds,
+      assign: assignTo,
+    };
+    console.log("Assignment Payload:", payload);
+    dispatch(UpdateJobAssign(payload))
+      .then(() => {
+        // Swal.fire("Success!", "Jobs assigned successfully", "success");
+        // dispatch(fetchjobs());
+      })
+      .catch(() => {
+        Swal.fire("Error!", "Something went wrong", "error");
+      });
+  };
+
+  const employees = [
+    { _id: "123", name: "John Doe" },
+    { _id: "456", name: "Jane Smith" },
+  ];
+
+  const handleCheckboxChange = (jobId) => {
+    setSelectedJobs((prev) => ({
+      ...prev,
+      [jobId]: !prev[jobId],
+    }));
+  };
+
+  const handleCSVImport = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      console.log("CSV file selected:", file.name);
+    }
+  };
+
+  const getPriorityClass = (priority) => {
+    switch (priority.toLowerCase()) {
+      case "high":
+        return "text-danger";
+      case "medium":
+        return "text-warning";
+      case "low":
+        return "text-success";
+      default:
+        return "";
+    }
+  };
+  // ////////////////////////////////////////
+  // const location = useLocation();
+  // const params = useParams();
+  // const id = location.state?.id || params.id;
+  useEffect(() => {
+    console.log("Project ID:", id);
+  }, [id]);
+
+  const { job, loading, error } = useSelector((state) => state.jobs);
+  console.log(job.jobs, "all jobs");
+
+  const { ProjectJob } = useSelector((state) => state.jobs);
+  console.log(ProjectJob, "all jobs");
+
+  useEffect(() => {
+    dispatch(Project_job_Id(id));
+  }, [dispatch, id]);
+
+  const handleDelete = (_id) => {
+    console.log(_id);
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You want to mark this job as Cancelled?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, mark as Cancelled!",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        // dispatch(deletejob({ id: _id, data: { status: "Cancelled" } }))
+        console.log(id);
+
+        dispatch(updatejob({ id: _id, data: { Status: "Cancelled" } }))
           .unwrap()
-          .then((response) => {
-            console.log("API Response:", response);
-            // ✅ Agar API success ho to navigate kare
-            if (response.success) {
-              toast.success(response.message || "Project Assigned Successfully!");
-              setShowAssignModal(false);
-              setSelectedJobs(false);
-              navigate("/admin/MyJobs");
-            } else {
-              setShowAssignModal(false);
-              toast.error(response.message || "Assignment failed!");
-            }
+          .then(() => {
+            Swal.fire("Updated!", "The job has been marked as Cancelled.", "success");
+            // dispatch(Project_job_Id(id));
           })
-          .catch((error) => {
-            console.error("API Error:", error);
-            toast.error(error.message || "Failed to update project!");
+          .catch(() => {
+            Swal.fire("Error!", "Something went wrong while updating.", "error");
           });
       }
-    };
-  
-    const handleJobAssign = (selectedIds, assignTo) => {
-      const payload = {
-        id: selectedIds,
-        assign: assignTo,
-      };
-      console.log("Assignment Payload:", payload);
-      dispatch(UpdateJobAssign(payload))
-        .then(() => {
-          // Swal.fire("Success!", "Jobs assigned successfully", "success");
-          // dispatch(fetchjobs());
-        })
-        .catch(() => {
-          Swal.fire("Error!", "Something went wrong", "error");
-        });
-    };
-  
-    const employees = [
-      { _id: "123", name: "John Doe" },
-      { _id: "456", name: "Jane Smith" },
-    ];
-  
-    const handleCheckboxChange = (jobId) => {
-      setSelectedJobs((prev) => ({
-        ...prev,
-        [jobId]: !prev[jobId],
-      }));
-    };
-  
-    const handleCSVImport = (event) => {
-      const file = event.target.files[0];
-      if (file) {
-        console.log("CSV file selected:", file.name);
-      }
-    };
-  
-    const getPriorityClass = (priority) => {
-      switch (priority.toLowerCase()) {
-        case "high":
-          return "text-danger";
-        case "medium":
-          return "text-warning";
-        case "low":
-          return "text-success";
-        default:
-          return "";
-      }
-    };
-    // ////////////////////////////////////////
-    // const location = useLocation();
-    // const params = useParams();
-    // const id = location.state?.id || params.id;
-    useEffect(() => {
-      console.log("Project ID:", id);
-    }, [id]);
-  
-    const { job, loading, error } = useSelector((state) => state.jobs);
-    console.log(job.jobs, "all jobs");
-  
-    const { ProjectJob } = useSelector((state) => state.jobs);
-    console.log(ProjectJob, "all jobs");
-  
-    useEffect(() => {
-      dispatch(Project_job_Id(id));
-    }, [dispatch, id]);
-  
-    const handleDelete = (_id) => {
-      console.log(_id);
-      Swal.fire({
-        title: "Are you sure?",
-        text: "You want to mark this job as Cancelled?",
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonColor: "#3085d6",
-        cancelButtonColor: "#d33",
-        confirmButtonText: "Yes, mark as Cancelled!",
-      }).then((result) => {
-        if (result.isConfirmed) {
-          // dispatch(deletejob({ id: _id, data: { status: "Cancelled" } }))
-          console.log(id);
+    });
+  };
 
-          dispatch(updatejob({ id: _id, data: { Status: "Cancelled" } }))
-            .unwrap()
-            .then(() => {
-              Swal.fire("Updated!", "The job has been marked as Cancelled.", "success");
-              // dispatch(Project_job_Id(id));
-            })
-            .catch(() => {
-              Swal.fire("Error!", "Something went wrong while updating.", "error");
-            });
-        }
-      });
-    };
-  
-    const handleUpdate = (job) => {
-      console.log(job, "dcvhrvrejhcvwerjhcvhgv")
-      navigate(`/admin/AddJobTracker/${job._id}`, { state: { job } });
-    };
-  
-    const JobDetails = (job) => {
-      navigate(`/admin/OvervieJobsTracker`, { state: { job } });
+  const handleUpdate = (job) => {
+    console.log(job, "dcvhrvrejhcvwerjhcvhgv")
+    navigate(`/admin/AddJobTracker/${job._id}`, { state: { job } });
+  };
+
+  const JobDetails = (job) => {
+    navigate(`/admin/OvervieJobsTracker`, { state: { job } });
+  }
+  const getStatusClass = (status) => {
+    switch (status.toLowerCase().trim()) {
+      case "in progress":
+      case "in_progress":
+        return "bg-warning text-dark";
+      case "review":
+        return "bg-info text-dark";
+      case "not started":
+        return "bg-secondary text-white";
+      case "completed":
+        return "bg-success text-white";
+      case "open":
+        return "bg-primary text-white";
+      case "cancelled":
+        return "bg-dark text-white";
+      default:
+        return "bg-light text-dark";
     }
-    const getStatusClass = (status) => {
-      switch (status.toLowerCase().trim()) {
-        case "in progress":
-        case "in_progress":
-          return "bg-warning text-dark";
-        case "review":
-          return "bg-info text-dark";
-        case "not started":
-          return "bg-secondary text-white";
-        case "completed":
-          return "bg-success text-white";
-        case "open":
-          return "bg-primary text-white";
-        case "cancelled":
-          return "bg-dark text-white";
-        default:
-          return "bg-light text-dark";
-      }
-    };
-  
-   // ✅ Copy File Name & Download CSV
-    const handleDownloadFileNamesCSV = () => {
-      const rows = [["JobFileName"]];
-      job?.jobs?.forEach((j, index) => {
-        const jobNo = String(index + 1).padStart(5, '0');
-        const fileName = `${jobNo}_${j.brandName}_${j.subBrand}_${j.flavour}_${j.packType}_${j.packSize}_${j.packCode}`;
-        rows.push([fileName]);
-      });
-      const csvContent = rows.map((r) => r.join(",")).join("\n");
-      const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
-      const url = URL.createObjectURL(blob);
-      const link = document.createElement("a");
-      link.href = url;
-      link.download = "JobFileNames.csv";
-      link.click();
-      URL.revokeObjectURL(url);
-    };
-  
-  
- 
-   const [currentPage, setCurrentPage] = useState(1);
-   const itemsPerPage = 10;
- 
-   const filteredProjects = job?.jobs || [];
-   const totalPages = Math.ceil(filteredProjects.length / itemsPerPage);
- 
-   const paginatedProjects = filteredProjects.slice(
-     (currentPage - 1) * itemsPerPage,
-     currentPage * itemsPerPage
-   );
-  
-    const AddJob = () => {
-      navigate(`/admin/AddJobTracker/${id}`, { state: { id } });
-    };
-  
+  };
+
+  // ✅ Copy File Name & Download CSV
+  const handleDownloadFileNamesCSV = () => {
+    const rows = [["JobFileName"]];
+    job?.jobs?.forEach((j, index) => {
+      const jobNo = String(index + 1).padStart(5, '0');
+      const fileName = `${jobNo}_${j.brandName}_${j.subBrand}_${j.flavour}_${j.packType}_${j.packSize}_${j.packCode}`;
+      rows.push([fileName]);
+    });
+    const csvContent = rows.map((r) => r.join(",")).join("\n");
+    const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = "JobFileNames.csv";
+    link.click();
+    URL.revokeObjectURL(url);
+  };
+
+
+
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 10;
+
+  const filteredProjects = job?.jobs || [];
+  const totalPages = Math.ceil(filteredProjects.length / itemsPerPage);
+
+  const paginatedProjects = filteredProjects.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
+  );
+
+  const AddJob = () => {
+    navigate(`/admin/AddJobTracker/${id}`, { state: { id } });
+  };
+
   return (
     <div className="container bg-white p-3 mt-4  rounded shadow-sm">
       {/* Title */}
@@ -19382,55 +19371,55 @@ function NewJobsList() {
               <th>Actions</th>
             </tr>
           </thead>
-           <tbody>
-                 {paginatedProjects.slice().reverse().map((job, index) => (
-                   <tr key={job._id}>
-                     <td>
-                       <input
-                         type="checkbox"
-                         checked={selectedJobs[job._id] || false}
-                         onChange={() => handleCheckboxChange(job._id)}
-                       />
-                     </td>
-                     <td onClick={() => JobDetails(job)}>
-                       <Link style={{ textDecoration: 'none' }}>{job.JobNo}</Link>
-                     </td>
-                     <td style={{ whiteSpace: 'nowrap' }}>{job.projectId?.[0]?.projectName || 'N/A'}</td>
-                     <td style={{ whiteSpace: 'nowrap' }}>{job.brandName}</td>
-                     <td style={{ whiteSpace: 'nowrap' }}>{job.subBrand}</td>
-                     <td style={{ whiteSpace: 'nowrap' }}>{job.flavour}</td>
-                     <td style={{ whiteSpace: 'nowrap' }}>{job.packType}</td>
-                     <td style={{ whiteSpace: 'nowrap' }}>{job.packSize}</td>
-                     <td style={{ whiteSpace: 'nowrap' }}>{job?.packCode}</td>
-                     <td style={{ whiteSpace: 'nowrap' }}>{new Date(job.updatedAt).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })}</td>
-                     <td style={{ whiteSpace: 'nowrap' }}>{new Date(job.createdAt).toLocaleDateString("en-GB")}</td>
-                     {/* <td style={{ whiteSpace: 'nowrap' }}>{job.assign}</td> */}
-                     <td>
-                       <span className={getPriorityClass(job.priority)}>{job.priority}</span>
-                     </td>
-                     <td>
-                       <span className={`badge ${getStatusClass(job.Status)} px-2 py-1`}>
-                         {job.Status}
-                       </span>
-                     </td>
-                     <td>
-                       <div className="d-flex gap-2">
-                         <Button id="icone_btn" size="sm"><FaFilePdf /></Button>
-                         <Button id="icone_btn" size="sm"><FaUpload /></Button>
-                         <Button id="icone_btn" size="sm"><FaLink /></Button>
-                         <Button id="icone_btn" size="sm"><FaClock /></Button>
-                         <Button
-                           id="icone_btn"
-                           size="sm"
-                           onClick={() => handleUpdate(job)}
-                         >
-                           <FaEdit />
-                         </Button>
-                       </div>
-                     </td>
-                   </tr>
-                 ))}
-               </tbody>
+          <tbody>
+            {paginatedProjects.slice().reverse().map((job, index) => (
+              <tr key={job._id}>
+                <td>
+                  <input
+                    type="checkbox"
+                    checked={selectedJobs[job._id] || false}
+                    onChange={() => handleCheckboxChange(job._id)}
+                  />
+                </td>
+                <td onClick={() => JobDetails(job)}>
+                  <Link style={{ textDecoration: 'none' }}>{job.JobNo}</Link>
+                </td>
+                <td style={{ whiteSpace: 'nowrap' }}>{job.projectId?.[0]?.projectName || 'N/A'}</td>
+                <td style={{ whiteSpace: 'nowrap' }}>{job.brandName}</td>
+                <td style={{ whiteSpace: 'nowrap' }}>{job.subBrand}</td>
+                <td style={{ whiteSpace: 'nowrap' }}>{job.flavour}</td>
+                <td style={{ whiteSpace: 'nowrap' }}>{job.packType}</td>
+                <td style={{ whiteSpace: 'nowrap' }}>{job.packSize}</td>
+                <td style={{ whiteSpace: 'nowrap' }}>{job?.packCode}</td>
+                <td style={{ whiteSpace: 'nowrap' }}>{new Date(job.updatedAt).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })}</td>
+                <td style={{ whiteSpace: 'nowrap' }}>{new Date(job.createdAt).toLocaleDateString("en-GB")}</td>
+                {/* <td style={{ whiteSpace: 'nowrap' }}>{job.assign}</td> */}
+                <td>
+                  <span className={getPriorityClass(job.priority)}>{job.priority}</span>
+                </td>
+                <td>
+                  <span className={`badge ${getStatusClass(job.Status)} px-2 py-1`}>
+                    {job.Status}
+                  </span>
+                </td>
+                <td>
+                  <div className="d-flex gap-2">
+                    <Button id="icone_btn" size="sm"><FaFilePdf /></Button>
+                    <Button id="icone_btn" size="sm"><FaUpload /></Button>
+                    <Button id="icone_btn" size="sm"><FaLink /></Button>
+                    <Button id="icone_btn" size="sm"><FaClock /></Button>
+                    <Button
+                      id="icone_btn"
+                      size="sm"
+                      onClick={() => handleUpdate(job)}
+                    >
+                      <FaEdit />
+                    </Button>
+                  </div>
+                </td>
+              </tr>
+            ))}
+          </tbody>
         </Table>
       </div>
 
@@ -19649,7 +19638,7 @@ function ProjectList() {
   };
 
   const CreatJobs = (id) => {
-    navigate(/admin/ProjectOverview/${id}, { state: { id, openTab: 'jobs' } });
+    navigate(/admin/ProjectOverview / ${ id }, { state: { id, openTab: 'jobs' } });
   };
 
   const getStatusClass = (status) => {
@@ -19723,85 +19712,90 @@ function ProjectList() {
           {tabs.map((tab) => (
             <li className="nav-item" key={tab}>
               <button
-                className={nav-link ${activeTab === tab ? 'active' : ''}}
-                onClick={() => setActiveTab(tab)}
-                style={{ color: "#0d6efd", borderColor: "#0d6efd" }}
+                className={nav - link ${activeTab === tab ? 'active' : ''}}
+              onClick={() => setActiveTab(tab)}
+              style={{ color: "#0d6efd", borderColor: "#0d6efd" }}
               >
-                {tab}
-              </button>
+              {tab}
+            </button>
             </li>
           ))}
-        </ul>
+      </ul>
 
-        {/* Small screens: show dropdown */}
-        <div className="d-flex d-md-none">
-          <Dropdown>
-            <Dropdown.Toggle variant="outline-primary" id="dropdown-tabs" className="w-100">
-              {activeTab}
-            </Dropdown.Toggle>
+      {/* Small screens: show dropdown */}
+      <div className="d-flex d-md-none">
+        <Dropdown>
+          <Dropdown.Toggle variant="outline-primary" id="dropdown-tabs" className="w-100">
+            {activeTab}
+          </Dropdown.Toggle>
 
-            <Dropdown.Menu className="w-100">
-              {tabs.map((tab) => (
-                <Dropdown.Item
-                  key={tab}
-                  active={tab === activeTab}
-                  onClick={() => setActiveTab(tab)}
-                >
-                  {tab}
-                </Dropdown.Item>
-              ))}
-            </Dropdown.Menu>
-          </Dropdown>
-        </div>
+          <Dropdown.Menu className="w-100">
+            {tabs.map((tab) => (
+              <Dropdown.Item
+                key={tab}
+                active={tab === activeTab}
+                onClick={() => setActiveTab(tab)}
+              >
+                {tab}
+              </Dropdown.Item>
+            ))}
+          </Dropdown.Menu>
+        </Dropdown>
       </div>
+    </div>
 
-      {/* Loader */}
-      {loading && (
-        <div className="text-center my-5">
-          <Spinner animation="border" variant="primary" />
-          <div className="mt-2">Loading projects...</div>
-        </div>
-      )}
+      {/* Loader */ }
+  {
+    loading && (
+      <div className="text-center my-5">
+        <Spinner animation="border" variant="primary" />
+        <div className="mt-2">Loading projects...</div>
+      </div>
+    )
+  }
 
-      {/* Error */}
-      {error && (
-        <div className="text-danger text-center my-5">
-          Failed to load projects. Please try again later.
-        </div>
-      )}
+  {/* Error */ }
+  {
+    error && (
+      <div className="text-danger text-center my-5">
+        Failed to load projects. Please try again later.
+      </div>
+    )
+  }
 
-      {/* Projects Table */}
-      {!loading && !error && filteredProjects?.length > 0 && (
-        <Table responsive className="project-table mb-4">
-          <thead>
-            <tr>
-              <th>
-                <input
-                  type="checkbox"
-                  onChange={() => {
-                    const isChecked =
-                      Object.keys(selectedJobs).length === project.data.length;
-                    const newSelectedJobs = {};
-                    project.data.forEach((project) => {
-                      newSelectedJobs[project.id] = !isChecked;
-                    });
-                    setSelectedJobs(newSelectedJobs);
-                  }}
-                />
-              </th>
-              <th style={{ whiteSpace: 'nowrap' }}>Project No</th>
-              <th style={{ textWrap: 'nowrap' }}>Project Name</th>
-              <th>Description</th>
-              <th style={{ whiteSpace: 'nowrap' }}>Start Date</th>
-              <th style={{ whiteSpace: 'nowrap' }}>End Date</th>
-              <th>Client</th>
-              <th style={{ whiteSpace: 'nowrap' }}>project Requirements</th>
-              <th>Status</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {paginatedProjects.slice().reverse().map((project, index) => (
+  {/* Projects Table */ }
+  {
+    !loading && !error && filteredProjects?.length > 0 && (
+      <Table responsive className="project-table mb-4">
+        <thead>
+          <tr>
+            <th>
+              <input
+                type="checkbox"
+                onChange={() => {
+                  const isChecked =
+                    Object.keys(selectedJobs).length === project.data.length;
+                  const newSelectedJobs = {};
+                  project.data.forEach((project) => {
+                    newSelectedJobs[project.id] = !isChecked;
+                  });
+                  setSelectedJobs(newSelectedJobs);
+                }}
+              />
+            </th>
+            <th style={{ whiteSpace: 'nowrap' }}>Project No</th>
+            <th style={{ textWrap: 'nowrap' }}>Project Name</th>
+            <th>Description</th>
+            <th style={{ whiteSpace: 'nowrap' }}>Start Date</th>
+            <th style={{ whiteSpace: 'nowrap' }}>End Date</th>
+            <th>Client</th>
+            <th style={{ whiteSpace: 'nowrap' }}>project Requirements</th>
+            <th>Status</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {paginatedProjects.slice().reverse().map((project, index) => (
               <tr key={project.id}>
                 <td>
                   <input
@@ -19856,39 +19850,42 @@ function ProjectList() {
                 </td>
               </tr>
             ))}
-          </tbody>
-        </Table>
-      )}
+      </tbody>
+        </Table >
+      )
+  }
 
-      {/* Pagination */}
-      {!loading && !error && (
-        <div className="d-flex justify-content-between align-items-center mb-4">
-          <div className="text-muted small">
-            Showing 1 to {filteredProjects?.length || 0} of {project.data?.length || 0} entries
-          </div>
-          <ul className="pagination pagination-sm mb-0">
-            <li className={page-item ${currentPage === 1 ? 'disabled' : ''}}>
-              <button className="page-link" onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}>
-                <span aria-hidden="true">&laquo;</span>
-              </button>
-            </li>
-            {Array.from({ length: totalPages }, (_, i) => (
-              <li key={i + 1} className={page-item ${currentPage === i + 1 ? 'active' : ''}}>
-                <button className="page-link" onClick={() => setCurrentPage(i + 1)}>
-                  {i + 1}
-                </button>
-              </li>
-            ))}
-            <li className={page-item ${currentPage === totalPages ? 'disabled' : ''}}>
-              <button className="page-link" onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}>
-                <span aria-hidden="true">&raquo;</span>
-              </button>
-            </li>
-          </ul>
-
+  {/* Pagination */ }
+  {
+    !loading && !error && (
+      <div className="d-flex justify-content-between align-items-center mb-4">
+        <div className="text-muted small">
+          Showing 1 to {filteredProjects?.length || 0} of {project.data?.length || 0} entries
         </div>
+        <ul className="pagination pagination-sm mb-0">
+          <li className={page - item ${currentPage === 1 ? 'disabled' : ''}}>
+          <button className="page-link" onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}>
+            <span aria-hidden="true">&laquo;</span>
+          </button>
+        </li>
+        {Array.from({ length: totalPages }, (_, i) => (
+          <li key={i + 1} className={page - item ${currentPage === i + 1 ? 'active' : ''}}>
+        <button className="page-link" onClick={() => setCurrentPage(i + 1)}>
+          {i + 1}
+        </button>
+      </li>
+    ))
+  }
+  <li className={page - item ${currentPage === totalPages ? 'disabled' : ''}}>
+    <button className="page-link" onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}>
+      <span aria-hidden="true">&raquo;</span>
+    </button>
+            </li >
+          </ul >
+
+        </div >
       )}
-    </div>
+    </div >
   );
 }
 
@@ -19932,8 +19929,8 @@ const currencies = [
   { label: "SAR - Saudi Riyal", value: "SAR" },
 ];
 
-const poStatuses = ["Approved","pending",  "Rejected"];
-const statuses = [ "Active", "Inactive", "Completed"];
+const poStatuses = ["Approved", "pending", "Rejected"];
+const statuses = ["Active", "Inactive", "Completed"];
 
 function AddCostEstimates() {
   const location = useLocation();
@@ -20445,41 +20442,41 @@ function AddClientManagement() {
   });
 
 
-useEffect(() => {
-  const updateStates = (clientData) => {
-    setFormData({
-      clientName: clientData.clientName || '',
-      industry: clientData.industry || '',
-      website: clientData.website || '',
-      clientAddress: clientData.clientAddress || '',
-      TaxID_VATNumber: clientData.TaxID_VATNumber || '',
-      CSRCode: clientData.CSRCode || '',
-      Status: clientData.Status || 'Active'
-    });
+  useEffect(() => {
+    const updateStates = (clientData) => {
+      setFormData({
+        clientName: clientData.clientName || '',
+        industry: clientData.industry || '',
+        website: clientData.website || '',
+        clientAddress: clientData.clientAddress || '',
+        TaxID_VATNumber: clientData.TaxID_VATNumber || '',
+        CSRCode: clientData.CSRCode || '',
+        Status: clientData.Status || 'Active'
+      });
 
-    setContactPersons(clientData.contactPersons || []);
-    setBillingInformation(clientData.billingInformation || []);
-    setShippingInformation(clientData.shippingInformation || []);
-    setFinancialInformation(clientData.financialInformation || []);
-    setLedgerInformation(clientData.ledgerInformation || []);
-    setAdditionalInformation(clientData.additionalInformation || {
-      paymentTerms: '',
-      creditLimit: '',
-      notes: ''
-    });
-  };
+      setContactPersons(clientData.contactPersons || []);
+      setBillingInformation(clientData.billingInformation || []);
+      setShippingInformation(clientData.shippingInformation || []);
+      setFinancialInformation(clientData.financialInformation || []);
+      setLedgerInformation(clientData.ledgerInformation || []);
+      setAdditionalInformation(clientData.additionalInformation || {
+        paymentTerms: '',
+        creditLimit: '',
+        notes: ''
+      });
+    };
 
-  if (client) {
-    updateStates(client);
-  } else if (id) {
-    dispatch(fetchclientById(id)).then((res) => {
-      const fetchedclient = res.payload;
-      if (fetchedclient) {
-        updateStates(fetchedclient);
-      }
-    });
-  }
-}, [id, dispatch, client]);
+    if (client) {
+      updateStates(client);
+    } else if (id) {
+      dispatch(fetchclientById(id)).then((res) => {
+        const fetchedclient = res.payload;
+        if (fetchedclient) {
+          updateStates(fetchedclient);
+        }
+      });
+    }
+  }, [id, dispatch, client]);
 
 
 
@@ -20575,18 +20572,18 @@ useEffect(() => {
         .then(() => {
           toast.success("clientupdated successfully!");
           navigate("/admin/clientManagement");
-              dispatch(fetchClient());
+          dispatch(fetchClient());
         })
         .catch(() => {
           toast.error("Failed to update client!");
         });
     } else {
-          dispatch(createClients(fullData))
+      dispatch(createClients(fullData))
         .unwrap()
         .then(() => {
           toast.success("clientcreated successfully!");
           navigate("/admin/clientManagement");
-              dispatch(fetchClient());
+          dispatch(fetchClient());
         })
         .catch(() => {
           toast.error("Error creating client");
@@ -20615,7 +20612,7 @@ useEffect(() => {
   //       .catch(() => {
   //         toast.error("Error creating client");
   //       });
-    
+
   // };
 
   return (
@@ -20625,7 +20622,7 @@ useEffect(() => {
         <div className="card shadow-sm">
           <div className="card-body">
             {/* <h1 className="card-title h4 mb-4">Add Company</h1> */}
-                   <h2 className="mb-4">{id || client?._id ? "Edit client" : "New Company (Client)"}</h2>
+            <h2 className="mb-4">{id || client?._id ? "Edit client" : "New Company (Client)"}</h2>
             <form className="row g-3" onSubmit={handleSubmit}>
               <div className='col-md-3'>  <h6 className="mb-3">Client/Supplier Information</h6></div>
               <div className="col-md-6"></div>
@@ -20967,23 +20964,23 @@ import { Link } from "react-router-dom";
 import "./Navbar.css";
 
 const Navbar = ({ toggleSidebar }) => {
-  const [roledata, setRoleData]= useState("")
-  useEffect(()=>{
-    const Role= localStorage.getItem("userRole")
-     if(Role){
-     setRoleData(Role)
-     }else{
+  const [roledata, setRoleData] = useState("")
+  useEffect(() => {
+    const Role = localStorage.getItem("userRole")
+    if (Role) {
+      setRoleData(Role)
+    } else {
       setRoleData()
-     }
-  },[])
+    }
+  }, [])
 
-  
-const handleLogout = () => {
-  // Clear entire localStorage
-  localStorage.clear();
-  // Optionally redirect to login page
-  window.location.href = "/"; // ya "/login"
-};
+
+  const handleLogout = () => {
+    // Clear entire localStorage
+    localStorage.clear();
+    // Optionally redirect to login page
+    window.location.href = "/"; // ya "/login"
+  };
 
   return (
     <>
@@ -21009,9 +21006,9 @@ const handleLogout = () => {
 
             <ul className="dropdown-menu dropdown-menu-end profile-menu">
               <li>
-              <Link to="/admin/profile" className="dropdown-item" style={{ textDecoration: 'none', color: 'inherit' }}>
-                 <i className="fas fa-user" style={{ marginRight: '8px' }}></i>
-                   <span>My Profile</span>
+                <Link to="/admin/profile" className="dropdown-item" style={{ textDecoration: 'none', color: 'inherit' }}>
+                  <i className="fas fa-user" style={{ marginRight: '8px' }}></i>
+                  <span>My Profile</span>
                 </Link>
               </li>
               <li>
@@ -21026,7 +21023,7 @@ const handleLogout = () => {
                   <span>Change Password</span>
                 </Link>
               </li>
-              <li><hr className="dropdown-divider"/></li>
+              <li><hr className="dropdown-divider" /></li>
               <li onClick={handleLogout}>
                 <Link to="/" className="dropdown-item text-danger">
                   <i className="fas fa-sign-out-alt"></i>
@@ -21516,8 +21513,8 @@ function Profile() {
         <div className="col-lg-4">
           <div className="card mb-4">
             <div className="card-body text-center">
-              <img src="https://wac-cdn.atlassian.com/dam/jcr:ba03a215-2f45-40f5-8540-b2015223c918/Max-R_Headshot%20(1).jpg?cdnVersion=2654" 
-                   alt="avatar" className="rounded-circle img-fluid" style={{ width: '150px',marginLeft:"80px" }} />
+              <img src="https://wac-cdn.atlassian.com/dam/jcr:ba03a215-2f45-40f5-8540-b2015223c918/Max-R_Headshot%20(1).jpg?cdnVersion=2654"
+                alt="avatar" className="rounded-circle img-fluid" style={{ width: '150px', marginLeft: "80px" }} />
               <h5 className="my-3">John Smith</h5>
               <p className="text-muted mb-1">Full Stack Developer</p>
               <p className="text-muted mb-4">Bay Area, San Francisco, CA</p>
@@ -21662,23 +21659,23 @@ import { Link } from "react-router-dom";
 import "./Navbar.css";
 
 const Navbar = ({ toggleSidebar }) => {
-  const [roledata, setRoleData]= useState("")
-  useEffect(()=>{
-    const Role= localStorage.getItem("userRole")
-     if(Role){
-     setRoleData(Role)
-     }else{
+  const [roledata, setRoleData] = useState("")
+  useEffect(() => {
+    const Role = localStorage.getItem("userRole")
+    if (Role) {
+      setRoleData(Role)
+    } else {
       setRoleData()
-     }
-  },[])
+    }
+  }, [])
 
-  
-const handleLogout = () => {
-  // Clear entire localStorage
-  localStorage.clear();
-  // Optionally redirect to login page
-  window.location.href = "/"; // ya "/login"
-};
+
+  const handleLogout = () => {
+    // Clear entire localStorage
+    localStorage.clear();
+    // Optionally redirect to login page
+    window.location.href = "/"; // ya "/login"
+  };
 
   return (
     <>
@@ -21704,9 +21701,9 @@ const handleLogout = () => {
 
             <ul className="dropdown-menu dropdown-menu-end profile-menu">
               <li>
-              <Link to="/admin/profile" className="dropdown-item" style={{ textDecoration: 'none', color: 'inherit' }}>
-                 <i className="fas fa-user" style={{ marginRight: '8px' }}></i>
-                   <span>My Profile</span>
+                <Link to="/admin/profile" className="dropdown-item" style={{ textDecoration: 'none', color: 'inherit' }}>
+                  <i className="fas fa-user" style={{ marginRight: '8px' }}></i>
+                  <span>My Profile</span>
                 </Link>
               </li>
               <li>
@@ -21721,7 +21718,7 @@ const handleLogout = () => {
                   <span>Change Password</span>
                 </Link>
               </li>
-              <li><hr className="dropdown-divider"/></li>
+              <li><hr className="dropdown-divider" /></li>
               <li onClick={handleLogout}>
                 <Link to="/" className="dropdown-item text-danger">
                   <i className="fas fa-sign-out-alt"></i>
@@ -21751,7 +21748,7 @@ const userData = {
   permissions: {
     dashboardAccess: true,
     userManagement: true,
-   
+
   },
   accessLevel: {
     fullAccess: true,
@@ -22095,21 +22092,21 @@ const OvervieJobsTracker = ({ onClose }) => {
   return (
     <div className="container py-4 px-1 px-md-4">
       {/* Modern Header */}
-      
+
 
       {/* Job Details Grid */}
       <Card className="border-0 shadow-sm rounded-4 mb-4 p-4">
-      <div className="d-flex justify-content-between align-items-center mb-4 p-3 rounded-4 shadow-sm" style={{ background: "linear-gradient(90deg, #4e54c8 0%, #8f94fb 100%)" }}>
-        <div className="d-flex align-items-center gap-2">
-          <FaInfoCircle className="text-white" size={28} />
-          <h2 className="mb-0 fw-bold text-white" style={{ letterSpacing: 1 }}>Job Details</h2>
+        <div className="d-flex justify-content-between align-items-center mb-4 p-3 rounded-4 shadow-sm" style={{ background: "linear-gradient(90deg, #4e54c8 0%, #8f94fb 100%)" }}>
+          <div className="d-flex align-items-center gap-2">
+            <FaInfoCircle className="text-white" size={28} />
+            <h2 className="mb-0 fw-bold text-white" style={{ letterSpacing: 1 }}>Job Details</h2>
+          </div>
+          <Link to={"/admin/JobTracker"}>
+            <Button variant="light" size="sm" className="rounded-circle d-flex align-items-center justify-content-center shadow-sm border-0" style={{ width: 36, height: 36 }}>
+              <FaTimes className="text-primary" size={18} />
+            </Button>
+          </Link>
         </div>
-        <Link to={"/admin/JobTracker"}>
-          <Button variant="light" size="sm" className="rounded-circle d-flex align-items-center justify-content-center shadow-sm border-0" style={{ width: 36, height: 36 }}>
-            <FaTimes className="text-primary" size={18} />
-          </Button>
-        </Link>
-      </div>
         <Row className="g-4">
           {jobDetails.map((item, idx) => (
             <Col xs={12} md={6} key={idx}>
@@ -22238,9 +22235,9 @@ function UserRoleModal() {
   const location = useLocation();
   const { user } = location.state || {};
   const userId = location.state?.id;
-    console.log("hhhhhhhhhh", user);
+  console.log("hhhhhhhhhh", user);
 
-    const { userAll, loading, error } = useSelector((state) => state.user);
+  const { userAll, loading, error } = useSelector((state) => state.user);
   useEffect(() => {
     dispatch(fetchusers());
   }, [dispatch]);
@@ -22305,7 +22302,7 @@ function UserRoleModal() {
       }
 
       setFormData({
-         _id: user._id || '',  
+        _id: user._id || '',
         firstName: user.firstName || '',
         lastName: user.lastName || '',
         email: user.email || '',
@@ -22352,58 +22349,58 @@ function UserRoleModal() {
       accessLevel: e.target.value
     }));
   };
-  
-const handleSubmit = (e) => {
-  e.preventDefault();
-  if (formData.password !== formData.passwordConfirm) {
-    toast.error('Passwords do not match!');
-    return;
-  }
-  const filteredpermissions = Object.fromEntries(
-    Object.entries(formData.permissions).filter(([_, value]) => value === true)
-  );
-  const payload = {
-    _id: formData._id,
-    firstName: formData.firstName,
-    lastName: formData.lastName,
-    email: formData.email,
-    phone: formData.phone,
-    password: formData.password,
-    state: formData.state,
-    country: formData.country,
-    assign: formData.assign,
-    image: formData.image,
-    role: formData.role,
-    roleDescription: formData.roleDescription,
-    permissions: filteredpermissions,
-    accessLevel: formData.accessLevel
-  };
-  console.log('Payload to be sent hh:', payload);
 
-  if (formData._id) {
-    dispatch(fetchusersById({ _id: formData._id, data: payload }))
-      .unwrap()
-      .then(() => {
-        toast.success("user updated successfully!");
-        navigate('/admin/ProjectOverview', { state: { openTab: 'users' } });
-        dispatch(fetchusers());
-      })
-      .catch(() => {
-        toast.error("Failed to update user!");
-      });
-  } else {
-    dispatch(createuser(payload))
-      .unwrap()
-      .then(() => {
-        toast.success("user created successfully!");
-        navigate('/admin/ProjectOverview', { state: { openTab: 'users' } });
-        dispatch(fetchProject());
-      })
-      .catch(() => {
-        toast.error("Error creating user");
-      });
-  }
-};
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (formData.password !== formData.passwordConfirm) {
+      toast.error('Passwords do not match!');
+      return;
+    }
+    const filteredpermissions = Object.fromEntries(
+      Object.entries(formData.permissions).filter(([_, value]) => value === true)
+    );
+    const payload = {
+      _id: formData._id,
+      firstName: formData.firstName,
+      lastName: formData.lastName,
+      email: formData.email,
+      phone: formData.phone,
+      password: formData.password,
+      state: formData.state,
+      country: formData.country,
+      assign: formData.assign,
+      image: formData.image,
+      role: formData.role,
+      roleDescription: formData.roleDescription,
+      permissions: filteredpermissions,
+      accessLevel: formData.accessLevel
+    };
+    console.log('Payload to be sent hh:', payload);
+
+    if (formData._id) {
+      dispatch(fetchusersById({ _id: formData._id, data: payload }))
+        .unwrap()
+        .then(() => {
+          toast.success("user updated successfully!");
+          navigate('/admin/ProjectOverview', { state: { openTab: 'users' } });
+          dispatch(fetchusers());
+        })
+        .catch(() => {
+          toast.error("Failed to update user!");
+        });
+    } else {
+      dispatch(createuser(payload))
+        .unwrap()
+        .then(() => {
+          toast.success("user created successfully!");
+          navigate('/admin/ProjectOverview', { state: { openTab: 'users' } });
+          dispatch(fetchProject());
+        })
+        .catch(() => {
+          toast.error("Error creating user");
+        });
+    }
+  };
 
   // const handleSubmit = async (e) => {
   //   e.preventDefault();
@@ -22591,9 +22588,9 @@ function UserRoleModal() {
   const location = useLocation();
   const { user } = location.state || {};
   const userId = location.state?.id;
-    console.log("hhhhhhhhhh", user);
+  console.log("hhhhhhhhhh", user);
 
-    const { userAll, loading, error } = useSelector((state) => state.user);
+  const { userAll, loading, error } = useSelector((state) => state.user);
   useEffect(() => {
     dispatch(fetchusers());
   }, [dispatch]);
@@ -22601,7 +22598,7 @@ function UserRoleModal() {
   const [formData, setFormData] = useState({
     role: '',
     roleDescription: '',
-    assign:'Not Assign',
+    assign: 'Not Assign',
     permissions: {
       dashboardAccess: false,
       clientManagement: false,
@@ -22642,7 +22639,7 @@ function UserRoleModal() {
       }
 
       setFormData({
-         _id: user._id || '',  
+        _id: user._id || '',
         role: user.role?.charAt(0).toUpperCase() + user.role?.slice(1).toLowerCase() || '',
         roleDescription: user.roleDescription || '',
         permissions: {
@@ -22679,45 +22676,45 @@ function UserRoleModal() {
       accessLevel: e.target.value
     }));
   };
-  
-const handleSubmit = (e) => {
-  e.preventDefault();
-  const filteredpermissions = Object.fromEntries(
-    Object.entries(formData.permissions).filter(([_, value]) => value === true)
-  );
-  const payload = {
-    _id: formData._id,
-    role: formData.role,
-    roleDescription: formData.roleDescription,
-    permissions: filteredpermissions,
-    accessLevel: formData.accessLevel
-  };
-  console.log('Payload to be sent hh:', payload);
 
-  if (formData._id) {
-    dispatch(fetchusersById({ _id: formData._id, data: payload }))
-      .unwrap()
-      .then(() => {
-        toast.success("user updated successfully!");
-        navigate('/admin/ProjectOverview', { state: { openTab: 'users' } });
-        dispatch(fetchusers());
-      })
-      .catch(() => {
-        toast.error("Failed to update user!");
-      });
-  } else {
-    dispatch(createuser(payload))
-      .unwrap()
-      .then(() => {
-        toast.success("user created successfully!");
-        navigate('/admin/ProjectOverview', { state: { openTab: 'users' } });
-        dispatch(fetchProject());
-      })
-      .catch(() => {
-        toast.error("Error creating user");
-      });
-  }
-};
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const filteredpermissions = Object.fromEntries(
+      Object.entries(formData.permissions).filter(([_, value]) => value === true)
+    );
+    const payload = {
+      _id: formData._id,
+      role: formData.role,
+      roleDescription: formData.roleDescription,
+      permissions: filteredpermissions,
+      accessLevel: formData.accessLevel
+    };
+    console.log('Payload to be sent hh:', payload);
+
+    if (formData._id) {
+      dispatch(fetchusersById({ _id: formData._id, data: payload }))
+        .unwrap()
+        .then(() => {
+          toast.success("user updated successfully!");
+          navigate('/admin/ProjectOverview', { state: { openTab: 'users' } });
+          dispatch(fetchusers());
+        })
+        .catch(() => {
+          toast.error("Failed to update user!");
+        });
+    } else {
+      dispatch(createuser(payload))
+        .unwrap()
+        .then(() => {
+          toast.success("user created successfully!");
+          navigate('/admin/ProjectOverview', { state: { openTab: 'users' } });
+          dispatch(fetchProject());
+        })
+        .catch(() => {
+          toast.error("Error creating user");
+        });
+    }
+  };
 
   // const handleSubmit = async (e) => {
   //   e.preventDefault();
@@ -22974,7 +22971,7 @@ export default UserRoleModal;
 //                 </td>
 //                 <td className="">{assignment.assignedTo}</td>
 //                 <td className="">{assignment.timeSpent}</td>
-             
+
 //                 <td className="d-flex gap-2">
 //                   <input
 //                     type="file"
@@ -23081,11 +23078,11 @@ const OvervieJobsTracker = ({ onClose }) => {
 
 
   // /////
-    const navigate = useNavigate();
-    const dispatch = useDispatch();
-    const { id } = useParams(); // for edit mode
-    const location = useLocation();
-    const { job } = location.state || {};
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const { id } = useParams(); // for edit mode
+  const location = useLocation();
+  const { job } = location.state || {};
   console.log(job);
 
   return (
@@ -23136,67 +23133,67 @@ const OvervieJobsTracker = ({ onClose }) => {
         {/* Job Additional Information */}
 
         <Row className="mb-4">
-  <Col md={4} className="mb-3">
-    <h6 className="text-bold">Brand:</h6>
-    <p className="mb-0">{job?.brandName}</p>
-  </Col>
+          <Col md={4} className="mb-3">
+            <h6 className="text-bold">Brand:</h6>
+            <p className="mb-0">{job?.brandName}</p>
+          </Col>
 
-  <Col md={4} className="mb-3">
-    <h6 className="text-bold">Flavour:</h6>
-    <p className="mb-0">{job?.flavour}</p>
-  </Col>
+          <Col md={4} className="mb-3">
+            <h6 className="text-bold">Flavour:</h6>
+            <p className="mb-0">{job?.flavour}</p>
+          </Col>
 
-  <Col md={4} className="mb-3">
-    <h6 className="text-bold">SubBrand:</h6>
-    <p className="mb-0">{job?.subBrand}</p>
-  </Col>
-</Row>
+          <Col md={4} className="mb-3">
+            <h6 className="text-bold">SubBrand:</h6>
+            <p className="mb-0">{job?.subBrand}</p>
+          </Col>
+        </Row>
 
-<Row className="mb-4">
-  <Col md={4} className="mb-3">
-    <h6 className="text-bold">Pack Type:</h6>
-    <p className="mb-0">{job?.packType}</p>
-  </Col>
+        <Row className="mb-4">
+          <Col md={4} className="mb-3">
+            <h6 className="text-bold">Pack Type:</h6>
+            <p className="mb-0">{job?.packType}</p>
+          </Col>
 
-  <Col md={4} className="mb-3">
-    <h6 className="text-bold">Pack Size:</h6>
-    <p className="mb-0">{job?.packSize}</p>
-  </Col>
+          <Col md={4} className="mb-3">
+            <h6 className="text-bold">Pack Size:</h6>
+            <p className="mb-0">{job?.packSize}</p>
+          </Col>
 
-  <Col md={4} className="mb-3">
-    <h6 className="text-bold">Priority:</h6>
-    <p className="mb-0">{job?.priority}</p>
-  </Col>
-</Row>
+          <Col md={4} className="mb-3">
+            <h6 className="text-bold">Priority:</h6>
+            <p className="mb-0">{job?.priority}</p>
+          </Col>
+        </Row>
 
-<Row className="mb-4">
-  <Col md={4} className="mb-3">
-    <h6 className="text-bold">Project Name:</h6>
-    <p className="mb-0">{job?.packType}</p>
-  </Col>
+        <Row className="mb-4">
+          <Col md={4} className="mb-3">
+            <h6 className="text-bold">Project Name:</h6>
+            <p className="mb-0">{job?.packType}</p>
+          </Col>
 
-  <Col md={4} className="mb-3">
-    <h6 className="text-bold">Assign:</h6>
-    <p className="mb-0">{job?.assign}</p>
-  </Col>
+          <Col md={4} className="mb-3">
+            <h6 className="text-bold">Assign:</h6>
+            <p className="mb-0">{job?.assign}</p>
+          </Col>
 
-  <Col md={4} className="mb-3">
-    <h6 className="text-bold">Total Time:</h6>
-    <p className="mb-0">{job?.totalTime}</p>
-  </Col>
-</Row>
+          <Col md={4} className="mb-3">
+            <h6 className="text-bold">Total Time:</h6>
+            <p className="mb-0">{job?.totalTime}</p>
+          </Col>
+        </Row>
 
-{/* <div className="col-md-6 text-center mt-4">
+        {/* <div className="col-md-6 text-center mt-4">
   <label className="form-label">Project Barcode</label>
   <div className="border p-3 d-inline-block bg-light rounded shadow-sm">
   
     <div className="mt-2 fw-bold">POS-123456</div>
   </div>
 </div> */}
-<div className="col-md-6 mt-4 mb-4">
-<label className="fw-bold">Project Barcode</label>
-<div className="mt-2 form-label ">{job?.barcode || "POS-123456"}</div>
-</div>
+        <div className="col-md-6 mt-4 mb-4">
+          <label className="fw-bold">Project Barcode</label>
+          <div className="mt-2 form-label ">{job?.barcode || "POS-123456"}</div>
+        </div>
 
         {/* Progress Section */}
         {/* <h5 className="fw-bold text-primary mb-3">Progress</h5>
@@ -23294,9 +23291,9 @@ function UserRoleModal() {
   const location = useLocation();
   const { user } = location.state || {};
   const userId = location.state?.id;
-    console.log("hhhhhhhhhh", user);
+  console.log("hhhhhhhhhh", user);
 
-    const { userAll, loading, error } = useSelector((state) => state.user);
+  const { userAll, loading, error } = useSelector((state) => state.user);
   useEffect(() => {
     dispatch(fetchusers());
   }, [dispatch]);
@@ -23360,7 +23357,7 @@ function UserRoleModal() {
       }
 
       setFormData({
-         _id: user._id || '',  
+        _id: user._id || '',
         firstName: user.firstName || '',
         lastName: user.lastName || '',
         email: user.email || '',
@@ -23406,57 +23403,57 @@ function UserRoleModal() {
       accessLevel: e.target.value
     }));
   };
-  
-const handleSubmit = (e) => {
-  e.preventDefault();
-  if (formData.password !== formData.passwordConfirm) {
-    toast.error('Passwords do not match!');
-    return;
-  }
-  const filteredpermissions = Object.fromEntries(
-    Object.entries(formData.permissions).filter(([_, value]) => value === true)
-  );
-  const payload = {
-    _id: formData._id,
-    firstName: formData.firstName,
-    lastName: formData.lastName,
-    email: formData.email,
-    phone: formData.phone,
-    password: formData.password,
-    state: formData.state,
-    country: formData.country,
-    assign: formData.assign,
-    image: formData.image,
-    role: formData.role,
-    permissions: filteredpermissions,
-    accessLevel: formData.accessLevel
-  };
-  console.log('Payload to be sent hh:', payload);
 
-  if (formData._id) {
-    dispatch(fetchusersById({ _id: formData._id, data: payload }))
-      .unwrap()
-      .then(() => {
-        toast.success("user updated successfully!");
-        navigate('/admin/ProjectOverview', { state: { openTab: 'users' } });
-        dispatch(fetchusers());
-      })
-      .catch(() => {
-        toast.error("Failed to update user!");
-      });
-  } else {
-    dispatch(createuser(payload))
-      .unwrap()
-      .then(() => {
-        toast.success("user created successfully!");
-        navigate('/admin/ProjectOverview', { state: { openTab: 'users' } });
-        dispatch(fetchProject());
-      })
-      .catch(() => {
-        toast.error("Error creating user");
-      });
-  }
-};
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (formData.password !== formData.passwordConfirm) {
+      toast.error('Passwords do not match!');
+      return;
+    }
+    const filteredpermissions = Object.fromEntries(
+      Object.entries(formData.permissions).filter(([_, value]) => value === true)
+    );
+    const payload = {
+      _id: formData._id,
+      firstName: formData.firstName,
+      lastName: formData.lastName,
+      email: formData.email,
+      phone: formData.phone,
+      password: formData.password,
+      state: formData.state,
+      country: formData.country,
+      assign: formData.assign,
+      image: formData.image,
+      role: formData.role,
+      permissions: filteredpermissions,
+      accessLevel: formData.accessLevel
+    };
+    console.log('Payload to be sent hh:', payload);
+
+    if (formData._id) {
+      dispatch(fetchusersById({ _id: formData._id, data: payload }))
+        .unwrap()
+        .then(() => {
+          toast.success("user updated successfully!");
+          navigate('/admin/ProjectOverview', { state: { openTab: 'users' } });
+          dispatch(fetchusers());
+        })
+        .catch(() => {
+          toast.error("Failed to update user!");
+        });
+    } else {
+      dispatch(createuser(payload))
+        .unwrap()
+        .then(() => {
+          toast.success("user created successfully!");
+          navigate('/admin/ProjectOverview', { state: { openTab: 'users' } });
+          dispatch(fetchProject());
+        })
+        .catch(() => {
+          toast.error("Error creating user");
+        });
+    }
+  };
 
   // const handleSubmit = async (e) => {
   //   e.preventDefault();
@@ -23492,21 +23489,21 @@ const handleSubmit = (e) => {
         <div className="card-body">
           <h5 className="card-title mb-4">Add New User</h5>
           <form onSubmit={handleSubmit}>
-          
-          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginBottom: '1rem' }}>
-            {formData.image && (
-              <img
-                src={typeof formData.image === 'string' ? formData.image : URL.createObjectURL(formData.image)}
-                alt="Preview"
-                className="img-thumbnail mt-2"
-                style={{ width: '120px', height: '120px', objectFit: 'cover', borderRadius: '50%', border: '2px solid #ddd', boxShadow: '0 2px 8px rgba(0,0,0,0.05)' }}
-              />
-            )}
-          </div>
-          <div className="col-md-6">
-            <label className="form-label">Profile Image</label>
-            <input type="file" className="form-control" name="image" accept="image/*" onChange={handleInputChange} />
-          </div>
+
+            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginBottom: '1rem' }}>
+              {formData.image && (
+                <img
+                  src={typeof formData.image === 'string' ? formData.image : URL.createObjectURL(formData.image)}
+                  alt="Preview"
+                  className="img-thumbnail mt-2"
+                  style={{ width: '120px', height: '120px', objectFit: 'cover', borderRadius: '50%', border: '2px solid #ddd', boxShadow: '0 2px 8px rgba(0,0,0,0.05)' }}
+                />
+              )}
+            </div>
+            <div className="col-md-6">
+              <label className="form-label">Profile Image</label>
+              <input type="file" className="form-control" name="image" accept="image/*" onChange={handleInputChange} />
+            </div>
             <div className="row g-3 mb-3">
               <div className="col-md-6">
                 <label className="form-label">First Name</label>
@@ -23556,25 +23553,25 @@ const handleSubmit = (e) => {
                   <option value="Employee">Production</option>
                 </select>
               </div>
-          
+
               <div className="col-md-6">
-              <label className="form-label">Role Name</label>
-              <select
-                className="form-select"
-                name="role"
-                value={formData.role}
-                onChange={handleInputChange}
-                required
-              >
-                <option value="">Select a role</option>
-                <option value="Admin">Admin</option>
-                <option value="Client">Client</option>
-                <option value="Production">Production</option>
-                <option value="Employee">Employee</option>
-              </select>
+                <label className="form-label">Role Name</label>
+                <select
+                  className="form-select"
+                  name="role"
+                  value={formData.role}
+                  onChange={handleInputChange}
+                  required
+                >
+                  <option value="">Select a role</option>
+                  <option value="Admin">Admin</option>
+                  <option value="Client">Client</option>
+                  <option value="Production">Production</option>
+                  <option value="Employee">Employee</option>
+                </select>
+              </div>
             </div>
-            </div>
-            
+
 
             <div className="mb-4">
               <label className="form-label">permissions (Select Only One)</label>
@@ -23657,9 +23654,9 @@ function UserRoleModal() {
   const location = useLocation();
   const { user } = location.state || {};
   const _id = user?._id;
-    console.log("hhhhhhhhhh", user);
+  console.log("hhhhhhhhhh", user);
 
-    const { userAll, loading, error } = useSelector((state) => state.user);
+  const { userAll, loading, error } = useSelector((state) => state.user);
   useEffect(() => {
     dispatch(fetchusers());
   }, [dispatch]);
@@ -23777,70 +23774,70 @@ function UserRoleModal() {
       accessLevel: e.target.value
     }));
   };
-  
-const handleSubmit = (e) => {
-  e.preventDefault();
 
-  if (formData.password !== formData.passwordConfirm) {
-    toast.error('Passwords do not match!');
-    return;
-  }
+  const handleSubmit = (e) => {
+    e.preventDefault();
 
-  const filteredpermissions = Object.fromEntries(
-    Object.entries(formData.permissions).filter(([_, value]) => value === true)
-  );
+    if (formData.password !== formData.passwordConfirm) {
+      toast.error('Passwords do not match!');
+      return;
+    }
 
-  const accessLevelPayload = {
-    fullAccess: formData.accessLevel === 'fullAccess',
-    limitedAccess: formData.accessLevel === 'limitedAccess',
-    viewOnly: formData.accessLevel === 'viewOnly'
+    const filteredpermissions = Object.fromEntries(
+      Object.entries(formData.permissions).filter(([_, value]) => value === true)
+    );
+
+    const accessLevelPayload = {
+      fullAccess: formData.accessLevel === 'fullAccess',
+      limitedAccess: formData.accessLevel === 'limitedAccess',
+      viewOnly: formData.accessLevel === 'viewOnly'
+    };
+
+    // Use FormData to send image as binary
+    const data = new FormData();
+    data.append('firstName', formData.firstName);
+    data.append('lastName', formData.lastName);
+    data.append('email', formData.email);
+    data.append('phone', formData.phone);
+    data.append('password', formData.password);
+    data.append('passwordConfirm', formData.passwordConfirm);
+    data.append('state', formData.state);
+    data.append('country', formData.country);
+    data.append('assign', formData.assign);
+    data.append('role', formData.role);
+    data.append('permissions', JSON.stringify(filteredpermissions));
+    data.append('accessLevel', JSON.stringify(accessLevelPayload));
+    if (formData.image && typeof formData.image !== 'string') {
+      data.append('image', formData.image);
+    }
+
+    console.log('Payload to be sent (FormData):', data);
+
+    if (_id) {
+      // For update, you may need to adjust the action to accept FormData
+      dispatch(UpdateUsers({ _id, data }))
+        .unwrap()
+        .then(() => {
+          toast.success("User updated successfully!");
+          navigate('/admin/ProjectOverview', { state: { openTab: 'users' } });
+          dispatch(fetchusers());
+        })
+        .catch(() => {
+          toast.error("Failed to update user!");
+        });
+    } else {
+      dispatch(SignUp(data))
+        .unwrap()
+        .then(() => {
+          toast.success("User created successfully!");
+          navigate('/admin/UserRoles', { state: { openTab: 'users' } });
+          dispatch(fetchusers());
+        })
+        .catch(() => {
+          toast.error("Error creating user");
+        });
+    }
   };
-
-  // Use FormData to send image as binary
-  const data = new FormData();
-  data.append('firstName', formData.firstName);
-  data.append('lastName', formData.lastName);
-  data.append('email', formData.email);
-  data.append('phone', formData.phone);
-  data.append('password', formData.password);
-  data.append('passwordConfirm', formData.passwordConfirm);
-  data.append('state', formData.state);
-  data.append('country', formData.country);
-  data.append('assign', formData.assign);
-  data.append('role', formData.role);
-  data.append('permissions', JSON.stringify(filteredpermissions));
-  data.append('accessLevel', JSON.stringify(accessLevelPayload));
-  if (formData.image && typeof formData.image !== 'string') {
-    data.append('image', formData.image);
-  }
-
-  console.log('Payload to be sent (FormData):', data);
-
-  if (_id) {
-    // For update, you may need to adjust the action to accept FormData
-       dispatch(UpdateUsers({ _id, data }))
-      .unwrap()
-      .then(() => {
-        toast.success("User updated successfully!");
-        navigate('/admin/ProjectOverview', { state: { openTab: 'users' } });
-        dispatch(fetchusers());
-      })
-      .catch(() => {
-        toast.error("Failed to update user!");
-      });
-  } else {
-    dispatch(SignUp(data))
-      .unwrap()
-      .then(() => {
-        toast.success("User created successfully!");
-        navigate('/admin/UserRoles', { state: { openTab: 'users' } });
-        dispatch(fetchusers());
-      })
-      .catch(() => {
-        toast.error("Error creating user");
-      });
-  }
-};
 
 
   // const handleSubmit = async (e) => {
@@ -23877,17 +23874,17 @@ const handleSubmit = (e) => {
         <div className="card-body">
           <h5 className="card-title mb-4">Add New User</h5>
           <form onSubmit={handleSubmit}>
-          
-          <div style={{display:"flex",alignItems:"center",justifyContent:"center"}}>
-             {formData.image && (
-                  <img src={typeof formData.image === 'string' ? formData.image : URL.createObjectURL(formData.image)} alt="Preview" className="img-thumbnail mt-2" style={{ maxWidth: '120px' }} />
-                )}
-          </div>
-          <div className="col-md-6">
-                <label className="form-label">Profile Image</label>
-                <input type="file" className="form-control" name="image" accept="image/*" onChange={handleInputChange} />
-               
-              </div>
+
+            <div style={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
+              {formData.image && (
+                <img src={typeof formData.image === 'string' ? formData.image : URL.createObjectURL(formData.image)} alt="Preview" className="img-thumbnail mt-2" style={{ maxWidth: '120px' }} />
+              )}
+            </div>
+            <div className="col-md-6">
+              <label className="form-label">Profile Image</label>
+              <input type="file" className="form-control" name="image" accept="image/*" onChange={handleInputChange} />
+
+            </div>
             <div className="row g-3 mb-3">
               <div className="col-md-6">
                 <label className="form-label">First Name</label>
@@ -23940,25 +23937,25 @@ const handleSubmit = (e) => {
                   <option value="Production">Production</option>
                 </select>
               </div>
-          
+
               <div className="col-md-6">
-              <label className="form-label">Role Name</label>
-              <select
-                className="form-select"
-                name="role"
-                value={formData.role}
-                onChange={handleInputChange}
-                required
-              >
-                <option value="">Select a role</option>
-                <option value="admin">Admin</option>
-                <option value="client">Client</option>
-                <option value="production">Production</option>
-                <option value="employee">Employee</option>
-              </select>
+                <label className="form-label">Role Name</label>
+                <select
+                  className="form-select"
+                  name="role"
+                  value={formData.role}
+                  onChange={handleInputChange}
+                  required
+                >
+                  <option value="">Select a role</option>
+                  <option value="admin">Admin</option>
+                  <option value="client">Client</option>
+                  <option value="production">Production</option>
+                  <option value="employee">Employee</option>
+                </select>
+              </div>
             </div>
-            </div>
-            
+
 
             <div className="mb-4">
               <label className="form-label">permissions (Select Only One)</label>
@@ -24041,7 +24038,7 @@ import { fetchClient } from "../../../redux/slices/ClientSlice";
 import { createReceivablePurchase, fetchReceivablePurchases } from "../../../redux/slices/receivablePurchaseSlice";
 import { jsPDF } from "jspdf";
 import autoTable from 'jspdf-autotable';
-import { FaRegCopy  } from "react-icons/fa";
+import { FaRegCopy } from "react-icons/fa";
 
 function CostEstimates() {
   const dispatch = useDispatch()
@@ -24696,14 +24693,14 @@ function CostEstimates() {
       className="p-4 m-2"
       style={{ backgroundColor: "white", borderRadius: "10px" }}
     >
-   <div style={{display:"flex",alignItems:"center",justifyContent:"space-between"}}>
-   <h2 className="fw-semibold mb-3">Cost Estimates</h2>
-      <Link to={"/admin/AddCostEstimates"}>
-            <button id="btn-All" className=" btn-dark" style={{ border: "none", borderRadius: "10px" }}>
-              <BsPlusLg className="me-2" /> New Estimate
-            </button>
-          </Link>
-   </div>
+      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+        <h2 className="fw-semibold mb-3">Cost Estimates</h2>
+        <Link to={"/admin/AddCostEstimates"}>
+          <button id="btn-All" className=" btn-dark" style={{ border: "none", borderRadius: "10px" }}>
+            <BsPlusLg className="me-2" /> New Estimate
+          </button>
+        </Link>
+      </div>
       <div className="d-flex justify-content-between align-items-center mb-4">
         <div className="filters d-flex flex-wrap gap-1 mb-4">
           <div className="search-container flex-grow-1">
@@ -24775,7 +24772,7 @@ function CostEstimates() {
             </Dropdown.Menu>
           </Dropdown>
 
-    
+
         </div>
       </div>
 
@@ -24828,26 +24825,26 @@ function CostEstimates() {
                 </td> */}
                 <td>
                   <div className="d-flex gap-2">
-                      {/* <td>
+                    {/* <td>
                   <span className={`badge ${getStatusClass(po.Status)} px-2 py-1`}>
                     {po.Status}
                   </span>
                 </td> */}
-                  <button
+                    <button
                       className="btn btn-sm btn-success"
                       onClick={() => {
                         setCostEstimatesId(po._id); // Store the ID
                         setShowAddPOModal(true);   // Open Modal
                       }}
                     >
-                     PO Add
-                            <td>
-                  <span className={`badge ${getStatusClass(po.Status)} px-2 py-1`}>
-                    {po.POStatus}
-                  </span>
-                </td>
+                      PO Add
+                      <td>
+                        <span className={`badge ${getStatusClass(po.Status)} px-2 py-1`}>
+                          {po.POStatus}
+                        </span>
+                      </td>
                     </button>
-              
+
                     <button className="btn btn-sm btn-primary" onClick={() => Duplicate(po)}><FaRegCopy /></button>
                     {/* <button className="btn btn-sm btn-primary" onClick={() => handleConvertToInvoice(po)}>ConvertInvoice</button> */}
                     <button className="btn btn-sm btn-outline-primary" onClick={() => UpdateEstimate(po)}><BsPencil /></button>
@@ -25004,7 +25001,7 @@ export default CostEstimates;
 
 
 import React, { useEffect, useState } from 'react';
-import { Form, Table, Badge, InputGroup, Button,Dropdown  } from 'react-bootstrap';
+import { Form, Table, Badge, InputGroup, Button, Dropdown } from 'react-bootstrap';
 import { FaSearch, FaSort, FaEdit, FaTrash, FaDownload, FaFilter } from 'react-icons/fa';
 import { Link, useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
@@ -25054,23 +25051,23 @@ function Invoicing_Billing() {
 
   const getStatusBadgeVariant = (status) => {
     switch (status.toLowerCase()) {
-      case 'paid': 
+      case 'paid':
         return 'success';
-      case 'pending': 
+      case 'pending':
         return 'warning';
-      case 'overdue': 
+      case 'overdue':
         return 'danger';
-      case 'Inactive': 
+      case 'Inactive':
         return 'secondary';
-      case 'completed': 
+      case 'completed':
         return 'primary';
-      case 'active': 
+      case 'active':
         return 'success';
-      default: 
+      default:
         return 'secondary';
     }
   };
-  
+
 
   const handleSearch = (e) => {
     const query = e.target.value.toLowerCase();
@@ -25100,7 +25097,7 @@ function Invoicing_Billing() {
     setInvoices(sorted);
   };
 
- // ... handleDownloadPDF ...
+  // ... handleDownloadPDF ...
   // const handleDownloadPDF = (invoiceDataFromState) => {
   //   if (!invoiceDataFromState) {
   //     console.error("No data provided to handleDownloadPDF");
@@ -25114,7 +25111,7 @@ function Invoicing_Billing() {
   //   const margin = 40;
   //   let finalY = margin;
 
-  
+
   //   const companyDetails = {
   //     logoText: invoiceDataFromState.companyLogoText || 'COMPANY LOGO',
   //     addressDetails: invoiceDataFromState.companyAddressDetails || 'COMPANY ADDRESS DETAILS',
@@ -25168,7 +25165,7 @@ function Invoicing_Billing() {
   //   const vatAmount = subTotal * vatRate;
   //   const grandTotal = subTotal + vatAmount;
   //   const amountInWords = invoiceDataFromState.amountInWords || `US Dollars ${numberToWords(grandTotal)} Only`;
-    
+
   //   doc.setFillColor(192, 0, 0);
   //   doc.rect(margin, finalY, 220, 60, 'F');
   //   doc.setTextColor(255, 255, 255);
@@ -25179,7 +25176,7 @@ function Invoicing_Billing() {
   //   doc.setFont('helvetica', 'normal');
   //   doc.text(companyDetails.addressDetails, margin + 10, finalY + 45);
 
-    
+
   //   const companyNameBlockY = finalY;
   //   doc.setFillColor(192, 0, 0);
   //   doc.rect(pageWidth - margin - 150, companyNameBlockY, 150, 30, 'F');
@@ -25188,7 +25185,7 @@ function Invoicing_Billing() {
   //   doc.setFont('helvetica', 'bold');
   //   doc.text(companyDetails.name, pageWidth - margin - 140, companyNameBlockY + 20, { align: 'left' });
 
-   
+
   //   let titleY = companyNameBlockY + 30 + 20;
   //   doc.setTextColor(0, 0, 0);
   //   doc.setFontSize(18);
@@ -25213,7 +25210,7 @@ function Invoicing_Billing() {
   //   });
   //   finalY = doc.lastAutoTable.finalY + 20;
 
-   
+
   //   const invoiceToBoxWidth = 250;
   //   doc.setDrawColor(0, 0, 0);
   //   doc.rect(margin, finalY, invoiceToBoxWidth, 100, 'S');
@@ -25228,7 +25225,7 @@ function Invoicing_Billing() {
   //     textYInvoiceTo += 12;
   //   });
   //   finalY += 100 + 10;
-   
+
   //   autoTable(doc, {
   //     startY: finalY,
   //     head: [['TRN', 'Cost Est. No.', 'P.O. No.', 'Project']],
@@ -25240,7 +25237,7 @@ function Invoicing_Billing() {
   //   });
   //   finalY = doc.lastAutoTable.finalY + 10;
 
-    
+
   //   autoTable(doc, {
   //     startY: finalY,
   //     head: [['Bank Account Name', 'Bank Name', 'IBAN', 'Swift Code', 'Terms']],
@@ -25252,7 +25249,7 @@ function Invoicing_Billing() {
   //   });
   //   finalY = doc.lastAutoTable.finalY + 10;
 
- 
+
   //   autoTable(doc, {
   //     startY: finalY,
   //     head: [['Sr. #', 'Description', 'Qty', 'Rate', 'Amount (USD)']],
@@ -25269,7 +25266,7 @@ function Invoicing_Billing() {
   //     },
   //     margin: { left: margin, right: margin },
   //     didDrawPage: function (data) {
-     
+
   //       finalY = data.cursor.y;
   //     }
   //   });
@@ -25324,7 +25321,7 @@ function Invoicing_Billing() {
   //   doc.text('For Company Name', margin, footerStartY);
   //   doc.text('Accounts Department', margin, footerStartY + stampHeight - 10);
 
-    
+
   //   doc.setFillColor(200, 200, 200);
   //   doc.rect(stampX, footerStartY - 15, stampWidth, stampHeight, 'F');
   //   doc.setTextColor(0, 0, 0);
@@ -25369,27 +25366,27 @@ function Invoicing_Billing() {
   // };
 
   const handleDownloadPDF = async (invoice) => {
-  try {
-    const response = await axiosInstance.get(
-      `/pdf/invoice?InvoiceBillingId=${invoice._id}`,
-      {
-        responseType: "blob",
-      }
-    );
-    const url = window.URL.createObjectURL(new Blob([response.data]));
-    const link = document.createElement("a");
-    link.href = url;
-    link.setAttribute("download", `${invoice.invoiceNumber || "invoice"}.pdf`);
-    document.body.appendChild(link);
-    link.click();
-    link.remove();
-  } catch (error) {
-    console.error("❌ Error downloading invoice PDF:", error);
-    alert("Failed to download invoice PDF.");
-  }
+    try {
+      const response = await axiosInstance.get(
+        `/pdf/invoice?InvoiceBillingId=${invoice._id}`,
+        {
+          responseType: "blob",
+        }
+      );
+      const url = window.URL.createObjectURL(new Blob([response.data]));
+      const link = document.createElement("a");
+      link.href = url;
+      link.setAttribute("download", `${invoice.invoiceNumber || "invoice"}.pdf`);
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+    } catch (error) {
+      console.error("❌ Error downloading invoice PDF:", error);
+      alert("Failed to download invoice PDF.");
+    }
 
-  
-};
+
+  };
 
   const { invocing, loading, error } = useSelector((state) => state.InvoicingBilling);
   console.log(invocing?.InvoicingBilling);
@@ -25406,9 +25403,9 @@ function Invoicing_Billing() {
     ?.slice()
     .reverse()
     .filter((invoice) => {
-     
+
       const terms = searchQuery.toLowerCase().trim().split(/\s+/).filter(Boolean);
-  
+
       const invoiceNumber = (invoice.invoiceNumber || '').toLowerCase();
       const clientName = (invoice.clients?.[0]?.clientName || '').toLowerCase();
       const projectName = (invoice.projectId?.[0]?.projectName || '').toLowerCase();
@@ -25421,13 +25418,13 @@ function Invoicing_Billing() {
         status,
         amount
       ];
-    
+
       const matchesSearch = terms.length === 0 || terms.every(term =>
         fields.some(field => field.includes(term))
       );
-      const matchesProject = selectedProject === 'All Projects' || 
+      const matchesProject = selectedProject === 'All Projects' ||
         invoice.projectId?.[0]?.projectName === selectedProject;
-      const matchesDate = !selectedDate || 
+      const matchesDate = !selectedDate ||
         new Date(invoice.date).toLocaleDateString() === new Date(selectedDate).toLocaleDateString();
       return matchesSearch && matchesProject && matchesDate;
     });
@@ -25526,7 +25523,7 @@ function Invoicing_Billing() {
               <Dropdown.Item onClick={() => setSelectedProject("All Projects")}>
                 All Projects
               </Dropdown.Item>
-              {[...new Set((invocing?.InvoicingBilling || []).map((invoice) => 
+              {[...new Set((invocing?.InvoicingBilling || []).map((invoice) =>
                 invoice.projectId?.[0]?.projectName || "N/A"
               ))].filter(name => name !== "N/A").map((projectName, index) => (
                 <Dropdown.Item key={index} onClick={() => setSelectedProject(projectName)}>
@@ -25549,7 +25546,7 @@ function Invoicing_Billing() {
               <FaSearch />
             </InputGroup.Text>
             <Form.Control
-              placeholder="Search invoices..." value={searchQuery}   onChange={handleSearch} />
+              placeholder="Search invoices..." value={searchQuery} onChange={handleSearch} />
           </InputGroup>
 
           {/* <Form.Select className="mb-2">
@@ -25584,41 +25581,41 @@ function Invoicing_Billing() {
             <th>Actions</th>
           </tr>
         </thead>
-          <tbody>
-            {paginatedEstimates?.map((invoice, index) => (
-              <tr key={invoice.invoiceNumber || index}>
-                <td style={{ whiteSpace: "nowrap" }} /* onClick={() => JobDetails(invoice._id)} */>
-                  INV-{String((currentPage - 1) * itemsPerPage + index + 1).padStart(4, '0')}
-                </td>
+        <tbody>
+          {paginatedEstimates?.map((invoice, index) => (
+            <tr key={invoice.invoiceNumber || index}>
+              <td style={{ whiteSpace: "nowrap" }} /* onClick={() => JobDetails(invoice._id)} */>
+                INV-{String((currentPage - 1) * itemsPerPage + index + 1).padStart(4, '0')}
+              </td>
 
-                <td style={{ whiteSpace: "nowrap" }}>{invoice.clients?.[0]?.clientName || "N/A"}</td>
-                <td style={{ whiteSpace: "nowrap" }}>{invoice.projectId?.[0]?.projectName || "N/A"}</td>
-                <td style={{ whiteSpace: "nowrap" }}>${invoice.lineItems?.[0]?.amount || "N/A"}</td>
-                <td>
-                  <Badge bg={getStatusBadgeVariant(invoice.status)}>
-                    {invoice.status}
-                  </Badge>
-                </td>
-                <td>{invoice.date ? new Date(invoice.date).toLocaleDateString("en-GB") : 'N/A'}</td>
-                <td>
-                  <div className="d-flex gap-2">
-                    <button className="btn btn-sm btn-outline-primary" onClick={() => UpdateInvocing(invoice)}>
-                      <FaEdit />
-                    </button>
-                    {/* <button className="btn btn-sm btn-outline-danger" onClick={() => handleDelete(invoice._id)}>
+              <td style={{ whiteSpace: "nowrap" }}>{invoice.clients?.[0]?.clientName || "N/A"}</td>
+              <td style={{ whiteSpace: "nowrap" }}>{invoice.projectId?.[0]?.projectName || "N/A"}</td>
+              <td style={{ whiteSpace: "nowrap" }}>${invoice.lineItems?.[0]?.amount || "N/A"}</td>
+              <td>
+                <Badge bg={getStatusBadgeVariant(invoice.status)}>
+                  {invoice.status}
+                </Badge>
+              </td>
+              <td>{invoice.date ? new Date(invoice.date).toLocaleDateString("en-GB") : 'N/A'}</td>
+              <td>
+                <div className="d-flex gap-2">
+                  <button className="btn btn-sm btn-outline-primary" onClick={() => UpdateInvocing(invoice)}>
+                    <FaEdit />
+                  </button>
+                  {/* <button className="btn btn-sm btn-outline-danger" onClick={() => handleDelete(invoice._id)}>
                       <FaTrash />
                     </button> */}
-                   <button
-  className="btn btn-sm btn-outline-primary"
-  onClick={() => handleDownloadPDF(invoice)} // Pass current invoice
->
-  <FaDownload />
-</button>
-                  </div>
-                </td>
-              </tr>
-             ))}
-          </tbody>
+                  <button
+                    className="btn btn-sm btn-outline-primary"
+                    onClick={() => handleDownloadPDF(invoice)} // Pass current invoice
+                  >
+                    <FaDownload />
+                  </button>
+                </div>
+              </td>
+            </tr>
+          ))}
+        </tbody>
       </Table>
 
       {!loading && !error && (
@@ -25684,8 +25681,8 @@ function AddClientManagement() {
   const { id } = useParams(); // for edit mo
   const location = useLocation();
   const { client } = location.state || {};
-  const _id = client?._id 
-  console.log("oo",_id);
+  const _id = client?._id
+  console.log("oo", _id);
   // Initial form state
   const [formData, setFormData] = useState({
     clientName: '',
@@ -26302,7 +26299,7 @@ export default AddClientManagement;
 
 
 import React, { useState } from "react";
-import { Container, Row, Col, Form, Button, Nav, Tab, Tabs, Card, Table,} from "react-bootstrap";
+import { Container, Row, Col, Form, Button, Nav, Tab, Tabs, Card, Table, } from "react-bootstrap";
 
 const SettingsPage = () => {
   const [darkMode, setDarkMode] = useState(false);
@@ -26353,7 +26350,7 @@ const SettingsPage = () => {
                   onChange={() => setDarkMode(!darkMode)}
                 />
                 <Form.Check type="switch" label="Compact View" checked={compactView}
-                  onChange={() => setCompactView(!compactView)}/>
+                  onChange={() => setCompactView(!compactView)} />
               </Col>
             </Row>
 
@@ -26398,9 +26395,9 @@ const SettingsPage = () => {
             <Row className="mb-4">
               <Col md={6}>
                 <h5>Session Settings</h5>
-                <Form.Check  type="switch" label="Auto-save Changes"
+                <Form.Check type="switch" label="Auto-save Changes"
                   checked={autoSave}
-                  onChange={() => setAutoSave(!autoSave)}/>
+                  onChange={() => setAutoSave(!autoSave)} />
                 <Form.Group className="mt-2">
                   <Form.Label>Session Timeout</Form.Label>
                   <Form.Select>
@@ -26624,7 +26621,7 @@ const SettingsPage = () => {
                       <div className="fw-semibold">Auto-sync Files</div>
                       <div className="text-muted small">  Automatically sync files between services </div>
                     </>}
-                  defaultChecked/>
+                  defaultChecked />
               </Col>
             </Row>
           </Tab.Pane>
@@ -26644,7 +26641,7 @@ const SettingsPage = () => {
                       </div>
                     </>
                   }
-                  defaultChecked className="mb-3"/>
+                  defaultChecked className="mb-3" />
 
                 <Form.Group>
                   <Form.Label>Push Notifications</Form.Label>
@@ -26709,7 +26706,7 @@ const SettingsPage = () => {
                       <div className="fw-semibold">Location Services</div>
                       <div className="text-muted small"> Allow app to access device location</div>
                     </>
-                  } className="mb-3"/>
+                  } className="mb-3" />
                 <Form.Group>
                   <Form.Label>Session Timeout</Form.Label>
                   <Form.Select defaultValue="15 minutes">
@@ -26789,7 +26786,7 @@ const SettingsPage = () => {
                   <div className="fw-semibold">Storage Usage</div>
                   <div className="text-muted small mb-1">75% of 1TB used</div>
                   <div className="progress">
-                    <div  id="All_btn"
+                    <div id="All_btn"
                       className="progress-bar"
                       role="progressbar"
                       style={{ width: "75%" }} />
@@ -28095,294 +28092,294 @@ export default Invoicing_Billing;
 
 
 
-  const handleDownloadPDF = async (invoiceDataFromState) => {
-    // if (!invoiceDataFromState) {
-    //   console.error("No data provided to handleDownloadPDF");
-    //   Swal.fire("Error", "No data available to generate PDF.", "error");
-    //   return;
-    // }
-    // try {
-    //   const response = await axiosInstance.get(
-    //     `/pdf/invoice?InvoiceBillingId=${invoiceDataFromState._id}`,
-    //     {
-    //       responseType: "blob",
-    //     }
-    //   );
-    //   const url = window.URL.createObjectURL(new Blob([response.data]));
-    //   const link = document.createElement("a");
-    //   link.href = url;
-    //   link.setAttribute("download", `${invoiceDataFromState.invoiceNumber || "invoice"}.pdf`);
-    //   document.body.appendChild(link);
-    //   link.click();
-    //   link.remove();
-    // } catch (error) {
-    //   console.error("❌ Error downloading invoice PDF:", error);
-    //   alert("Failed to download invoice PDF.");
-    // }
+const handleDownloadPDF = async (invoiceDataFromState) => {
+  // if (!invoiceDataFromState) {
+  //   console.error("No data provided to handleDownloadPDF");
+  //   Swal.fire("Error", "No data available to generate PDF.", "error");
+  //   return;
+  // }
+  // try {
+  //   const response = await axiosInstance.get(
+  //     `/pdf/invoice?InvoiceBillingId=${invoiceDataFromState._id}`,
+  //     {
+  //       responseType: "blob",
+  //     }
+  //   );
+  //   const url = window.URL.createObjectURL(new Blob([response.data]));
+  //   const link = document.createElement("a");
+  //   link.href = url;
+  //   link.setAttribute("download", `${invoiceDataFromState.invoiceNumber || "invoice"}.pdf`);
+  //   document.body.appendChild(link);
+  //   link.click();
+  //   link.remove();
+  // } catch (error) {
+  //   console.error("❌ Error downloading invoice PDF:", error);
+  //   alert("Failed to download invoice PDF.");
+  // }
 
 
-    if (!invoiceDataFromState) {
-      console.error("No data provided to handleDownloadPDF");
-      Swal.fire("Error", "No data available to generate PDF.", "error");
-      return;
-    }
-    
-    try {
-      const response = await axiosInstance.get(
-        `/pdf/invoice?InvoiceBillingId=${invoiceDataFromState._id}`,
-        {
-          responseType: "blob",
-        }
-      );
-       consol.log(response,"ggg")
-      // Log the Blob data as base64
-      const reader = new FileReader();
-      reader.onloadend = function () {
-        console.log("API Response Data (Base64):", reader.result);  // Logs base64-encoded data
-      };
-      reader.readAsDataURL(response.data); // Convert blob to base64
-    
-      const url = window.URL.createObjectURL(new Blob([response.data]));
-      const link = document.createElement("a");
-      link.href = url;
-      link.setAttribute("download", `${invoiceDataFromState.invoiceNumber || "invoice"}.pdf`);
-      document.body.appendChild(link);
-      link.click();
-      link.remove();
-    } catch (error) {
-      console.error("❌ Error downloading invoice PDF:", error);
-      alert("Failed to download invoice PDF.");
-    }
+  if (!invoiceDataFromState) {
+    console.error("No data provided to handleDownloadPDF");
+    Swal.fire("Error", "No data available to generate PDF.", "error");
+    return;
+  }
 
-    const invoiceData = invoiceDataFromState;
-
-    const companyDetails = {
-      logoText: 'COMPANY LOGO',
-      addressDetails: 'COMPANY ADDRESS DETAILS',
-      name: 'Company name',
-      trn: '100000000000002',
-    };
-
-    const invoiceMeta = {
-      date: invoiceData.date ? new Date(invoiceData.date).toLocaleDateString("en-GB") : 'N/A',
-      invoiceNo: invoiceData._id || 'N/A',
-    };
-
-    const clientDetails = {
-      name: invoiceData.clientId?.clientName || 'N/A',
-      address1: invoiceData?.clients.clientAddress || 'N/A',
-      
-      address2: invoiceData.clientId?.shippingInformation?.[0]?.shippingAddress || 'N/A',
-      tel: invoiceData.clientId?.contactPersons?.[0]?.phone || 'N/A',
-      contactPerson: invoiceData.clientId?.contactPersons?.[0]?.contactName || 'N/A',
-      email: invoiceData.clientId?.contactPersons?.[0]?.email || 'N/A',
-      trn: invoiceData.clientId?.TaxID_VATNumber || 'N/A',
-    };
-    console.log(invoiceData ,"wwwww");
-    const projectInfo = {
-      costEstNo: invoiceData?.CostEstimatesId || 'N/A',
-      poNo: invoiceData?.ReceivablePurchaseId || 'N/A',
-      projectNo: invoiceData?.projectId?.[0]?.projectNo || 'N/A',
-      projectName: invoiceData?.projectId?.[0]?.projectName || 'N/A',
-
-    };
-
-    const bankDetails = {
-      accountName: invoiceData.clientId?.financialInformation?.[0]?.bankName || 'Company Name',
-      bankName: invoiceData.clientId?.financialInformation?.[0]?.bankName || 'Company Bank Name',
-      iban: invoiceData.clientId?.financialInformation?.[0]?.accountNumber || 'XX000000000000000000001',
-      swiftCode: 'XXXAAACC',
-      terms: invoiceData.clientId?.additionalInformation?.paymentTerms || 'Net 30',
-    };
-
-    const items = invoiceData.lineItems && invoiceData.lineItems.length > 0
-      ? invoiceData.lineItems.map((item, index) => [
-          (index + 1).toString() + '.',
-          item.description,
-          item.quantity,
-          item.rate,
-          parseFloat(item.amount).toFixed(2)
-        ])
-      : [
-          ['1.', 'No items', 0, 0, '0.00'],
-        ];
-
-    const subTotal = items.reduce((sum, item) => sum + parseFloat(item[4]), 0);
-    const vatRate = 0.10;
-    const vatAmount = subTotal * vatRate;
-    const grandTotal = subTotal + vatAmount;
-    const amountInWords = `US Dollars ${numberToWords(grandTotal)} Only`;
-
-    const doc = new jsPDF('p', 'pt', 'a4');
-    const pageWidth = doc.internal.pageSize.width;
-    const pageHeight = doc.internal.pageSize.height;
-    const margin = 40;
-    let finalY = margin;
-
-    doc.setFillColor(192, 0, 0);
-    doc.rect(margin, finalY, 220, 60, 'F');
-    doc.setTextColor(255, 255, 255);
-    doc.setFontSize(14);
-    doc.setFont('helvetica', 'bold');
-    doc.text(companyDetails.logoText, margin + 10, finalY + 25);
-    doc.setFontSize(8);
-    doc.setFont('helvetica', 'normal');
-    doc.text(companyDetails.addressDetails, margin + 10, finalY + 45);
-
-    const companyNameBlockY = finalY;
-    doc.setFillColor(192, 0, 0);
-    doc.rect(pageWidth - margin - 150, companyNameBlockY, 150, 30, 'F');
-    doc.setTextColor(255, 255, 255);
-    doc.setFontSize(12);
-    doc.setFont('helvetica', 'bold');
-    doc.text(companyDetails.name, pageWidth - margin - 140, companyNameBlockY + 20, { align: 'left' });
-
-    let titleY = companyNameBlockY + 30 + 20;
-    doc.setTextColor(0, 0, 0);
-    doc.setFontSize(18);
-    doc.setFont('helvetica', 'bold');
-    doc.text('Tax Invoice', pageWidth - margin, titleY, { align: 'right' });
-
-    let tableDetailsY = titleY + 10;
-    autoTable(doc, {
-      startY: tableDetailsY,
-      head: [['TRN:', 'Date', 'Invoice No.']],
-      body: [[companyDetails.trn, invoiceMeta.date, invoiceMeta.invoiceNo]],
-      theme: 'grid',
-      styles: { fontSize: 9, cellPadding: 5, lineWidth: 0.5, lineColor: [0, 0, 0] },
-      headStyles: { fillColor: [255, 255, 255], textColor: [0, 0, 0], fontStyle: 'bold' },
-      columnStyles: {
-        0: { cellWidth: 150, halign: 'left' },
-        1: { cellWidth: 80, halign: 'left' },
-        2: { cellWidth: 80, halign: 'left' },
-      },
-      margin: { right: margin, left: pageWidth - margin - (150 + 80 + 80) - 10 },
-      tableWidth: 'wrap',
-    });
-    finalY = doc.lastAutoTable.finalY + 20;
-
-    const invoiceToBoxWidth = 250;
-    doc.setDrawColor(0, 0, 0);
-    doc.rect(margin, finalY, invoiceToBoxWidth, 100, 'S');
-    doc.setFontSize(10);
-    doc.setFont('helvetica', 'bold');
-    doc.text('Invoice To', margin + 5, finalY + 15);
-    doc.setFontSize(9);
-    doc.setFont('helvetica', 'normal');
-    let textYInvoiceTo = finalY + 30;
-    [
-      `Client Company: ${clientDetails?.name}`,
-      `Client Address: ${clientDetails?.address1}`,
-      `Client Address2: ${clientDetails?.address2}`,
-      `Tel: ${clientDetails?.tel}`,
-      `Contact: ${clientDetails.contactPerson}`,
-      `Email: ${clientDetails.email}`
-    ].forEach(line => {
-      doc.text(line, margin + 5, textYInvoiceTo);
-      textYInvoiceTo += 12;
-    });
-    finalY += 100 + 10;
-
-    autoTable(doc, {
-      startY: finalY,
-      head: [['TRN', 'Cost Est. No.', 'P.O. No.', 'Project No.']],
-      body: [[clientDetails.trn, projectInfo.costEstNo, projectInfo.poNo, projectInfo.projectNo]],
-      theme: 'grid',
-      styles: { fontSize: 9, cellPadding: 5, lineWidth: 0.5, lineColor: [0, 0, 0] },
-      headStyles: { fillColor: [220, 220, 220], textColor: [0, 0, 0], fontStyle: 'bold' },
-      margin: { left: margin, right: margin },
-    });
-    finalY = doc.lastAutoTable.finalY + 10;
-
-    autoTable(doc, {
-      startY: finalY,
-      head: [['Bank Account Name', 'Bank Name', 'IBAN', 'Swift Code', 'Terms']],
-      body: [[bankDetails.accountName, bankDetails.bankName, bankDetails.iban, bankDetails.swiftCode, bankDetails.terms]],
-      theme: 'grid',
-      styles: { fontSize: 9, cellPadding: 5, lineWidth: 0.5, lineColor: [0, 0, 0] },
-      headStyles: { fillColor: [200, 200, 200], textColor: [0, 0, 0], fontStyle: 'bold' },
-      margin: { left: margin, right: margin },
-    });
-    finalY = doc.lastAutoTable.finalY + 10;
-
-    autoTable(doc, {
-      startY: finalY,
-      head: [['Sr. #', 'Description', 'Qty', 'Rate', 'Amount (USD)']],
-      body: items,
-      theme: 'grid',
-      styles: { fontSize: 9, cellPadding: 5, lineWidth: 0.5, lineColor: [0, 0, 0] },
-      headStyles: { fillColor: [220, 220, 220], textColor: [0, 0, 0], fontStyle: 'bold' },
-      columnStyles: {
-        0: { cellWidth: 40, halign: 'center' },
-        1: { cellWidth: 'auto' },
-        2: { cellWidth: 40, halign: 'right' },
-        3: { cellWidth: 50, halign: 'right' },
-        4: { cellWidth: 70, halign: 'right' },
-      },
-      margin: { left: margin, right: margin },
-      didDrawPage: function (data) {
-        finalY = data.cursor.y;
+  try {
+    const response = await axiosInstance.get(
+      `/pdf/invoice?InvoiceBillingId=${invoiceDataFromState._id}`,
+      {
+        responseType: "blob",
       }
-    });
-    const amountInWordsY = finalY + 20;
-    doc.setFontSize(9);
-    doc.setFont('helvetica', 'normal');
-    doc.text(amountInWords, margin, amountInWordsY, { maxWidth: pageWidth - margin - 220 });
+    );
+    consol.log(response, "ggg")
+    // Log the Blob data as base64
+    const reader = new FileReader();
+    reader.onloadend = function () {
+      console.log("API Response Data (Base64):", reader.result);  // Logs base64-encoded data
+    };
+    reader.readAsDataURL(response.data); // Convert blob to base64
 
-    const totalsTableWidth = 200;
-    const totalsTableX = pageWidth - margin - totalsTableWidth;
-    let totalsTableY = finalY + 10;
+    const url = window.URL.createObjectURL(new Blob([response.data]));
+    const link = document.createElement("a");
+    link.href = url;
+    link.setAttribute("download", `${invoiceDataFromState.invoiceNumber || "invoice"}.pdf`);
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+  } catch (error) {
+    console.error("❌ Error downloading invoice PDF:", error);
+    alert("Failed to download invoice PDF.");
+  }
 
-    autoTable(doc, {
-      startY: totalsTableY,
-      body: [
-        ['Subtotal', `USD ${subTotal.toFixed(2)}`],
-        [`VAT (${(vatRate * 100).toFixed(0)}%)`, `USD ${vatAmount.toFixed(2)}`],
-        ['Total', `USD ${grandTotal.toFixed(2)}`]
-      ],
-      theme: 'grid',
-      styles: {
-        fontSize: 9,
-        cellPadding: 5,
-        lineWidth: 0.5,
-        lineColor: [0, 0, 0]
-      },
-      headStyles: {
-        fillColor: [255, 255, 255],
-        textColor: [0, 0, 0],
-      },
-      columnStyles: {
-        0: { halign: 'left', fontStyle: 'bold', cellWidth: totalsTableWidth * 0.6 },
-        1: { halign: 'right', cellWidth: totalsTableWidth * 0.4 }
-      },
-      margin: { left: totalsTableX },
-      tableWidth: totalsTableWidth,
-      didDrawPage: function (data) {
-        totalsTableY = data.cursor.y;
-      }
-    });
+  const invoiceData = invoiceDataFromState;
 
-    finalY = Math.max(amountInWordsY + 10, totalsTableY + 10);
-
-    const footerStartY = finalY + 30;
-    const stampWidth = 100;
-    const stampHeight = 70;
-    const stampX = margin + 150;
-
-    doc.setFontSize(9);
-    doc.setFont('helvetica', 'normal');
-    doc.text('For Company Name', margin, footerStartY);
-    doc.text('Accounts Department', margin, footerStartY + stampHeight - 10);
-
-    doc.setFillColor(200, 200, 200);
-    doc.rect(stampX, footerStartY - 15, stampWidth, stampHeight, 'F');
-    doc.setTextColor(0, 0, 0);
-    doc.setFontSize(8);
-    doc.text('Insert Stamp Image', stampX + stampWidth / 2, footerStartY - 15 + stampHeight / 2, { align: 'center' });
-
-    doc.save(`Tax_Invoice_${invoiceMeta.invoiceNo}.pdf`);
+  const companyDetails = {
+    logoText: 'COMPANY LOGO',
+    addressDetails: 'COMPANY ADDRESS DETAILS',
+    name: 'Company name',
+    trn: '100000000000002',
   };
-  
+
+  const invoiceMeta = {
+    date: invoiceData.date ? new Date(invoiceData.date).toLocaleDateString("en-GB") : 'N/A',
+    invoiceNo: invoiceData._id || 'N/A',
+  };
+
+  const clientDetails = {
+    name: invoiceData.clientId?.clientName || 'N/A',
+    address1: invoiceData?.clients.clientAddress || 'N/A',
+
+    address2: invoiceData.clientId?.shippingInformation?.[0]?.shippingAddress || 'N/A',
+    tel: invoiceData.clientId?.contactPersons?.[0]?.phone || 'N/A',
+    contactPerson: invoiceData.clientId?.contactPersons?.[0]?.contactName || 'N/A',
+    email: invoiceData.clientId?.contactPersons?.[0]?.email || 'N/A',
+    trn: invoiceData.clientId?.TaxID_VATNumber || 'N/A',
+  };
+  console.log(invoiceData, "wwwww");
+  const projectInfo = {
+    costEstNo: invoiceData?.CostEstimatesId || 'N/A',
+    poNo: invoiceData?.ReceivablePurchaseId || 'N/A',
+    projectNo: invoiceData?.projectId?.[0]?.projectNo || 'N/A',
+    projectName: invoiceData?.projectId?.[0]?.projectName || 'N/A',
+
+  };
+
+  const bankDetails = {
+    accountName: invoiceData.clientId?.financialInformation?.[0]?.bankName || 'Company Name',
+    bankName: invoiceData.clientId?.financialInformation?.[0]?.bankName || 'Company Bank Name',
+    iban: invoiceData.clientId?.financialInformation?.[0]?.accountNumber || 'XX000000000000000000001',
+    swiftCode: 'XXXAAACC',
+    terms: invoiceData.clientId?.additionalInformation?.paymentTerms || 'Net 30',
+  };
+
+  const items = invoiceData.lineItems && invoiceData.lineItems.length > 0
+    ? invoiceData.lineItems.map((item, index) => [
+      (index + 1).toString() + '.',
+      item.description,
+      item.quantity,
+      item.rate,
+      parseFloat(item.amount).toFixed(2)
+    ])
+    : [
+      ['1.', 'No items', 0, 0, '0.00'],
+    ];
+
+  const subTotal = items.reduce((sum, item) => sum + parseFloat(item[4]), 0);
+  const vatRate = 0.10;
+  const vatAmount = subTotal * vatRate;
+  const grandTotal = subTotal + vatAmount;
+  const amountInWords = `US Dollars ${numberToWords(grandTotal)} Only`;
+
+  const doc = new jsPDF('p', 'pt', 'a4');
+  const pageWidth = doc.internal.pageSize.width;
+  const pageHeight = doc.internal.pageSize.height;
+  const margin = 40;
+  let finalY = margin;
+
+  doc.setFillColor(192, 0, 0);
+  doc.rect(margin, finalY, 220, 60, 'F');
+  doc.setTextColor(255, 255, 255);
+  doc.setFontSize(14);
+  doc.setFont('helvetica', 'bold');
+  doc.text(companyDetails.logoText, margin + 10, finalY + 25);
+  doc.setFontSize(8);
+  doc.setFont('helvetica', 'normal');
+  doc.text(companyDetails.addressDetails, margin + 10, finalY + 45);
+
+  const companyNameBlockY = finalY;
+  doc.setFillColor(192, 0, 0);
+  doc.rect(pageWidth - margin - 150, companyNameBlockY, 150, 30, 'F');
+  doc.setTextColor(255, 255, 255);
+  doc.setFontSize(12);
+  doc.setFont('helvetica', 'bold');
+  doc.text(companyDetails.name, pageWidth - margin - 140, companyNameBlockY + 20, { align: 'left' });
+
+  let titleY = companyNameBlockY + 30 + 20;
+  doc.setTextColor(0, 0, 0);
+  doc.setFontSize(18);
+  doc.setFont('helvetica', 'bold');
+  doc.text('Tax Invoice', pageWidth - margin, titleY, { align: 'right' });
+
+  let tableDetailsY = titleY + 10;
+  autoTable(doc, {
+    startY: tableDetailsY,
+    head: [['TRN:', 'Date', 'Invoice No.']],
+    body: [[companyDetails.trn, invoiceMeta.date, invoiceMeta.invoiceNo]],
+    theme: 'grid',
+    styles: { fontSize: 9, cellPadding: 5, lineWidth: 0.5, lineColor: [0, 0, 0] },
+    headStyles: { fillColor: [255, 255, 255], textColor: [0, 0, 0], fontStyle: 'bold' },
+    columnStyles: {
+      0: { cellWidth: 150, halign: 'left' },
+      1: { cellWidth: 80, halign: 'left' },
+      2: { cellWidth: 80, halign: 'left' },
+    },
+    margin: { right: margin, left: pageWidth - margin - (150 + 80 + 80) - 10 },
+    tableWidth: 'wrap',
+  });
+  finalY = doc.lastAutoTable.finalY + 20;
+
+  const invoiceToBoxWidth = 250;
+  doc.setDrawColor(0, 0, 0);
+  doc.rect(margin, finalY, invoiceToBoxWidth, 100, 'S');
+  doc.setFontSize(10);
+  doc.setFont('helvetica', 'bold');
+  doc.text('Invoice To', margin + 5, finalY + 15);
+  doc.setFontSize(9);
+  doc.setFont('helvetica', 'normal');
+  let textYInvoiceTo = finalY + 30;
+  [
+    `Client Company: ${clientDetails?.name}`,
+    `Client Address: ${clientDetails?.address1}`,
+    `Client Address2: ${clientDetails?.address2}`,
+    `Tel: ${clientDetails?.tel}`,
+    `Contact: ${clientDetails.contactPerson}`,
+    `Email: ${clientDetails.email}`
+  ].forEach(line => {
+    doc.text(line, margin + 5, textYInvoiceTo);
+    textYInvoiceTo += 12;
+  });
+  finalY += 100 + 10;
+
+  autoTable(doc, {
+    startY: finalY,
+    head: [['TRN', 'Cost Est. No.', 'P.O. No.', 'Project No.']],
+    body: [[clientDetails.trn, projectInfo.costEstNo, projectInfo.poNo, projectInfo.projectNo]],
+    theme: 'grid',
+    styles: { fontSize: 9, cellPadding: 5, lineWidth: 0.5, lineColor: [0, 0, 0] },
+    headStyles: { fillColor: [220, 220, 220], textColor: [0, 0, 0], fontStyle: 'bold' },
+    margin: { left: margin, right: margin },
+  });
+  finalY = doc.lastAutoTable.finalY + 10;
+
+  autoTable(doc, {
+    startY: finalY,
+    head: [['Bank Account Name', 'Bank Name', 'IBAN', 'Swift Code', 'Terms']],
+    body: [[bankDetails.accountName, bankDetails.bankName, bankDetails.iban, bankDetails.swiftCode, bankDetails.terms]],
+    theme: 'grid',
+    styles: { fontSize: 9, cellPadding: 5, lineWidth: 0.5, lineColor: [0, 0, 0] },
+    headStyles: { fillColor: [200, 200, 200], textColor: [0, 0, 0], fontStyle: 'bold' },
+    margin: { left: margin, right: margin },
+  });
+  finalY = doc.lastAutoTable.finalY + 10;
+
+  autoTable(doc, {
+    startY: finalY,
+    head: [['Sr. #', 'Description', 'Qty', 'Rate', 'Amount (USD)']],
+    body: items,
+    theme: 'grid',
+    styles: { fontSize: 9, cellPadding: 5, lineWidth: 0.5, lineColor: [0, 0, 0] },
+    headStyles: { fillColor: [220, 220, 220], textColor: [0, 0, 0], fontStyle: 'bold' },
+    columnStyles: {
+      0: { cellWidth: 40, halign: 'center' },
+      1: { cellWidth: 'auto' },
+      2: { cellWidth: 40, halign: 'right' },
+      3: { cellWidth: 50, halign: 'right' },
+      4: { cellWidth: 70, halign: 'right' },
+    },
+    margin: { left: margin, right: margin },
+    didDrawPage: function (data) {
+      finalY = data.cursor.y;
+    }
+  });
+  const amountInWordsY = finalY + 20;
+  doc.setFontSize(9);
+  doc.setFont('helvetica', 'normal');
+  doc.text(amountInWords, margin, amountInWordsY, { maxWidth: pageWidth - margin - 220 });
+
+  const totalsTableWidth = 200;
+  const totalsTableX = pageWidth - margin - totalsTableWidth;
+  let totalsTableY = finalY + 10;
+
+  autoTable(doc, {
+    startY: totalsTableY,
+    body: [
+      ['Subtotal', `USD ${subTotal.toFixed(2)}`],
+      [`VAT (${(vatRate * 100).toFixed(0)}%)`, `USD ${vatAmount.toFixed(2)}`],
+      ['Total', `USD ${grandTotal.toFixed(2)}`]
+    ],
+    theme: 'grid',
+    styles: {
+      fontSize: 9,
+      cellPadding: 5,
+      lineWidth: 0.5,
+      lineColor: [0, 0, 0]
+    },
+    headStyles: {
+      fillColor: [255, 255, 255],
+      textColor: [0, 0, 0],
+    },
+    columnStyles: {
+      0: { halign: 'left', fontStyle: 'bold', cellWidth: totalsTableWidth * 0.6 },
+      1: { halign: 'right', cellWidth: totalsTableWidth * 0.4 }
+    },
+    margin: { left: totalsTableX },
+    tableWidth: totalsTableWidth,
+    didDrawPage: function (data) {
+      totalsTableY = data.cursor.y;
+    }
+  });
+
+  finalY = Math.max(amountInWordsY + 10, totalsTableY + 10);
+
+  const footerStartY = finalY + 30;
+  const stampWidth = 100;
+  const stampHeight = 70;
+  const stampX = margin + 150;
+
+  doc.setFontSize(9);
+  doc.setFont('helvetica', 'normal');
+  doc.text('For Company Name', margin, footerStartY);
+  doc.text('Accounts Department', margin, footerStartY + stampHeight - 10);
+
+  doc.setFillColor(200, 200, 200);
+  doc.rect(stampX, footerStartY - 15, stampWidth, stampHeight, 'F');
+  doc.setTextColor(0, 0, 0);
+  doc.setFontSize(8);
+  doc.text('Insert Stamp Image', stampX + stampWidth / 2, footerStartY - 15 + stampHeight / 2, { align: 'center' });
+
+  doc.save(`Tax_Invoice_${invoiceMeta.invoiceNo}.pdf`);
+};
+
 
 
 
@@ -28686,29 +28683,29 @@ function CostEstimates() {
         return "bg-info text-dark";
       case "not started":
         return "bg-secondary text-white";
-        case "pending":
-      return "bg-warning text-dark";     // Yellow
-    case "received":
-      return "bg-info text-dark";        // Light Blue
-    case "cancelled":
-      return "bg-danger text-white";     // Red
-    case "completed":
-      return "bg-success text-white";    // Green
-    case "open":
-      return "bg-primary text-white";    // Blue
-    case "invoiced":
-      return "bg-dark text-white";       // Dark (You can change it as needed)
-    case "in progress":
-    case "in_progress":
-      return "bg-warning text-dark";
-    case "active":
-      return "bg-primary text-white";
-    case "reject":
-      return "bg-danger text-white";
-    case "review":
-      return "bg-info text-dark";
-    case "not started":
-      return "bg-secondary text-white";
+      case "pending":
+        return "bg-warning text-dark";     // Yellow
+      case "received":
+        return "bg-info text-dark";        // Light Blue
+      case "cancelled":
+        return "bg-danger text-white";     // Red
+      case "completed":
+        return "bg-success text-white";    // Green
+      case "open":
+        return "bg-primary text-white";    // Blue
+      case "invoiced":
+        return "bg-dark text-white";       // Dark (You can change it as needed)
+      case "in progress":
+      case "in_progress":
+        return "bg-warning text-dark";
+      case "active":
+        return "bg-primary text-white";
+      case "reject":
+        return "bg-danger text-white";
+      case "review":
+        return "bg-info text-dark";
+      case "not started":
+        return "bg-secondary text-white";
       default:
         return "bg-light text-dark";
     }
@@ -28863,7 +28860,7 @@ function CostEstimates() {
       currentY += 14;
       doc.text(`Phone: ${client?.contactPersons[0].phone || "Phone"}`, 40, currentY);
       currentY += 25;
-      
+
       // === Table Data ===
       const tableData = lineItems.map((item, index) => [
         (index + 1).toString(),
@@ -29258,396 +29255,361 @@ export default CostEstimates;
 
 
 
-    const handleDownloadPDF = async (invoiceDataFromState) => {
-      if (!invoiceDataFromState) {
-        console.error("No data provided to handleDownloadPDF");
-        Swal.fire("Error", "No data available to generate PDF.", "error");
-        return;
+const handleDownloadPDF = async (invoiceDataFromState) => {
+  if (!invoiceDataFromState) {
+    console.error("No data provided to handleDownloadPDF");
+    Swal.fire("Error", "No data available to generate PDF.", "error");
+    return;
+  }
+  try {
+    const response = await axiosInstance.get(
+      `/pdf/invoice?InvoiceBillingId=${invoiceDataFromState._id}`,
+      {
+        responseType: "blob",
       }
-      try {
-        const response = await axiosInstance.get(
-          `/pdf/invoice?InvoiceBillingId=${invoiceDataFromState._id}`,
-          {
-            responseType: "blob",
-          }
-        );
-        // Check if the response is JSON instead of PDF
-        if (response.data.type === "application/json") {
-          const reader = new FileReader();
-          reader.onload = function() {
-            try {
-              const json = JSON.parse(reader.result);
-              console.log('PDF API response as JSON:', json);
-            } catch (e) {
-              console.log('PDF API response as text:', reader.result);
-            }
-          };
-          reader.readAsText(response.data);
-          return; // Stop further PDF logic if not a PDF
+    );
+    // Check if the response is JSON instead of PDF
+    if (response.data.type === "application/json") {
+      const reader = new FileReader();
+      reader.onload = function () {
+        try {
+          const json = JSON.parse(reader.result);
+          console.log('PDF API response as JSON:', json);
+        } catch (e) {
+          console.log('PDF API response as text:', reader.result);
         }
-        const url = window.URL.createObjectURL(new Blob([response.data]));
-        const link = document.createElement("a");
-        link.href = url;
-        link.setAttribute("download", `${invoiceDataFromState.invoiceNumber || "invoice"}.pdf`);
-  
-        
-        document.body.appendChild(link);
-        link.click();
-        link.remove();
-      } catch (error) {
-        console.error("❌ Error downloading invoice PDF:", error);
-        alert("Failed to download invoice PDF.");
-      }
-  
-      const doc = new jsPDF('p', 'pt', 'a4');
-      const pageWidth = doc.internal.pageSize.width;
-      const pageHeight = doc.internal.pageSize.height;
-      const margin = 40;
-      let finalY = margin;
-  
-      const companyDetails = {
-        logoText: invoiceDataFromState.companyLogoText || 'COMPANY LOGO',
-        addressDetails: invoiceDataFromState.companyAddressDetails || 'COMPANY ADDRESS DETAILS',
-        name: invoiceDataFromState.companyNameHeader || 'Company name',
-        trn: invoiceDataFromState.companyTRN || '100000000000002',
       };
-  
-      const invoiceMeta = {
-        date: invoiceDataFromState.date || '22.03.2025',
-        invoiceNo: invoiceDataFromState.invoiceNo || '5822',
-      };
-  
-      const clientDetails = {
-        name: invoiceDataFromState.clientId?.clientName || 'Client Company Name',
-        address1: invoiceDataFromState.clientId?.clientAddress || 'Client Address Line 1',
-        address2: invoiceDataFromState.clientId?.shippingInformation?.[0]?.shippingAddress || 'Client Address Line 2, Country',
-        tel: invoiceDataFromState.clientId?.contactPersons?.[0]?.phone || '00000000000',
-        contactPerson: invoiceDataFromState.clientId?.contactPersons?.[0]?.contactName || 'Client Contact Person',
-        email: invoiceDataFromState.clientId?.contactPersons?.[0]?.email || 'client.email@example.com',
-        trn: invoiceDataFromState.clientId?.TaxID_VATNumber || "Client's TRN No.",
-      };
-  
-      // Project No. is set from API response below:
-      const projectInfo = {
-        costEstNo: invoiceDataFromState.CostEstimatesId || 'CE No.',
-        poNo: invoiceDataFromState.ReceivablePurchaseId || 'PO Number',
-        // Project No. from API response
-        projectNo: invoiceDataFromState.projectId?.[0]?.projectNo || 'Project No.',
-      };
-  
-      const bankDetails = {
-        accountName: invoiceDataFromState.bankAccountName || 'Company Name',
-        bankName: invoiceDataFromState.bankName || "Company's Bank Name",
-        iban: invoiceDataFromState.iban || 'XX000000000000000000001',
-        swiftCode: invoiceDataFromState.swiftCode || 'XXXAAACC',
-        terms: invoiceDataFromState.paymentTerms || 'Net 30',
-      };
-  
-      // Updated items mapping from API response
-      const items = invoiceDataFromState.lineItems && invoiceDataFromState.lineItems.length > 0
-        ? invoiceDataFromState.lineItems.map((item, index) => [
-            (index + 1).toString() + '.',
-            item.description,
-            item.quantity,
-            item.rate,
-            parseFloat(item.amount).toFixed(2)
-          ])
-        : [
-            ['1.', 'Print Samples', 6, 2, '12.00'],
-          ];
-  
-      const subTotal = items.reduce((sum, item) => sum + parseFloat(item[4]), 0);
-      const vatRate = invoiceDataFromState.vatRate !== undefined ? invoiceDataFromState.vatRate : 0.10;
-      const vatAmount = subTotal * vatRate;
-      const grandTotal = subTotal + vatAmount;
-      const amountInWords = invoiceDataFromState.amountInWords || `US Dollars ${numberToWords(grandTotal)} Only`;
-  
-      doc.setFillColor(192, 0, 0);
-      doc.rect(margin, finalY, 220, 60, 'F');
-      doc.setTextColor(255, 255, 255);
-      doc.setFontSize(14);
-      doc.setFont('helvetica', 'bold');
-      doc.text(companyDetails.logoText, margin + 10, finalY + 25);
-      doc.setFontSize(8);
-      doc.setFont('helvetica', 'normal');
-      doc.text(companyDetails.addressDetails, margin + 10, finalY + 45);
-  
-  
-      const companyNameBlockY = finalY;
-      doc.setFillColor(192, 0, 0);
-      doc.rect(pageWidth - margin - 150, companyNameBlockY, 150, 30, 'F');
-      doc.setTextColor(255, 255, 255);
-      doc.setFontSize(12);
-      doc.setFont('helvetica', 'bold');
-      doc.text(companyDetails.name, pageWidth - margin - 140, companyNameBlockY + 20, { align: 'left' });
-  
-  
-      let titleY = companyNameBlockY + 30 + 20;
-      doc.setTextColor(0, 0, 0);
-      doc.setFontSize(18);
-      doc.setFont('helvetica', 'bold');
-      doc.text('Tax Invoice', pageWidth - margin, titleY, { align: 'right' });
-  
-      let tableDetailsY = titleY + 10;
-      autoTable(doc, {
-        startY: tableDetailsY,
-        head: [['TRN:', 'Date', 'Invoice No.']],
-        body: [[companyDetails.trn, invoiceMeta.date, invoiceMeta.invoiceNo]],
-        theme: 'grid',
-        styles: { fontSize: 9, cellPadding: 5, lineWidth: 0.5, lineColor: [0, 0, 0] },
-        headStyles: { fillColor: [255, 255, 255], textColor: [0, 0, 0], fontStyle: 'bold' },
-        columnStyles: {
-          0: { cellWidth: 150, halign: 'left' },
-          1: { cellWidth: 80, halign: 'left' },
-          2: { cellWidth: 80, halign: 'left' },
-        },
-        margin: { right: margin, left: pageWidth - margin - (150 + 80 + 80) - 10 },
-        tableWidth: 'wrap',
-      });
-      finalY = doc.lastAutoTable.finalY + 20;
-  
-  
-      const invoiceToBoxWidth = 250;
-      doc.setDrawColor(0, 0, 0);
-      doc.rect(margin, finalY, invoiceToBoxWidth, 100, 'S');
-      doc.setFontSize(10);
-      doc.setFont('helvetica', 'bold');
-      doc.text('Invoice To', margin + 5, finalY + 15);
-      doc.setFontSize(9);
-      doc.setFont('helvetica', 'normal');
-      let textYInvoiceTo = finalY + 30;
-      [
-        `Client Company: ${clientDetails.name}`,
-        `Client Address: ${clientDetails.address1}`,
-        `Client Address2: ${clientDetails.address2}`,
-        `Tel: ${clientDetails.tel}`,
-        `Contact: ${clientDetails.contactPerson}`,
-        `Email: ${clientDetails.email}`
-      ].forEach(line => {
-        doc.text(line, margin + 5, textYInvoiceTo);
-        textYInvoiceTo += 12;
-      });
-      finalY += 100 + 10;
-  
-      autoTable(doc, {
-        startY: finalY,
-        head: [['TRN', 'Cost Est. No.', 'P.O. No.', 'Project No.']],
-        // Project No. from API response is used here
-        body: [[clientDetails.trn, projectInfo.costEstNo, projectInfo.poNo, projectInfo.projectNo]],
-        theme: 'grid',
-        styles: { fontSize: 9, cellPadding: 5, lineWidth: 0.5, lineColor: [0, 0, 0] },
-        headStyles: { fillColor: [220, 220, 220], textColor: [0, 0, 0], fontStyle: 'bold' },
-        margin: { left: margin, right: margin },
-      });
-      finalY = doc.lastAutoTable.finalY + 10;
-  
-  
-      autoTable(doc, {
-        startY: finalY,
-        head: [['Bank Account Name', 'Bank Name', 'IBAN', 'Swift Code', 'Terms']],
-        body: [[bankDetails.accountName, bankDetails.bankName, bankDetails.iban, bankDetails.swiftCode, bankDetails.terms]],
-        theme: 'grid',
-        styles: { fontSize: 9, cellPadding: 5, lineWidth: 0.5, lineColor: [0, 0, 0] },
-        headStyles: { fillColor: [200, 200, 200], textColor: [0, 0, 0], fontStyle: 'bold' },
-        margin: { left: margin, right: margin },
-      });
-      finalY = doc.lastAutoTable.finalY + 10;
-  
-  
-      autoTable(doc, {
-        startY: finalY,
-        head: [['Sr. #', 'Description', 'Qty', 'Rate', 'Amount (USD)']],
-        body: items,
-        theme: 'grid',
-        styles: { fontSize: 9, cellPadding: 5, lineWidth: 0.5, lineColor: [0, 0, 0] },
-        headStyles: { fillColor: [220, 220, 220], textColor: [0, 0, 0], fontStyle: 'bold' },
-        columnStyles: {
-          0: { cellWidth: 40, halign: 'center' },
-          1: { cellWidth: 'auto' },
-          2: { cellWidth: 40, halign: 'right' },
-          3: { cellWidth: 50, halign: 'right' },
-          4: { cellWidth: 70, halign: 'right' },
-        },
-        margin: { left: margin, right: margin },
-        didDrawPage: function (data) {
-  
-          finalY = data.cursor.y;
-        }
-      });
-      const amountInWordsY = finalY + 20;
-      doc.setFontSize(9);
-      doc.setFont('helvetica', 'normal');
-      doc.text(amountInWords, margin, amountInWordsY, { maxWidth: pageWidth - margin - 220 });
-  
-  
-      const totalsTableWidth = 200;
-      const totalsTableX = pageWidth - margin - totalsTableWidth;
-      let totalsTableY = finalY + 10;
-  
-      autoTable(doc, {
-        startY: totalsTableY,
-        body: [
-          ['Subtotal', `USD ${subTotal.toFixed(2)}`],
-          [`VAT (${(vatRate * 100).toFixed(0)}%)`, `USD ${vatAmount.toFixed(2)}`],
-          ['Total', `USD ${grandTotal.toFixed(2)}`]
-        ],
-        theme: 'grid',
-        styles: {
-          fontSize: 9,
-          cellPadding: 5,
-          lineWidth: 0.5,
-          lineColor: [0, 0, 0]
-        },
-        headStyles: {
-          fillColor: [255, 255, 255],
-          textColor: [0, 0, 0],
-        },
-        columnStyles: {
-          0: { halign: 'left', fontStyle: 'bold', cellWidth: totalsTableWidth * 0.6 },
-          1: { halign: 'right', cellWidth: totalsTableWidth * 0.4 }
-        },
-        margin: { left: totalsTableX },
-        tableWidth: totalsTableWidth,
-        didDrawPage: function (data) {
-          totalsTableY = data.cursor.y;
-        }
-      });
-  
-      finalY = Math.max(amountInWordsY + 10, totalsTableY + 10);
-  
-      const footerStartY = finalY + 30;
-      const stampWidth = 100;
-      const stampHeight = 70;
-      const stampX = margin + 150;
-  
-      doc.setFontSize(9);
-      doc.setFont('helvetica', 'normal');
-      doc.text('For Company Name', margin, footerStartY);
-      doc.text('Accounts Department', margin, footerStartY + stampHeight - 10);
-  
-  
-      doc.setFillColor(200, 200, 200);
-      doc.rect(stampX, footerStartY - 15, stampWidth, stampHeight, 'F');
-      doc.setTextColor(0, 0, 0);
-      doc.setFontSize(8);
-      doc.text('Insert Stamp Image', stampX + stampWidth / 2, footerStartY - 15 + stampHeight / 2, { align: 'center' });
-  
-      doc.save(`Tax_Invoice_${invoiceMeta.invoiceNo}.pdf`);
-    };
+      reader.readAsText(response.data);
+      return; // Stop further PDF logic if not a PDF
+    }
+    const url = window.URL.createObjectURL(new Blob([response.data]));
+    const link = document.createElement("a");
+    link.href = url;
+    link.setAttribute("download", `${invoiceDataFromState.invoiceNumber || "invoice"}.pdf`);
+
+
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+  } catch (error) {
+    console.error("❌ Error downloading invoice PDF:", error);
+    alert("Failed to download invoice PDF.");
+  }
+
+  const doc = new jsPDF('p', 'pt', 'a4');
+  const pageWidth = doc.internal.pageSize.width;
+  const pageHeight = doc.internal.pageSize.height;
+  const margin = 40;
+  let finalY = margin;
+
+  const companyDetails = {
+    logoText: invoiceDataFromState.companyLogoText || 'COMPANY LOGO',
+    addressDetails: invoiceDataFromState.companyAddressDetails || 'COMPANY ADDRESS DETAILS',
+    name: invoiceDataFromState.companyNameHeader || 'Company name',
+    trn: invoiceDataFromState.companyTRN || '100000000000002',
+  };
+
+  const invoiceMeta = {
+    date: invoiceDataFromState.date || '22.03.2025',
+    invoiceNo: invoiceDataFromState.invoiceNo || '5822',
+  };
+
+  const clientDetails = {
+    name: invoiceDataFromState.clientId?.clientName || 'Client Company Name',
+    address1: invoiceDataFromState.clientId?.clientAddress || 'Client Address Line 1',
+    address2: invoiceDataFromState.clientId?.shippingInformation?.[0]?.shippingAddress || 'Client Address Line 2, Country',
+    tel: invoiceDataFromState.clientId?.contactPersons?.[0]?.phone || '00000000000',
+    contactPerson: invoiceDataFromState.clientId?.contactPersons?.[0]?.contactName || 'Client Contact Person',
+    email: invoiceDataFromState.clientId?.contactPersons?.[0]?.email || 'client.email@example.com',
+    trn: invoiceDataFromState.clientId?.TaxID_VATNumber || "Client's TRN No.",
+  };
+
+  // Project No. is set from API response below:
+  const projectInfo = {
+    costEstNo: invoiceDataFromState.CostEstimatesId || 'CE No.',
+    poNo: invoiceDataFromState.ReceivablePurchaseId || 'PO Number',
+    // Project No. from API response
+    projectNo: invoiceDataFromState.projectId?.[0]?.projectNo || 'Project No.',
+  };
+
+  const bankDetails = {
+    accountName: invoiceDataFromState.bankAccountName || 'Company Name',
+    bankName: invoiceDataFromState.bankName || "Company's Bank Name",
+    iban: invoiceDataFromState.iban || 'XX000000000000000000001',
+    swiftCode: invoiceDataFromState.swiftCode || 'XXXAAACC',
+    terms: invoiceDataFromState.paymentTerms || 'Net 30',
+  };
+
+  // Updated items mapping from API response
+  const items = invoiceDataFromState.lineItems && invoiceDataFromState.lineItems.length > 0
+    ? invoiceDataFromState.lineItems.map((item, index) => [
+      (index + 1).toString() + '.',
+      item.description,
+      item.quantity,
+      item.rate,
+      parseFloat(item.amount).toFixed(2)
+    ])
+    : [
+      ['1.', 'Print Samples', 6, 2, '12.00'],
+    ];
+
+  const subTotal = items.reduce((sum, item) => sum + parseFloat(item[4]), 0);
+  const vatRate = invoiceDataFromState.vatRate !== undefined ? invoiceDataFromState.vatRate : 0.10;
+  const vatAmount = subTotal * vatRate;
+  const grandTotal = subTotal + vatAmount;
+  const amountInWords = invoiceDataFromState.amountInWords || `US Dollars ${numberToWords(grandTotal)} Only`;
+
+  doc.setFillColor(192, 0, 0);
+  doc.rect(margin, finalY, 220, 60, 'F');
+  doc.setTextColor(255, 255, 255);
+  doc.setFontSize(14);
+  doc.setFont('helvetica', 'bold');
+  doc.text(companyDetails.logoText, margin + 10, finalY + 25);
+  doc.setFontSize(8);
+  doc.setFont('helvetica', 'normal');
+  doc.text(companyDetails.addressDetails, margin + 10, finalY + 45);
+
+
+  const companyNameBlockY = finalY;
+  doc.setFillColor(192, 0, 0);
+  doc.rect(pageWidth - margin - 150, companyNameBlockY, 150, 30, 'F');
+  doc.setTextColor(255, 255, 255);
+  doc.setFontSize(12);
+  doc.setFont('helvetica', 'bold');
+  doc.text(companyDetails.name, pageWidth - margin - 140, companyNameBlockY + 20, { align: 'left' });
+
+
+  let titleY = companyNameBlockY + 30 + 20;
+  doc.setTextColor(0, 0, 0);
+  doc.setFontSize(18);
+  doc.setFont('helvetica', 'bold');
+  doc.text('Tax Invoice', pageWidth - margin, titleY, { align: 'right' });
+
+  let tableDetailsY = titleY + 10;
+  autoTable(doc, {
+    startY: tableDetailsY,
+    head: [['TRN:', 'Date', 'Invoice No.']],
+    body: [[companyDetails.trn, invoiceMeta.date, invoiceMeta.invoiceNo]],
+    theme: 'grid',
+    styles: { fontSize: 9, cellPadding: 5, lineWidth: 0.5, lineColor: [0, 0, 0] },
+    headStyles: { fillColor: [255, 255, 255], textColor: [0, 0, 0], fontStyle: 'bold' },
+    columnStyles: {
+      0: { cellWidth: 150, halign: 'left' },
+      1: { cellWidth: 80, halign: 'left' },
+      2: { cellWidth: 80, halign: 'left' },
+    },
+    margin: { right: margin, left: pageWidth - margin - (150 + 80 + 80) - 10 },
+    tableWidth: 'wrap',
+  });
+  finalY = doc.lastAutoTable.finalY + 20;
+
+
+  const invoiceToBoxWidth = 250;
+  doc.setDrawColor(0, 0, 0);
+  doc.rect(margin, finalY, invoiceToBoxWidth, 100, 'S');
+  doc.setFontSize(10);
+  doc.setFont('helvetica', 'bold');
+  doc.text('Invoice To', margin + 5, finalY + 15);
+  doc.setFontSize(9);
+  doc.setFont('helvetica', 'normal');
+  let textYInvoiceTo = finalY + 30;
+  [
+    `Client Company: ${clientDetails.name}`,
+    `Client Address: ${clientDetails.address1}`,
+    `Client Address2: ${clientDetails.address2}`,
+    `Tel: ${clientDetails.tel}`,
+    `Contact: ${clientDetails.contactPerson}`,
+    `Email: ${clientDetails.email}`
+  ].forEach(line => {
+    doc.text(line, margin + 5, textYInvoiceTo);
+    textYInvoiceTo += 12;
+  });
+  finalY += 100 + 10;
+
+  autoTable(doc, {
+    startY: finalY,
+    head: [['TRN', 'Cost Est. No.', 'P.O. No.', 'Project No.']],
+    // Project No. from API response is used here
+    body: [[clientDetails.trn, projectInfo.costEstNo, projectInfo.poNo, projectInfo.projectNo]],
+    theme: 'grid',
+    styles: { fontSize: 9, cellPadding: 5, lineWidth: 0.5, lineColor: [0, 0, 0] },
+    headStyles: { fillColor: [220, 220, 220], textColor: [0, 0, 0], fontStyle: 'bold' },
+    margin: { left: margin, right: margin },
+  });
+  finalY = doc.lastAutoTable.finalY + 10;
+
+
+  autoTable(doc, {
+    startY: finalY,
+    head: [['Bank Account Name', 'Bank Name', 'IBAN', 'Swift Code', 'Terms']],
+    body: [[bankDetails.accountName, bankDetails.bankName, bankDetails.iban, bankDetails.swiftCode, bankDetails.terms]],
+    theme: 'grid',
+    styles: { fontSize: 9, cellPadding: 5, lineWidth: 0.5, lineColor: [0, 0, 0] },
+    headStyles: { fillColor: [200, 200, 200], textColor: [0, 0, 0], fontStyle: 'bold' },
+    margin: { left: margin, right: margin },
+  });
+  finalY = doc.lastAutoTable.finalY + 10;
+
+
+  autoTable(doc, {
+    startY: finalY,
+    head: [['Sr. #', 'Description', 'Qty', 'Rate', 'Amount (USD)']],
+    body: items,
+    theme: 'grid',
+    styles: { fontSize: 9, cellPadding: 5, lineWidth: 0.5, lineColor: [0, 0, 0] },
+    headStyles: { fillColor: [220, 220, 220], textColor: [0, 0, 0], fontStyle: 'bold' },
+    columnStyles: {
+      0: { cellWidth: 40, halign: 'center' },
+      1: { cellWidth: 'auto' },
+      2: { cellWidth: 40, halign: 'right' },
+      3: { cellWidth: 50, halign: 'right' },
+      4: { cellWidth: 70, halign: 'right' },
+    },
+    margin: { left: margin, right: margin },
+    didDrawPage: function (data) {
+
+      finalY = data.cursor.y;
+    }
+  });
+  const amountInWordsY = finalY + 20;
+  doc.setFontSize(9);
+  doc.setFont('helvetica', 'normal');
+  doc.text(amountInWords, margin, amountInWordsY, { maxWidth: pageWidth - margin - 220 });
+
+
+  const totalsTableWidth = 200;
+  const totalsTableX = pageWidth - margin - totalsTableWidth;
+  let totalsTableY = finalY + 10;
+
+  autoTable(doc, {
+    startY: totalsTableY,
+    body: [
+      ['Subtotal', `USD ${subTotal.toFixed(2)}`],
+      [`VAT (${(vatRate * 100).toFixed(0)}%)`, `USD ${vatAmount.toFixed(2)}`],
+      ['Total', `USD ${grandTotal.toFixed(2)}`]
+    ],
+    theme: 'grid',
+    styles: {
+      fontSize: 9,
+      cellPadding: 5,
+      lineWidth: 0.5,
+      lineColor: [0, 0, 0]
+    },
+    headStyles: {
+      fillColor: [255, 255, 255],
+      textColor: [0, 0, 0],
+    },
+    columnStyles: {
+      0: { halign: 'left', fontStyle: 'bold', cellWidth: totalsTableWidth * 0.6 },
+      1: { halign: 'right', cellWidth: totalsTableWidth * 0.4 }
+    },
+    margin: { left: totalsTableX },
+    tableWidth: totalsTableWidth,
+    didDrawPage: function (data) {
+      totalsTableY = data.cursor.y;
+    }
+  });
+
+  finalY = Math.max(amountInWordsY + 10, totalsTableY + 10);
+
+  const footerStartY = finalY + 30;
+  const stampWidth = 100;
+  const stampHeight = 70;
+  const stampX = margin + 150;
+
+  doc.setFontSize(9);
+  doc.setFont('helvetica', 'normal');
+  doc.text('For Company Name', margin, footerStartY);
+  doc.text('Accounts Department', margin, footerStartY + stampHeight - 10);
+
+
+  doc.setFillColor(200, 200, 200);
+  doc.rect(stampX, footerStartY - 15, stampWidth, stampHeight, 'F');
+  doc.setTextColor(0, 0, 0);
+  doc.setFontSize(8);
+  doc.text('Insert Stamp Image', stampX + stampWidth / 2, footerStartY - 15 + stampHeight / 2, { align: 'center' });
+
+  doc.save(`Tax_Invoice_${invoiceMeta.invoiceNo}.pdf`);
+};
 
 
 
 
 
-    // if (!invoiceDataFromState) {
-        //   console.error("No data provided to handleDownloadPDF");
-        //   Swal.fire("Error", "No data available to generate PDF.", "error");
-        //   return;
-        // }
-        // try {
-        //   const response = await axiosInstance.get(
-        //     `/pdf/invoice?InvoiceBillingId=${invoiceDataFromState._id}`,
-        //     {
-        //       responseType: "blob",
-        //     }
-        //   );
-        //   const url = window.URL.createObjectURL(new Blob([response.data]));
-        //   const link = document.createElement("a");
-        //   link.href = url;
-        //   link.setAttribute("download", `${invoiceDataFromState.invoiceNumber || "invoice"}.pdf`);
-        //   document.body.appendChild(link);
-        //   link.click();
-        //   link.remove();
-        // } catch (error) {
-        //   console.error("❌ Error downloading invoice PDF:", error);
-        //   alert("Failed to download invoice PDF.");
-        // }
-    
-        // if (!invoiceDataFromState) {
-        //   console.error("No data provided to handleDownloadPDF");
-        //   Swal.fire("Error", "No data available to generate PDF.", "error");
-        //   return;
-        // }
-       
-         // try {
-        //   const response = await axiosInstance.get(
-        //     `/pdf/invoice?InvoiceBillingId=${invoiceDataFromState._id}`,
-        //     {
-        //       responseType: "blob",
-        //     }
-        //   );
-        //   const url = window.URL.createObjectURL(new Blob([response.data]));
-        //   const link = document.createElement("a");
-        //   link.href = url;
-        //   link.setAttribute("download", `${invoiceDataFromState.invoiceNumber || "invoice"}.pdf`);
-        //   document.body.appendChild(link);
-        //   link.click();
-        //   link.remove();
-        // } catch (error) {
-        //   console.error("❌ Error downloading invoice PDF:", error);
-        //   alert("Failed to download invoice PDF.");
-        // }
-        // try {
-        //   const response = await axiosInstance.get(
-        //     `/pdf/invoice?InvoiceBillingId=${invoiceDataFromState._id}`,
-        //     {
-        //       responseType: "blob",
-        //     }
-        //   );
-        //    consol.log(response,"ggg")
-        //   // Log the Blob data as base64
-        //   const reader = new FileReader();
-        //   reader.onloadend = function () {
-        //     console.log("API Response Data (Base64):", reader.result);  // Logs base64-encoded data
-        //   };
-        //   reader.readAsDataURL(response.data); // Convert blob to base64
-        
-        //   const url = window.URL.createObjectURL(new Blob([response.data]));
-        //   const link = document.createElement("a");
-        //   link.href = url;
-        //   link.setAttribute("download", `${invoiceDataFromState.invoiceNumber || "invoice"}.pdf`);
-        //   document.body.appendChild(link);
-        //   link.click();
-        //   link.remove();
-        // } catch (error) {
-        //   console.error("❌ Error downloading invoice PDF:", error);
-        //   alert("Failed to download invoice PDF.");
-        // }
+// if (!invoiceDataFromState) {
+//   console.error("No data provided to handleDownloadPDF");
+//   Swal.fire("Error", "No data available to generate PDF.", "error");
+//   return;
+// }
+// try {
+//   const response = await axiosInstance.get(
+//     `/pdf/invoice?InvoiceBillingId=${invoiceDataFromState._id}`,
+//     {
+//       responseType: "blob",
+//     }
+//   );
+//   const url = window.URL.createObjectURL(new Blob([response.data]));
+//   const link = document.createElement("a");
+//   link.href = url;
+//   link.setAttribute("download", `${invoiceDataFromState.invoiceNumber || "invoice"}.pdf`);
+//   document.body.appendChild(link);
+//   link.click();
+//   link.remove();
+// } catch (error) {
+//   console.error("❌ Error downloading invoice PDF:", error);
+//   alert("Failed to download invoice PDF.");
+// }
 
+// if (!invoiceDataFromState) {
+//   console.error("No data provided to handleDownloadPDF");
+//   Swal.fire("Error", "No data available to generate PDF.", "error");
+//   return;
+// }
 
+// try {
+//   const response = await axiosInstance.get(
+//     `/pdf/invoice?InvoiceBillingId=${invoiceDataFromState._id}`,
+//     {
+//       responseType: "blob",
+//     }
+//   );
+//   const url = window.URL.createObjectURL(new Blob([response.data]));
+//   const link = document.createElement("a");
+//   link.href = url;
+//   link.setAttribute("download", `${invoiceDataFromState.invoiceNumber || "invoice"}.pdf`);
+//   document.body.appendChild(link);
+//   link.click();
+//   link.remove();
+// } catch (error) {
+//   console.error("❌ Error downloading invoice PDF:", error);
+//   alert("Failed to download invoice PDF.");
+// }
+// try {
+//   const response = await axiosInstance.get(
+//     `/pdf/invoice?InvoiceBillingId=${invoiceDataFromState._id}`,
+//     {
+//       responseType: "blob",
+//     }
+//   );
+//    consol.log(response,"ggg")
+//   // Log the Blob data as base64
+//   const reader = new FileReader();
+//   reader.onloadend = function () {
+//     console.log("API Response Data (Base64):", reader.result);  // Logs base64-encoded data
+//   };
+//   reader.readAsDataURL(response.data); // Convert blob to base64
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+//   const url = window.URL.createObjectURL(new Blob([response.data]));
+//   const link = document.createElement("a");
+//   link.href = url;
+//   link.setAttribute("download", `${invoiceDataFromState.invoiceNumber || "invoice"}.pdf`);
+//   document.body.appendChild(link);
+//   link.click();
+//   link.remove();
+// } catch (error) {
+//   console.error("❌ Error downloading invoice PDF:", error);
+//   alert("Failed to download invoice PDF.");
+// }
 
 
 
@@ -29656,7 +29618,42 @@ export default CostEstimates;
 
 
 
-        import React, { useState, useEffect, useRef } from 'react';
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+import React, { useState, useEffect, useRef } from 'react';
 import { Button, Form, Dropdown, ButtonGroup, Badge, Container, Row, Col, ProgressBar, Modal, Popover, Overlay, Accordion } from 'react-bootstrap';
 import { FunnelFill, Link, List, ChevronDown, ChevronUp } from 'react-bootstrap-icons';
 import { Kanban, Plus } from 'react-bootstrap-icons';
@@ -32035,1103 +32032,1103 @@ import { deleteproject, fetchProject } from '../../../../redux/slices/ProjectsSl
 
 // --- Kanban Workflow Data ---
 const initialStages = [
-    { id: 'create-proposal', title: 'Create Proposal' },
-    { id: 'client-review', title: 'Client Review' }, // Changed from 'automatic-delivery'
-    { id: 'client-signing', title: 'Contract Signing' },
-    { id: 'auto-activation', title: 'Auto-Activation' }
+  { id: 'create-proposal', title: 'Create Proposal' },
+  { id: 'client-review', title: 'Client Review' }, // Changed from 'automatic-delivery'
+  { id: 'client-signing', title: 'Contract Signing' },
+  { id: 'auto-activation', title: 'Auto-Activation' }
 ];
 
 const initialProposals = [
-    {
-        id: 'p1',
-        title: 'Proposal for Sunrise Apartments',
-        client: 'Ramesh Kumar',
-        status: 'Draft',
-        stage: 'lead',
-        // stage: 'create-proposal',
-        updated: '2025-06-07 10:30',
-        logs: [
-            { by: 'Admin', at: '2025-06-07 10:30', note: 'Created proposal' }
-        ]
-    },
-    {
-        id: 'p2',
-        title: 'Proposal for Metro Mall',
-        client: 'Sunita Singh',
-        status: 'Sent',
-        stage: 'lead', // was 'automatic-delivery'
-        // stage: 'client-review', // was 'automatic-delivery'
-        updated: '2025-06-07 11:00',
-        logs: [
-            { by: 'Admin', at: '2025-06-07 10:45', note: 'Proposal sent via email' }
-        ]
-    },
-    {
-        id: 'p3',
-        title: 'Proposal for Greenfield School',
-        client: 'Ajay Mehra',
-        status: 'Awaiting Signature',
-        stage: 'client-signing',
-        updated: '2025-06-07 11:30',
-        logs: [
-            { by: 'Client', at: '2025-06-07 11:25', note: 'Opened email' }
-        ]
-    }
+  {
+    id: 'p1',
+    title: 'Proposal for Sunrise Apartments',
+    client: 'Ramesh Kumar',
+    status: 'Draft',
+    stage: 'lead',
+    // stage: 'create-proposal',
+    updated: '2025-06-07 10:30',
+    logs: [
+      { by: 'Admin', at: '2025-06-07 10:30', note: 'Created proposal' }
+    ]
+  },
+  {
+    id: 'p2',
+    title: 'Proposal for Metro Mall',
+    client: 'Sunita Singh',
+    status: 'Sent',
+    stage: 'lead', // was 'automatic-delivery'
+    // stage: 'client-review', // was 'automatic-delivery'
+    updated: '2025-06-07 11:00',
+    logs: [
+      { by: 'Admin', at: '2025-06-07 10:45', note: 'Proposal sent via email' }
+    ]
+  },
+  {
+    id: 'p3',
+    title: 'Proposal for Greenfield School',
+    client: 'Ajay Mehra',
+    status: 'Awaiting Signature',
+    stage: 'client-signing',
+    updated: '2025-06-07 11:30',
+    logs: [
+      { by: 'Client', at: '2025-06-07 11:25', note: 'Opened email' }
+    ]
+  }
 ];
 
 const projects = [
-    {
-        name: "Sunrise Apartments (Plus)",
-        client: "Ramesh Kumar",
-        billing: "Fixed Price",
-        phases: "2 phases",
-        status: "lead",
-        revenue: "$120,000.00",
-        committedCost: "$80,000.00",
-        profitLoss: "$40,000.00",
-        percent: "33%",
-        color: "primary"
-    },
-    {
-        name: "Metro Mall Renovation",
-        client: "Sunita Singh",
-        billing: "AIA-style",
-        phases: "1 phase",
-        status: "Active",
-        revenue: "$15,000.00",
-        committedCost: "$7,500.00",
-        profitLoss: "$7,500.00",
-        percent: "50%",
-        color: "info"
-    },
-    {
-        name: "Greenfield School",
-        client: "Ajay Mehra",
-        billing: "Cost Plus",
-        phases: "3 phases",
-        status: "Active",
-        revenue: "$290,000.00",
-        committedCost: "$193,400.00",
-        profitLoss: "$96,600.00",
-        percent: "33%",
-        color: "danger"
-    },
-    {
-        name: "Greenfield School",
-        client: "Ajay Mehra",
-        billing: "Cost Plus",
-        phases: "3 phases",
-        status: "Biding",
-        revenue: "$290,000.00",
-        committedCost: "$193,400.00",
-        profitLoss: "$96,600.00",
-        percent: "33%",
-        color: "danger"
-    }
+  {
+    name: "Sunrise Apartments (Plus)",
+    client: "Ramesh Kumar",
+    billing: "Fixed Price",
+    phases: "2 phases",
+    status: "lead",
+    revenue: "$120,000.00",
+    committedCost: "$80,000.00",
+    profitLoss: "$40,000.00",
+    percent: "33%",
+    color: "primary"
+  },
+  {
+    name: "Metro Mall Renovation",
+    client: "Sunita Singh",
+    billing: "AIA-style",
+    phases: "1 phase",
+    status: "Active",
+    revenue: "$15,000.00",
+    committedCost: "$7,500.00",
+    profitLoss: "$7,500.00",
+    percent: "50%",
+    color: "info"
+  },
+  {
+    name: "Greenfield School",
+    client: "Ajay Mehra",
+    billing: "Cost Plus",
+    phases: "3 phases",
+    status: "Active",
+    revenue: "$290,000.00",
+    committedCost: "$193,400.00",
+    profitLoss: "$96,600.00",
+    percent: "33%",
+    color: "danger"
+  },
+  {
+    name: "Greenfield School",
+    client: "Ajay Mehra",
+    billing: "Cost Plus",
+    phases: "3 phases",
+    status: "Biding",
+    revenue: "$290,000.00",
+    committedCost: "$193,400.00",
+    profitLoss: "$96,600.00",
+    percent: "33%",
+    color: "danger"
+  }
 ];
 
 // --- Proposal Creation Modal ---
 const ProposalCreationModal = ({ show, onHide, onSave }) => {
-    const [title, setTitle] = useState('');
-    const [client, setClient] = useState('');
-    const [details, setDetails] = useState('');
-    return (
-        <Modal show={show} onHide={onHide} centered>
-            <Modal.Header closeButton>
-                <Modal.Title>Create/Edit Proposal</Modal.Title>
-            </Modal.Header>
-            <Modal.Body>
-                <Form>
-                    <Form.Group className="mb-2">
-                        <Form.Label>Proposal Title</Form.Label>
-                        <Form.Control value={title} onChange={e => setTitle(e.target.value)} />
-                    </Form.Group>
-                    <Form.Group className="mb-2">
-                        <Form.Label>Client Name</Form.Label>
-                        <Form.Control value={client} onChange={e => setClient(e.target.value)} />
-                    </Form.Group>
-                    <Form.Group className="mb-2">
-                        <Form.Label>Bid/Proposal Details</Form.Label>
-                        <Form.Control as="textarea" rows={3} value={details} onChange={e => setDetails(e.target.value)} />
-                    </Form.Group>
-                    <div className="d-flex gap-2 mt-3">
-                        <Button variant="outline-primary" onClick={() => alert('Text Bid sent!')}>Text Bid</Button>
-                        <Button variant="primary" onClick={() => alert('Email Bid sent!')}>Email Bid</Button>
-                    </div>
-                </Form>
-                <div className="mt-4">
-                    <h6>Preview</h6>
-                    <div className="border rounded p-2 bg-light">
-                        <strong>{title || 'Proposal Title'}</strong>
-                        <div>{client || 'Client Name'}</div>
-                        <div className="text-muted small">{details || 'Proposal details preview...'}</div>
-                    </div>
-                </div>
-            </Modal.Body>
-            <Modal.Footer>
-                <Button variant="secondary" onClick={onHide}>Cancel</Button>
-                <Button variant="primary" onClick={() => { onSave({ title, client, details }); onHide(); }}>Save</Button>
-            </Modal.Footer>
-        </Modal>
-    );
+  const [title, setTitle] = useState('');
+  const [client, setClient] = useState('');
+  const [details, setDetails] = useState('');
+  return (
+    <Modal show={show} onHide={onHide} centered>
+      <Modal.Header closeButton>
+        <Modal.Title>Create/Edit Proposal</Modal.Title>
+      </Modal.Header>
+      <Modal.Body>
+        <Form>
+          <Form.Group className="mb-2">
+            <Form.Label>Proposal Title</Form.Label>
+            <Form.Control value={title} onChange={e => setTitle(e.target.value)} />
+          </Form.Group>
+          <Form.Group className="mb-2">
+            <Form.Label>Client Name</Form.Label>
+            <Form.Control value={client} onChange={e => setClient(e.target.value)} />
+          </Form.Group>
+          <Form.Group className="mb-2">
+            <Form.Label>Bid/Proposal Details</Form.Label>
+            <Form.Control as="textarea" rows={3} value={details} onChange={e => setDetails(e.target.value)} />
+          </Form.Group>
+          <div className="d-flex gap-2 mt-3">
+            <Button variant="outline-primary" onClick={() => alert('Text Bid sent!')}>Text Bid</Button>
+            <Button variant="primary" onClick={() => alert('Email Bid sent!')}>Email Bid</Button>
+          </div>
+        </Form>
+        <div className="mt-4">
+          <h6>Preview</h6>
+          <div className="border rounded p-2 bg-light">
+            <strong>{title || 'Proposal Title'}</strong>
+            <div>{client || 'Client Name'}</div>
+            <div className="text-muted small">{details || 'Proposal details preview...'}</div>
+          </div>
+        </div>
+      </Modal.Body>
+      <Modal.Footer>
+        <Button variant="secondary" onClick={onHide}>Cancel</Button>
+        <Button variant="primary" onClick={() => { onSave({ title, client, details }); onHide(); }}>Save</Button>
+      </Modal.Footer>
+    </Modal>
+  );
 };
 
 // --- Proposal Card ---
 const ProposalCard = ({ proposal, onShowLogs }) => (
-    <div className="bg-white border rounded mb-2 p-2 shadow-sm" style={{ minHeight: 110, wordBreak: 'break-word', maxWidth: '100%' }}>
-        <div className="fw-semibold">{proposal.title}</div>
-        <div className="text-muted small">{proposal.client}</div>
-        <div className="small">Status: <span className="fw-bold">{proposal.status}</span></div>
-        <div className="small text-muted">Last updated: {proposal.updated}</div>
-        <Button size="sm" variant="link" className="p-0 mt-1" onClick={() => onShowLogs(proposal.logs)}>
-            Stage logs
-        </Button>
-    </div>
+  <div className="bg-white border rounded mb-2 p-2 shadow-sm" style={{ minHeight: 110, wordBreak: 'break-word', maxWidth: '100%' }}>
+    <div className="fw-semibold">{proposal.title}</div>
+    <div className="text-muted small">{proposal.client}</div>
+    <div className="small">Status: <span className="fw-bold">{proposal.status}</span></div>
+    <div className="small text-muted">Last updated: {proposal.updated}</div>
+    <Button size="sm" variant="link" className="p-0 mt-1" onClick={() => onShowLogs(proposal.logs)}>
+      Stage logs
+    </Button>
+  </div>
 );
 
 const ReportsDashboard = () => {
-    const reports = [
-        {
-            title: "Backlog Report",
-            description: "Report with backlog information, including contract value and labor"
-        },
-        {
-            title: "Basic Jobs Report",
-            description: "Output with all the company jobs, with contract information when applicable"
-        },
-        {
-            title: "Advanced Jobs Report",
-            description: "Report with all the company jobs, including P&L information"
-        },
-        {
-            title: "Contract Progress Report",
-            description: "Report with all contract items in active Fixed Price jobs"
-        },
-        {
-            title: "Job Purchases Report",
-            description: "Report with all materials estimated and ordered across all the company jobs"
-        },
-        {
-            title: "GC Report",
-            description: "Report with all the Fixed Price (AIA-style billing) proposals"
-        },
-        {
-            title: "Owner Report",
-            description: "Report with all the Fixed Price (regular billing) proposals"
-        },
-        {
-            title: "Sales",
-            description: "Report with all Fixed Price contract jobs grouped by sales lead"
-        },
-        {
-            title: "Change Order Report",
-            description: "Report with all the company change orders"
-        }
-    ];
+  const reports = [
+    {
+      title: "Backlog Report",
+      description: "Report with backlog information, including contract value and labor"
+    },
+    {
+      title: "Basic Jobs Report",
+      description: "Output with all the company jobs, with contract information when applicable"
+    },
+    {
+      title: "Advanced Jobs Report",
+      description: "Report with all the company jobs, including P&L information"
+    },
+    {
+      title: "Contract Progress Report",
+      description: "Report with all contract items in active Fixed Price jobs"
+    },
+    {
+      title: "Job Purchases Report",
+      description: "Report with all materials estimated and ordered across all the company jobs"
+    },
+    {
+      title: "GC Report",
+      description: "Report with all the Fixed Price (AIA-style billing) proposals"
+    },
+    {
+      title: "Owner Report",
+      description: "Report with all the Fixed Price (regular billing) proposals"
+    },
+    {
+      title: "Sales",
+      description: "Report with all Fixed Price contract jobs grouped by sales lead"
+    },
+    {
+      title: "Change Order Report",
+      description: "Report with all the company change orders"
+    }
+  ];
 
-    return (
-        <div className="container py-4 bg-white">
-            <div className="row">
-                <div className="col-12">
-                    {reports.map((report, index) => (
-                        <div key={index} className="mb-4">
-                            <h6 className="text-primary fw-semibold">{report.title}</h6>
-                            <p className="text-muted small mb-0">{report.description}</p>
-                        </div>
-                    ))}
-                </div>
+  return (
+    <div className="container py-4 bg-white">
+      <div className="row">
+        <div className="col-12">
+          {reports.map((report, index) => (
+            <div key={index} className="mb-4">
+              <h6 className="text-primary fw-semibold">{report.title}</h6>
+              <p className="text-muted small mb-0">{report.description}</p>
             </div>
+          ))}
         </div>
-    );
+      </div>
+    </div>
+  );
 };
 
 const NewContractJobPage = ({ onClose, onSave }) => {
-    const [jobName, setJobName] = useState('');
-    const [clientName, setClientName] = useState('Bob Belcher');
-    const [billingType, setBillingType] = useState('fixed-price');
-    const [tags, setTags] = useState('');
-    const [bidDueDate, setBidDueDate] = useState('06/10/25');
-    const [schedulingColor, setSchedulingColor] = useState('yellow');
-    const [salesLead, setSalesLead] = useState('');
-    const [projectManager, setProjectManager] = useState('');
-    const [address, setAddress] = useState('');
-    const [aptSuite, setAptSuite] = useState('');
+  const [jobName, setJobName] = useState('');
+  const [clientName, setClientName] = useState('Bob Belcher');
+  const [billingType, setBillingType] = useState('fixed-price');
+  const [tags, setTags] = useState('');
+  const [bidDueDate, setBidDueDate] = useState('06/10/25');
+  const [schedulingColor, setSchedulingColor] = useState('yellow');
+  const [salesLead, setSalesLead] = useState('');
+  const [projectManager, setProjectManager] = useState('');
+  const [address, setAddress] = useState('');
+  const [aptSuite, setAptSuite] = useState('');
 
-    // Save handler (shared by both buttons)
-    const handleSave = () => {
-        if (onSave) {
-            onSave({
-                jobName,
-                clientName,
-                billingType,
-                tags,
-                bidDueDate,
-                schedulingColor,
-                salesLead,
-                projectManager,
-                address,
-                aptSuite
-            });
-        }
-        onClose();
-    };
+  // Save handler (shared by both buttons)
+  const handleSave = () => {
+    if (onSave) {
+      onSave({
+        jobName,
+        clientName,
+        billingType,
+        tags,
+        bidDueDate,
+        schedulingColor,
+        salesLead,
+        projectManager,
+        address,
+        aptSuite
+      });
+    }
+    onClose();
+  };
 
-    const handleDiscard = () => {
-        onClose();
-    };
+  const handleDiscard = () => {
+    onClose();
+  };
 
-    return (
-        <div className="min-vh-100 bg-light">
-            <div className="bg-white border-bottom shadow-sm">
-                <div className="container-fluid">
-                    <div className="d-flex justify-content-between align-items-center py-3 px-4">
-                        <div className="d-flex align-items-center">
-                            <button
-                                type="button"
-                                className="btn btn-light me-3 p-2"
-                                onClick={onClose}
-                            >x
-                            </button>
-                            <h2 className="mb-0 fw-semibold">New Proposals</h2>
-                        </div>
-                        <div className="d-flex gap-2">
-                            <button
-                                type="button"
-                                className="btn btn-outline-secondary"
-                                onClick={handleDiscard}
-                            >
-                                Discard
-                            </button>
-                            <button
-                                type="button"
-                                className="btn btn-primary"
-                                onClick={handleSave}
-                            >
-                                Save Job
-                            </button>
-                        </div>
-                    </div>
-                </div>
+  return (
+    <div className="min-vh-100 bg-light">
+      <div className="bg-white border-bottom shadow-sm">
+        <div className="container-fluid">
+          <div className="d-flex justify-content-between align-items-center py-3 px-4">
+            <div className="d-flex align-items-center">
+              <button
+                type="button"
+                className="btn btn-light me-3 p-2"
+                onClick={onClose}
+              >x
+              </button>
+              <h2 className="mb-0 fw-semibold">New Proposals</h2>
             </div>
+            <div className="d-flex gap-2">
+              <button
+                type="button"
+                className="btn btn-outline-secondary"
+                onClick={handleDiscard}
+              >
+                Discard
+              </button>
+              <button
+                type="button"
+                className="btn btn-primary"
+                onClick={handleSave}
+              >
+                Save Job
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
 
-            <div className="container-fluid py-4">
-                <div className="row justify-content-center">
-                    <div className="col-12 col-xl-10">
-                        <div className="bg-white rounded shadow-sm p-4">
-                            <div className="row g-4">
-                                <div className="col-12">
-                                    <label className="form-label fw-semibold">Job Name</label>
-                                    <input
-                                        type="text"
-                                        className="form-control"
-                                        value={jobName}
-                                        onChange={(e) => setJobName(e.target.value)}
-                                        style={{ maxWidth: '500px' }}
-                                    />
-                                </div>
+      <div className="container-fluid py-4">
+        <div className="row justify-content-center">
+          <div className="col-12 col-xl-10">
+            <div className="bg-white rounded shadow-sm p-4">
+              <div className="row g-4">
+                <div className="col-12">
+                  <label className="form-label fw-semibold">Job Name</label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    value={jobName}
+                    onChange={(e) => setJobName(e.target.value)}
+                    style={{ maxWidth: '500px' }}
+                  />
+                </div>
 
-                                <div className="col-12">
-                                    <label className="form-label fw-semibold">
-                                        Client Name <span className="text-danger">*</span>
-                                    </label>
-                                    <div className="position-relative" style={{ maxWidth: '500px' }}>
-                                        <input
-                                            type="text"
-                                            className="form-control"
-                                            value={clientName}
-                                            onChange={(e) => setClientName(e.target.value)}
-                                        />
-                                    </div>
-                                </div>
+                <div className="col-12">
+                  <label className="form-label fw-semibold">
+                    Client Name <span className="text-danger">*</span>
+                  </label>
+                  <div className="position-relative" style={{ maxWidth: '500px' }}>
+                    <input
+                      type="text"
+                      className="form-control"
+                      value={clientName}
+                      onChange={(e) => setClientName(e.target.value)}
+                    />
+                  </div>
+                </div>
 
-                                <div className="col-12">
-                                    <label className="form-label fw-semibold mb-3">Which of these best describes the job?</label>
-                                    <div className="row g-3">
-                                        <div className="col-md-4">
-                                            <div
-                                                className={`card h-100 ${billingType === 'fixed-price' ? 'border-primary border-2' : 'border'}`}
-                                                onClick={() => setBillingType('fixed-price')}
-                                                style={{ cursor: 'pointer' }}
-                                            >
-                                                <div className="card-body p-3">
-                                                    <p className="card-text small mb-3">
-                                                        We are performing work for a <strong>lump sum</strong> and we will bill for it on
-                                                        a <strong>percent completion basis</strong>. Change orders will be applied as
-                                                        necessary.
-                                                    </p>
-                                                    <div className="text-center">
-                                                        <span className="badge bg-primary">Fixed Price</span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
+                <div className="col-12">
+                  <label className="form-label fw-semibold mb-3">Which of these best describes the job?</label>
+                  <div className="row g-3">
+                    <div className="col-md-4">
+                      <div
+                        className={`card h-100 ${billingType === 'fixed-price' ? 'border-primary border-2' : 'border'}`}
+                        onClick={() => setBillingType('fixed-price')}
+                        style={{ cursor: 'pointer' }}
+                      >
+                        <div className="card-body p-3">
+                          <p className="card-text small mb-3">
+                            We are performing work for a <strong>lump sum</strong> and we will bill for it on
+                            a <strong>percent completion basis</strong>. Change orders will be applied as
+                            necessary.
+                          </p>
+                          <div className="text-center">
+                            <span className="badge bg-primary">Fixed Price</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
 
-                                        <div className="col-md-4">
-                                            <div
-                                                className={`card h-100 ${billingType === 'fixed-price-aia' ? 'border-primary border-2' : 'border'}`}
-                                                onClick={() => setBillingType('fixed-price-aia')}
-                                                style={{ cursor: 'pointer' }}
-                                            >
-                                                <div className="card-body p-3">
-                                                    <p className="card-text small mb-3">
-                                                        We are working for a commercial GC or government and expect to
-                                                        bill with <strong>AIA-style</strong> applications for payment. Change orders will be
-                                                        applied as necessary.
-                                                    </p>
-                                                    <div className="text-center">
-                                                        <span className="badge bg-primary">Fixed Price with AIA-style billing</span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
+                    <div className="col-md-4">
+                      <div
+                        className={`card h-100 ${billingType === 'fixed-price-aia' ? 'border-primary border-2' : 'border'}`}
+                        onClick={() => setBillingType('fixed-price-aia')}
+                        style={{ cursor: 'pointer' }}
+                      >
+                        <div className="card-body p-3">
+                          <p className="card-text small mb-3">
+                            We are working for a commercial GC or government and expect to
+                            bill with <strong>AIA-style</strong> applications for payment. Change orders will be
+                            applied as necessary.
+                          </p>
+                          <div className="text-center">
+                            <span className="badge bg-primary">Fixed Price with AIA-style billing</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
 
-                                        <div className="col-md-4">
-                                            <div
-                                                className={`card h-100 ${billingType === 'cost-plus' ? 'border-primary border-2' : 'border'}`}
-                                                onClick={() => setBillingType('cost-plus')}
-                                                style={{ cursor: 'pointer' }}
-                                            >
-                                                <div className="card-body p-3">
-                                                    <p className="card-text small mb-3">
-                                                        It is a <strong>time and materials job</strong> or something else requiring custom
-                                                        pricing tools. If a change is required, a whole new contract will
-                                                        be produced.
-                                                    </p>
-                                                    <div className="text-center">
-                                                        <span className="badge bg-secondary">Cost plus / other</span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
+                    <div className="col-md-4">
+                      <div
+                        className={`card h-100 ${billingType === 'cost-plus' ? 'border-primary border-2' : 'border'}`}
+                        onClick={() => setBillingType('cost-plus')}
+                        style={{ cursor: 'pointer' }}
+                      >
+                        <div className="card-body p-3">
+                          <p className="card-text small mb-3">
+                            It is a <strong>time and materials job</strong> or something else requiring custom
+                            pricing tools. If a change is required, a whole new contract will
+                            be produced.
+                          </p>
+                          <div className="text-center">
+                            <span className="badge bg-secondary">Cost plus / other</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
 
-                                    <p className="text-muted small mt-2">
-                                        * This job will use the default job costing mode. Click <a href="#" className="text-primary">here</a> in case you look for more advanced options.
-                                    </p>
-                                </div>
+                  <p className="text-muted small mt-2">
+                    * This job will use the default job costing mode. Click <a href="#" className="text-primary">here</a> in case you look for more advanced options.
+                  </p>
+                </div>
 
-                                <div className="col-12">
-                                    <div className="row g-4">
-                                        <div className="col-md-6">
-                                            <div className="form-check mb-2">
-                                                <input className="form-check-input" type="checkbox" id="setTags" defaultChecked />
-                                                <label className="form-check-label fw-semibold" htmlFor="setTags">
-                                                    Set Tags
-                                                </label>
-                                            </div>
-                                            <input
-                                                type="text"
-                                                className="form-control"
-                                                placeholder="Enter tag"
-                                                value={tags}
-                                                onChange={(e) => setTags(e.target.value)}
-                                            />
-                                        </div>
+                <div className="col-12">
+                  <div className="row g-4">
+                    <div className="col-md-6">
+                      <div className="form-check mb-2">
+                        <input className="form-check-input" type="checkbox" id="setTags" defaultChecked />
+                        <label className="form-check-label fw-semibold" htmlFor="setTags">
+                          Set Tags
+                        </label>
+                      </div>
+                      <input
+                        type="text"
+                        className="form-control"
+                        placeholder="Enter tag"
+                        value={tags}
+                        onChange={(e) => setTags(e.target.value)}
+                      />
+                    </div>
 
-                                        <div className="col-md-6">
-                                            <div className="form-check mb-2">
-                                                <input className="form-check-input" type="checkbox" id="setBidDate" defaultChecked />
-                                                <label className="form-check-label fw-semibold" htmlFor="setBidDate">
-                                                    Set Bid Due Date
-                                                </label>
-                                            </div>
-                                            <input
-                                                type="text"
-                                                className="form-control"
-                                                value={bidDueDate}
-                                                onChange={(e) => setBidDueDate(e.target.value)}
-                                            />
-                                        </div>
+                    <div className="col-md-6">
+                      <div className="form-check mb-2">
+                        <input className="form-check-input" type="checkbox" id="setBidDate" defaultChecked />
+                        <label className="form-check-label fw-semibold" htmlFor="setBidDate">
+                          Set Bid Due Date
+                        </label>
+                      </div>
+                      <input
+                        type="text"
+                        className="form-control"
+                        value={bidDueDate}
+                        onChange={(e) => setBidDueDate(e.target.value)}
+                      />
+                    </div>
 
-                                        <div className="col-md-6">
-                                            {/* <div className="form-check mb-2">
+                    <div className="col-md-6">
+                      {/* <div className="form-check mb-2">
                         <input className="form-check-input" type="checkbox" id="setColor" defaultChecked />
                         <label className="form-check-label fw-semibold" htmlFor="setColor">
                           Set Scheduling Color
                         </label>
                       </div> */}
-                                            <select
-                                                className="form-select"
-                                                value={schedulingColor}
-                                                onChange={(e) => setSchedulingColor(e.target.value)}
-                                                style={{ backgroundColor: 'blue' }}
-                                            >
-                                                <option value="yellow">Yellow</option>
-                                                <option value="red">Red</option>
-                                                <option value="blue">Blue</option>
-                                                <option value="green">Green</option>
-                                            </select>
-                                        </div>
-
-                                        <div className="col-md-6">
-                                            <div className="form-check mb-2">
-                                                <input className="form-check-input" type="checkbox" id="setSalesLead" defaultChecked />
-                                                <label className="form-check-label fw-semibold" htmlFor="setSalesLead">
-                                                    Set Sales Lead
-                                                </label>
-                                            </div>
-                                            <select
-                                                className="form-select"
-                                                value={salesLead}
-                                                onChange={(e) => setSalesLead(e.target.value)}
-                                            >
-                                                <option value="">Select Sales Lead</option>
-                                                <option value="john">John Doe</option>
-                                                <option value="jane">Jane Smith</option>
-                                            </select>
-                                        </div>
-
-                                        <div className="col-md-6">
-                                            <div className="form-check mb-2">
-                                                <input className="form-check-input" type="checkbox" id="setProjectManager" defaultChecked />
-                                                <label className="form-check-label fw-semibold" htmlFor="setProjectManager">
-                                                    Set Project Manager
-                                                </label>
-                                            </div>
-                                            <select
-                                                className="form-select"
-                                                value={projectManager}
-                                                onChange={(e) => setProjectManager(e.target.value)}
-                                            >
-                                                <option value="">Select Project Manager</option>
-                                                <option value="mike">Mike Johnson</option>
-                                                <option value="sarah">Sarah Wilson</option>
-                                            </select>
-                                        </div>
-
-                                        <div className="col-12">
-                                            <div className="form-check mb-2">
-                                                <input className="form-check-input" type="checkbox" id="setJobAddress" defaultChecked />
-                                                <label className="form-check-label fw-semibold" htmlFor="setJobAddress">
-                                                    Set Job Address
-                                                </label>
-                                            </div>
-                                            <div className="row g-3">
-                                                <div className="col-12">
-                                                    <label className="form-label small text-muted">Address</label>
-                                                    <textarea
-                                                        className="form-control"
-                                                        rows="2"
-                                                        value={address}
-                                                        onChange={(e) => setAddress(e.target.value)}
-                                                    />
-                                                    <small className="text-primary">Search again. Enter manually</small>
-                                                </div>
-                                                <div className="col-md-6">
-                                                    <label className="form-label small text-muted">Apt, Suite, etc. (optional)</label>
-                                                    <input
-                                                        type="text"
-                                                        className="form-control"
-                                                        value={aptSuite}
-                                                        onChange={(e) => setAptSuite(e.target.value)}
-                                                    />
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                {/* --- Blue Save Job button at the bottom --- */}
-                                <div className="col-12 d-flex justify-content-end mt-4">
-                                    <button
-                                        type="button"
-                                        className="btn btn-primary px-4"
-                                        onClick={handleSave}
-                                    >
-                                        Save Job
-                                    </button>
-                                </div>
-                                {/* --- End Save Job button --- */}
-                            </div>
-                        </div>
+                      <select
+                        className="form-select"
+                        value={schedulingColor}
+                        onChange={(e) => setSchedulingColor(e.target.value)}
+                        style={{ backgroundColor: 'blue' }}
+                      >
+                        <option value="yellow">Yellow</option>
+                        <option value="red">Red</option>
+                        <option value="blue">Blue</option>
+                        <option value="green">Green</option>
+                      </select>
                     </div>
+
+                    <div className="col-md-6">
+                      <div className="form-check mb-2">
+                        <input className="form-check-input" type="checkbox" id="setSalesLead" defaultChecked />
+                        <label className="form-check-label fw-semibold" htmlFor="setSalesLead">
+                          Set Sales Lead
+                        </label>
+                      </div>
+                      <select
+                        className="form-select"
+                        value={salesLead}
+                        onChange={(e) => setSalesLead(e.target.value)}
+                      >
+                        <option value="">Select Sales Lead</option>
+                        <option value="john">John Doe</option>
+                        <option value="jane">Jane Smith</option>
+                      </select>
+                    </div>
+
+                    <div className="col-md-6">
+                      <div className="form-check mb-2">
+                        <input className="form-check-input" type="checkbox" id="setProjectManager" defaultChecked />
+                        <label className="form-check-label fw-semibold" htmlFor="setProjectManager">
+                          Set Project Manager
+                        </label>
+                      </div>
+                      <select
+                        className="form-select"
+                        value={projectManager}
+                        onChange={(e) => setProjectManager(e.target.value)}
+                      >
+                        <option value="">Select Project Manager</option>
+                        <option value="mike">Mike Johnson</option>
+                        <option value="sarah">Sarah Wilson</option>
+                      </select>
+                    </div>
+
+                    <div className="col-12">
+                      <div className="form-check mb-2">
+                        <input className="form-check-input" type="checkbox" id="setJobAddress" defaultChecked />
+                        <label className="form-check-label fw-semibold" htmlFor="setJobAddress">
+                          Set Job Address
+                        </label>
+                      </div>
+                      <div className="row g-3">
+                        <div className="col-12">
+                          <label className="form-label small text-muted">Address</label>
+                          <textarea
+                            className="form-control"
+                            rows="2"
+                            value={address}
+                            onChange={(e) => setAddress(e.target.value)}
+                          />
+                          <small className="text-primary">Search again. Enter manually</small>
+                        </div>
+                        <div className="col-md-6">
+                          <label className="form-label small text-muted">Apt, Suite, etc. (optional)</label>
+                          <input
+                            type="text"
+                            className="form-control"
+                            value={aptSuite}
+                            onChange={(e) => setAptSuite(e.target.value)}
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                 </div>
+                {/* --- Blue Save Job button at the bottom --- */}
+                <div className="col-12 d-flex justify-content-end mt-4">
+                  <button
+                    type="button"
+                    className="btn btn-primary px-4"
+                    onClick={handleSave}
+                  >
+                    Save Job
+                  </button>
+                </div>
+                {/* --- End Save Job button --- */}
+              </div>
             </div>
+          </div>
         </div>
-    );
+      </div>
+    </div>
+  );
 };
 
 const ChangeOrdersUI = () => {
-    const [activeTab, setActiveTab] = useState('change-orders');
-    const [searchTerm, setSearchTerm] = useState('');
+  const [activeTab, setActiveTab] = useState('change-orders');
+  const [searchTerm, setSearchTerm] = useState('');
 
-    return (
-        <div className="bg-white min-vh-100">
-            {/* Navigation Tabs */}
-            <div className="bg-white">
-                <div className="container-fluid px-3 pt-3">
-                    <div className="d-flex gap-1">
-                        <button
-                            className={`btn btn-sm px-3 py-2 rounded-1 border-0 fw-medium ${activeTab === 'change-orders'
-                                ? 'bg-dark text-white'
-                                : 'bg-light text-secondary'
-                                }`}
-                            onClick={() => setActiveTab('change-orders')}
-                        >
-                            Change orders
-                        </button>
-                        <button
-                            className={`btn btn-sm px-3 py-2 rounded-1 border-0 fw-medium ${activeTab === 'daily-logs'
-                                ? 'bg-dark text-white'
-                                : 'bg-light text-secondary'
-                                }`}
-                            onClick={() => setActiveTab('daily-logs')}
-                        >
-                            Daily logs
-                        </button>
-                        <button
-                            className={`btn btn-sm px-3 py-2 rounded-1 border-0 fw-medium ${activeTab === 'phases'
-                                ? 'bg-dark text-white'
-                                : 'bg-light text-secondary'
-                                }`}
-                            onClick={() => setActiveTab('phases')}
-                        >
-                            Phases
-                        </button>
-                    </div>
-                </div>
-            </div>
-
-            {/* Search and Filter Bar */}
-            <div className="bg-white border-top border-bottom">
-                <div className="container-fluid px-3 py-3">
-                    <div className="row align-items-center">
-                        <div className="col-md-4">
-                            <div className="position-relative">
-                                <input
-                                    type="text"
-                                    className="form-control border border-secondary rounded-1 ps-2"
-                                    placeholder="Search"
-                                    value={searchTerm}
-                                    onChange={(e) => setSearchTerm(e.target.value)}
-                                    style={{ fontSize: '14px' }}
-                                />
-                            </div>
-                        </div>
-                        <div className="col-md-8">
-                            <div className="d-flex justify-content-start gap-2 ms-2">
-                                <button className="btn btn-outline-secondary btn-sm border border-secondary rounded-1 px-2 py-1">
-                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                                        <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
-                                        <line x1="16" y1="2" x2="16" y2="6"></line>
-                                        <line x1="8" y1="2" x2="8" y2="6"></line>
-                                        <line x1="3" y1="10" x2="21" y2="10"></line>
-                                    </svg>
-                                </button>
-                                <button className="btn btn-outline-secondary btn-sm border border-secondary rounded-1 px-2 py-1">
-                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                                        <polygon points="22,3 2,3 10,12.46 10,19 14,21 14,12.46"></polygon>
-                                    </svg>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            {/* Results Counter */}
-            <div className="bg-white border-bottom">
-                <div className="container-fluid px-3 py-2">
-                    <div className="d-flex justify-content-between align-items-center">
-                        <span className="text-muted" style={{ fontSize: '13px' }}>0 of 0</span>
-                        <div className="d-flex gap-1">
-                            <button className="btn btn-link btn-sm text-muted p-1 border-0">
-                                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                                    <polyline points="15,18 9,12 15,6"></polyline>
-                                </svg>
-                            </button>
-                            <button className="btn btn-link btn-sm text-muted p-1 border-0">
-                                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                                    <polyline points="9,18 15,12 9,6"></polyline>
-                                </svg>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            {/* Main Content Area - Empty State */}
-            <div className="container-fluid px-3">
-                <div className="row justify-content-center">
-                    <div className="col-12">
-                        <div className="d-flex flex-column align-items-center justify-content-center" style={{ minHeight: '400px' }}>
-                            {/* Search Icon */}
-                            <div className="mb-4">
-                                <div
-                                    className="rounded-circle border border-2 border-dark d-flex align-items-center justify-content-center bg-white"
-                                    style={{ width: '80px', height: '80px' }}
-                                >
-                                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                                        <circle cx="11" cy="11" r="8"></circle>
-                                        <path d="m21 21-4.35-4.35"></path>
-                                    </svg>
-                                </div>
-                            </div>
-
-                            {/* No Results Message */}
-                            <h4 className="fw-bold text-dark mb-3" style={{ fontSize: '24px' }}>No results</h4>
-                            <p className="text-muted mb-0" style={{ fontSize: '14px' }}>
-                                There are no change orders to be displayed
-                            </p>
-                        </div>
-                    </div>
-                </div>
-            </div>
+  return (
+    <div className="bg-white min-vh-100">
+      {/* Navigation Tabs */}
+      <div className="bg-white">
+        <div className="container-fluid px-3 pt-3">
+          <div className="d-flex gap-1">
+            <button
+              className={`btn btn-sm px-3 py-2 rounded-1 border-0 fw-medium ${activeTab === 'change-orders'
+                ? 'bg-dark text-white'
+                : 'bg-light text-secondary'
+                }`}
+              onClick={() => setActiveTab('change-orders')}
+            >
+              Change orders
+            </button>
+            <button
+              className={`btn btn-sm px-3 py-2 rounded-1 border-0 fw-medium ${activeTab === 'daily-logs'
+                ? 'bg-dark text-white'
+                : 'bg-light text-secondary'
+                }`}
+              onClick={() => setActiveTab('daily-logs')}
+            >
+              Daily logs
+            </button>
+            <button
+              className={`btn btn-sm px-3 py-2 rounded-1 border-0 fw-medium ${activeTab === 'phases'
+                ? 'bg-dark text-white'
+                : 'bg-light text-secondary'
+                }`}
+              onClick={() => setActiveTab('phases')}
+            >
+              Phases
+            </button>
+          </div>
         </div>
-    );
+      </div>
+
+      {/* Search and Filter Bar */}
+      <div className="bg-white border-top border-bottom">
+        <div className="container-fluid px-3 py-3">
+          <div className="row align-items-center">
+            <div className="col-md-4">
+              <div className="position-relative">
+                <input
+                  type="text"
+                  className="form-control border border-secondary rounded-1 ps-2"
+                  placeholder="Search"
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  style={{ fontSize: '14px' }}
+                />
+              </div>
+            </div>
+            <div className="col-md-8">
+              <div className="d-flex justify-content-start gap-2 ms-2">
+                <button className="btn btn-outline-secondary btn-sm border border-secondary rounded-1 px-2 py-1">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                    <line x1="16" y1="2" x2="16" y2="6"></line>
+                    <line x1="8" y1="2" x2="8" y2="6"></line>
+                    <line x1="3" y1="10" x2="21" y2="10"></line>
+                  </svg>
+                </button>
+                <button className="btn btn-outline-secondary btn-sm border border-secondary rounded-1 px-2 py-1">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <polygon points="22,3 2,3 10,12.46 10,19 14,21 14,12.46"></polygon>
+                  </svg>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Results Counter */}
+      <div className="bg-white border-bottom">
+        <div className="container-fluid px-3 py-2">
+          <div className="d-flex justify-content-between align-items-center">
+            <span className="text-muted" style={{ fontSize: '13px' }}>0 of 0</span>
+            <div className="d-flex gap-1">
+              <button className="btn btn-link btn-sm text-muted p-1 border-0">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <polyline points="15,18 9,12 15,6"></polyline>
+                </svg>
+              </button>
+              <button className="btn btn-link btn-sm text-muted p-1 border-0">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <polyline points="9,18 15,12 9,6"></polyline>
+                </svg>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Main Content Area - Empty State */}
+      <div className="container-fluid px-3">
+        <div className="row justify-content-center">
+          <div className="col-12">
+            <div className="d-flex flex-column align-items-center justify-content-center" style={{ minHeight: '400px' }}>
+              {/* Search Icon */}
+              <div className="mb-4">
+                <div
+                  className="rounded-circle border border-2 border-dark d-flex align-items-center justify-content-center bg-white"
+                  style={{ width: '80px', height: '80px' }}
+                >
+                  <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <circle cx="11" cy="11" r="8"></circle>
+                    <path d="m21 21-4.35-4.35"></path>
+                  </svg>
+                </div>
+              </div>
+
+              {/* No Results Message */}
+              <h4 className="fw-bold text-dark mb-3" style={{ fontSize: '24px' }}>No results</h4>
+              <p className="text-muted mb-0" style={{ fontSize: '14px' }}>
+                There are no change orders to be displayed
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
 };
 
 const tabs = [
-    { label: 'Active Project', value: 'Active' },
-    { label: 'Pending', value: 'Pending ' },
-    { label: 'Closed', value: 'Closed' },
-    { label: 'Rejected', value: 'Rejected' },
-    { label: 'All', value: 'All' },
+  { label: 'Active Project', value: 'Active' },
+  { label: 'Pending', value: 'Pending ' },
+  { label: 'Closed', value: 'Closed' },
+  { label: 'Rejected', value: 'Rejected' },
+  { label: 'All', value: 'All' },
 ];
 
 
 const ProjectView = ({ data }) => {
-    const [stageFilter, setStageFilter] = useState(stageOptions.map(opt => opt.id)); // all checked by default
-    const [dropdownOpen, setDropdownOpen] = useState(false);
-    const [tempStageFilter, setTempStageFilter] = useState(stageFilter);
-    const [showNewContractPage, setShowNewContractPage] = useState(false);
-    const [activeTab, setActiveTab] = useState('manage');
-    const [workflowView, setWorkflowView] = useState('workflow');
-    const dropdownRef = useRef(null); // ✅ define the ref before using it
-    const [showFilterPopover, setShowFilterPopover] = useState(false);
-    const filterBtnRef = useRef(null);
-    const [filteredData, setFilteredData] = useState(data); // `data` is your original list
-    const dispatch = useDispatch()
-    const [setData] = useState([]);
+  const [stageFilter, setStageFilter] = useState(stageOptions.map(opt => opt.id)); // all checked by default
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [tempStageFilter, setTempStageFilter] = useState(stageFilter);
+  const [showNewContractPage, setShowNewContractPage] = useState(false);
+  const [activeTab, setActiveTab] = useState('manage');
+  const [workflowView, setWorkflowView] = useState('workflow');
+  const dropdownRef = useRef(null); // ✅ define the ref before using it
+  const [showFilterPopover, setShowFilterPopover] = useState(false);
+  const filterBtnRef = useRef(null);
+  const [filteredData, setFilteredData] = useState(data); // `data` is your original list
+  const dispatch = useDispatch()
+  const [setData] = useState([]);
 
-    useEffect(() => {
-        fetch('/api/projects')
-            .then(res => res.json())
-            .then(json => setData(json));
-    }, []);
+  useEffect(() => {
+    fetch('/api/projects')
+      .then(res => res.json())
+      .then(json => setData(json));
+  }, []);
 
-    useEffect(() => {
-        dispatch(fetchAllProposals())
-           dispatch(fetchProject())
-    }, [])
+  useEffect(() => {
+    dispatch(fetchAllProposals())
+    dispatch(fetchProject())
+  }, [])
 
-    const { reduxProposals, loading } = useSelector((state) => state?.proposal?.proposals);
-    console.log(reduxProposals, "reduxProposals");
-    const proposals = reduxProposals && reduxProposals.length > 0 ? reduxProposals : initialProposals;
+  const { reduxProposals, loading } = useSelector((state) => state?.proposal?.proposals);
+  console.log(reduxProposals, "reduxProposals");
+  const proposals = reduxProposals && reduxProposals.length > 0 ? reduxProposals : initialProposals;
 
-    const [filterRows, setFilterRows] = useState([
-        { field: '', value: '' }
+  const [filterRows, setFilterRows] = useState([
+    { field: '', value: '' }
+  ]);
+
+  const handleAddFilterRow = () => {
+    setFilterRows(prev => [...prev, { field: '', value: '' }]);
+  };
+
+  const handleClearFilters = () => {
+    setFilterRows([{ field: '', value: '' }]); // Reset filter fields
+    setFilteredData(data);                    // Reset table/list view
+  };
+
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        // handle dropdown close
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
+  const [selectedItems, setSelectedItems] = useState([]);
+
+  const handleSelectAll = () => {
+    const allIds = data.map(item => item.id); // Replace `data` with your actual item list
+    setSelectedItems(allIds);
+  };
+
+  const handleClear = () => {
+    setSelectedItems([]); // or setSearch('') or whatever you're clearing
+  };
+
+  const handleCancel = () => {
+    // Example: close modal or clear state
+    setShowModal(false); // or reset editing state
+  };
+
+  const [jobs, setJobs] = useState([
+    {
+      name: "Sunrise Apartments (Plus)",
+      client: "Ramesh Kumar",
+      billing: "Fixed Price",
+      phases: "2 phases",
+      status: "Active",
+      revenue: "$120,000.00",
+      committedCost: "$80,000.00",
+      profitLoss: "$40,000.00",
+      percent: "33%",
+      color: "primary"
+    },
+    {
+      name: "Metro Mall Renovation",
+      client: "Sunita Singh",
+      billing: "AIA-style",
+      phases: "1 phase",
+      status: "Active",
+      revenue: "$15,000.00",
+      committedCost: "$7,500.00",
+      profitLoss: "$7,500.00",
+      percent: "50%",
+      color: "info"
+    },
+    {
+      name: "Greenfield School",
+      client: "Ajay Mehra",
+      billing: "Cost Plus",
+      phases: "3 phases",
+      status: "Active",
+      revenue: "$290,000.00",
+      committedCost: "$193,400.00",
+      profitLoss: "$96,600.00",
+      percent: "33%",
+      color: "danger"
+    }
+  ]);
+  const navigate = useNavigate();
+
+  // Add new job handler
+  const handleAddNewContract = () => {
+    setShowNewContractPage(true);
+  };
+
+  // Save new job and close form
+  const handleSaveNewContract = (newJob) => {
+    // 1. Add to jobs list with status 'lead'
+    setJobs(prev => [
+      {
+        name: newJob.jobName,
+        client: newJob.clientName,
+        billing: newJob.billingType === "fixed-price" ? "Fixed Price" : newJob.billingType === "fixed-price-aia" ? "AIA-style" : "Cost Plus",
+        phases: "1 phase",
+        status: "lead", // <-- Set status to 'lead'
+        revenue: "$0.00",
+        committedCost: "$0.00",
+        profitLoss: "$0.00",
+        percent: "0%",
+        color: "primary"
+      },
+      ...prev
     ]);
+    // 2. Refresh proposals from Redux (temporary workaround)
+    dispatch(fetchAllProposals());
+    setShowNewContractPage(false);
+    setWorkflowView('workflow'); // Switch to workflow view
+  };
 
-    const handleAddFilterRow = () => {
-        setFilterRows(prev => [...prev, { field: '', value: '' }]);
+  const handleCloseNewContract = () => {
+    setShowNewContractPage(false);
+  };
+
+  // --- Proposal Workflow Board ---
+  const ProposalWorkflowBoard = ({ onNavigate, selectedStatus }) => {
+    // Defensive: always fallback to []
+    const reduxProposals = useSelector((state) => state?.proposal?.proposals) || [];
+    console.log(reduxProposals, "reduxProposals in workflow board");
+    const dispatch = useDispatch();
+    const [isUpdating, setIsUpdating] = useState(false);
+
+    const kanbanData = {
+      active: reduxProposals.filter(p => p.status === "active"),
+      pending: reduxProposals.filter(p => p.status === "pending"),
+      closed: reduxProposals.filter(p => p.status === "closed"),
+      rejected: reduxProposals.filter(p => p.status === "rejected"),
     };
 
-    const handleClearFilters = () => {
-        setFilterRows([{ field: '', value: '' }]); // Reset filter fields
-        setFilteredData(data);                    // Reset table/list view
+    const handleCardDrop = async (result) => {
+      const { source, destination, draggableId } = result;
+      if (!destination) return;
+      if (source.droppableId === destination.droppableId && source.index === destination.index) return;
+      console.log("draggableId", draggableId)
+      const statusMap = {
+        active: "active",
+        pending: "pending",
+        closed: "closed",
+        rejected: "rejected"
+      };
+      const newStatus = statusMap[destination.droppableId];
+      console.log("newStatus", newStatus)
+      // Optimistically update UI
+      dispatch(updateProposalStatusLocally({ id: Number(draggableId), status: newStatus }));
+      setIsUpdating(true);
+      try {
+        await dispatch(updateProposalStatus({ id: Number(draggableId), status: newStatus }));
+        await dispatch(fetchAllProposals());
+      } catch (error) {
+        console.error("Failed to update status", error);
+      }
+      console.log("after isUpdating", isUpdating)
+
+      setIsUpdating(false);
     };
-
-
-    useEffect(() => {
-        const handleClickOutside = (event) => {
-            if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
-                // handle dropdown close
-            }
-        };
-        document.addEventListener('mousedown', handleClickOutside);
-        return () => document.removeEventListener('mousedown', handleClickOutside);
-    }, []);
-
-    const [selectedItems, setSelectedItems] = useState([]);
-
-    const handleSelectAll = () => {
-        const allIds = data.map(item => item.id); // Replace `data` with your actual item list
-        setSelectedItems(allIds);
-    };
-
-    const handleClear = () => {
-        setSelectedItems([]); // or setSearch('') or whatever you're clearing
-    };
-
-    const handleCancel = () => {
-        // Example: close modal or clear state
-        setShowModal(false); // or reset editing state
-    };
-
-    const [jobs, setJobs] = useState([
-        {
-            name: "Sunrise Apartments (Plus)",
-            client: "Ramesh Kumar",
-            billing: "Fixed Price",
-            phases: "2 phases",
-            status: "Active",
-            revenue: "$120,000.00",
-            committedCost: "$80,000.00",
-            profitLoss: "$40,000.00",
-            percent: "33%",
-            color: "primary"
-        },
-        {
-            name: "Metro Mall Renovation",
-            client: "Sunita Singh",
-            billing: "AIA-style",
-            phases: "1 phase",
-            status: "Active",
-            revenue: "$15,000.00",
-            committedCost: "$7,500.00",
-            profitLoss: "$7,500.00",
-            percent: "50%",
-            color: "info"
-        },
-        {
-            name: "Greenfield School",
-            client: "Ajay Mehra",
-            billing: "Cost Plus",
-            phases: "3 phases",
-            status: "Active",
-            revenue: "$290,000.00",
-            committedCost: "$193,400.00",
-            profitLoss: "$96,600.00",
-            percent: "33%",
-            color: "danger"
-        }
-    ]);
-    const navigate = useNavigate();
-
-    // Add new job handler
-    const handleAddNewContract = () => {
-        setShowNewContractPage(true);
-    };
-
-    // Save new job and close form
-    const handleSaveNewContract = (newJob) => {
-        // 1. Add to jobs list with status 'lead'
-        setJobs(prev => [
-            {
-                name: newJob.jobName,
-                client: newJob.clientName,
-                billing: newJob.billingType === "fixed-price" ? "Fixed Price" : newJob.billingType === "fixed-price-aia" ? "AIA-style" : "Cost Plus",
-                phases: "1 phase",
-                status: "lead", // <-- Set status to 'lead'
-                revenue: "$0.00",
-                committedCost: "$0.00",
-                profitLoss: "$0.00",
-                percent: "0%",
-                color: "primary"
-            },
-            ...prev
-        ]);
-        // 2. Refresh proposals from Redux (temporary workaround)
-        dispatch(fetchAllProposals());
-        setShowNewContractPage(false);
-        setWorkflowView('workflow'); // Switch to workflow view
-    };
-
-    const handleCloseNewContract = () => {
-        setShowNewContractPage(false);
-    };
-
-    // --- Proposal Workflow Board ---
-    const ProposalWorkflowBoard = ({ onNavigate, selectedStatus }) => {
-        // Defensive: always fallback to []
-        const reduxProposals = useSelector((state) => state?.proposal?.proposals) || [];
-        console.log(reduxProposals, "reduxProposals in workflow board");
-        const dispatch = useDispatch();
-        const [isUpdating, setIsUpdating] = useState(false);
-
-        const kanbanData = {
-            active: reduxProposals.filter(p => p.status === "active"),
-            pending: reduxProposals.filter(p => p.status === "pending"),
-            closed: reduxProposals.filter(p => p.status === "closed"),
-            rejected: reduxProposals.filter(p => p.status === "rejected"),
-        };
-
-        const handleCardDrop = async (result) => {
-            const { source, destination, draggableId } = result;
-            if (!destination) return;
-            if (source.droppableId === destination.droppableId && source.index === destination.index) return;
-            console.log("draggableId", draggableId)
-            const statusMap = {
-                active: "active",
-                pending: "pending",
-                closed: "closed",
-                rejected: "rejected"
-            };
-            const newStatus = statusMap[destination.droppableId];
-            console.log("newStatus", newStatus)
-            // Optimistically update UI
-            dispatch(updateProposalStatusLocally({ id: Number(draggableId), status: newStatus }));
-            setIsUpdating(true);
-            try {
-                await dispatch(updateProposalStatus({ id: Number(draggableId), status: newStatus }));
-                await dispatch(fetchAllProposals());
-            } catch (error) {
-                console.error("Failed to update status", error);
-            }
-            console.log("after isUpdating", isUpdating)
-
-            setIsUpdating(false);
-        };
-        // --- Kanban Columns Config ---
-        let columns = [
-            { id: 'active', title: 'Active' },
-            { id: 'pending', title: 'Pending changes' },
-            { id: 'closed', title: 'Closed' },
-            { id: 'rejected', title: 'Rejected' },
-        ];
-        // Reorder columns so selectedStatus is first
-        if (selectedStatus && selectedStatus !== 'All') {
-            const statusMap = {
-                'Active': 'active',
-                'Pending ': 'pending',
-                'Closed': 'closed',
-                'Rejected': 'rejected',
-            };
-            const selectedId = statusMap[selectedStatus];
-            if (selectedId) {
-                columns = [columns.find(c => c.id === selectedId), ...columns.filter(c => c.id !== selectedId)];
-            }
-        }
-
-        return (
-            <div style={{ position: 'relative' }}>
-                {isUpdating && (
-                    <div className="kanban-loading-overlay">
-                        Updating...
-                    </div>
-                )}
-                <DragDropContext key={reduxProposals.map(p => p.id).join('-')} onDragEnd={handleCardDrop}>
-                    <div
-                        className="kanban-board d-flex flex-nowrap gap-3 py-3"
-                        style={{ overflowX: "auto", minHeight: 350, marginLeft: "20px", WebkitOverflowScrolling: 'touch' }}
-                    >
-                        {columns.map(col => (
-                            <Droppable droppableId={col.id} key={col.id}>
-                                {(provided, snapshot) => (
-                                    <div
-                                        ref={provided.innerRef}
-                                        {...provided.droppableProps}
-                                        className="kanban-stage bg-light border rounded p-2 flex-shrink-0 d-flex flex-column"
-                                        style={{ minWidth: 220, maxWidth: 320, minHeight: 320, width: '100%', flex: '1 1 260px', background: snapshot.isDraggingOver ? '#e3f2fd' : undefined }}
-                                    >
-                                        {/* Stage Title with Dot and Count */}
-                                        <div className="fw-bold mb-2 d-flex align-items-center gap-2">
-                                            <span className="text-dark" style={{ fontSize: 14 }}>
-                                                <span className="me-1" style={{ fontSize: 10 }}>●</span>
-                                                {col.title}
-                                            </span>
-                                            <span className="badge bg-light text-dark border ms-auto">{kanbanData[col.id]?.length || 0}</span>
-                                        </div>
-                                        {/* Cards */}
-                                        {kanbanData[col.id]?.map((item, idx) => (
-                                            <Draggable draggableId={String(item.id)} index={idx} key={item.id}>
-                                                {(provided, snapshot) => (
-                                                    <div
-                                                        ref={provided.innerRef}
-                                                        {...provided.draggableProps}
-                                                        {...provided.dragHandleProps}
-                                                        className="bg-white border rounded mb-2 p-2 shadow-sm"
-                                                        style={{
-                                                            minHeight: 110,
-                                                            wordBreak: 'break-word',
-                                                            maxWidth: '100%',
-                                                            background: snapshot.isDragging ? '#fffde7' : undefined,
-                                                            ...provided.draggableProps.style
-                                                        }}
-                                                    >
-                                                        <div className="fw-semibold text-primary" style={{ fontSize: 15 }}>
-                                                            {item.job_name || item.title}
-                                                        </div>
-                                                        <div className="text-muted small mb-1">Client: {item.client || item.client_name}</div>
-                                                        <div className="small text-secondary mb-1">Billing: {item.billing || item.job_type}</div>
-                                                        <div className="small text-secondary mb-1">Phases: {item.phases}</div>
-                                                        <div className="d-flex flex-wrap gap-2 align-items-center mb-1">
-                                                            <Badge bg="info" className="me-1">{item.status}</Badge>
-                                                        </div>
-                                                        <div className="small text-success mb-1">Revenue: <b>{item.revenue}</b></div>
-                                                        <div className="small text-warning mb-1">Committed Cost: <b>{item.committedCost}</b></div>
-                                                        <div className="small text-primary mb-1">Profit/Loss: <b>{item.profitLoss}</b></div>
-                                                        <div className="small text-dark mb-1">Percent: <b>{item.percent}</b></div>
-                                                        <div className="small text-muted mb-1">Last updated: {item.updated || item.last_updated || item.createdAt}</div>
-                                                        <div className="mt-2">
-                                                            <button className="btn btn-sm btn-outline-primary" onClick={() => {
-                                                                localStorage.setItem("proposalId", item.id);
-                                                                navigate("/detail");
-                                                            }}>
-                                                                {col.id === 'active' ? 'Invoice' : col.id === 'pending' ? 'Edit proposal' : col.id === 'closed' ? 'View' : 'Expired'}
-                                                            </button>
-                                                        </div>
-                                                    </div>
-                                                )}
-                                            </Draggable>
-                                        ))}
-                                        {provided.placeholder}
-                                    </div>
-                                )}
-                            </Droppable>
-                        ))}
-                    </div>
-                </DragDropContext>
-            </div>
-        );
-    };
-
-    const [selectedStatus, setSelectedStatus] = useState('All');
-    const [expandedJobIndex, setExpandedJobIndex] = useState(null);
-
-    // Filter jobs based on selectedStatus
-    const filteredJobs = selectedStatus === 'All'
-        ? jobs
-        : jobs.filter(job => job.status === selectedStatus);
-
-    const renderTabContent = () => {
-        switch (activeTab) {
-            case 'reports':
-                return <ReportsDashboard />;
-            case 'manage':
-            default:
-                return (
-                    <>
-                        {/* Modern Filter Bar */}
-
-                        {/* --- Switch between List and Workflow views --- */}
-                        {workflowView === 'workflow' ? (
-                            <ProposalWorkflowBoard onNavigate={navigate} selectedStatus={selectedStatus} />
-                        ) : (
-                            <div className="bg-white py-3 p-4 rounded shadow-sm">
-                                {/* Accordion for each job */}
-                                <Accordion activeKey={expandedJobIndex !== null ? expandedJobIndex.toString() : null} alwaysOpen>
-                                    {filteredJobs.length === 0 && (
-                                        <div className="text-center text-muted py-5">
-                                            <div className="mb-2">
-                                                <svg width="48" height="48" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" /><path d="M9 9h.01M15 9h.01M8 15c1.333-1 2.667-1 4 0" /></svg>
-                                            </div>
-                                            <div className="fw-semibold">No projects found for this filter.</div>
-                                            <div className="small">Try a different status or add a new project.</div>
-                                        </div>
-                                    )}
-                                    {filteredJobs.map((project, index) => (
-                                        <Accordion.Item eventKey={index.toString()} key={index} className="mb-2 border rounded shadow-sm">
-                                            <Accordion.Header
-                                                onClick={() => setExpandedJobIndex(expandedJobIndex === index ? null : index)}
-                                                className="d-flex align-items-center"
-                                                style={{ cursor: 'pointer', background: '#f8f9fa' }}
-                                            >
-                                                <div className="d-flex align-items-center w-100">
-                                                    <div className="fw-bold me-3" style={{ minWidth: 180 }}>
-                                                        {project.name}
-                                                        <div className="text-muted small">for {project.client}</div>
-                                                    </div>
-                                                    <Badge bg={project.color} className="me-3 text-capitalize">{project.status}</Badge>
-                                                    <div className="me-3"><span className="fw-semibold">{project.revenue}</span></div>
-                                                    <div className="me-3"><span className="fw-semibold">{project.committedCost}</span></div>
-                                                    <div className="me-3"><span className="fw-semibold">{project.profitLoss}</span></div>
-                                                    <div className="me-3">
-                                                        <div className={`rounded-circle border border-${project.color} text-${project.color} d-flex flex-column justify-content-center align-items-center`} style={{ width: '40px', height: '40px', fontSize: 14 }}>
-                                                            <div className="fw-bold">{project.percent}</div>
-                                                            <div className="small">{project.color === 'danger' ? 'Loss' : 'Profit'}</div>
-                                                        </div>
-                                                    </div>
-                                                    <span className="ms-auto">{expandedJobIndex === index ? <ChevronUp /> : <ChevronDown />}</span>
-                                                </div>
-                                            </Accordion.Header>
-                                            <Accordion.Body className="bg-light">
-                                                <div className="row g-3">
-                                                    <div className="col-md-6">
-                                                        <div><strong>Client:</strong> {project.client}</div>
-                                                        <div><strong>Billing:</strong> {project.billing}</div>
-                                                        <div><strong>Phases:</strong> {project.phases}</div>
-                                                        <div><strong>Status:</strong> {project.status}</div>
-                                                    </div>
-                                                    <div className="col-md-6">
-                                                        <div><strong>Revenue:</strong> {project.revenue}</div>
-                                                        <div><strong>Committed Cost:</strong> {project.committedCost}</div>
-                                                        <div><strong>Profit/Loss:</strong> {project.profitLoss}</div>
-                                                        <div><strong>Percent:</strong> {project.percent}</div>
-                                                    </div>
-                                                </div>
-                                                <div className="mt-3">
-                                                    <Button variant="outline-primary" size="sm" className="me-2">Invoice now</Button>
-                                                    <Button variant="outline-secondary" size="sm">View Details</Button>
-                                                </div>
-                                            </Accordion.Body>
-                                        </Accordion.Item>
-                                    ))}
-                                </Accordion>
-                            </div>
-                        )}
-                    </>
-                );
-        }
-    };
+    // --- Kanban Columns Config ---
+    let columns = [
+      { id: 'active', title: 'Active' },
+      { id: 'pending', title: 'Pending changes' },
+      { id: 'closed', title: 'Closed' },
+      { id: 'rejected', title: 'Rejected' },
+    ];
+    // Reorder columns so selectedStatus is first
+    if (selectedStatus && selectedStatus !== 'All') {
+      const statusMap = {
+        'Active': 'active',
+        'Pending ': 'pending',
+        'Closed': 'closed',
+        'Rejected': 'rejected',
+      };
+      const selectedId = statusMap[selectedStatus];
+      if (selectedId) {
+        columns = [columns.find(c => c.id === selectedId), ...columns.filter(c => c.id !== selectedId)];
+      }
+    }
 
     return (
-        <>
-            {showNewContractPage ? (
-                <NewContractJobPage
-                    onClose={handleCloseNewContract}
-                    onSave={handleSaveNewContract} // Pass save handler
-                />
-            ) : (
-                <div className="contract-jobs-wrapper">
-                    <div className="project-container">
-                        {/* Header */}
-                        <div className="d-flex justify-content-between align-items-center px-4 py-3 mb-3" style={{ minHeight: 64 }}>
-                            <h5 className="fw-bold mb-0" style={{ fontSize: '2rem' }}>Projects List</h5>
-                        </div>
-                        {/* Search and Actions */}
-                        <div className="mb-4">
-                            <div className="row g-2">
-                                <div className="col-12 col-md-6">
-                                    <input
-                                        type="text"
-                                        className="form-control"
-                                        placeholder="Search projects.."
-                                    // value={searchTerm}
-                                    // onChange={(e) => setSearchTerm(e.target.value)} // 👈 Handle input
-                                    />
-                                </div> 
-                                <div className="col-12 col-md-6 d-flex justify-content-md-end gap-2 mb-3">
-                                    <ButtonGroup>
-                                        <Button
-                                            variant={activeTab === 'manage' ? 'primary' : 'outline-primary'}
-                                            active={activeTab === 'manage'}
-                                            onClick={() => setActiveTab('manage')}
-                                            className="d-flex align-items-center"
-                                        >
-                                            <MdManageAccounts className="me-2" size={18} /> Manage Project
-                                        </Button>
-                                        <Button
-                                            variant={activeTab === 'reports' ? 'primary' : 'outline-primary'}
-                                            active={activeTab === 'reports'}
-                                            onClick={() => setActiveTab('reports')}
-                                            className="d-flex align-items-center"
-                                        >
-                                            <HiOutlineDocumentReport className="me-2" size={18} /> Job Reports
-                                        </Button>
-                                    </ButtonGroup>
-                                </div>
-
+      <div style={{ position: 'relative' }}>
+        {isUpdating && (
+          <div className="kanban-loading-overlay">
+            Updating...
+          </div>
+        )}
+        <DragDropContext key={reduxProposals.map(p => p.id).join('-')} onDragEnd={handleCardDrop}>
+          <div
+            className="kanban-board d-flex flex-nowrap gap-3 py-3"
+            style={{ overflowX: "auto", minHeight: 350, marginLeft: "20px", WebkitOverflowScrolling: 'touch' }}
+          >
+            {columns.map(col => (
+              <Droppable droppableId={col.id} key={col.id}>
+                {(provided, snapshot) => (
+                  <div
+                    ref={provided.innerRef}
+                    {...provided.droppableProps}
+                    className="kanban-stage bg-light border rounded p-2 flex-shrink-0 d-flex flex-column"
+                    style={{ minWidth: 220, maxWidth: 320, minHeight: 320, width: '100%', flex: '1 1 260px', background: snapshot.isDraggingOver ? '#e3f2fd' : undefined }}
+                  >
+                    {/* Stage Title with Dot and Count */}
+                    <div className="fw-bold mb-2 d-flex align-items-center gap-2">
+                      <span className="text-dark" style={{ fontSize: 14 }}>
+                        <span className="me-1" style={{ fontSize: 10 }}>●</span>
+                        {col.title}
+                      </span>
+                      <span className="badge bg-light text-dark border ms-auto">{kanbanData[col.id]?.length || 0}</span>
+                    </div>
+                    {/* Cards */}
+                    {kanbanData[col.id]?.map((item, idx) => (
+                      <Draggable draggableId={String(item.id)} index={idx} key={item.id}>
+                        {(provided, snapshot) => (
+                          <div
+                            ref={provided.innerRef}
+                            {...provided.draggableProps}
+                            {...provided.dragHandleProps}
+                            className="bg-white border rounded mb-2 p-2 shadow-sm"
+                            style={{
+                              minHeight: 110,
+                              wordBreak: 'break-word',
+                              maxWidth: '100%',
+                              background: snapshot.isDragging ? '#fffde7' : undefined,
+                              ...provided.draggableProps.style
+                            }}
+                          >
+                            <div className="fw-semibold text-primary" style={{ fontSize: 15 }}>
+                              {item.job_name || item.title}
                             </div>
-                        </div>
+                            <div className="text-muted small mb-1">Client: {item.client || item.client_name}</div>
+                            <div className="small text-secondary mb-1">Billing: {item.billing || item.job_type}</div>
+                            <div className="small text-secondary mb-1">Phases: {item.phases}</div>
+                            <div className="d-flex flex-wrap gap-2 align-items-center mb-1">
+                              <Badge bg="info" className="me-1">{item.status}</Badge>
+                            </div>
+                            <div className="small text-success mb-1">Revenue: <b>{item.revenue}</b></div>
+                            <div className="small text-warning mb-1">Committed Cost: <b>{item.committedCost}</b></div>
+                            <div className="small text-primary mb-1">Profit/Loss: <b>{item.profitLoss}</b></div>
+                            <div className="small text-dark mb-1">Percent: <b>{item.percent}</b></div>
+                            <div className="small text-muted mb-1">Last updated: {item.updated || item.last_updated || item.createdAt}</div>
+                            <div className="mt-2">
+                              <button className="btn btn-sm btn-outline-primary" onClick={() => {
+                                localStorage.setItem("proposalId", item.id);
+                                navigate("/detail");
+                              }}>
+                                {col.id === 'active' ? 'Invoice' : col.id === 'pending' ? 'Edit proposal' : col.id === 'closed' ? 'View' : 'Expired'}
+                              </button>
+                            </div>
+                          </div>
+                        )}
+                      </Draggable>
+                    ))}
+                    {provided.placeholder}
+                  </div>
+                )}
+              </Droppable>
+            ))}
+          </div>
+        </DragDropContext>
+      </div>
+    );
+  };
 
-                        {/* Project Status Tabs */}
-                        <div className="project-tabs mb-4">
-                            <ul className="nav nav-tabs d-none d-md-flex justify-content-between">
-                                <div className="nav nav-tabs d-none d-md-flex">
-                                    {tabs.map((tab) => (
-                                        <li className="nav-item" key={tab.value}>
-                                            <button
-                                                className={`nav-link ${selectedStatus === tab.value ? 'active' : ''}`}
-                                                onClick={() => setSelectedStatus(tab.value)}
-                                                style={{ color: "#0d6efd", borderColor: "#0d6efd" }}
-                                            >
-                                                {tab.label}
-                                            </button>
-                                        </li>
-                                    ))}
-                                </div>
-                                {/* <div className="d-flex justify-content-end " >
+  const [selectedStatus, setSelectedStatus] = useState('All');
+  const [expandedJobIndex, setExpandedJobIndex] = useState(null);
+
+  // Filter jobs based on selectedStatus
+  const filteredJobs = selectedStatus === 'All'
+    ? jobs
+    : jobs.filter(job => job.status === selectedStatus);
+
+  const renderTabContent = () => {
+    switch (activeTab) {
+      case 'reports':
+        return <ReportsDashboard />;
+      case 'manage':
+      default:
+        return (
+          <>
+            {/* Modern Filter Bar */}
+
+            {/* --- Switch between List and Workflow views --- */}
+            {workflowView === 'workflow' ? (
+              <ProposalWorkflowBoard onNavigate={navigate} selectedStatus={selectedStatus} />
+            ) : (
+              <div className="bg-white py-3 p-4 rounded shadow-sm">
+                {/* Accordion for each job */}
+                <Accordion activeKey={expandedJobIndex !== null ? expandedJobIndex.toString() : null} alwaysOpen>
+                  {filteredJobs.length === 0 && (
+                    <div className="text-center text-muted py-5">
+                      <div className="mb-2">
+                        <svg width="48" height="48" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" /><path d="M9 9h.01M15 9h.01M8 15c1.333-1 2.667-1 4 0" /></svg>
+                      </div>
+                      <div className="fw-semibold">No projects found for this filter.</div>
+                      <div className="small">Try a different status or add a new project.</div>
+                    </div>
+                  )}
+                  {filteredJobs.map((project, index) => (
+                    <Accordion.Item eventKey={index.toString()} key={index} className="mb-2 border rounded shadow-sm">
+                      <Accordion.Header
+                        onClick={() => setExpandedJobIndex(expandedJobIndex === index ? null : index)}
+                        className="d-flex align-items-center"
+                        style={{ cursor: 'pointer', background: '#f8f9fa' }}
+                      >
+                        <div className="d-flex align-items-center w-100">
+                          <div className="fw-bold me-3" style={{ minWidth: 180 }}>
+                            {project.name}
+                            <div className="text-muted small">for {project.client}</div>
+                          </div>
+                          <Badge bg={project.color} className="me-3 text-capitalize">{project.status}</Badge>
+                          <div className="me-3"><span className="fw-semibold">{project.revenue}</span></div>
+                          <div className="me-3"><span className="fw-semibold">{project.committedCost}</span></div>
+                          <div className="me-3"><span className="fw-semibold">{project.profitLoss}</span></div>
+                          <div className="me-3">
+                            <div className={`rounded-circle border border-${project.color} text-${project.color} d-flex flex-column justify-content-center align-items-center`} style={{ width: '40px', height: '40px', fontSize: 14 }}>
+                              <div className="fw-bold">{project.percent}</div>
+                              <div className="small">{project.color === 'danger' ? 'Loss' : 'Profit'}</div>
+                            </div>
+                          </div>
+                          <span className="ms-auto">{expandedJobIndex === index ? <ChevronUp /> : <ChevronDown />}</span>
+                        </div>
+                      </Accordion.Header>
+                      <Accordion.Body className="bg-light">
+                        <div className="row g-3">
+                          <div className="col-md-6">
+                            <div><strong>Client:</strong> {project.client}</div>
+                            <div><strong>Billing:</strong> {project.billing}</div>
+                            <div><strong>Phases:</strong> {project.phases}</div>
+                            <div><strong>Status:</strong> {project.status}</div>
+                          </div>
+                          <div className="col-md-6">
+                            <div><strong>Revenue:</strong> {project.revenue}</div>
+                            <div><strong>Committed Cost:</strong> {project.committedCost}</div>
+                            <div><strong>Profit/Loss:</strong> {project.profitLoss}</div>
+                            <div><strong>Percent:</strong> {project.percent}</div>
+                          </div>
+                        </div>
+                        <div className="mt-3">
+                          <Button variant="outline-primary" size="sm" className="me-2">Invoice now</Button>
+                          <Button variant="outline-secondary" size="sm">View Details</Button>
+                        </div>
+                      </Accordion.Body>
+                    </Accordion.Item>
+                  ))}
+                </Accordion>
+              </div>
+            )}
+          </>
+        );
+    }
+  };
+
+  return (
+    <>
+      {showNewContractPage ? (
+        <NewContractJobPage
+          onClose={handleCloseNewContract}
+          onSave={handleSaveNewContract} // Pass save handler
+        />
+      ) : (
+        <div className="contract-jobs-wrapper">
+          <div className="project-container">
+            {/* Header */}
+            <div className="d-flex justify-content-between align-items-center px-4 py-3 mb-3" style={{ minHeight: 64 }}>
+              <h5 className="fw-bold mb-0" style={{ fontSize: '2rem' }}>Projects List</h5>
+            </div>
+            {/* Search and Actions */}
+            <div className="mb-4">
+              <div className="row g-2">
+                <div className="col-12 col-md-6">
+                  <input
+                    type="text"
+                    className="form-control"
+                    placeholder="Search projects.."
+                  // value={searchTerm}
+                  // onChange={(e) => setSearchTerm(e.target.value)} // 👈 Handle input
+                  />
+                </div>
+                <div className="col-12 col-md-6 d-flex justify-content-md-end gap-2 mb-3">
+                  <ButtonGroup>
+                    <Button
+                      variant={activeTab === 'manage' ? 'primary' : 'outline-primary'}
+                      active={activeTab === 'manage'}
+                      onClick={() => setActiveTab('manage')}
+                      className="d-flex align-items-center"
+                    >
+                      <MdManageAccounts className="me-2" size={18} /> Manage Project
+                    </Button>
+                    <Button
+                      variant={activeTab === 'reports' ? 'primary' : 'outline-primary'}
+                      active={activeTab === 'reports'}
+                      onClick={() => setActiveTab('reports')}
+                      className="d-flex align-items-center"
+                    >
+                      <HiOutlineDocumentReport className="me-2" size={18} /> Job Reports
+                    </Button>
+                  </ButtonGroup>
+                </div>
+
+              </div>
+            </div>
+
+            {/* Project Status Tabs */}
+            <div className="project-tabs mb-4">
+              <ul className="nav nav-tabs d-none d-md-flex justify-content-between">
+                <div className="nav nav-tabs d-none d-md-flex">
+                  {tabs.map((tab) => (
+                    <li className="nav-item" key={tab.value}>
+                      <button
+                        className={`nav-link ${selectedStatus === tab.value ? 'active' : ''}`}
+                        onClick={() => setSelectedStatus(tab.value)}
+                        style={{ color: "#0d6efd", borderColor: "#0d6efd" }}
+                      >
+                        {tab.label}
+                      </button>
+                    </li>
+                  ))}
+                </div>
+                {/* <div className="d-flex justify-content-end " >
                                     <ButtonGroup>
                                         <Button
                                             variant={workflowView === 'workflow' ? 'primary' : 'outline-primary'}
@@ -33151,74 +33148,74 @@ const ProjectView = ({ data }) => {
                                         </Button>
                                     </ButtonGroup>
                                 </div> */}
-                            </ul>
+              </ul>
 
-                            <div className="d-flex d-md-none">
-                                <Dropdown>
-                                    <Dropdown.Toggle variant="outline-primary" id="dropdown-tabs" className="w-100">
-                                        {tabs.find(t => t.value === selectedStatus)?.label || 'Select'}
-                                    </Dropdown.Toggle>
-                                    <Dropdown.Menu className="w-100">
-                                        {tabs.map((tab) => (
-                                            <Dropdown.Item
-                                                key={tab.value}
-                                                active={tab.value === selectedStatus}
-                                                onClick={() => setSelectedStatus(tab.value)}
-                                            >
-                                                {tab.label}
-                                            </Dropdown.Item>
-                                        ))}
-                                    </Dropdown.Menu>
-                                </Dropdown>
-                            </div>
-                        </div>
+              <div className="d-flex d-md-none">
+                <Dropdown>
+                  <Dropdown.Toggle variant="outline-primary" id="dropdown-tabs" className="w-100">
+                    {tabs.find(t => t.value === selectedStatus)?.label || 'Select'}
+                  </Dropdown.Toggle>
+                  <Dropdown.Menu className="w-100">
+                    {tabs.map((tab) => (
+                      <Dropdown.Item
+                        key={tab.value}
+                        active={tab.value === selectedStatus}
+                        onClick={() => setSelectedStatus(tab.value)}
+                      >
+                        {tab.label}
+                      </Dropdown.Item>
+                    ))}
+                  </Dropdown.Menu>
+                </Dropdown>
+              </div>
+            </div>
 
-                        {/* Loader */}
-                        {loading && (
-                            <div className="text-center my-5">
-                                <Spinner animation="border" variant="primary" />
-                                <div className="mt-2">Loading projects...</div>
-                            </div>
-                        )}
-
-                    </div>
-
-                    {/* Tabs Section */}
-
-                    {/* Filter Bar - always visible in Manage Project tab */}
-
-                    {/* / */}
-                    {renderTabContent()}
-                </div>
+            {/* Loader */}
+            {loading && (
+              <div className="text-center my-5">
+                <Spinner animation="border" variant="primary" />
+                <div className="mt-2">Loading projects...</div>
+              </div>
             )}
-        </>
-    );
+
+          </div>
+
+          {/* Tabs Section */}
+
+          {/* Filter Bar - always visible in Manage Project tab */}
+
+          {/* / */}
+          {renderTabContent()}
+        </div>
+      )}
+    </>
+  );
 };
 
 const FILTER_OPTIONS = [
-    { label: "Budget overrun", value: "budgetOverrun" },
-    { label: "Client", value: "client" },
-    { label: "Not Invoiced In the last", value: "notInvoiced" },
-    { label: "Project manager", value: "projectManager" },
-    { label: "Sales lead", value: "salesLead" },
-    { label: "Tag", value: "tag" },
-    { label: "Type of contract", value: "contractType" },
-    { label: "Work ", value: "workInProgress" },
-    { label: "Workflow: KJBJHB", value: "workflow" }
+  { label: "Budget overrun", value: "budgetOverrun" },
+  { label: "Client", value: "client" },
+  { label: "Not Invoiced In the last", value: "notInvoiced" },
+  { label: "Project manager", value: "projectManager" },
+  { label: "Sales lead", value: "salesLead" },
+  { label: "Tag", value: "tag" },
+  { label: "Type of contract", value: "contractType" },
+  { label: "Work ", value: "workInProgress" },
+  { label: "Workflow: KJBJHB", value: "workflow" }
 ];
 
 const VALUE_OPTIONS = [
-    { label: "7 Days", value: "7" },
-    { label: "15 Days", value: "15" },
-    { label: "30 Days", value: "30" },
-    { label: "60 Days", value: "60" }
+  { label: "7 Days", value: "7" },
+  { label: "15 Days", value: "15" },
+  { label: "30 Days", value: "30" },
+  { label: "60 Days", value: "60" }
 ];
 
 const stageOptions = [
-    { id: 'active', label: 'Active', count: 0 },
-    { id: 'pending-changes', label: 'Pending changes', count: 0 },
-    { id: 'closed', label: 'Closed', count: 0 },
-    { id: 'rejected', label: 'Rejected', count: 0 }
+  { id: 'active', label: 'Active', count: 0 },
+  { id: 'pending-changes', label: 'Pending changes', count: 0 },
+  { id: 'closed', label: 'Closed', count: 0 },
+  { id: 'rejected', label: 'Rejected', count: 0 }
 ];
 
 export default ProjectView;
@@ -33228,6 +33225,7 @@ export default ProjectView;
 
 
 
+<<<<<<< HEAD
 
 
 
@@ -35773,3 +35771,7 @@ const stageOptions = [
 ];
 
 export default ProjectView;
+=======
+// =======================================================
+
+>>>>>>> 1ef4b2034322079c88581871f2d1b920e56decdf
