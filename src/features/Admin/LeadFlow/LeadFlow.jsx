@@ -941,6 +941,7 @@ const LeadFlow = ({ data }) => {
                               <div className="mt-2">
                                 <button className="btn btn-sm btn-outline-primary" onClick={() => {
                                   localStorage.setItem("proposalId", item.id);
+                                  localStorage.setItem("invoice", JSON.stringify(item));
                                   navigate("/admin/LeadFlow/Details", { state: { item: item } });
                                 }}>
                                   {col.id === 'active' ? 'Create Proposal' : col.id === 'pending' ? 'Edit proposal' : col.id === 'closed' ? 'Send Reminder' : 'Expired/Sent'}

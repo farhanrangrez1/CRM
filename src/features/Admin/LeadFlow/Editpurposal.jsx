@@ -1507,7 +1507,7 @@ const Editpurposal = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const job = location.state.item;
-  console.log(job);
+
 
   // const stage = job?.p?.stage;
 
@@ -1943,11 +1943,6 @@ const Editpurposal = () => {
 
   return (
     <div className="wwd-container container">
-      <div className="mb-2">
-        <Button variant="outline-secondary mt-1" onClick={() => navigate(-1)}>
-          <FaArrowLeft className="me-1" /> Back
-        </Button>
-      </div>
 
       <div className="wwd-header d-flex justify-content-between align-items-center py-3">
         <div>
@@ -1955,6 +1950,15 @@ const Editpurposal = () => {
           <h4 className="mb-0">{job?.projectName || job?.job_name}</h4>
           <p className="text-muted small">{job?.clientId?.clientName}</p>
         </div>
+        <div className="mb-2">
+          <Button variant="outline-secondary mt-1" onClick={() => {
+            navigate('/admin/LeadFlow');
+            window.location.reload();
+          }}>
+            <FaArrowLeft className="me-1" /> Back
+          </Button>
+        </div>
+
       </div>
 
       <ul className="nav nav-tabs wwd-tabs mb-4">
