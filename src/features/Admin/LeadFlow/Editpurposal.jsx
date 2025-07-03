@@ -1606,7 +1606,7 @@ const Editpurposal = () => {
                 <div className="col-md-6 mb-3">
                   <p className="mb-1 text-muted">Total Budget</p>
                   {/* <p>${totalBudgetedCost}</p> */}
-                  <p>${job?.budgetAmount}</p>
+                  <p>${totalBudgetedCost}</p>
                 </div>
               </div>
               <button className="btn btn-primary">Save</button>
