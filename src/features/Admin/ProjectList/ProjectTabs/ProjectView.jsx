@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Button, Form, Dropdown, ButtonGroup, Badge, Container, Row, Col, ProgressBar, Modal, Popover, Overlay, Accordion } from 'react-bootstrap';
+import { Button, Form, Dropdown, ButtonGroup, Badge, Container, Row, Col, ProgressBar, Modal, Popover, Overlay, Accordion, Spinner } from 'react-bootstrap';
 import { FunnelFill, Link, List, ChevronDown, ChevronUp } from 'react-bootstrap-icons';
 import { Kanban, Plus } from 'react-bootstrap-icons';
 import { FaArrowLeft, FaUpload, FaPlus } from "react-icons/fa"; // Add this import
@@ -9,9 +9,10 @@ import { fetchAllProposals, updateProposalStatus, updateProposalStatusLocally } 
 import { useDispatch, useSelector } from 'react-redux';
 import { MdManageAccounts } from 'react-icons/md';
 import { HiOutlineDocumentReport } from 'react-icons/hi';
-import { deleteproject, fetchProject } from '../../../../redux/slices/ProjectsSlice';
+import { fetchProject, updateProject, updateProjectStatusLocally } from '../../../../redux/slices/ProjectsSlice';
 
-//--- Kanban Workflow Data ---
+
+// --- Kanban Workflow Data ---
 const initialStages = [
     { id: 'create-proposal', title: 'Create Proposal' },
     { id: 'client-review', title: 'Client Review' }, // Changed from 'automatic-delivery'
@@ -29,7 +30,7 @@ const initialProposals = [
         // stage: 'create-proposal',
         updated: '2025-06-07 10:30',
         logs: [
-        { by: 'Admin', at: '2025-06-07 10:30', note: 'Created proposal' }
+            { by: 'Admin', at: '2025-06-07 10:30', note: 'Created proposal' }
         ]
     },
     {
@@ -666,6 +667,7 @@ const tabs = [
     { label: 'All', value: 'All' },
 ];
 
+
 const ProjectView = ({ data }) => {
     const [stageFilter, setStageFilter] = useState(stageOptions.map(opt => opt.id)); // all checked by default
     const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -688,12 +690,14 @@ const ProjectView = ({ data }) => {
 
     useEffect(() => {
         dispatch(fetchAllProposals())
-           dispatch(fetchProject())
+        dispatch(fetchProject())
     }, [])
-
-    const { reduxProposals, loading } = useSelector((state) => state?.proposal?.proposals);
-    console.log(reduxProposals, "reduxProposals");
-    const proposals = reduxProposals && reduxProposals.length > 0 ? reduxProposals : initialProposals;
+    const { project, error, loading } = useSelector((state) => state.projects);
+    // Remove the incorrect destructuring and useSelector for reduxProposals
+    // const { reduxProposals,  } = useSelector((state) => state?.proposal?.proposals);
+    // Instead, get proposals from project.data or fallback to initialProposals
+    const proposals = project && project.data && project.data.length > 0 ? project.data : initialProposals;
+    console.log(proposals, "proposals");
 
     const [filterRows, setFilterRows] = useState([
         { field: '', value: '' }
@@ -811,7 +815,27 @@ const ProjectView = ({ data }) => {
     // --- Proposal Workflow Board ---
     const ProposalWorkflowBoard = ({ onNavigate, selectedStatus }) => {
         // Defensive: always fallback to []
-        const reduxProposals = useSelector((state) => state?.proposal?.proposals) || [];
+        const reduxProposals = (project.data || []).map(item => ({
+            id: item.id,
+            title: item.projectName,
+            client: item.clientId?.clientName,
+            status: mapStatus(item.status),
+            phases: item.phases || "N/A",
+            revenue: item.budgetAmount ? `AED ${item.budgetAmount}` : "N/A",
+            committedCost: "N/A",
+            profitLoss: "N/A",
+            percent: "N/A",
+            updated: item.updatedAt,
+        }));
+
+        function mapStatus(status) {
+            if (status === "Active Project") return "active";
+            if (status === "Pending") return "pending";
+            if (status === "Closed") return "closed";
+            if (status === "Rejected") return "rejected";
+            return "pending";
+        }
+        // const reduxProposals = useSelector((state) => state?.proposal?.proposals) || [];
         console.log(reduxProposals, "reduxProposals in workflow board");
         const dispatch = useDispatch();
         const [isUpdating, setIsUpdating] = useState(false);
@@ -827,26 +851,22 @@ const ProjectView = ({ data }) => {
             const { source, destination, draggableId } = result;
             if (!destination) return;
             if (source.droppableId === destination.droppableId && source.index === destination.index) return;
-            console.log("draggableId", draggableId)
             const statusMap = {
-                active: "active",
-                pending: "pending",
-                closed: "closed",
-                rejected: "rejected"
+                active: "Active Project",
+                pending: "Pending",
+                closed: "Closed",
+                rejected: "Rejected"
             };
             const newStatus = statusMap[destination.droppableId];
-            console.log("newStatus", newStatus)
             // Optimistically update UI
-            dispatch(updateProposalStatusLocally({ id: Number(draggableId), status: newStatus }));
+            dispatch(updateProjectStatusLocally({ id: draggableId, status: newStatus }));
             setIsUpdating(true);
             try {
-                await dispatch(updateProposalStatus({ id: Number(draggableId), status: newStatus }));
-                await dispatch(fetchAllProposals());
+                await dispatch(updateProject({ id: draggableId, payload: { status: newStatus } }));
+                await dispatch(fetchProject());
             } catch (error) {
                 console.error("Failed to update status", error);
             }
-            console.log("after isUpdating", isUpdating)
-
             setIsUpdating(false);
         };
         // --- Kanban Columns Config ---
@@ -927,16 +947,26 @@ const ProjectView = ({ data }) => {
                                                         </div>
                                                         <div className="small text-success mb-1">Revenue: <b>{item.revenue}</b></div>
                                                         <div className="small text-warning mb-1">Committed Cost: <b>{item.committedCost}</b></div>
-                                                        <div className="small text-primary mb-1">Profit/Loss: <b>{item.profitLoss}</b></div>
+                                                        <div className="small text-primary mb-1">Profit/Loss: <b>{item.projectPriority}</b></div>
                                                         <div className="small text-dark mb-1">Percent: <b>{item.percent}</b></div>
-                                                        <div className="small text-muted mb-1">Last updated: {item.updated || item.last_updated || item.createdAt}</div>
+                                                          <div className="small text-dark mb-1">startDate: <b>{item.startDate}</b></div>
+                                                          <div className="small text-dark mb-1">endDate: <b>{item.endDate}</b></div>
+                                                        {/* <div className="small text-muted mb-1">Last updated: {item.updated || item.last_updated}</div> */}
                                                         <div className="mt-2">
-                                                            <button className="btn btn-sm btn-outline-primary" onClick={() => {
-                                                                localStorage.setItem("proposalId", item.id);
-                                                                navigate("/admin/LeadFlow/Details");
-                                                            }}>
+                                                            <button
+                                                                className="btn btn-sm btn-outline-primary"
+                                                                onClick={() => {
+                                                                    localStorage.setItem("proposalId", item.id);
+                                                                    if (col.id === 'active') {
+                                                                        navigate("/admin/AddInvoice");
+                                                                    } else {
+                                                                        navigate("/admin/LeadFlow/Details");
+                                                                    }
+                                                                }}
+                                                            >
                                                                 {col.id === 'active' ? 'Invoice' : col.id === 'pending' ? 'Edit proposal' : col.id === 'closed' ? 'View' : 'Expired'}
                                                             </button>
+
                                                         </div>
                                                     </div>
                                                 )}
@@ -1067,7 +1097,7 @@ const ProjectView = ({ data }) => {
                                     // value={searchTerm}
                                     // onChange={(e) => setSearchTerm(e.target.value)} // 👈 Handle input
                                     />
-                                </div> 
+                                </div>
                                 <div className="col-12 col-md-6 d-flex justify-content-md-end gap-2 mb-3">
                                     <ButtonGroup>
                                         <Button
@@ -1151,12 +1181,7 @@ const ProjectView = ({ data }) => {
                         </div>
 
                         {/* Loader */}
-                        {loading && (
-                            <div className="text-center my-5">
-                                <Spinner animation="border" variant="primary" />
-                                <div className="mt-2">Loading projects...</div>
-                            </div>
-                        )}
+
 
                     </div>
 

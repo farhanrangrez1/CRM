@@ -355,7 +355,7 @@ Lalit Singh`,
             >
               <h5 className="text-center fw-bold border-bottom pb-2">PROPOSAL</h5>
               <div className="row mb-3">
-                <div className="col-6"><strong>PROJECT:</strong> signatureData?.line_items</div>
+                <div className="col-6"><strong>PROJECT:</strong> {signatureData?.line_items}</div>
               </div>
               <div className="row mb-3">
                 <div className="col-6">

@@ -55,7 +55,6 @@ export const fetchProjectById = createAsyncThunk('projects/fetchById', async (id
   return await response.json();
 });
 
-
 export const updateProject = createAsyncThunk(
   "projects/updateProject",
   async ({ id, payload }, thunkAPI) => {
@@ -87,9 +86,27 @@ const projectsSlice = createSlice({
     status: 'idle',
     error: null,
   },
-  reducers: {},
+  reducers: {
+    updateProposalStatusLocally: (state, action) => {
+      const { id, status } = action.payload;
+      const proposal = state.proposals.find(p => p.id == id || p._id == id);
+      if (proposal) {
+        proposal.status = status;
+      }
+    },
+    updateProjectStatusLocally: (state, action) => {
+      const { id, status } = action.payload;
+      if (state.project && Array.isArray(state.project.data)) {
+        const project = state.project.data.find(p => p.id == id || p._id == id);
+        if (project) {
+          project.status = status;
+        }
+      }
+    },
+  },
   extraReducers: (builder) => {
     builder
+
       // Add
       //   .addCase(createProject.pending, (state) => {
       //     state.loading = true;
@@ -114,6 +131,26 @@ const projectsSlice = createSlice({
         state.status = 'failed';
         state.error = action.payload;
       })
+
+
+      .addCase(updateProject.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(updateProject.fulfilled, (state, action) => {
+        const updated = action.payload;
+        const index = state.proposals.findIndex(p => p.id === updated.id);
+        if (index !== -1) {
+          state.proposals[index] = updated;
+        }
+        state.loading = false;
+      })
+      .addCase(updateProject.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+
+
     //   .addCase(createproject.fulfilled, (state, action) => {
     //     state.project.push(action.payload);
     //   })
@@ -146,4 +183,5 @@ const projectsSlice = createSlice({
   },
 });
 
+export const { updateProjectStatusLocally, updateProposalStatusLocally } = projectsSlice.actions;
 export default projectsSlice.reducer;
