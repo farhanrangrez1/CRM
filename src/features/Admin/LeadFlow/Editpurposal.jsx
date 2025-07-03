@@ -1377,7 +1377,8 @@ import { Button, Form, Row, Col } from "react-bootstrap";
 // import DailyLogs from "../LeadOpportunity/DailyLogs";
 import Swal from "sweetalert2";
 import AddCostEstimates from "../CostEstimates/AddCostEstimates";
-import AddTimeLog from "../TimeLogs/AddTimeLog";
+import AddTimesheetWorklog from "../TimesheetWorklog/AddTimesheetWorklog";
+import AddInvoice from "../Invoicing_Billing/AddInvoice";
 // import DocumentList from "./DocumentList";
 
 const DocumentList = () => {
@@ -1466,7 +1467,7 @@ const Editpurposal = () => {
       taxable: true
     }
   ]);
-  const [activeTab, setActiveTab] = useState("Summary");
+  const [activeTab, setActiveTab] = useState("Create Proposal");
 
   const totalBudgetedCost = (
     parseFloat(materialsBudget || 0) +
@@ -1508,7 +1509,7 @@ const Editpurposal = () => {
   const job = location.state.item;
   console.log(job);
 
-  const stage = job?.p?.stage;
+  // const stage = job?.p?.stage;
 
   const renderTabContent = () => {
     switch (activeTab) {
@@ -1520,7 +1521,8 @@ const Editpurposal = () => {
               <div className="row mb-3">
                 <div className="col-md-6">
                   <p className="mb-1 text-muted">Job Status</p>
-                  <p>Lead</p>
+                  {/* <p>Lead</p> */}
+                  <p>{job?.status}</p>
                 </div>
                 <div className="col-md-6">
                   <p className="mb-1 text-muted">Job Type</p>
@@ -1578,7 +1580,8 @@ const Editpurposal = () => {
               <div className="row">
                 <div className="col-md-6 mb-3">
                   <p className="mb-1 text-muted">Job Status</p>
-                  <p>Lead</p>
+                  {/* <p>Lead</p> */}
+                  <p>{job?.status}</p>
                 </div>
                 <div className="col-md-6 mb-3">
                   <p className="mb-1 text-muted">Job Type</p>
@@ -1599,7 +1602,8 @@ const Editpurposal = () => {
                 </div>
                 <div className="col-md-6 mb-3">
                   <p className="mb-1 text-muted">Total Budget</p>
-                  <p>${totalBudgetedCost}</p>
+                  {/* <p>${totalBudgetedCost}</p> */}
+                  <p>${job?.budgetAmount}</p>
                 </div>
               </div>
               <button className="btn btn-primary">Save</button>
@@ -1787,7 +1791,8 @@ const Editpurposal = () => {
               <h6 className="text-center">TERMS AND CONDITIONS</h6>
               <Form.Control as="textarea" rows={4} value={comments} onChange={(e) => setComments(e.target.value)} placeholder="Enter terms and conditions here..." />
             </div> */}
-            <AddCostEstimates />
+            {/* <AddCostEstimates /> */}
+            <AddInvoice />
           </div>
         );
 
@@ -1826,7 +1831,7 @@ const Editpurposal = () => {
         return (
           <div className="tab-content-box">
             {/* <DailyLogs /> */}
-            <AddTimeLog />
+            <AddTimesheetWorklog />
           </div>
         );
 
@@ -1946,8 +1951,9 @@ const Editpurposal = () => {
 
       <div className="wwd-header d-flex justify-content-between align-items-center py-3">
         <div>
-          <h4 className="mb-0">{job?.job_name}</h4>
-          <p className="text-muted small">{job?.client_name}</p>
+          {/* <h4 className="mb-0">{job?.job_name}</h4> */}
+          <h4 className="mb-0">{job?.projectName || job?.job_name}</h4>
+          <p className="text-muted small">{job?.clientId?.clientName}</p>
         </div>
       </div>
 

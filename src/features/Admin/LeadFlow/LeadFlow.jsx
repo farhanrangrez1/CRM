@@ -943,7 +943,7 @@ const LeadFlow = ({ data }) => {
                                   localStorage.setItem("proposalId", item.id);
                                   navigate("/admin/LeadFlow/Details", { state: { item: item } });
                                 }}>
-                                  {col.id === 'active' ? 'Invoice' : col.id === 'pending' ? 'Edit proposal' : col.id === 'closed' ? 'View' : 'Expired'}
+                                  {col.id === 'active' ? 'Create Proposal' : col.id === 'pending' ? 'Edit proposal' : col.id === 'closed' ? 'Send Reminder' : 'Expired/Sent'}
                                 </button>
                               </div>
                             </div>
