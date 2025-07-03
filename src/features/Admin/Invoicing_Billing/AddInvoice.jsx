@@ -158,7 +158,7 @@ function AddInvoice() {
       <ToastContainer />
       <div className="container-fluid p-4" style={{ backgroundColor: "white", borderRadius: "10px" }}>
         <div className="d-flex justify-content-between align-items-center mb-4">
-          <h2>Generate New Invoice</h2>
+          {/* <h2>Generate New Invoice</h2> */}
         </div>
 
         <form onSubmit={handleSubmit}>
