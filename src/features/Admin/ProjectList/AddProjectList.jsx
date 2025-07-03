@@ -23,7 +23,7 @@ function AddProjectList() {
     endDate: '',
     projectPriority: '',
     description: '',
-    status: '',
+    status: 'Lead',
     projectRequirements: {
       creativeDesign: false,
       artworkAdaptation: false,
@@ -33,7 +33,7 @@ function AddProjectList() {
       rendering: false,
     },
     budgetAmount: '',
-    currency: '',
+    currency: 'USD',
     totalTime: ''
   });
 
@@ -201,7 +201,7 @@ function AddProjectList() {
                 </Form.Select>
               </Form.Group>
             </Col>
-            <Col md={6}>
+            {/* <Col md={6}>
               <Form.Group>
                 <Form.Label className="text-muted mb-1">Project Status</Form.Label>
                 <Form.Select
@@ -219,7 +219,7 @@ function AddProjectList() {
                   <option value="On Hold">On Hold</option>
                 </Form.Select>
               </Form.Group>
-            </Col>
+            </Col> */}
           </Row>
 
           <Form.Group className="mb-3">
@@ -269,7 +269,7 @@ function AddProjectList() {
                 />
               </Form.Group>
             </Col>
-            <Col md={6}>
+            {/* <Col md={6}>
               <Form.Group>
                 <Form.Select
                   name="currency"
@@ -285,7 +285,7 @@ function AddProjectList() {
                   <option value="USD">USD</option>
                 </Form.Select>
               </Form.Group>
-            </Col>
+            </Col> */}
           </Row>
 
           <div className="d-flex justify-content-end gap-2 mt-4">
