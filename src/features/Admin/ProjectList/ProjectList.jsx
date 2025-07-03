@@ -161,11 +161,11 @@ function ProjectList() {
             <Button variant="outline-secondary" size="sm">
               <FaUpload className="me-1" /> Import
             </Button>
-            <Link to={"/admin/AddProjectList"}>
+            {/* <Link to={"/admin/AddProjectList"}>
               <Button id="All_btn" variant="dark" size="sm">
                 <FaPlus className="me-1" /> Add project
               </Button>
-            </Link>
+            </Link> */}
           </div>
         </div>
       </div>

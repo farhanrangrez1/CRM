@@ -819,7 +819,7 @@ const LeadFlow = ({ data }) => {
     const [isUpdating, setIsUpdating] = useState(false);
 
     const kanbanData = {
-      active: project?.filter(p => p.status === "Active Project"),
+      active: project?.filter(p => p.status === "Lead"),
       pending: project?.filter(p => p.status === "In Progress"),
       closed: reduxProposals?.filter(p => p.status === "closed"),
       rejected: reduxProposals?.filter(p => p.status === "rejected"),
@@ -1084,21 +1084,29 @@ const LeadFlow = ({ data }) => {
 
                 <div className="col-12 col-md-6 d-flex justify-content-md-end gap-2 mb-3">
                   <ButtonGroup>
-                    <Button
+                    {/* <Button
                       variant={activeTab === 'manage' ? 'primary' : 'outline-primary'}
                       active={activeTab === 'manage'}
                       onClick={() => setActiveTab('manage')}
                       className="d-flex align-items-center"
                     >
                       <MdManageAccounts className="me-2" size={18} /> Manage Leads
-                    </Button>
-                    <Button
+                    </Button> */}
+                    {/* <Button
                       variant={activeTab === 'reports' ? 'primary' : 'outline-primary'}
                       active={activeTab === 'reports'}
                       onClick={() => setActiveTab('reports')}
                       className="d-flex align-items-center"
                     >
                       <HiOutlineDocumentReport className="me-2" size={18} /> Lead Reports
+                    </Button> */}
+                     <Button
+                      variant='primary'
+                      // active={activeTab === 'reports'}
+                      onClick={() =>  navigate("/admin/AddProjectList")}
+                      className="d-flex align-items-center"
+                    >
+                      Add Proposal
                     </Button>
                   </ButtonGroup>
                 </div>
@@ -1161,6 +1169,7 @@ const LeadFlow = ({ data }) => {
                   </Dropdown.Menu>
                 </Dropdown>
               </div>
+              
             </div>
 
             {/* Loader */}
