@@ -66,6 +66,7 @@ import UpdateProfile from "../features/Admin/Profile/UpdateProfile.jsx";
 import LeadFlow from "../features/Admin/LeadFlow/LeadFlow.jsx";
 import Editpurposal from "../features/Admin/LeadFlow/Editpurposal.jsx";
 import EditProject from "../features/Admin/ProjectList/EditProject.jsx";
+import AddInvoice2 from "../features/Admin/Invoicing_Billing/AddInvoice2.jsx";
 
 function Admin() {
   const [isSidebarOpen, setSidebarOpen] = useState(window.innerWidth >= 768);
@@ -138,6 +139,7 @@ function Admin() {
             <Route path="/AddTimeLog" element={<ProtectedRoute><AddTimeLog /></ProtectedRoute>} />
             <Route path="/Invoicing_Billing" element={<ProtectedRoute><Invoicing_Billing /></ProtectedRoute>} />
             <Route path="/AddInvoice" element={<ProtectedRoute><AddInvoice /></ProtectedRoute>} />
+            <Route path="/AddInvoice2" element={<ProtectedRoute><AddInvoice2 /></ProtectedRoute>} />
             <Route path="/TimesheetWorklog" element={<ProtectedRoute><TimesheetWorklog /></ProtectedRoute>} />
             <Route path="/AddTimesheetWorklog" element={<ProtectedRoute><AddTimesheetWorklog /></ProtectedRoute>} />
             <Route path="/Notiifcations" element={<ProtectedRoute><Notiifcations /></ProtectedRoute>} />

@@ -63,7 +63,7 @@
 
     .toggle-button {
         display: block;
-        background-color: #0052CC;
+        background-color: #DDC62F;
         color: rgb(250, 247, 247);
         /* border-radius: 0 4px 4px 0; */
         box-shadow: 2px 0 4px rgba(0, 0, 0, 0.1);
@@ -125,7 +125,7 @@
   .logo-text {
     font-size: 20px;
     font-weight: 600;
-    color: #0052CC;
+    color: #DDC62F;
     letter-spacing: -0.5px;
   }
 
@@ -152,11 +152,11 @@
     margin: 0px;
   }
   .menu-item:hover{
-    background-color: #f8f9fa;
-    color: #0052CC;
+    background-color: #f0e8b2;
+    color: #DDC62F;
   }
   .menu-item:hover .menu-icon {
-    color: #0052CC !important;
+    color: #DDC62F !important;
   }
   .menu-item {
     display: flex;
@@ -173,7 +173,7 @@
   }
   
   .menu-item.active {
-    background-color: #0052CC;
+    background-color: #DDC62F;
     color: white !important;
     margin: 4px 16px;
     border-radius: 8px;
@@ -209,7 +209,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    color: #0052CC;
+    color: #DDC62F;
     opacity: 0.9;
   }
   
@@ -263,11 +263,11 @@
   }
   .submenu.open .submenu-item:hover{
     background-color: #F4F5F7;
-    color: #0052CC;
+    color: #DDC62F;
   }
   .submenu-item.active-submenu-item{
-    background-color: #DEEBFF;
-    color: #0052CC;
+    background-color: #f0e8b2;
+    color: #DDC62F;
     font-weight: 500;
   }
   .submenu-item {

@@ -182,7 +182,12 @@ function AddCostEstimates() {
           <form onSubmit={handleSubmit}>
             <div className="row mb-3">
               <div className="col-md-4 mb-3">
-                <label className="form-label">Client</label>
+                <div class="d-flex align-items-center justify-content-between mb-2">
+                  <label class="form-label mb-0 fw-bold">Client</label>
+                  <Link to={"/admin/AddClientManagement"}><button class="btn btn-sm btn-outline-primary rounded-pill px-3 py-1">
+                    + Create
+                  </button></Link>
+                </div>
                 <select
                   className="form-select"
                   name="clientId"
@@ -209,7 +214,12 @@ function AddCostEstimates() {
               </div>
 
               <div className="col-md-4 mb-3">
-                <label className="form-label">Project</label>
+              <div class="d-flex align-items-center justify-content-between mb-2">
+                  <label class="form-label mb-0 fw-bold">Project</label>
+                  <Link to={"/admin/AddProjectList"}><button class="btn btn-sm btn-outline-primary rounded-pill px-3 py-1">
+                    + Create
+                  </button></Link>
+                </div>
                 <select
                   className="form-select"
                   name="projectId"

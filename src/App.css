@@ -1,5 +1,5 @@
 :root {
-  --primary-color: #0d6efd;
+  --primary-color: #DDC62F;
   --danger-color: #dc3545;
   --warning-color: #ffc107;
   --success-color: #198754;
@@ -579,7 +579,7 @@ a:hover {
 
 /* Button color All  */
 #btn-All {
-  background-color: #0052CC;
+  background-color: #DDC62F;
   color: white;
   width: 170px;
   height: 40px;
@@ -626,13 +626,13 @@ a:hover {
 
 /* All button color  */
 #All_btn {
-  background-color:#0052CC;
+  background-color:#DDC62F;
   color: white;
   border: none;
 }
 #icone_btn {
   color:white;
-  border: 1px solid #0052CC;
+  border: 1px solid #DDC62F;
 }
 
 /* Kanban board touch and user select fix for mobile */
