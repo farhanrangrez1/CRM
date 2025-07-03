@@ -38,8 +38,8 @@ function ProjectList() {
       ? project.data
       : activeTab === 'Completed (To Be Invoiced)'
         ? project.data?.filter(
-            (project) => project.status === 'Completed' && !project.invoiceCreated
-          )
+          (project) => project.status === 'Completed' && !project.invoiceCreated
+        )
         : project.data?.filter((project) => project.status === activeTab)
   )?.filter((project) => {
     // Split searchTerm by spaces, ignore empty terms
@@ -56,9 +56,9 @@ function ProjectList() {
       project.endDate ? new Date(project.endDate).toLocaleDateString('en-GB').replace(/\/20/, '/') : '',
       project.projectRequirements && project.projectRequirements.length > 0
         ? Object.entries(project.projectRequirements[0])
-            .filter(([_, value]) => value === true)
-            .map(([key]) => key)
-            .join(', ')
+          .filter(([_, value]) => value === true)
+          .map(([key]) => key)
+          .join(', ')
         : ''
     ].map(f => (f || '').toString().toLowerCase());
     // Every term must be found in at least one field
@@ -161,11 +161,11 @@ function ProjectList() {
             <Button variant="outline-secondary" size="sm">
               <FaUpload className="me-1" /> Import
             </Button>
-            <Link to={"/admin/AddProjectList"}>
+            {/* <Link to={"/admin/AddProjectList"}>
               <Button id="All_btn" variant="dark" size="sm">
                 <FaPlus className="me-1" /> Add project
               </Button>
-            </Link>
+            </Link> */}
           </div>
         </div>
       </div>

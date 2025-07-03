@@ -106,6 +106,20 @@ const projectsSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
+
+      // Add
+      //   .addCase(createProject.pending, (state) => {
+      //     state.loading = true;
+      //     state.error = null;
+      //   })
+      //   .addCase(createProject.fulfilled, (state, action) => {
+      //     state.loading = false;
+      //     state.project.push(action.payload);
+      //   })
+      //   .addCase(createProject.rejected, (state, action) => {
+      //     state.loading = false;
+      //     state.error = action.payload;
+      //   })
       .addCase(fetchProject.pending, (state) => {
         state.status = 'loading';
       })

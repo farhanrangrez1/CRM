@@ -819,7 +819,7 @@ const LeadFlow = ({ data }) => {
     const [isUpdating, setIsUpdating] = useState(false);
 
     const kanbanData = {
-      active: project?.filter(p => p.status === "Active Project"),
+      active: project?.filter(p => p.status === "Lead"),
       pending: project?.filter(p => p.status === "In Progress"),
       closed: reduxProposals?.filter(p => p.status === "closed"),
       rejected: reduxProposals?.filter(p => p.status === "rejected"),
@@ -829,7 +829,7 @@ const LeadFlow = ({ data }) => {
       const { source, destination, draggableId } = result;
       if (!destination) return;
       if (source.droppableId === destination.droppableId && source.index === destination.index) return;
-      console.log("draggableId", draggableId)
+      //console.log("draggableId", draggableId)
       const statusMap = {
         active: "active",
         pending: "pending",
@@ -837,7 +837,7 @@ const LeadFlow = ({ data }) => {
         rejected: "rejected"
       };
       const newStatus = statusMap[destination.droppableId];
-      console.log("newStatus", newStatus)
+      //console.log("newStatus", newStatus)
       // Optimistically update UI
       dispatch(updateProposalStatusLocally({ id: Number(draggableId), status: newStatus }));
       setIsUpdating(true);
@@ -847,10 +847,11 @@ const LeadFlow = ({ data }) => {
       } catch (error) {
         console.error("Failed to update status", error);
       }
-      console.log("after isUpdating", isUpdating)
+      //console.log("after isUpdating", isUpdating)
 
       setIsUpdating(false);
     };
+
     // --- Kanban Columns Config ---
     let columns = [
       { id: 'active', title: 'Lead' },
@@ -903,49 +904,55 @@ const LeadFlow = ({ data }) => {
                       <span className="badge bg-light text-dark border ms-auto">{kanbanData[col.id]?.length || 0}</span>
                     </div>
                     {/* Cards */}
-                    {kanbanData[col.id]?.map((item, idx) => (
-                      <Draggable draggableId={String(item._id)} index={idx} key={item._id}>
-                        {(provided, snapshot) => (
-                          <div
-                            ref={provided.innerRef}
-                            {...provided.draggableProps}
-                            {...provided.dragHandleProps}
-                            className="bg-white border rounded mb-2 p-2 shadow-sm"
-                            style={{
-                              minHeight: 110,
-                              wordBreak: 'break-word',
-                              maxWidth: '100%',
-                              background: snapshot.isDragging ? '#fffde7' : undefined,
-                              ...provided.draggableProps.style
-                            }}
-                          >
-                            <div className="fw-semibold text-primary" style={{ fontSize: 15 }}>
-                              {item.projectName
-                                || item.title}
+                    {kanbanData[col.id]?.map((item, idx) => {
+                      console.log("item", item);
+
+                      return (
+                        <Draggable draggableId={String(item._id)} index={idx} key={item._id}>
+                          {(provided, snapshot) => (
+                            <div
+                              ref={provided.innerRef}
+                              {...provided.draggableProps}
+                              {...provided.dragHandleProps}
+                              className="bg-white border rounded mb-2 p-2 shadow-sm"
+                              style={{
+                                minHeight: 110,
+                                wordBreak: 'break-word',
+                                maxWidth: '100%',
+                                background: snapshot.isDragging ? '#fffde7' : undefined,
+                                ...provided.draggableProps.style
+                              }}
+                            >
+                              <div className="fw-semibold text-primary" style={{ fontSize: 15 }}>
+                                {item.projectName
+                                  || item.title}
+                              </div>
+                              <div className="text-muted small mb-1">Client: {item?.clientId?.clientName}</div>
+                              <div className="small text-secondary mb-1">Billing: {item.billing || item.job_type}</div>
+                              <div className="small text-secondary mb-1">Phases: {item.phases}</div>
+                              <div className="d-flex flex-wrap gap-2 align-items-center mb-1">
+                                <Badge bg="info" className="me-1">{item.status}</Badge>
+                              </div>
+                              <div className="small text-success mb-1">Revenue: <b>{item.revenue}</b></div>
+                              <div className="small text-warning mb-1">Committed Cost: <b>{item.committedCost}</b></div>
+                              <div className="small text-primary mb-1">Profit/Loss: <b>{item.profitLoss}</b></div>
+                              <div className="small text-dark mb-1">Percent: <b>{item.percent}</b></div>
+                              <div className="small text-muted mb-1">Last updated: {item.updated || item.last_updated || item.createdAt}</div>
+                              <div className="mt-2">
+                                <button className="btn btn-sm btn-outline-primary" onClick={() => {
+                                  localStorage.setItem("proposalId", item.id);
+                                  navigate("/admin/LeadFlow/Details", { state: { item: item } });
+                                }}>
+                                  {col.id === 'active' ? 'Create Proposal' : col.id === 'pending' ? 'Edit proposal' : col.id === 'closed' ? 'Send Reminder' : 'Expired/Sent'}
+                                </button>
+                              </div>
                             </div>
-                            <div className="text-muted small mb-1">Client: {item?.clientId?.clientName}</div>
-                            <div className="small text-secondary mb-1">Billing: {item.billing || item.job_type}</div>
-                            <div className="small text-secondary mb-1">Phases: {item.phases}</div>
-                            <div className="d-flex flex-wrap gap-2 align-items-center mb-1">
-                              <Badge bg="info" className="me-1">{item.status}</Badge>
-                            </div>
-                            <div className="small text-success mb-1">Revenue: <b>{item.revenue}</b></div>
-                            <div className="small text-warning mb-1">Committed Cost: <b>{item.committedCost}</b></div>
-                            <div className="small text-primary mb-1">Profit/Loss: <b>{item.profitLoss}</b></div>
-                            <div className="small text-dark mb-1">Percent: <b>{item.percent}</b></div>
-                            <div className="small text-muted mb-1">Last updated: {item.updated || item.last_updated || item.createdAt}</div>
-                            <div className="mt-2">
-                              <button className="btn btn-sm btn-outline-primary" onClick={() => {
-                                localStorage.setItem("proposalId", item.id);
-                                navigate("/admin/LeadFlow/Details");
-                              }}>
-                                {col.id === 'active' ? 'Invoice' : col.id === 'pending' ? 'Edit proposal' : col.id === 'closed' ? 'View' : 'Expired'}
-                              </button>
-                            </div>
-                          </div>
-                        )}
-                      </Draggable>
-                    ))}
+                          )}
+                        </Draggable>
+                      );
+                    }
+                    )
+                    }
                     {provided.placeholder}
                   </div>
                 )}
@@ -1076,21 +1083,29 @@ const LeadFlow = ({ data }) => {
 
                 <div className="col-12 col-md-6 d-flex justify-content-md-end gap-2 mb-3">
                   <ButtonGroup>
-                    <Button
+                    {/* <Button
                       variant={activeTab === 'manage' ? 'primary' : 'outline-primary'}
                       active={activeTab === 'manage'}
                       onClick={() => setActiveTab('manage')}
                       className="d-flex align-items-center"
                     >
                       <MdManageAccounts className="me-2" size={18} /> Manage Leads
-                    </Button>
-                    <Button
+                    </Button> */}
+                    {/* <Button
                       variant={activeTab === 'reports' ? 'primary' : 'outline-primary'}
                       active={activeTab === 'reports'}
                       onClick={() => setActiveTab('reports')}
                       className="d-flex align-items-center"
                     >
                       <HiOutlineDocumentReport className="me-2" size={18} /> Lead Reports
+                    </Button> */}
+                     <Button
+                      variant='primary'
+                      // active={activeTab === 'reports'}
+                      onClick={() =>  navigate("/admin/AddProjectList")}
+                      className="d-flex align-items-center"
+                    >
+                      Add Proposal
                     </Button>
                   </ButtonGroup>
                 </div>
@@ -1153,6 +1168,7 @@ const LeadFlow = ({ data }) => {
                   </Dropdown.Menu>
                 </Dropdown>
               </div>
+              
             </div>
 
             {/* Loader */}
