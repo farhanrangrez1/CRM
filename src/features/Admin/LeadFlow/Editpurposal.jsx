@@ -1379,6 +1379,7 @@ import Swal from "sweetalert2";
 import AddCostEstimates from "../CostEstimates/AddCostEstimates";
 import AddTimesheetWorklog from "../TimesheetWorklog/AddTimesheetWorklog";
 import AddInvoice from "../Invoicing_Billing/AddInvoice";
+import ProposalEmailUI from "./ProposalEmailUI";
 // import DocumentList from "./DocumentList";
 
 const DocumentList = () => {
@@ -1510,6 +1511,8 @@ const Editpurposal = () => {
 
 
   // const stage = job?.p?.stage;
+
+  const [showAddInvoice, setShowAddInvoice] = useState(true);
 
   const renderTabContent = () => {
     switch (activeTab) {
@@ -1675,125 +1678,35 @@ const Editpurposal = () => {
       case "Create Proposal":
         return (
           <div className="container mt-4 mb-5">
-            {/* <div className="d-flex justify-content-between align-items-center mb-3">
-              <div>
-                <span className="h5">Fixed price</span>
-              </div>
-              <div>
-                <Button variant="success" className="me-2">
-                  Save changes
-                </Button>
-                <Button variant="outline-secondary">Send out for signature</Button>
-              </div>
-            </div>
-            <Row className="text-center mb-4">
-              <Col>
-                <strong>Value</strong>
-                <div>${calculateTotalValue()}</div>
-              </Col>
-              <Col>
-                <strong>Cost</strong>
-                <div>$0.00</div>
-              </Col>
-              <Col>
-                <strong>Profit</strong>
-                <div>$0.00</div>
-              </Col>
-            </Row>
-            <Form>
-              <Row className="mb-3">
-                <Col md={6}><Form.Label>Attn:</Form.Label><Form.Control type="text" placeholder="Test Client Name" value={clientName} onChange={(e) => setClientName(e.target.value)} /></Col>
-                <Col md={6}><Form.Label>Estimated start date:</Form.Label><Form.Control type="date" value={startDate} onChange={(e) => setStartDate(e.target.value)} /></Col>
-              </Row>
-              <Row className="mb-3">
-                <Col md={6}><Form.Label>PO #:</Form.Label><Form.Control type="text" placeholder="Enter PO number" value={poNumber} onChange={(e) => setPoNumber(e.target.value)} /></Col>
-                <Col md={6}><Form.Label>Estimated end date:</Form.Label><Form.Control type="date" value={endDate} onChange={(e) => setEndDate(e.target.value)} /></Col>
-              </Row>
-              <Row className="mb-4">
-                <Col md={6}><Form.Label>Contract #:</Form.Label><Form.Control type="text" placeholder="Enter number or id" value={contractNumber} onChange={(e) => setContractNumber(e.target.value)} /></Col>
-                <Col md={6}>
-                  <Form.Label>Payment terms:</Form.Label>
-                  <Form.Select value={paymentTerms} onChange={(e) => setPaymentTerms(e.target.value)}>
-                    <option value="">Select payment term</option>
-                    <option value="Due Upon Receipt">Due Upon Receipt</option>
-                    <option value="Net 15">Net 15</option>
-                    <option value="Net 30">Net 30</option>
-                    <option value="Full after completion">Full after completion</option>
-                  </Form.Select>
-                </Col>
-              </Row>
-              <hr />
-              <h5 className="text-center">LINE ITEMS</h5>
-              {lineItems.map((item, idx) => (
-                <div key={idx} className="bg-light p-3 mb-3 border rounded">
-                  <Row className="align-items-center mb-2">
-                    <Col md={6}>
-                      <Form.Control
-                        type="text"
-                        placeholder="Enter description here"
-                        value={item.description}
-                        onChange={(e) => handleLineChange(idx, 'description', e.target.value)}
-                      />
-                    </Col>
-                    <Col md={2}>
-                      <Form.Control
-                        type="number"
-                        placeholder="$0.00"
-                        value={item.amount}
-                        onChange={(e) => handleLineChange(idx, 'amount', e.target.value)}
-                      />
-                    </Col>
-                    <Col md={1}>
-                      <Form.Control
-                        type="number"
-                        min="1"
-                        value={item.quantity}
-                        onChange={(e) => handleLineChange(idx, 'quantity', e.target.value)}
-                      />
-                    </Col>
-                    <Col md={2}>
-                      <Form.Check
-                        type="checkbox"
-                        label="Taxable"
-                        checked={item.taxable}
-                        onChange={(e) => handleLineChange(idx, 'taxable', e.target.checked)}
-                      />
-                    </Col>
-                    <Col md={1} className="text-end">
-                      <Button variant="outline-danger" onClick={() => removeLineItem(idx)}>
-                        &times;
-                      </Button>
-                    </Col>
-                  </Row>
+            {/* Main Page: AddInvoice */}
+            {showAddInvoice && (
+              <AddInvoice onInvoiceComplete={() => setShowAddInvoice(false)} />
+            )}
+
+            {/* Fullscreen Overlay Modal for ProposalEmailUI */}
+            {!showAddInvoice && (
+              <div
+                className="position-fixed top-0 start-0 w-100 h-100 bg-white shadow-lg"
+                style={{ zIndex: 1050, overflowY: "auto" }}
+              >
+                <div className="d-flex justify-content-between px-3 py-2">
+                  <div>
+                    <h4 className="fw-bold">Send proposal out for signature</h4>
+                  </div>
+                  <button
+                    className="btn btn-outline-dark"
+                    onClick={() => setShowAddInvoice(true)}
+                  >
+                    Close
+                  </button>
                 </div>
-              ))}
-              <div className="d-flex justify-content-between align-items-center border p-3 rounded">
-                <Button variant="primary" onClick={handleAddLineItem}>
-                  + Add new line item
-                </Button>
+                <div className="">
+                  <ProposalEmailUI />
+                </div>
               </div>
-            </Form>
-            <div className="bg-success bg-opacity-10 p-3 mt-4 rounded">
-              <Row className="align-items-center mb-2">
-                <Col md={4}>
-                  <Form.Label>Applicable tax rate:</Form.Label>
-                </Col>
-                <Col md={4}>
-                  <Form.Select value={applicableTaxRate} onChange={(e) => setApplicableTaxRate(e.target.value)}>
-                    <option>(Non taxable) 0%</option>
-                    <option>GST 5%</option>
-                    <option>VAT 10%</option>
-                  </Form.Select>
-                </Col>
-              </Row>
-            </div>
-            <div className="mt-4">
-              <h6 className="text-center">TERMS AND CONDITIONS</h6>
-              <Form.Control as="textarea" rows={4} value={comments} onChange={(e) => setComments(e.target.value)} placeholder="Enter terms and conditions here..." />
-            </div> */}
-            {/* <AddCostEstimates /> */}
-            <AddInvoice />
+            )}
           </div>
+
         );
 
       case "Documents":

@@ -12,24 +12,26 @@ import InvoicingBillingReducer from "../redux/slices/InvoicingBillingSlice"
 import AssignReducer from "../redux/slices/AssignSlice"
 import ReportsReducer from "../redux/slices/ReportsSlice"
 import proposalReducer from "../redux/slices/proposalSlice"
+import documentsRecordReducer from "../redux/slices/documentSlice"
 // Employee
 import MyJobsReducer from "../redux/slices/Employee/MyJobsSlice"
 
 export const store = configureStore({
   reducer: {
-    projects:ProjectsReducer,
-    jobs:jobsReducer,
-    client:ClientReducer,
-    user:userReducer,
-    costEstimates:costEstimatesReducer,
+    projects: ProjectsReducer,
+    jobs: jobsReducer,
+    client: ClientReducer,
+    user: userReducer,
+    costEstimates: costEstimatesReducer,
     receivablePurchases: receivablePurchaseReducer,
     TimeLogss: TimeLogsReducer,
-    TimesheetWorklogs:TimesheetWorklogReducer,
-    InvoicingBilling:InvoicingBillingReducer,
-    Assign:AssignReducer,
-    reportss:ReportsReducer,
-    proposal:proposalReducer,
+    TimesheetWorklogs: TimesheetWorklogReducer,
+    InvoicingBilling: InvoicingBillingReducer,
+    Assign: AssignReducer,
+    reportss: ReportsReducer,
+    proposal: proposalReducer,
     //Employee
-    MyJobs:MyJobsReducer
-}
+    MyJobs: MyJobsReducer,
+    documentRecord: documentsRecordReducer
+  }
 });
