@@ -83,35 +83,35 @@ function ReciveablePurchase() {
     setSortField(field);
   };
 
-const getStatusClass = (status) => {
-  switch (status.toLowerCase().trim()) {
-    case "pending":
-      return "bg-warning text-dark";     // Yellow
-    case "received":
-      return "bg-info text-dark";        // Light Blue
-    case "cancelled":
-      return "bg-danger text-white";     // Red
-    case "completed":
-      return "bg-success text-white";    // Green
-    case "open":
-      return "bg-primary text-white";    // Blue
-    case "invoiced":
-      return "bg-dark text-white";       // Dark (You can change it as needed)
-    case "in progress":
-    case "in_progress":
-      return "bg-warning text-dark";
-    case "active":
-      return "bg-primary text-white";
-    case "reject":
-      return "bg-danger text-white";
-    case "review":
-      return "bg-info text-dark";
-    case "not started":
-      return "bg-secondary text-white";
-    default:
-      return "bg-light text-dark";       // Default light background
-  }
-};
+  const getStatusClass = (status) => {
+    switch (status.toLowerCase().trim()) {
+      case "pending":
+        return "bg-warning text-dark";     // Yellow
+      case "received":
+        return "bg-info text-dark";        // Light Blue
+      case "cancelled":
+        return "bg-danger text-white";     // Red
+      case "completed":
+        return "bg-success text-white";    // Green
+      case "open":
+        return "bg-primary text-white";    // Blue
+      case "invoiced":
+        return "bg-dark text-white";       // Dark (You can change it as needed)
+      case "in progress":
+      case "in_progress":
+        return "bg-warning text-dark";
+      case "active":
+        return "bg-primary text-white";
+      case "reject":
+        return "bg-danger text-white";
+      case "review":
+        return "bg-info text-dark";
+      case "not started":
+        return "bg-secondary text-white";
+      default:
+        return "bg-light text-dark";       // Default light background
+    }
+  };
 
 
   // const handleToBeInvoiced = (clientName, projectName) => {
@@ -321,13 +321,13 @@ const getStatusClass = (status) => {
                 <td>{new Date(po.ReceivedDate).toLocaleDateString()}</td>
                 <td>${po.Amount?.toFixed(2)}</td>
                 <td>
-                <span className={`badge ${getStatusClass(po.POStatus)} px-2 py-1`}>
-                  {po.POStatus}
-                </span>
+                  <span className={`badge ${getStatusClass(po.POStatus)} px-2 py-1`}>
+                    {po.POStatus}
+                  </span>
                 </td>
                 <div>
                   <Button
-                    variant="outline-primary"
+                    variant="outline-primary" // Keep this for default behavior
                     size="sm"
                     onClick={() => handleToBeInvoiced(po)}
                     className="px-3 py-1 fw-semibold border-2"
@@ -336,7 +336,9 @@ const getStatusClass = (status) => {
                       borderRadius: '6px',
                       fontSize: '12px',
                       textTransform: 'uppercase',
-                      letterSpacing: '0.5px'
+                      letterSpacing: '0.5px',
+                      borderColor: '#DDC62F',
+                      color: '#DDC62F'
                     }}
                   >
                     To be invoiced

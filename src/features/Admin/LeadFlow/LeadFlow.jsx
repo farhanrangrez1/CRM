@@ -813,7 +813,20 @@ const LeadFlow = ({ data }) => {
   // --- Proposal Workflow Board ---
   const ProposalWorkflowBoard = ({ onNavigate, selectedStatus }) => {
     // Defensive: always fallback to []
-    const reduxProposals = useSelector((state) => state?.proposal?.proposals) || [];
+    const reduxProposals = (project.data || []).map(item => ({
+      id: item.id,
+      title: item.projectName,
+      client: item.clientId?.clientName,
+      status: mapStatus(item.status),
+      projectPriority: item.projectPriority,
+      phases: item.phases || "N/A",
+      revenue: item.budgetAmount ? `AED ${item.budgetAmount}` : "N/A",
+      startDate: item.startDate,
+      endDate: item.endDate,
+      committedCost: "4220",
+      profitLoss: "N/A",
+      updated: item.updatedAt,
+    }));
     // console.log(reduxProposals, "reduxProposals in workflow board");
     const dispatch = useDispatch();
     const [isUpdating, setIsUpdating] = useState(false);
@@ -904,56 +917,62 @@ const LeadFlow = ({ data }) => {
                       <span className="badge bg-light text-dark border ms-auto">{kanbanData[col.id]?.length || 0}</span>
                     </div>
                     {/* Cards */}
-                    {kanbanData[col.id]?.map((item, idx) => {
-                      console.log("item", item);
-
-                      return (
-                        <Draggable draggableId={String(item._id)} index={idx} key={item._id}>
-                          {(provided, snapshot) => (
-                            <div
-                              ref={provided.innerRef}
-                              {...provided.draggableProps}
-                              {...provided.dragHandleProps}
-                              className="bg-white border rounded mb-2 p-2 shadow-sm"
-                              style={{
-                                minHeight: 110,
-                                wordBreak: 'break-word',
-                                maxWidth: '100%',
-                                background: snapshot.isDragging ? '#fffde7' : undefined,
-                                ...provided.draggableProps.style
-                              }}
-                            >
-                              <div className="fw-semibold text-primary" style={{ fontSize: 15 }}>
-                                {item.projectName
-                                  || item.title}
-                              </div>
-                              <div className="text-muted small mb-1">Client: {item?.clientId?.clientName}</div>
-                              <div className="small text-secondary mb-1">Billing: {item.billing || item.job_type}</div>
-                              <div className="small text-secondary mb-1">Phases: {item.phases}</div>
-                              <div className="d-flex flex-wrap gap-2 align-items-center mb-1">
-                                <Badge bg="info" className="me-1">{item.status}</Badge>
-                              </div>
-                              <div className="small text-success mb-1">Revenue: <b>{item.revenue}</b></div>
-                              <div className="small text-warning mb-1">Committed Cost: <b>{item.committedCost}</b></div>
-                              <div className="small text-primary mb-1">Profit/Loss: <b>{item.profitLoss}</b></div>
-                              <div className="small text-dark mb-1">Percent: <b>{item.percent}</b></div>
-                              <div className="small text-muted mb-1">Last updated: {item.updated || item.last_updated || item.createdAt}</div>
-                              <div className="mt-2">
-                                <button className="btn btn-sm btn-outline-primary" onClick={() => {
-                                  localStorage.setItem("proposalId", item._id);
-                                  localStorage.setItem("invoice", JSON.stringify(item));
-                                  navigate("/admin/LeadFlow/Details", { state: { item: item } });
-                                }}>
-                                  {col.id === 'active' ? 'Create Proposal' : col.id === 'pending' ? 'Edit proposal' : col.id === 'closed' ? 'Send Reminder' : 'Expired/Sent'}
-                                </button>
-                              </div>
+                    {kanbanData[col.id]?.map((item, idx) => (
+                      <Draggable draggableId={String(item.id)} index={idx} key={item.id}>
+                        {(provided, snapshot) => (
+                          <div
+                            ref={provided.innerRef}
+                            {...provided.draggableProps}
+                            {...provided.dragHandleProps}
+                            className="bg-white border rounded mb-2 p-2 shadow-sm"
+                            style={{
+                              minHeight: 110,
+                              wordBreak: 'break-word',
+                              maxWidth: '100%',
+                              background: snapshot.isDragging ? '#fffde7' : undefined,
+                              ...provided.draggableProps.style
+                            }}
+                          >
+                            <div className="fw-semibold text-primary" style={{ fontSize: 15 }}>
+                              {item.job_name || item.title}
                             </div>
-                          )}
-                        </Draggable>
-                      );
-                    }
-                    )
-                    }
+                            <div className="text-muted small mb-1">Client: {item.client || item.client_name}</div>
+                            <div className="small text-secondary mb-1">Billing: {item.billing || item.job_type}</div>
+                            <div className="small text-secondary mb-1">Phases: {item.phases}</div>
+                            <div className="d-flex flex-wrap gap-2 align-items-center mb-1">
+                              <Badge bg="info" className="me-1">{item.status}</Badge>
+                            </div>
+                            <div className="small text-success mb-1">Revenue: <b>{item.revenue}</b></div>
+                            <div className="small text-warning mb-1">Committed Cost: <b>{item.committedCost}</b></div>
+                            <div className="small text-primary mb-1">Profit/Loss: <b>{item.projectPriority}</b></div>
+                            <div className="small text-dark mb-1">
+                              startDate: <b>{new Date(item.startDate).toLocaleDateString('en-GB')}</b>
+                            </div>
+                            <div className="small text-dark mb-1">
+                              endDate: <b>{new Date(item.endDate).toLocaleDateString('en-GB')}</b>
+                            </div>
+
+                            {/* <div className="small text-muted mb-1">Last updated: {item.updated || item.last_updated}</div> */}
+                            <div className="mt-2">
+                              <button
+                                className="btn btn-sm btn-outline-primary"
+                                onClick={() => {
+                                  localStorage.setItem("proposalId", item.id);
+                                  if (col.id === 'active') {
+                                    navigate("/admin/AddInvoice");
+                                  } else {
+                                    navigate("/admin/LeadFlow/Details");
+                                  }
+                                }}
+                              >
+                                {col.id === 'active' ? 'Invoice' : col.id === 'pending' ? 'Edit proposal' : col.id === 'closed' ? 'View' : 'Expired'}
+                              </button>
+
+                            </div>
+                          </div>
+                        )}
+                      </Draggable>
+                    ))}
                     {provided.placeholder}
                   </div>
                 )}
@@ -1122,7 +1141,7 @@ const LeadFlow = ({ data }) => {
                     <button
                       className={`nav-link ${selectedStatus === tab.value ? 'active' : ''}`}
                       onClick={() => setSelectedStatus(tab.value)}
-                      style={{ color: "#0d6efd", borderColor: "#0d6efd" }}
+                      style={{ color: "#695e13", borderColor: "#DDC62F" }}
                     >
                       {tab.label}
                     </button>

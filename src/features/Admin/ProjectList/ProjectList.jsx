@@ -158,9 +158,6 @@ function ProjectList() {
             />
           </div>
           <div className="col-12 col-md-6 d-flex justify-content-md-end gap-2">
-            <Button variant="outline-secondary" size="sm">
-              <FaUpload className="me-1" /> Import
-            </Button>
             {/* <Link to={"/admin/AddProjectList"}>
               <Button id="All_btn" variant="dark" size="sm">
                 <FaPlus className="me-1" /> Add project
@@ -178,7 +175,7 @@ function ProjectList() {
               <button
                 className={`nav-link ${activeTab === tab ? 'active' : ''}`}
                 onClick={() => setActiveTab(tab)}
-                style={{ color: "#0d6efd", borderColor: "#0d6efd" }}
+                style={{ color: "#695e13", borderColor: "#DDC62F" }}
               >
                 {tab}
               </button>
@@ -283,7 +280,7 @@ function ProjectList() {
                 </td>
                 <td>
                   <div className="action-buttons d-flex">
-                    <Button style={{ color: "#0d6efd" }} variant="link" className="p-0 me-2" onClick={() => handleUpdate(project)}>
+                    <Button style={{ color: "#695e13" }} variant="link" className="p-0 me-2" onClick={() => handleUpdate(project)}>
                       <FaEdit />
                     </Button>
                   </div>

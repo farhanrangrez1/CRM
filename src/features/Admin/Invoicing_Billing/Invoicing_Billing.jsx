@@ -663,6 +663,8 @@ function Invoicing_Billing() {
                       <FaTrash />
                     </button> */}
                   <button
+                  
+                      style={{color:'#DDC62F',border:"1px solid #DDC62F"}}
                     className="btn btn-sm btn-outline-primary"
                     onClick={() => handleDownloadPDF(invoice)} // Pass current invoice
                   >

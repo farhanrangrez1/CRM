@@ -202,7 +202,7 @@ function ClientManagement() {
                     </td>
                     <td>
                       <div className="action-buttons d-flex">
-                        <Button onClick={() => UpdateData(client)} id="icone_btn" size="sm">
+                        <Button  onClick={() => UpdateData(client)} id="icone_btn" size="sm">
                           <FaEdit />
                         </Button>
                         <Button onClick={() => handleDelete(client.id)} id="icone_btn" size="sm">

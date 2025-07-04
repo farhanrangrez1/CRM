@@ -820,11 +820,13 @@ const ProjectView = ({ data }) => {
             title: item.projectName,
             client: item.clientId?.clientName,
             status: mapStatus(item.status),
+            projectPriority: item.projectPriority,
             phases: item.phases || "N/A",
             revenue: item.budgetAmount ? `AED ${item.budgetAmount}` : "N/A",
-            committedCost: "N/A",
+            startDate: item.startDate,
+            endDate: item.endDate,
+            committedCost: "4220",
             profitLoss: "N/A",
-            percent: "N/A",
             updated: item.updatedAt,
         }));
 
@@ -948,9 +950,13 @@ const ProjectView = ({ data }) => {
                                                         <div className="small text-success mb-1">Revenue: <b>{item.revenue}</b></div>
                                                         <div className="small text-warning mb-1">Committed Cost: <b>{item.committedCost}</b></div>
                                                         <div className="small text-primary mb-1">Profit/Loss: <b>{item.projectPriority}</b></div>
-                                                        <div className="small text-dark mb-1">Percent: <b>{item.percent}</b></div>
-                                                          <div className="small text-dark mb-1">startDate: <b>{item.startDate}</b></div>
-                                                          <div className="small text-dark mb-1">endDate: <b>{item.endDate}</b></div>
+                                                        <div className="small text-dark mb-1">
+                                                            startDate: <b>{new Date(item.startDate).toLocaleDateString('en-GB')}</b>
+                                                        </div>
+                                                        <div className="small text-dark mb-1">
+                                                            endDate: <b>{new Date(item.endDate).toLocaleDateString('en-GB')}</b>
+                                                        </div>
+
                                                         {/* <div className="small text-muted mb-1">Last updated: {item.updated || item.last_updated}</div> */}
                                                         <div className="mt-2">
                                                             <button
@@ -958,7 +964,7 @@ const ProjectView = ({ data }) => {
                                                                 onClick={() => {
                                                                     localStorage.setItem("proposalId", item.id);
                                                                     if (col.id === 'active') {
-                                                                        navigate("/admin/AddInvoice");
+                                                                        navigate("/admin/AddInvoice2");
                                                                     } else {
                                                                         navigate("/admin/LeadFlow/Details");
                                                                     }
@@ -1101,7 +1107,11 @@ const ProjectView = ({ data }) => {
                                 <div className="col-12 col-md-6 d-flex justify-content-md-end gap-2 mb-3">
                                     <ButtonGroup>
                                         <Button
-                                            variant={activeTab === 'manage' ? 'primary' : 'outline-primary'}
+                                            style={{
+                                                backgroundColor: activeTab === 'manage' ? '#DDC62F' : 'transparent',
+                                                borderColor: '#DDC62F',
+                                                color: activeTab === 'manage' ? 'black' : '#DDC62F',
+                                            }}
                                             active={activeTab === 'manage'}
                                             onClick={() => setActiveTab('manage')}
                                             className="d-flex align-items-center"
@@ -1109,13 +1119,18 @@ const ProjectView = ({ data }) => {
                                             <MdManageAccounts className="me-2" size={18} /> Manage Project
                                         </Button>
                                         <Button
-                                            variant={activeTab === 'reports' ? 'primary' : 'outline-primary'}
+                                            style={{
+                                                backgroundColor: activeTab === 'reports' ? '#DDC62F' : 'transparent',
+                                                borderColor: '#DDC62F',
+                                                color: activeTab === 'reports' ? 'black' : '#DDC62F',
+                                            }}
                                             active={activeTab === 'reports'}
                                             onClick={() => setActiveTab('reports')}
                                             className="d-flex align-items-center"
                                         >
                                             <HiOutlineDocumentReport className="me-2" size={18} /> Job Reports
                                         </Button>
+
                                     </ButtonGroup>
                                 </div>
 
@@ -1131,7 +1146,7 @@ const ProjectView = ({ data }) => {
                                             <button
                                                 className={`nav-link ${selectedStatus === tab.value ? 'active' : ''}`}
                                                 onClick={() => setSelectedStatus(tab.value)}
-                                                style={{ color: "#0d6efd", borderColor: "#0d6efd" }}
+                                                style={{ color: "#695e13", borderColor: "#DDC62F" }}
                                             >
                                                 {tab.label}
                                             </button>
