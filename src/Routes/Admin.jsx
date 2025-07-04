@@ -67,6 +67,7 @@ import LeadFlow from "../features/Admin/LeadFlow/LeadFlow.jsx";
 import Editpurposal from "../features/Admin/LeadFlow/Editpurposal.jsx";
 import EditProject from "../features/Admin/ProjectList/EditProject.jsx";
 import AddInvoice2 from "../features/Admin/Invoicing_Billing/AddInvoice2.jsx";
+import TempPoles from "../features/Admin/ProjectList/ProjectTabs/TempPoles.jsx";
 
 function Admin() {
   const [isSidebarOpen, setSidebarOpen] = useState(window.innerWidth >= 768);
@@ -118,6 +119,7 @@ function Admin() {
             <Route path="/projectList" element={<ProtectedRoute><ProjectList /></ProtectedRoute>} />
             <Route path="/AddProjectList" element={<ProtectedRoute><AddProjectList /></ProtectedRoute>} />
             <Route path="/projectView" element={<ProtectedRoute><ProjectView/></ProtectedRoute>} />
+              <Route path="/TempPoles" element={<ProtectedRoute><TempPoles/></ProtectedRoute>} />
             <Route path="/OvervieJobsProject" element={<ProtectedRoute><OvervieJobsProject /></ProtectedRoute>} />
             <Route path="/ProjectOverview/:id" element={<ProtectedRoute><ProjectOverview /></ProtectedRoute>} />
             <Route path="/UpdateProjectLis" element={<ProtectedRoute><UpdateProjectLis /></ProtectedRoute>} />

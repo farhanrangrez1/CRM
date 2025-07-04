@@ -813,7 +813,7 @@ const LeadFlow = ({ data }) => {
   // --- Proposal Workflow Board ---
   const ProposalWorkflowBoard = ({ onNavigate, selectedStatus }) => {
     // Defensive: always fallback to []
-    const reduxProposals = (project.data || []).map(item => ({
+    const reduxProposals = (project?.data || []).map(item => ({
       id: item.id,
       title: item.projectName,
       client: item.clientId?.clientName,
@@ -1085,7 +1085,7 @@ const LeadFlow = ({ data }) => {
           <div className="project-container">
             {/* Header */}
             <div className="d-flex justify-content-between align-items-center px-4 py-3 mb-3" style={{ minHeight: 64 }}>
-              <h5 className="fw-bold mb-0" style={{ fontSize: '2rem' }}>Leads Flow</h5>
+              <h5 className="fw-bold mb-0" style={{ fontSize: '2rem' }}> Proposals</h5>
             </div>
             {/* Search and Actions */}
             <div className="mb-4">
