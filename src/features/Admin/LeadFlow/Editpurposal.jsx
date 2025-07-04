@@ -1494,9 +1494,9 @@ const Editpurposal = () => {
       { description: '', amount: 0, quantity: 1, taxable: false },
     ]);
   };
-   useEffect(()=>{
-   dispatch(fetchProject())
-   },[])
+  useEffect(() => {
+    dispatch(fetchProject())
+  }, [])
   const handleLineChange = (index, field, value) => {
     const updatedItems = [...lineItems];
     updatedItems[index][field] = value;
@@ -1524,69 +1524,69 @@ const Editpurposal = () => {
     setEstimatedStart("");
     setEstimatedEnd("");
   };
-const saveJob = async () => {
-  const payload = {
-    proposal_id:  project_id,
-    estimated_start: estimatedStart,
-    estimated_completion: estimatedEnd,
-    total_budget: totalBudgetedCost,
-    phase_name: phaseName,
-    materials_budget: materialsBudget,
-    labor_budget: laborBudget,
-    subcontractors_budget: subcontractorsBudget,
-    equipment_budget: equipmentBudget,
-    miscellanea_budget: miscBudget,
+  const saveJob = async () => {
+    const payload = {
+      proposal_id: project_id,
+      estimated_start: estimatedStart,
+      estimated_completion: estimatedEnd,
+      total_budget: totalBudgetedCost,
+      phase_name: phaseName,
+      materials_budget: materialsBudget,
+      labor_budget: laborBudget,
+      subcontractors_budget: subcontractorsBudget,
+      equipment_budget: equipmentBudget,
+      miscellanea_budget: miscBudget,
+    };
+
+    try {
+      const response = await axios.post(
+        'https://netaai-crm-backend-production-c306.up.railway.app/api/job_planning',
+        payload
+      );
+      console.log(payload)
+      if (response.status === 200 || response.status === 201) {
+        Swal.fire("Success", "Job planning created successfully!", "success");
+      } else {
+        throw new Error("Unexpected response status");
+      }
+    } catch (error) {
+      Swal.fire("Error", error.response?.data?.message || error.message, "error");
+    }
+
+    resetForm();
   };
 
-  try {
-    const response = await axios.post(
-      'https://netaai-crm-backend-production-c306.up.railway.app/api/job_planning',
-      payload
-    );
-  console.log(payload)
-    if (response.status === 200 || response.status === 201) {
-      Swal.fire("Success", "Job planning created successfully!", "success");
-    } else {
-      throw new Error("Unexpected response status");
-    }
-  } catch (error) {
-    Swal.fire("Error", error.response?.data?.message || error.message, "error");
-  }
 
-  resetForm();
-};
- 
+  const getBudgetSummaryByProposalId = async (proposalId) => {
+    try {
+      const response = await axios.get(
+        `https://netaai-crm-backend-production-c306.up.railway.app/api/job_planning/getBudgetSummaryByProposalId/${project_id}`
+      );
 
-const getBudgetSummaryByProposalId = async (proposalId) => {
-  try {
-    const response = await axios.get(
-      `https://netaai-crm-backend-production-c306.up.railway.app/api/job_planning/getBudgetSummaryByProposalId/${project_id}`
-    );
-
-    if (response.status === 200) {
-      // You can return the data or use it directly
-      console.log("Budget Summary:", response.data);
-      return response.data;
-    } else {
-      throw new Error("Failed to fetch budget summary");
-    }
-  } catch (error) {
-    console.error("Error fetching budget summary:", error.response?.data?.message || error.message);
-    return null;
-  }
-};
-
-useEffect(() => {
-  const fetchBudgetSummary = async () => {
-    const data = await getBudgetSummaryByProposalId(project_id);
-    if (data) {
-      // Handle your state update here
-      console.log(data);
+      if (response.status === 200) {
+        // You can return the data or use it directly
+        console.log("Budget Summary:", response.data);
+        return response.data;
+      } else {
+        throw new Error("Failed to fetch budget summary");
+      }
+    } catch (error) {
+      console.error("Error fetching budget summary:", error.response?.data?.message || error.message);
+      return null;
     }
   };
 
-  fetchBudgetSummary();
-}, [saveJob]);
+  useEffect(() => {
+    const fetchBudgetSummary = async () => {
+      const data = await getBudgetSummaryByProposalId(project_id);
+      if (data) {
+        // Handle your state update here
+        console.log(data);
+      }
+    };
+
+    fetchBudgetSummary();
+  }, [saveJob]);
 
 
   // const stage = job?.p?.stage;
@@ -1687,7 +1687,7 @@ useEffect(() => {
                   <p className="mb-1 text-muted">Estimated Completion</p>
                   <input type="date" className="form-control" value={estimatedEnd} onChange={(e) => { setEstimatedEnd(e.target.value) }} />
                 </div>
-                
+
               </div>
               <button className="btn btn-primary" onClick={saveJob}>Save</button>
             </div>

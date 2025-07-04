@@ -96,7 +96,7 @@ const EditProject = () => {
             taxable: true
         }
     ]);
-    const [activeTab, setActiveTab] = useState("Summary");
+    const [activeTab, setActiveTab] = useState("Create Proposal");
 
     const totalBudgetedCost = (
         parseFloat(materialsBudget || 0) +
@@ -150,7 +150,7 @@ const EditProject = () => {
                             <div className="row mb-3">
                                 <div className="col-md-6">
                                     <p className="mb-1 text-muted">Project Stage</p>
-                                    <p>{job.stage}</p>
+                                    <p>{job.stage || job.status}</p>
                                 </div>
                                 <div className="col-md-6">
                                     <p className="mb-1 text-muted">Project type.</p>
@@ -168,7 +168,7 @@ const EditProject = () => {
                                     <p className="mb-1 text-muted">Manager</p>
                                     <p>{job?.manager_first_name} {job?.manager_last_name}</p>
                                 </div>
-                                <div className="col-6 mt-4">
+                                {/* <div className="col-6 mt-4">
                                     <p className="mb-1 text-muted">Tags</p>
                                     <div className="d-flex flex-wrap gap-2">
                                         {job?.tags.map((tag, index) => (
@@ -180,7 +180,7 @@ const EditProject = () => {
                                             </span>
                                         ))}
                                     </div>
-                                </div>
+                                </div> */}
                             </div>
                         </div>
 
@@ -581,16 +581,16 @@ const EditProject = () => {
 
     return (
         <div className="wwd-container container">
-            <div className="mb-2">
-                <Button variant="outline-secondary mt-1" onClick={() => navigate(-1)}>
-                    <FaArrowLeft className="me-1" /> Back
-                </Button>
-            </div>
-
             <div className="wwd-header d-flex justify-content-between align-items-center py-3">
                 <div>
-                    <h4 className="mb-0">{job?.job_name}</h4>
-                    <p className="text-muted small">{job?.client_name}</p>
+                    {/* <h4 className="mb-0">{job?.job_name}</h4> */}
+                    <h4 className="mb-0">{job?.projectName || job?.job_name || job?.title}</h4>
+                    <p className="text-muted small">{job?.clientId?.clientName || job?.client}</p>
+                </div>
+                <div className="mb-2">
+                    <Button variant="outline-secondary mt-1" onClick={() => navigate(-1)}>
+                        <FaArrowLeft className="me-1" /> Back
+                    </Button>
                 </div>
             </div>
 
@@ -599,7 +599,7 @@ const EditProject = () => {
                     "Summary",
                     "Job Costs",
                     // stage === "lead" ? "Client Proposal" : "Draft Proposal",
-                    "Contract & Change Orders",
+                    // "Contract & Change Orders",
                     "Create Proposal",
                     "Documents",
                     "Logs",

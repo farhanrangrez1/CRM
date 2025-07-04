@@ -659,13 +659,31 @@ const ChangeOrdersUI = () => {
     );
 };
 
+// const tabs = [
+//     { label: 'Active Project', value: 'Active' },
+//     { label: 'Pending', value: 'Pending ' },
+//     { label: 'Closed', value: 'Closed' },
+//     { label: 'Rejected', value: 'Rejected' },
+//     { label: 'All', value: 'All' },
+// ];
+
 const tabs = [
-    { label: 'Active Project', value: 'Active' },
-    { label: 'Pending', value: 'Pending ' },
-    { label: 'Closed', value: 'Closed' },
-    { label: 'Rejected', value: 'Rejected' },
+    { label: 'Pending Proposal Approval', value: 'Pending Proposal Approval' },
+    { label: 'Service Calls', value: 'Service Calls' },
+    { label: 'Pending Rough', value: 'Pending Rough' },
+    { label: 'UG Pipes', value: 'UG Pipes' },
+    { label: 'Meter Spot Requested', value: 'Meter Spot Requested' },
+    { label: 'Ready for Rough', value: 'Ready for Rough' },
+    { label: 'Rough Started', value: 'Rough Started' },
+    { label: 'Rough Finish', value: 'Rough Finish' },
+    { label: 'Pending Finish', value: 'Pending Finish' },
+    { label: 'Finish Started', value: 'Finish Started' },
+    { label: 'Finish Final Work', value: 'Finish Final Work' },
+    { label: 'Done Final Payment', value: 'Done Final Payment' },
+    { label: 'Photos of Job', value: 'Photos of Job' },
     { label: 'All', value: 'All' },
 ];
+
 
 
 const ProjectView = ({ data }) => {
@@ -813,8 +831,211 @@ const ProjectView = ({ data }) => {
     };
 
     // --- Proposal Workflow Board ---
+    // const ProposalWorkflowBoard = ({ onNavigate, selectedStatus }) => {
+    //     // Defensive: always fallback to []
+    //     const reduxProposals = (project.data || []).map(item => ({
+    //         id: item.id,
+    //         title: item.projectName,
+    //         client: item.clientId?.clientName,
+    //         status: mapStatus(item.status),
+    //         projectPriority: item.projectPriority,
+    //         phases: item.phases || "N/A",
+    //         revenue: item.budgetAmount ? `AED ${item.budgetAmount}` : "N/A",
+    //         startDate: item.startDate,
+    //         endDate: item.endDate,
+    //         committedCost: "4220",
+    //         profitLoss: "N/A",
+    //         updated: item.updatedAt,
+    //     }));
+
+    //     function mapStatus(status) {
+    //         if (status === "Active Project") return "active";
+    //         if (status === "Pending") return "pending";
+    //         if (status === "Closed") return "closed";
+    //         if (status === "Rejected") return "rejected";
+    //         return "pending";
+    //     }
+    //     // const reduxProposals = useSelector((state) => state?.proposal?.proposals) || [];
+    //     console.log(reduxProposals, "reduxProposals in workflow board");
+    //     const dispatch = useDispatch();
+    //     const [isUpdating, setIsUpdating] = useState(false);
+
+    //     const kanbanData = {
+    //         active: reduxProposals.filter(p => p.status === "active"),
+    //         pending: reduxProposals.filter(p => p.status === "pending"),
+    //         closed: reduxProposals.filter(p => p.status === "closed"),
+    //         rejected: reduxProposals.filter(p => p.status === "rejected"),
+    //     };
+
+    //     const handleCardDrop = async (result) => {
+    //         const { source, destination, draggableId } = result;
+    //         if (!destination) return;
+    //         if (source.droppableId === destination.droppableId && source.index === destination.index) return;
+    //         const statusMap = {
+    //             active: "Active Project",
+    //             pending: "Pending",
+    //             closed: "Closed",
+    //             rejected: "Rejected"
+    //         };
+    //         const newStatus = statusMap[destination.droppableId];
+    //         // Optimistically update UI
+    //         dispatch(updateProjectStatusLocally({ id: draggableId, status: newStatus }));
+    //         setIsUpdating(true);
+    //         try {
+    //             await dispatch(updateProject({ id: draggableId, payload: { status: newStatus } }));
+    //             await dispatch(fetchProject());
+    //         } catch (error) {
+    //             console.error("Failed to update status", error);
+    //         }
+    //         setIsUpdating(false);
+    //     };
+    //     // --- Kanban Columns Config ---
+    //     let columns = [
+    //         // { id: 'active', title: 'Active' },
+    //         // { id: 'pending', title: 'Pending changes' },
+    //         // { id: 'closed', title: 'Closed' },
+    //         // { id: 'rejected', title: 'Rejected' },
+    //         { id: 'active', title: 'Pending Proposal Approval' },
+    //         { id: 'pending', title: 'Service Calls' },
+    //         { id: 'closed', title: 'Pending Rough' },
+    //         { id: 'rejected', title: 'UG Pipes' },
+    //         { id: 'rejected', title: 'Meter Spot Requested' },
+    //         { id: 'rejected', title: 'Ready for Rough' },
+    //         { id: 'rejected', title: 'Rough Started' },
+    //         { id: 'rejected', title: 'Rough Finish' },
+    //         { id: 'rejected', title: 'Pending Finish' },
+    //         { id: 'rejected', title: 'Finish Started' },
+    //         { id: 'rejected', title: 'Finish Final Work' },
+    //         { id: 'rejected', title: 'Done Final Payment' },
+    //         { id: 'rejected', title: 'Photos of Job' },
+    //     ];
+    //     // Reorder columns so selectedStatus is first
+    //     if (selectedStatus && selectedStatus !== 'All') {
+    //         const statusMap = {
+    //             'Active': 'active',
+    //             'Pending ': 'pending',
+    //             'Closed': 'closed',
+    //             'Rejected': 'rejected',
+    //         };
+    //         const selectedId = statusMap[selectedStatus];
+    //         if (selectedId) {
+    //             columns = [columns.find(c => c.id === selectedId), ...columns.filter(c => c.id !== selectedId)];
+    //         }
+    //     }
+
+    //     return (
+    //         <div style={{ position: 'relative' }}>
+    //             {isUpdating && (
+    //                 <div className="kanban-loading-overlay">
+    //                     Updating...
+    //                 </div>
+    //             )}
+    //             <DragDropContext key={reduxProposals.map(p => p.id).join('-')} onDragEnd={handleCardDrop}>
+    //                 <div
+    //                     className="kanban-board d-flex flex-nowrap gap-3 py-3"
+    //                     style={{ overflowX: "auto", minHeight: 350, marginLeft: "20px", WebkitOverflowScrolling: 'touch' }}
+    //                 >
+    //                     {columns.map(col => (
+    //                         <Droppable droppableId={col.id} key={col.id}>
+    //                             {(provided, snapshot) => (
+    //                                 <div
+    //                                     ref={provided.innerRef}
+    //                                     {...provided.droppableProps}
+    //                                     className="kanban-stage bg-light border rounded p-2 flex-shrink-0 d-flex flex-column"
+    //                                     style={{ minWidth: 220, maxWidth: 320, minHeight: 320, width: '100%', flex: '1 1 260px', background: snapshot.isDraggingOver ? '#e3f2fd' : undefined }}
+    //                                 >
+    //                                     {/* Stage Title with Dot and Count */}
+    //                                     <div className="fw-bold mb-2 d-flex align-items-center gap-2">
+    //                                         <span className="text-dark" style={{ fontSize: 14 }}>
+    //                                             <span className="me-1" style={{ fontSize: 10 }}>●</span>
+    //                                             {col.title}
+    //                                         </span>
+    //                                         <span className="badge bg-light text-dark border ms-auto">{kanbanData[col.id]?.length || 0}</span>
+    //                                     </div>
+    //                                     {/* Cards */}
+    //                                     {kanbanData[col.id]?.map((item, idx) => (
+    //                                         <Draggable draggableId={String(item.id)} index={idx} key={item.id}>
+    //                                             {(provided, snapshot) => (
+    //                                                 <div
+    //                                                     ref={provided.innerRef}
+    //                                                     {...provided.draggableProps}
+    //                                                     {...provided.dragHandleProps}
+    //                                                     className="bg-white border rounded mb-2 p-2 shadow-sm"
+    //                                                     style={{
+    //                                                         minHeight: 110,
+    //                                                         wordBreak: 'break-word',
+    //                                                         maxWidth: '100%',
+    //                                                         background: snapshot.isDragging ? '#fffde7' : undefined,
+    //                                                         ...provided.draggableProps.style
+    //                                                     }}
+    //                                                     // onClick={() => {
+    //                                                     //     localStorage.setItem("proposalId", item.id);
+    //                                                     //     if (col.id === 'active') {
+    //                                                     //         navigate("/admin/AddInvoice2");
+    //                                                     //     } else {
+    //                                                     //         navigate("/admin/LeadFlow/Details");
+    //                                                     //     }
+    //                                                     // }}
+    //                                                     onClick={() => {
+    //                                                         localStorage.setItem("proposalId", item._id);
+    //                                                         localStorage.setItem("invoice", JSON.stringify(item));
+    //                                                         navigate("/admin/Project/Details", { state: { item: item } });
+    //                                                     }}
+    //                                                 >
+    //                                                     <div className="fw-semibold text-primary" style={{ fontSize: 15 }}>
+    //                                                         {item.job_name || item.title}
+    //                                                     </div>
+    //                                                     <div className="text-muted small mb-1">Client: {item.client || item.client_name}</div>
+    //                                                     <div className="text-muted small mb-1">Address: {item.address || "N/A"}</div>
+    //                                                     {/* <div className="small text-secondary mb-1">Billing: {item.billing || item.job_type}</div> */}
+    //                                                     <div className="small text-secondary mb-1">Phases: {item.phases}</div>
+    //                                                     <div className="d-flex flex-wrap gap-2 align-items-center mb-1">
+    //                                                         <Badge bg="info" className="me-1">{item.status}</Badge>
+    //                                                     </div>
+    //                                                     {/* <div className="small text-success mb-1">Revenue: <b>{item.revenue}</b></div>
+    //                                                     <div className="small text-warning mb-1">Committed Cost: <b>{item.committedCost}</b></div>
+    //                                                     <div className="small text-primary mb-1">Profit/Loss: <b>{item.projectPriority}</b></div>
+    //                                                     <div className="small text-dark mb-1">
+    //                                                         startDate: <b>{new Date(item.startDate).toLocaleDateString('en-GB')}</b>
+    //                                                     </div>
+    //                                                     <div className="small text-dark mb-1">
+    //                                                         endDate: <b>{new Date(item.endDate).toLocaleDateString('en-GB')}</b>
+    //                                                     </div> */}
+
+    //                                                     {/* <div className="small text-muted mb-1">Last updated: {item.updated || item.last_updated}</div> */}
+    //                                                     {/* <div className="mt-2">
+    //                                                         <button
+    //                                                             className="btn btn-sm btn-outline-primary"
+    //                                                             onClick={() => {
+    //                                                                 localStorage.setItem("proposalId", item.id);
+    //                                                                 if (col.id === 'active') {
+    //                                                                     navigate("/admin/AddInvoice2");
+    //                                                                 } else {
+    //                                                                     navigate("/admin/LeadFlow/Details");
+    //                                                                 }
+    //                                                             }}
+    //                                                         >
+    //                                                             {col.id === 'active' ? 'Invoice' : col.id === 'pending' ? 'Edit proposal' : col.id === 'closed' ? 'View' : 'Expired'}
+    //                                                         </button>
+
+    //                                                     </div> */}
+    //                                                 </div>
+    //                                             )}
+    //                                         </Draggable>
+    //                                     ))}
+    //                                     {provided.placeholder}
+    //                                 </div>
+    //                             )}
+    //                         </Droppable>
+    //                     ))}
+    //                 </div>
+    //             </DragDropContext>
+    //         </div>
+    //     );
+    // };
+
+
     const ProposalWorkflowBoard = ({ onNavigate, selectedStatus }) => {
-        // Defensive: always fallback to []
         const reduxProposals = (project.data || []).map(item => ({
             id: item.id,
             title: item.projectName,
@@ -831,36 +1052,65 @@ const ProjectView = ({ data }) => {
         }));
 
         function mapStatus(status) {
-            if (status === "Active Project") return "active";
-            if (status === "Pending") return "pending";
-            if (status === "Closed") return "closed";
-            if (status === "Rejected") return "rejected";
-            return "pending";
+            const map = {
+                "Active Project": "pendingProposalApproval",
+                "Pending": "serviceCalls",
+                "Closed": "pendingRough",
+                "UG Pipes": "ugPipes",
+                "Meter Spot Requested": "meterSpotRequested",
+                "Ready for Rough": "readyForRough",
+                "Rough Started": "roughStarted",
+                "Rough Finish": "roughFinish",
+                "Pending Finish": "pendingFinish",
+                "Finish Started": "finishStarted",
+                "Finish Final Work": "finishFinalWork",
+                "Done Final Payment": "doneFinalPayment",
+                "Photos of Job": "photosOfJob"
+            };
+            return map[status] || "serviceCalls"; // fallback
         }
-        // const reduxProposals = useSelector((state) => state?.proposal?.proposals) || [];
-        console.log(reduxProposals, "reduxProposals in workflow board");
+
         const dispatch = useDispatch();
         const [isUpdating, setIsUpdating] = useState(false);
 
         const kanbanData = {
-            active: reduxProposals.filter(p => p.status === "active"),
-            pending: reduxProposals.filter(p => p.status === "pending"),
-            closed: reduxProposals.filter(p => p.status === "closed"),
-            rejected: reduxProposals.filter(p => p.status === "rejected"),
+            pendingProposalApproval: reduxProposals.filter(p => p.status === "pendingProposalApproval"),
+            serviceCalls: reduxProposals.filter(p => p.status === "serviceCalls"),
+            pendingRough: reduxProposals.filter(p => p.status === "pendingRough"),
+            ugPipes: reduxProposals.filter(p => p.status === "ugPipes"),
+            meterSpotRequested: reduxProposals.filter(p => p.status === "meterSpotRequested"),
+            readyForRough: reduxProposals.filter(p => p.status === "readyForRough"),
+            roughStarted: reduxProposals.filter(p => p.status === "roughStarted"),
+            roughFinish: reduxProposals.filter(p => p.status === "roughFinish"),
+            pendingFinish: reduxProposals.filter(p => p.status === "pendingFinish"),
+            finishStarted: reduxProposals.filter(p => p.status === "finishStarted"),
+            finishFinalWork: reduxProposals.filter(p => p.status === "finishFinalWork"),
+            doneFinalPayment: reduxProposals.filter(p => p.status === "doneFinalPayment"),
+            photosOfJob: reduxProposals.filter(p => p.status === "photosOfJob"),
         };
 
         const handleCardDrop = async (result) => {
             const { source, destination, draggableId } = result;
-            if (!destination) return;
-            if (source.droppableId === destination.droppableId && source.index === destination.index) return;
-            const statusMap = {
-                active: "Active Project",
-                pending: "Pending",
-                closed: "Closed",
-                rejected: "Rejected"
+            if (!destination || (source.droppableId === destination.droppableId && source.index === destination.index)) return;
+
+            const reverseMap = {
+                pendingProposalApproval: "Active Project",
+                serviceCalls: "Pending",
+                pendingRough: "Closed",
+                ugPipes: "UG Pipes",
+                meterSpotRequested: "Meter Spot Requested",
+                readyForRough: "Ready for Rough",
+                roughStarted: "Rough Started",
+                roughFinish: "Rough Finish",
+                pendingFinish: "Pending Finish",
+                finishStarted: "Finish Started",
+                finishFinalWork: "Finish Final Work",
+                doneFinalPayment: "Done Final Payment",
+                photosOfJob: "Photos of Job"
             };
-            const newStatus = statusMap[destination.droppableId];
-            // Optimistically update UI
+
+            const newStatus = reverseMap[destination.droppableId];
+
             dispatch(updateProjectStatusLocally({ id: draggableId, status: newStatus }));
             setIsUpdating(true);
             try {
@@ -871,26 +1121,107 @@ const ProjectView = ({ data }) => {
             }
             setIsUpdating(false);
         };
-        // --- Kanban Columns Config ---
+
         let columns = [
-            { id: 'active', title: 'Active' },
-            { id: 'pending', title: 'Pending changes' },
-            { id: 'closed', title: 'Closed' },
-            { id: 'rejected', title: 'Rejected' },
+            { id: 'pendingProposalApproval', title: 'Pending Proposal Approval' },
+            { id: 'serviceCalls', title: 'Service Calls' },
+            { id: 'pendingRough', title: 'Pending Rough' },
+            { id: 'ugPipes', title: 'UG Pipes' },
+            { id: 'meterSpotRequested', title: 'Meter Spot Requested' },
+            { id: 'readyForRough', title: 'Ready for Rough' },
+            { id: 'roughStarted', title: 'Rough Started' },
+            { id: 'roughFinish', title: 'Rough Finish' },
+            { id: 'pendingFinish', title: 'Pending Finish' },
+            { id: 'finishStarted', title: 'Finish Started' },
+            { id: 'finishFinalWork', title: 'Finish Final Work' },
+            { id: 'doneFinalPayment', title: 'Done Final Payment' },
+            { id: 'photosOfJob', title: 'Photos of Job' },
         ];
-        // Reorder columns so selectedStatus is first
+
+        // if (selectedStatus && selectedStatus !== 'All') {
+        //     const statusMap = {
+        //         'Pending Proposal Approval': 'pendingProposalApproval',
+        //         'Service Calls': 'serviceCalls',
+        //         'Pending Rough': 'pendingRough',
+        //         'UG Pipes': 'ugPipes',
+        //         'Meter Spot Requested': 'meterSpotRequested',
+        //         'Ready for Rough': 'readyForRough',
+        //         'Rough Started': 'roughStarted',
+        //         'Rough Finish': 'roughFinish',
+        //         'Pending Finish': 'pendingFinish',
+        //         'Finish Started': 'finishStarted',
+        //         'Finish Final Work': 'finishFinalWork',
+        //         'Done Final Payment': 'doneFinalPayment',
+        //         'Photos of Job': 'photosOfJob'
+        //     };
+        //     const selectedId = statusMap[selectedStatus];
+        //     if (selectedId) {
+        //         columns = [columns.find(c => c.id === selectedId), ...columns.filter(c => c.id !== selectedId)];
+        //     }
+        // }
         if (selectedStatus && selectedStatus !== 'All') {
             const statusMap = {
-                'Active': 'active',
-                'Pending ': 'pending',
-                'Closed': 'closed',
-                'Rejected': 'rejected',
+                'Pending Proposal Approval': 'pendingProposalApproval',
+                'Service Calls': 'serviceCalls',
+                'Pending Rough': 'pendingRough',
+                'UG Pipes': 'ugPipes',
+                'Meter Spot Requested': 'meterSpotRequested',
+                'Ready for Rough': 'readyForRough',
+                'Rough Started': 'roughStarted',
+                'Rough Finish': 'roughFinish',
+                'Pending Finish': 'pendingFinish',
+                'Finish Started': 'finishStarted',
+                'Finish Final Work': 'finishFinalWork',
+                'Done Final Payment': 'doneFinalPayment',
+                'Photos of Job': 'photosOfJob',
             };
             const selectedId = statusMap[selectedStatus];
             if (selectedId) {
                 columns = [columns.find(c => c.id === selectedId), ...columns.filter(c => c.id !== selectedId)];
             }
         }
+
+
+        const getTextColor = (status) => {
+            const bg = getStatusBadgeColor(status);
+            const darkBackgrounds = ["primary", "secondary", "dark", "info", "success"];
+            return darkBackgrounds.includes(bg) ? "text-white" : "text-dark";
+        };
+
+
+        const getStatusBadgeColor = (status) => {
+            switch (status) {
+                case "pendingProposalApproval":
+                    return "secondary";
+                case "serviceCalls":
+                    return "info";
+                case "pendingRough":
+                    return "primary";
+                case "ugPipes":
+                    return "dark";
+                case "meterSpotRequested":
+                    return "warning";
+                case "readyForRough":
+                    return "success";
+                case "roughStarted":
+                    return "primary";
+                case "roughFinish":
+                    return "success";
+                case "pendingFinish":
+                    return "warning";
+                case "finishStarted":
+                    return "primary";
+                case "finishFinalWork":
+                    return "success";
+                case "doneFinalPayment":
+                    return "dark";
+                case "photosOfJob":
+                    return "info";
+                default:
+                    return "secondary";
+            }
+        };
+
 
         return (
             <div style={{ position: 'relative' }}>
@@ -913,7 +1244,6 @@ const ProjectView = ({ data }) => {
                                         className="kanban-stage bg-light border rounded p-2 flex-shrink-0 d-flex flex-column"
                                         style={{ minWidth: 220, maxWidth: 320, minHeight: 320, width: '100%', flex: '1 1 260px', background: snapshot.isDraggingOver ? '#e3f2fd' : undefined }}
                                     >
-                                        {/* Stage Title with Dot and Count */}
                                         <div className="fw-bold mb-2 d-flex align-items-center gap-2">
                                             <span className="text-dark" style={{ fontSize: 14 }}>
                                                 <span className="me-1" style={{ fontSize: 10 }}>●</span>
@@ -921,7 +1251,6 @@ const ProjectView = ({ data }) => {
                                             </span>
                                             <span className="badge bg-light text-dark border ms-auto">{kanbanData[col.id]?.length || 0}</span>
                                         </div>
-                                        {/* Cards */}
                                         {kanbanData[col.id]?.map((item, idx) => (
                                             <Draggable draggableId={String(item.id)} index={idx} key={item.id}>
                                                 {(provided, snapshot) => (
@@ -937,43 +1266,25 @@ const ProjectView = ({ data }) => {
                                                             background: snapshot.isDragging ? '#fffde7' : undefined,
                                                             ...provided.draggableProps.style
                                                         }}
+                                                        onClick={() => {
+                                                            localStorage.setItem("proposalId", item._id);
+                                                            localStorage.setItem("invoice", JSON.stringify(item));
+                                                            navigate("/admin/Project/Details", { state: { item: item } });
+                                                        }}
                                                     >
                                                         <div className="fw-semibold text-primary" style={{ fontSize: 15 }}>
                                                             {item.job_name || item.title}
                                                         </div>
                                                         <div className="text-muted small mb-1">Client: {item.client || item.client_name}</div>
-                                                        <div className="small text-secondary mb-1">Billing: {item.billing || item.job_type}</div>
+                                                        <div className="text-muted small mb-1">Address: {item.address || "N/A"}</div>
                                                         <div className="small text-secondary mb-1">Phases: {item.phases}</div>
+                                                        {/* <div className="d-flex flex-wrap gap-2 align-items-center mb-1"> */}
                                                         <div className="d-flex flex-wrap gap-2 align-items-center mb-1">
-                                                            <Badge bg="info" className="me-1">{item.status}</Badge>
+                                                            <Badge bg={getStatusBadgeColor(item.status)} className={`me-1 ${getTextColor(item.status)}`}>
+                                                                {item.status}
+                                                            </Badge>
                                                         </div>
-                                                        <div className="small text-success mb-1">Revenue: <b>{item.revenue}</b></div>
-                                                        <div className="small text-warning mb-1">Committed Cost: <b>{item.committedCost}</b></div>
-                                                        <div className="small text-primary mb-1">Profit/Loss: <b>{item.projectPriority}</b></div>
-                                                        <div className="small text-dark mb-1">
-                                                            startDate: <b>{new Date(item.startDate).toLocaleDateString('en-GB')}</b>
-                                                        </div>
-                                                        <div className="small text-dark mb-1">
-                                                            endDate: <b>{new Date(item.endDate).toLocaleDateString('en-GB')}</b>
-                                                        </div>
-
-                                                        {/* <div className="small text-muted mb-1">Last updated: {item.updated || item.last_updated}</div> */}
-                                                        <div className="mt-2">
-                                                            <button
-                                                                className="btn btn-sm btn-outline-primary"
-                                                                onClick={() => {
-                                                                    localStorage.setItem("proposalId", item.id);
-                                                                    if (col.id === 'active') {
-                                                                        navigate("/admin/AddInvoice2");
-                                                                    } else {
-                                                                        navigate("/admin/LeadFlow/Details");
-                                                                    }
-                                                                }}
-                                                            >
-                                                                {col.id === 'active' ? 'Invoice' : col.id === 'pending' ? 'Edit proposal' : col.id === 'closed' ? 'View' : 'Expired'}
-                                                            </button>
-
-                                                        </div>
+                                                        {/* </div> */}
                                                     </div>
                                                 )}
                                             </Draggable>
@@ -988,6 +1299,7 @@ const ProjectView = ({ data }) => {
             </div>
         );
     };
+
 
     const [selectedStatus, setSelectedStatus] = useState('All');
     const [expandedJobIndex, setExpandedJobIndex] = useState(null);
@@ -1090,7 +1402,7 @@ const ProjectView = ({ data }) => {
                     <div className="project-container">
                         {/* Header */}
                         <div className="d-flex justify-content-between align-items-center px-4 py-3 mb-3" style={{ minHeight: 64 }}>
-                            <h5 className="fw-bold mb-0" style={{ fontSize: '2rem' }}>Projects List</h5>
+                            <h5 className="fw-bold mb-0" style={{ fontSize: '2rem' }}>Active Projects</h5>
                         </div>
                         {/* Search and Actions */}
                         <div className="mb-4">
@@ -1104,7 +1416,7 @@ const ProjectView = ({ data }) => {
                                     // onChange={(e) => setSearchTerm(e.target.value)} // 👈 Handle input
                                     />
                                 </div>
-                                <div className="col-12 col-md-6 d-flex justify-content-md-end gap-2 mb-3">
+                                {/* <div className="col-12 col-md-6 d-flex justify-content-md-end gap-2 mb-3">
                                     <ButtonGroup>
                                         <Button
                                             style={{
@@ -1132,7 +1444,7 @@ const ProjectView = ({ data }) => {
                                         </Button>
 
                                     </ButtonGroup>
-                                </div>
+                                </div> */}
 
                             </div>
                         </div>
@@ -1141,7 +1453,7 @@ const ProjectView = ({ data }) => {
                         <div className="project-tabs mb-4">
                             <ul className="nav nav-tabs d-none d-md-flex justify-content-between">
                                 <div className="nav nav-tabs d-none d-md-flex">
-                                    {tabs.map((tab) => (
+                                    {/* {tabs.map((tab) => (
                                         <li className="nav-item" key={tab.value}>
                                             <button
                                                 className={`nav-link ${selectedStatus === tab.value ? 'active' : ''}`}
@@ -1151,7 +1463,20 @@ const ProjectView = ({ data }) => {
                                                 {tab.label}
                                             </button>
                                         </li>
-                                    ))}
+                                    ))} */}
+                                    <ul className="nav nav-tabs">
+                                        {tabs.map((tab) => (
+                                            <li className="nav-item" key={tab.value}>
+                                                <button
+                                                    className={`nav-link ${selectedStatus === tab.value ? 'active' : ''}`}
+                                                    onClick={() => setSelectedStatus(tab.value)}
+                                                    style={{ color: "#695e13", borderColor: "#DDC62F" }}
+                                                >
+                                                    {tab.label}
+                                                </button>
+                                            </li>
+                                        ))}
+                                    </ul>
                                 </div>
                                 {/* <div className="d-flex justify-content-end " >
                                     <ButtonGroup>

@@ -142,7 +142,7 @@ function ProjectList() {
     <div className="project-container">
       {/* Header */}
       <div className="d-flex justify-content-between align-items-center mb-3">
-        <h5 className="m-0 fw-bold">Project List</h5>
+        <h5 className="m-0 fw-bold">Project Details</h5>
       </div>
 
       {/* Search and Actions */}

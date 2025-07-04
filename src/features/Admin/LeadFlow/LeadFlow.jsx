@@ -813,7 +813,7 @@ const LeadFlow = ({ data }) => {
   // --- Proposal Workflow Board ---
   const ProposalWorkflowBoard = ({ onNavigate, selectedStatus }) => {
     // Defensive: always fallback to []
-    const reduxProposals = (project.data || []).map(item => ({
+    const reduxProposals = (project?.data || []).map(item => ({
       id: item.id,
       title: item.projectName,
       client: item.clientId?.clientName,
@@ -954,7 +954,7 @@ const LeadFlow = ({ data }) => {
 
                             {/* <div className="small text-muted mb-1">Last updated: {item.updated || item.last_updated}</div> */}
                             <div className="mt-2">
-                              <button
+                              {/* <button
                                 className="btn btn-sm btn-outline-primary"
                                 onClick={() => {
                                   localStorage.setItem("proposalId", item.id);
@@ -966,8 +966,14 @@ const LeadFlow = ({ data }) => {
                                 }}
                               >
                                 {col.id === 'active' ? 'Invoice' : col.id === 'pending' ? 'Edit proposal' : col.id === 'closed' ? 'View' : 'Expired'}
+                              </button> */}
+                              <button className="btn btn-sm btn-outline-primary" onClick={() => {
+                                localStorage.setItem("proposalId", item._id);
+                                localStorage.setItem("invoice", JSON.stringify(item));
+                                navigate("/admin/LeadFlow/Details", { state: { item: item } });
+                              }}>
+                                {col.id === 'active' ? 'Create Proposal' : col.id === 'pending' ? 'Edit proposal' : col.id === 'closed' ? 'Send Reminder' : 'Expired/Sent'}
                               </button>
-
                             </div>
                           </div>
                         )}
@@ -1122,7 +1128,8 @@ const LeadFlow = ({ data }) => {
                     <Button
                       variant='primary'
                       // active={activeTab === 'reports'}
-                      onClick={() => navigate("/admin/AddProjectList")}
+                      // onClick={() => navigate("/admin/AddProjectList")}
+                      onClick={() => navigate("/admin/AddCostEstimates")}
                       className="d-flex align-items-center"
                     >
                       Add Proposal
