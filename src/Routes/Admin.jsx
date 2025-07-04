@@ -109,7 +109,7 @@ function Admin() {
             <Route path="/CostEstimates" element={<ProtectedRoute><CostEstimates /></ProtectedRoute>} />
             <Route path="/LeadFlow" element={<ProtectedRoute><LeadFlow /></ProtectedRoute>} />
             <Route path="/LeadFlow/Details" element={<ProtectedRoute><Editpurposal /></ProtectedRoute>} />
-            <Route path="/Project/Details" element={<ProtectedRoute><EditProject /></ProtectedRoute>} />
+            <Route path="/Project/Details" element={<ProtectedRoute><EditProject/></ProtectedRoute>} />
 
             <Route path="/AddCostEstimates" element={<ProtectedRoute><AddCostEstimates /></ProtectedRoute>} />
             <Route path="/duplicate/AddCostEstimates/:id" element={<ProtectedRoute><AddCostEstimates /></ProtectedRoute>} />

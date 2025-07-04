@@ -1195,7 +1195,6 @@ const LeadFlow = ({ data }) => {
                   </Dropdown.Menu>
                 </Dropdown>
               </div>
-
             </div>
 
             {/* Loader */}
@@ -1207,11 +1206,8 @@ const LeadFlow = ({ data }) => {
             )}
 
           </div>
-
           {/* Tabs Section */}
-
           {/* Filter Bar - always visible in Manage Project tab */}
-
           {/* / */}
           {renderTabContent()}
         </div>

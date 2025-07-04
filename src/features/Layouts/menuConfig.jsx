@@ -40,11 +40,11 @@ export const adminMenuItems = [
   {
     title: "Projects & Jobs",
     icon: <FaProjectDiagram className="menu-icon" />,
-    submenu: [      
-      { title: "Project View", path: "/admin/projectView" },
+    submenu: [
+      { title: "Project View", path: "/admin/projectView"},
+      { title: "Temp Poles", path: "/admin/TempPoles"},
       { title: "Projects Details", path: "/admin/projectList" },
-      { title: "Job Tracker", path: "/admin/JobTracker" }
-      // { title: "Job Tracker", path: "/admin/JobTracker" },
+      // { title: "Job Tracker", path: "/admin/JobTracker" }
     ],
   },
   {

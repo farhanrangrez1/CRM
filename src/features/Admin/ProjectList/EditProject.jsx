@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from "react";
 import "./EditProject.css";
 import { FaArrowLeft } from "react-icons/fa";
@@ -135,11 +134,21 @@ const EditProject = () => {
 
     const navigate = useNavigate();
     const location = useLocation();
-    const job = location.state.item;
-    console.log("job", job);
+    const job = location?.state?.item;
 
+    // Handle missing job data
+    if (!job) {
+        return (
+            <div className="container mt-5 text-center">
+                <h4>No project data found.</h4>
+                <p>Please navigate to this page from the project list.</p>
+                <Button variant="primary" onClick={() => navigate(-1)}>
+                    <FaArrowLeft className="me-1" /> Go Back
+                </Button>
+            </div>
+        );
+    }
     const stage = job?.p?.stage;
-
     const renderTabContent = () => {
         switch (activeTab) {
             case "Summary":

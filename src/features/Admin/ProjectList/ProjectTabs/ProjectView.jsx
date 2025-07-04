@@ -1318,7 +1318,6 @@ const ProjectView = ({ data }) => {
                 return (
                     <>
                         {/* Modern Filter Bar */}
-
                         {/* --- Switch between List and Workflow views --- */}
                         {workflowView === 'workflow' ? (
                             <ProposalWorkflowBoard onNavigate={navigate} selectedStatus={selectedStatus} />
@@ -1519,10 +1518,7 @@ const ProjectView = ({ data }) => {
                                 </Dropdown>
                             </div>
                         </div>
-
                         {/* Loader */}
-
-
                     </div>
 
                     {/* Tabs Section */}
