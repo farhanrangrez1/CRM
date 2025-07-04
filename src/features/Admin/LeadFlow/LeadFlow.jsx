@@ -833,7 +833,7 @@ const LeadFlow = ({ data }) => {
 
     const kanbanData = {
       active: project?.filter(p => p.status === "Lead"),
-      pending: project?.filter(p => p.status === "In Progress"),
+      pending: project?.filter(p => p.status === "Bidding"),
       closed: reduxProposals?.filter(p => p.status === "closed"),
       rejected: reduxProposals?.filter(p => p.status === "rejected"),
     };
@@ -954,7 +954,7 @@ const LeadFlow = ({ data }) => {
 
                             {/* <div className="small text-muted mb-1">Last updated: {item.updated || item.last_updated}</div> */}
                             <div className="mt-2">
-                              <button
+                              {/* <button
                                 className="btn btn-sm btn-outline-primary"
                                 onClick={() => {
                                   localStorage.setItem("proposalId", item.id);
@@ -966,8 +966,14 @@ const LeadFlow = ({ data }) => {
                                 }}
                               >
                                 {col.id === 'active' ? 'Invoice' : col.id === 'pending' ? 'Edit proposal' : col.id === 'closed' ? 'View' : 'Expired'}
+                              </button> */}
+                              <button className="btn btn-sm btn-outline-primary" onClick={() => {
+                                localStorage.setItem("proposalId", item._id);
+                                localStorage.setItem("invoice", JSON.stringify(item));
+                                navigate("/admin/LeadFlow/Details", { state: { item: item } });
+                              }}>
+                                {col.id === 'active' ? 'Create Proposal' : col.id === 'pending' ? 'Edit proposal' : col.id === 'closed' ? 'Send Reminder' : 'Expired/Sent'}
                               </button>
-
                             </div>
                           </div>
                         )}
@@ -1122,7 +1128,8 @@ const LeadFlow = ({ data }) => {
                     <Button
                       variant='primary'
                       // active={activeTab === 'reports'}
-                      onClick={() => navigate("/admin/AddProjectList")}
+                      // onClick={() => navigate("/admin/AddProjectList")}
+                      onClick={() => navigate("/admin/AddCostEstimates")}
                       className="d-flex align-items-center"
                     >
                       Add Proposal
