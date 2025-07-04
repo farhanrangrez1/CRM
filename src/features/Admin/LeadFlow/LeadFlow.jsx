@@ -820,7 +820,7 @@ const LeadFlow = ({ data }) => {
 
     const kanbanData = {
       active: project?.filter(p => p.status === "Lead"),
-      pending: project?.filter(p => p.status === "In Progress"),
+      pending: project?.filter(p => p.status === "Bidding"),
       closed: reduxProposals?.filter(p => p.status === "closed"),
       rejected: reduxProposals?.filter(p => p.status === "rejected"),
     };

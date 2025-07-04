@@ -10,7 +10,7 @@ import { fetchClient } from '../../../redux/slices/ClientSlice';
 function AddProjectList() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { id: paramId } = useParams(); 
+  const { id: paramId } = useParams();
   const location = useLocation();
   const { project } = location.state || {};
   const id = paramId || project?._id;
@@ -91,7 +91,8 @@ function AddProjectList() {
         .unwrap()
         .then(() => {
           toast.success("Project updated successfully!");
-          navigate("/admin/projectList");
+          // navigate("/admin/projectList");
+          navigate("/admin/LeadFlow");
         })
         .catch(() => {
           toast.error("Failed to update project!");
@@ -101,7 +102,8 @@ function AddProjectList() {
         .unwrap()
         .then(() => {
           toast.success("Project created successfully!");
-          navigate("/admin/projectList");
+          // navigate("/admin/projectList");
+          navigate("/admin/LeadFlow");
         })
         .catch(() => {
           toast.error("Error creating project");

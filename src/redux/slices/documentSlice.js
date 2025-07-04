@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import api from "../utils/axiosInstance";
 
-const BASE_URL = "https://hrb5wx2v-3002.inc1.devtunnels.ms/api/documentsRecord";
+const BASE_URL = "https://netaai-crm-backend-production-c306.up.railway.app/api/documentsRecord";
 
 // ✅ Create Document Record
 export const createDocumentRecord = createAsyncThunk(

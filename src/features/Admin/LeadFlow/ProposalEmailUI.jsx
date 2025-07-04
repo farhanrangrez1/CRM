@@ -199,6 +199,8 @@ import React, { useState, useRef, useEffect } from "react";
 import jsPDF from "jspdf";
 import html2canvas from "html2canvas";
 import "bootstrap/dist/css/bootstrap.min.css";
+import axios from "axios";
+import { toast } from "react-toastify";
 
 const ProposalEmailUI = () => {
   const proposalRef = useRef();
@@ -219,29 +221,21 @@ const ProposalEmailUI = () => {
     }
   }, []);
 
-  useEffect(() => {
-    console.log("signatureData", signatureData);
 
-  }, [signatureData])
+  const [proposalData, setProposalData] = useState({
+    sendTo: "",
+    subject: "",
+    message: "",
+  });
 
-
-
-  const proposalData = {
-    sendTo: "bob@bobsburgers.com",
-    subject: "Proposal for serdhbdf",
-    message: `Hi,
-
-Please find attached the proposal for serdhbdf. You can view and either accept or reject the proposal by clicking the following link:
-^Link^
-
-Regards,
-Lalit Singh`,
-  };
 
   useEffect(() => {
     const generatePDF = async () => {
       const element = proposalRef.current;
-      if (!element) return;
+      if (!element || !signatureData?.line_items?.length) return;
+
+      // Small delay to ensure DOM is fully rendered
+      await new Promise((res) => setTimeout(res, 500));
 
       const canvas = await html2canvas(element, { scale: 2 });
       const imgData = canvas.toDataURL("image/png");
@@ -250,6 +244,7 @@ Lalit Singh`,
       const imgProps = pdf.getImageProperties(imgData);
       const pdfWidth = pdf.internal.pageSize.getWidth();
       const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
+
       pdf.addImage(imgData, "PNG", 0, 0, pdfWidth, pdfHeight);
 
       const blob = pdf.output("blob");
@@ -265,8 +260,40 @@ Lalit Singh`,
       setPdfUrl(pdfBlobUrl);
     };
 
-    generatePDF();
-  }, []);
+    if (signatureData?.line_items?.length) {
+      generatePDF();
+    }
+  }, [signatureData]);
+
+  const handleSendEmail = async () => {
+    if (!selectedFile?.file) {
+      toast.error("PDF not ready.");
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append("email", proposalData.sendTo);
+    formData.append("subject", proposalData.subject);
+    formData.append("message", proposalData.message);
+    formData.append("attachment", selectedFile.file);
+
+    try {
+      const response = await axios.post(
+        "https://netaai-crm-backend-production-c306.up.railway.app/api/sendProposalEmail",
+        formData,
+        {
+          headers: { "Content-Type": "multipart/form-data" },
+        }
+      );
+      toast.success("Email sent successfully!");
+      console.log(response.data);
+    } catch (error) {
+      toast.error("Failed to send email.");
+      console.error(error);
+    }
+  };
+
+
 
   return (
     <div className="container-fluid bg-light p-4">
@@ -284,17 +311,32 @@ Lalit Singh`,
             <form>
               <div className="mb-3">
                 <label className="form-label">Send to</label>
-                <input type="email" className="form-control" value={proposalData.sendTo} readOnly />
+                <input
+                  type="email"
+                  className="form-control"
+                  value={proposalData.sendTo}
+                  onChange={(e) => setProposalData({ ...proposalData, sendTo: e.target.value })}
+                />
               </div>
 
               <div className="mb-3">
                 <label className="form-label">Subject</label>
-                <input type="text" className="form-control" value={proposalData.subject} readOnly />
+                <input
+                  type="text"
+                  className="form-control"
+                  value={proposalData.subject}
+                  onChange={(e) => setProposalData({ ...proposalData, subject: e.target.value })}
+                />
               </div>
 
               <div className="mb-3">
                 <label className="form-label">Message</label>
-                <textarea className="form-control" rows={6} value={proposalData.message} readOnly />
+                <textarea
+                  className="form-control"
+                  rows={6}
+                  value={proposalData.message}
+                  onChange={(e) => setProposalData({ ...proposalData, message: e.target.value })}
+                />
               </div>
 
               <div className="mb-3">
@@ -315,8 +357,13 @@ Lalit Singh`,
               </a> */}
 
               <div>
-                <button type="button" className="btn btn-success me-2">Send email</button>
-                <button type="button" className="btn btn-outline-secondary">Discard</button>
+                <button
+                  type="button"
+                  className="btn btn-success me-2"
+                  onClick={handleSendEmail}
+                >
+                  Send email
+                </button>
               </div>
             </form>
 
@@ -355,49 +402,51 @@ Lalit Singh`,
             >
               <h5 className="text-center fw-bold border-bottom pb-2">PROPOSAL</h5>
               <div className="row mb-3">
-                <div className="col-6"><strong>PROJECT:</strong> {signatureData?.line_items}</div>
+                <div className="col-6"><strong>PROJECT:</strong> {signatureData?.proposal_id}</div>
               </div>
               <div className="row mb-3">
                 <div className="col-6">
                   <strong>TO:</strong><br />
-                  Bob Belcher<br />
-                  303 Ocean Avenue<br />
-                  Jersey City, NJ 07305
+                  {signatureData?.client_id}
                 </div>
                 <div className="col-6">
-                  <strong>LOCATION:</strong> 303 Ocean Avenue<br />
-                  Jersey City, NJ<br />
-                  <strong>DATE:</strong> 7/2/2025
+                  {/* <strong>LOCATION:</strong> 303 Ocean Avenue<br />
+                  Jersey City, NJ<br /> */}
+                  <strong>DATE:</strong> { }
                 </div>
               </div>
               <p>
                 We propose to furnish all materials, equipment, and labor, subject to any exclusions listed below,
                 required to complete the following:
               </p>
-              <table className="table table-bordered mt-3">
-                <tbody>
-                  {signatureData?.line_items?.map((item, index) => {
-                    const lineAmount = item.quantity * item.rate;
-                    return (
-                      <tr key={index}>
-                        <td>{index + 1}.</td>
-                        <td>{item.description}</td>
-                        <td className="text-end">${lineAmount.toFixed(2)}</td>
-                      </tr>
-                    );
-                  })}
+              {signatureData?.line_items?.length > 0 ? (
+                <table className="table table-bordered mt-3">
+                  <tbody>
+                    {signatureData.line_items.map((item, index) => {
+                      const lineAmount = item.quantity * item.rate;
+                      return (
+                        <tr key={index}>
+                          <td>{index + 1}.</td>
+                          <td>{item.description}</td>
+                          <td className="text-end">${lineAmount.toFixed(2)}</td>
+                        </tr>
+                      );
+                    })}
+                    <tr>
+                      <td colSpan="2" className="text-end"><strong>Total Proposal Value:</strong></td>
+                      <td className="text-end fw-bold">
+                        $
+                        {signatureData.line_items
+                          .reduce((total, item) => total + item.quantity * item.rate, 0)
+                          .toFixed(2)}
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              ) : (
+                <p className="text-muted">No line items to show.</p>
+              )}
 
-                  <tr>
-                    <td colSpan="2" className="text-end"><strong>Total Proposal Value:</strong></td>
-                    <td className="text-end fw-bold">
-                      $
-                      {signatureData?.line_items
-                        ?.reduce((total, item) => total + item.quantity * item.rate, 0)
-                        .toFixed(2)}
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
               <p>
                 The above price is valid for 30 days. <b>COMPANY NAME</b> agrees that they will enter into a standard AIA
                 subcontract with General Contractor, and that basic provisions such as insurance and W-9 shall be in

@@ -1879,7 +1879,7 @@ const Editpurposal = () => {
           "Summary",
           "Job Costs",
           // stage === "lead" ? "Client Proposal" : "Draft Proposal",
-          "Contract & Change Orders",
+          // "Contract & Change Orders",
           "Create Proposal",
           "Documents",
           "Logs",

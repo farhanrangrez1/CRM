@@ -428,7 +428,7 @@ import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useDispatch, useSelector } from "react-redux";
 import { createCostEstimate, updateCostEstimate } from "../../../redux/slices/costEstimatesSlice";
-import { fetchProject } from "../../../redux/slices/ProjectsSlice";
+import { fetchProject, updateProject } from "../../../redux/slices/ProjectsSlice";
 import { fetchClient } from "../../../redux/slices/ClientSlice";
 import { createInvoicingBilling, updateInvoicingBilling } from "../../../redux/slices/InvoicingBillingSlice";
 import { createDocumentRecord, getDocumentsByProposalId, updateDocumentRecord } from "../../../redux/slices/documentSlice";
@@ -494,8 +494,8 @@ function AddInvoice({ onInvoiceComplete }) {
   const [items, setItems] = useState([{ description: "", quantity: 0, rate: 0, amount: 0 }]);
 
   const [formData, setFormData] = useState({
-    client_id: 0,
-    proposal_id: 0,
+    client_id: "",
+    proposal_id: "",
     start_date: "",
     end_date: ""
   });
@@ -548,11 +548,17 @@ function AddInvoice({ onInvoiceComplete }) {
 
 
   useEffect(() => {
-    if (invoice?.id) {
-      dispatch(getDocumentsByProposalId(invoice.id))
+    console.log(invoice);
+
+    if (invoice?._id) {
+      console.log(invoice?.id);
+      dispatch(getDocumentsByProposalId(invoice?._id))
         .unwrap()
         .then((res) => {
+          console.log(res);
           if (Array.isArray(res) && res.length > 0) {
+            console.log(res);
+
             setExistingDocId(res[0].id); // ✅ Save the existing document ID
             const doc = res[0];
             setFormData({
@@ -568,7 +574,7 @@ function AddInvoice({ onInvoiceComplete }) {
             setFormData((prev) => ({
               ...prev,
               client_id: invoice?.clientId?.id || "",
-              proposal_id: invoice?.id || "",
+              proposal_id: invoice?._id || "",
               start_date: invoice.startDate?.substring(0, 10) || "",
               end_date: invoice.endDate?.substring(0, 10) || "",
             }));
@@ -578,7 +584,7 @@ function AddInvoice({ onInvoiceComplete }) {
           toast.error("Failed to fetch document record.");
         });
     }
-  }, [invoice, invoice?.id]);
+  }, [invoice, invoice?._id]);
 
 
   const [taxRate, setTaxRate] = useState(0.05);
@@ -661,6 +667,9 @@ function AddInvoice({ onInvoiceComplete }) {
       line_items: items,
     };
 
+    console.log(payload);
+    
+
     if (existingDocId) {
       // Update
       dispatch(updateDocumentRecord({ id: existingDocId, data: payload }))
@@ -676,7 +685,18 @@ function AddInvoice({ onInvoiceComplete }) {
       dispatch(createDocumentRecord(payload))
         .unwrap()
         .then(() => {
-          toast.success("Document created successfully");
+          const payload = {
+            status: "Bidding",
+          };
+
+          dispatch(updateProject({ id, payload }))
+            .unwrap()
+            .then(() => {
+              toast.success("Document created successfully");
+            })
+            .catch(() => {
+              toast.error("Failed to update status!");
+            });
         })
         .catch(() => {
           toast.error("Failed to create document");
@@ -688,9 +708,11 @@ function AddInvoice({ onInvoiceComplete }) {
   const handleSignature = () => {
     // then call the callback
     const payload = {
+      ...invoice,
       ...formData,
       line_items: items,
     };
+
     localStorage.setItem("SignatureData", JSON.stringify(payload));
     onInvoiceComplete();
   };
