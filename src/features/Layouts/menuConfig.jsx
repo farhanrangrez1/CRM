@@ -32,7 +32,7 @@ export const adminMenuItems = [
     icon: <FaHome className="menu-icon" />,
     path: "/admin/dashboard",
   },
-    {
+  {
     title: "Praposal",
     icon: <FaSitemap className="menu-icon" />,
     path: "/admin/LeadFlow",
@@ -40,11 +40,11 @@ export const adminMenuItems = [
   {
     title: "Projects & Jobs",
     icon: <FaProjectDiagram className="menu-icon" />,
-    submenu: [      
+    submenu: [
       { title: "Project View", path: "/admin/projectView" },
+      { title: "Temp Poles", path: "/admin/TempPoles" },
       { title: "Projects Details", path: "/admin/projectList" },
-      { title: "Job Tracker", path: "/admin/JobTracker" }
-      // { title: "Job Tracker", path: "/admin/JobTracker" },
+      // { title: "Job Tracker", path: "/admin/JobTracker" }
     ],
   },
   {
