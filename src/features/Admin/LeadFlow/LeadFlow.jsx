@@ -2329,7 +2329,8 @@ const LeadFlow = ({ data }) => {
                     <Button
                       variant='primary'
                       // active={activeTab === 'reports'}
-                      onClick={() => navigate("/admin/AddProjectList")}
+                      // onClick={() => navigate("/admin/AddProjectList")}
+                      onClick={() => navigate("/admin/AddCostEstimates")}
                       className="d-flex align-items-center"
                     >
                       Add Proposal
