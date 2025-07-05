@@ -245,7 +245,7 @@ const ProposalEmailUI = () => {
   useEffect(() => {
     const clientId = Array.isArray(signatureData?.clientId)
       ? signatureData.clientId[0]
-      : signatureData?.clientId;
+      : signatureData?.clientId?.id;
 
     if (clientId && Clients?.data?.length > 0) {
       const client = Clients.data.find((c) => c._id === clientId);
