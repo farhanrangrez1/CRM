@@ -1946,7 +1946,6 @@ const Editpurposal = () => {
         <div className="mb-2">
           <Button variant="outline-secondary mt-1" onClick={() => {
             navigate('/admin/LeadFlow');
-            window.location.reload();
           }}>
             <FaArrowLeft className="me-1" /> Back
           </Button>

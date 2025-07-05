@@ -65,7 +65,7 @@ function AddCostEstimates() {
     Notes: "",
     currency: "USD",
     // POStatus: "",
-    Status: "",
+    Status: "Lead",
   });
 
   useEffect(() => {
@@ -214,7 +214,7 @@ function AddCostEstimates() {
               </div>
 
               <div className="col-md-4 mb-3">
-              <div class="d-flex align-items-center justify-content-between mb-2">
+                <div class="d-flex align-items-center justify-content-between mb-2">
                   <label class="form-label mb-0 fw-bold">Project</label>
                   <Link to={"/admin/AddProjectList"}><button class="btn btn-sm btn-outline-primary rounded-pill px-3 py-1">
                     + Create
@@ -285,9 +285,7 @@ function AddCostEstimates() {
                 </select>
               </div>
 
-
-
-              <div className="col-md-4 mb-3">
+              {/* <div className="col-md-4 mb-3">
                 <label className="form-label">Status</label>
                 <select
                   className="form-select"
@@ -306,7 +304,7 @@ function AddCostEstimates() {
                   ))}
                 </select>
 
-              </div>
+              </div> */}
             </div>
 
             <h6 className="fw-semibold mb-3">Line Items</h6>

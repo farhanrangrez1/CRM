@@ -47,7 +47,7 @@ export const updateDocumentRecord = createAsyncThunk(
     "documentRecord/update",
     async ({ id, data }, { rejectWithValue }) => {
         try {
-            const res = await api.put(`${BASE_URL}/${id}`, data);
+            const res = await api.patch(`${BASE_URL}/${id}`, data);
             return res.data;
         } catch (err) {
             return rejectWithValue(err.response?.data || err.message);
