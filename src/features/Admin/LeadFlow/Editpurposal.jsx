@@ -1808,7 +1808,7 @@ const handleUploadClick = () => {
                 </Row>
               </div>
             </div>
-            <JobCost/>
+            <JobCost jobStatus={job?.status}/>
           </div>
         );
 
