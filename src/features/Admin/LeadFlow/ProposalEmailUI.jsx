@@ -201,13 +201,25 @@ import html2canvas from "html2canvas";
 import "bootstrap/dist/css/bootstrap.min.css";
 import axios from "axios";
 import { toast } from "react-toastify";
+import { useDispatch } from "react-redux";
+import { fetchClient } from "../../../redux/slices/ClientSlice";
+import { useSelector } from "react-redux";
 
 const ProposalEmailUI = () => {
   const proposalRef = useRef();
   const [pdfUrl, setPdfUrl] = useState(null);
   const [selectedFile, setSelectedFile] = useState(null);
+  const [selectedClient, setSelectedClient] = useState(null);
+  const [client, setClient] = useState({});
+  const { Clients } = useSelector((state) => state.client);
 
   const [signatureData, setSignatureData] = useState({});
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(fetchClient());
+  }, [dispatch]);
+
 
   useEffect(() => {
     const storedSignature = localStorage.getItem("SignatureData");
@@ -222,11 +234,27 @@ const ProposalEmailUI = () => {
   }, []);
 
 
+
   const [proposalData, setProposalData] = useState({
     sendTo: "",
     subject: "",
     message: "",
   });
+
+
+  useEffect(() => {
+    if (signatureData?.clientId?.id && Clients?.data?.length > 0) {
+      const client = Clients?.data?.find(c => c._id === signatureData?.clientId?.id);
+      setSelectedClient(client);
+      setClient(client);
+      setProposalData((prev) => ({
+        ...prev,
+        sendTo: selectedClient?.contactPersons[0]?.email || "",
+      }));
+    }
+  }, [signatureData, Clients]);
+
+
 
 
   useEffect(() => {
@@ -299,7 +327,8 @@ const ProposalEmailUI = () => {
     <div className="container-fluid bg-light p-4">
       <div className="row mb-4">
         <div className="col-12">
-          <h5 className="text-muted">serdhbdf</h5>
+          <h5 className="text-muted">{client?.contactPersons?.[0]?.jobTitle || "N/A"}</h5>
+          <h7 className="text-muted">{client?.clientName}</h7>
           <p>Complete email details and verify preview to send out for signature.</p>
         </div>
       </div>
@@ -402,17 +431,20 @@ const ProposalEmailUI = () => {
             >
               <h5 className="text-center fw-bold border-bottom pb-2">PROPOSAL</h5>
               <div className="row mb-3">
-                <div className="col-6"><strong>PROJECT:</strong> {signatureData?.proposal_id}</div>
+                <div className="col-6"><strong>PROJECT: </strong>
+                  {client?.contactPersons?.[0]?.jobTitle}
+                </div>
               </div>
               <div className="row mb-3">
                 <div className="col-6">
-                  <strong>TO:</strong><br />
-                  {signatureData?.client_id}
+                  <strong>TO: </strong>
+                  {/* {signatureData?.client_id} */}
+                  {client?.clientName}
                 </div>
                 <div className="col-6">
                   {/* <strong>LOCATION:</strong> 303 Ocean Avenue<br />
                   Jersey City, NJ<br /> */}
-                  <strong>DATE:</strong> { }
+                  <strong>DATE:</strong> {client?.updatedAt?.split("T")[0]}
                 </div>
               </div>
               <p>
