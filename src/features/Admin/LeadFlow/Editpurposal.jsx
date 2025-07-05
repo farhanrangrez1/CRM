@@ -1384,62 +1384,64 @@ import ProposalEmailUI from "./ProposalEmailUI";
 import DailyLogs from "../../Employee/DailyLogs/DailyLogs";
 import axios from 'axios';
 import { fetchProject } from "../../../redux/slices/ProjectsSlice";
-import { useDispatch } from "react-redux";
-const DocumentList = () => {
-  const documents = [
-    { id: 1, title: "Document 1", file_urls: ["example_file_1.pdf"] },
-    { id: 2, title: "Document 2", file_urls: ["example_file_2.pdf"] },
-  ];
-  const handlePreview = (url) => {
-    // Static preview handling
-  };
-  const handleDownload = (url) => {
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = url.split("/").pop();
-    a.click();
-  };
-  const handleDelete = (id) => {
-    const confirm = window.confirm("Are you sure you want to delete this document?");
-    if (!confirm) return;
-    // Static delete handling
-    console.log(`Document with id ${id} deleted.`);
-  };
-  return (
-    <>
-      <div className="container mt-4">
-        <h4 className="fw-bold mb-3">Uploaded Documents</h4>
-        <ul className="list-group">
-          {documents.map((doc) => (
-            <li key={doc.id} className="list-group-item d-flex justify-content-between align-items-center">
-              <span
-                className="text-primary cursor-pointer"
-                style={{ cursor: "pointer" }}
-                onClick={() => handlePreview(doc.file_urls[0])}
-              >
-                {doc.title}
-              </span>
-              <div>
-                <button
-                  className="btn btn-sm btn-outline-success me-2"
-                  onClick={() => handleDownload(doc.file_urls[0])}
-                >
-                  Download
-                </button>
-                <button
-                  className="btn btn-sm btn-outline-danger"
-                  onClick={() => handleDelete(doc.id)}
-                >
-                  Delete
-                </button>
-              </div>
-            </li>
-          ))}
-        </ul>
-      </div>
-    </>
-  );
-};
+ import {  createDocument, fetchDocumentById } from  "../../../redux/slices/saveDocumentSlice";
+ import { useDispatch,useSelector } from "react-redux";
+import DocumentList from "./DocumentList";
+// const DocumentList = () => {
+//   const documents = [
+//     { id: 1, title: "Document 1", file_urls: ["example_file_1.pdf"] },
+//     { id: 2, title: "Document 2", file_urls: ["example_file_2.pdf"] },
+//   ];
+//   const handlePreview = (url) => {
+//     // Static preview handling
+//   };
+//   const handleDownload = (url) => {
+//     const a = document.createElement("a");
+//     a.href = url;
+//     a.download = url.split("/").pop();
+//     a.click();
+//   };
+//   const handleDelete = (id) => {
+//     const confirm = window.confirm("Are you sure you want to delete this document?");
+//     if (!confirm) return;
+//     // Static delete handling
+//     console.log(`Document with id ${id} deleted.`);
+//   };
+//   return (
+//     <>
+//       <div className="container mt-4">
+//         <h4 className="fw-bold mb-3">Uploaded Documents</h4>
+//         <ul className="list-group">
+//           {documents.map((doc) => (
+//             <li key={doc.id} className="list-group-item d-flex justify-content-between align-items-center">
+//               <span
+//                 className="text-primary cursor-pointer"
+//                 style={{ cursor: "pointer" }}
+//                 onClick={() => handlePreview(doc.file_urls[0])}
+//               >
+//                 {doc.title}
+//               </span>
+//               <div>
+//                 <button
+//                   className="btn btn-sm btn-outline-success me-2"
+//                   onClick={() => handleDownload(doc.file_urls[0])}
+//                 >
+//                   Download
+//                 </button>
+//                 <button
+//                   className="btn btn-sm btn-outline-danger"
+//                   onClick={() => handleDelete(doc.id)}
+//                 >
+//                   Delete
+//                 </button>
+//               </div>
+//             </li>
+//           ))}
+//         </ul>
+//       </div>
+//     </>
+//   );
+// };
 
 const Editpurposal = () => {
   const [manager, setManager] = useState(null);
@@ -1460,6 +1462,14 @@ const Editpurposal = () => {
   const [comments, setComments] = useState("");
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
+  const [showFileModal, setShowFileModal] = useState(false);
+  const [uploadedFile, setUploadedFile] = useState(null);
+  const [showFolderModal, setShowFolderModal] = useState(false);
+ const [previewUrl, setPreviewUrl] = useState(null);
+   const [folderName, setFolderName] = useState("");
+  const [fileTitle, setFileTitle] = useState("");
+  const [selectedFile, setSelectedFile] = useState(null);  
+
   const [lineItems, setLineItems] = useState([
     {
       id: 1,
@@ -1472,7 +1482,6 @@ const Editpurposal = () => {
     }
   ]);
   const [activeTab, setActiveTab] = useState("Create Proposal");
-
   const totalBudgetedCost = (
     parseFloat(materialsBudget || 0) +
     parseFloat(laborBudget || 0) +
@@ -1514,6 +1523,7 @@ const Editpurposal = () => {
   const location = useLocation();
   const job = location.state.item;
   const project_id = localStorage.getItem("proposalId");
+  const proposalId = localStorage.getItem("proposalId")
   const resetForm = () => {
     setPhaseName("");
     setMaterialsBudget("");
@@ -1575,7 +1585,52 @@ const Editpurposal = () => {
       return null;
     }
   };
+ const handleFolderSubmit = async () => {
+    try {
+      const formData = new FormData();
+      formData.append("proposal_id", proposalId);
+      formData.append("folder_name", folderName);
 
+      const res = dispatch(createDocument(formData))
+      console.log("✅ Folder Created:", res.data);
+       
+
+      setShowFolderModal(false);
+      setFolderName("");
+    } catch (error) {
+      console.error("❌ Folder Creation Error:", error);
+    }
+  };
+   const handleFileSubmit = async () => {
+    try {
+      console.log("handle Submit")
+      const formData = new FormData();
+      formData.append("proposal_id", proposalId);
+      formData.append("title", fileTitle);
+      formData.append("fileUrls", selectedFile);
+
+      const res = await   dispatch(createDocument(formData))
+      console.log("✅ File Uploaded:", res.data);
+      dispatch(fetchDocumentById(proposalId))
+
+      setUploadedFile(selectedFile?.name);
+      setShowFileModal(false);
+      setFileTitle("");
+      setSelectedFile(null);
+    } catch (error) {
+      console.error("❌ File Upload Error:", error);
+    }
+  };
+  const documents = useSelector((state)=>state?.documents?.document?.data)
+  console.log("wedw",documents)
+   const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    setUploadedFile(file?.name);
+    setSelectedFile(file);
+  };
+const handleUploadClick = () => {
+    setShowFileModal(true);
+  };
   useEffect(() => {
     const fetchBudgetSummary = async () => {
       const data = await getBudgetSummaryByProposalId(project_id);
@@ -1790,36 +1845,139 @@ const Editpurposal = () => {
         );
 
       case "Documents":
-        return (
-          <div className="tab-content-box text-center">
-            {/* Placeholder Image */}
-            <div className="mb-3">
-              <img
-                src="https://img.icons8.com/ios/100/000000/document--v1.png"
-                alt="Documents"
-                width="100"
-              />
+          return (
+           <div className="tab-content-box text-center">
+      {/* Placeholder Image */}
+      <div className="mb-3">
+        <img
+          src="https://img.icons8.com/ios/100/000000/document--v1.png"
+          alt="Documents"
+          width="100"
+        />
+      </div>
+
+      {/* Headings */}
+      <h5 className="fw-bold">Documents</h5>
+      {/* <p className="text-muted mb-1">
+        Build a central repository for all your project documents.
+      </p> */}
+
+      {/* Buttons */}
+      <div className="d-flex justify-content-center gap-2 mt-3">
+        {/* <button className="btn btn-outline-secondary" onClick={handleAddFolderClick}>
+          Add folder
+        </button> */}
+        <button className="btn btn-primary" onClick={handleUploadClick}>
+          Upload file
+        </button>
+      </div>
+
+      {/* Uploaded File Display */}
+      {uploadedFile && (
+        <div className="mt-3">
+          <p className="text-primary">Uploaded: {uploadedFile}</p>
+        </div>
+      )}
+
+      {/* Folder Modal */}
+      {showFolderModal && (
+        <div className="modal fade show d-block" tabIndex="-1" role="dialog">
+          <div className="modal-dialog" role="document">
+            <div className="modal-content">
+              <div className="modal-header">
+                <h5 className="modal-title">Create Folder</h5>
+                <button type="button" className="btn-close" onClick={() => setShowFolderModal(false)}></button>
+              </div>
+              <div className="modal-body">
+                <input
+                  type="text"
+                  className="form-control"
+                  placeholder="Enter folder name"
+                  value={folderName}
+                  onChange={(e) => setFolderName(e.target.value)}
+                />
+              </div>
+              <div className="modal-footer">
+                <button className="btn btn-secondary" onClick={() => setShowFolderModal(false)}>Cancel</button>
+                <button className="btn btn-primary" onClick={handleFolderSubmit}>Create</button>
+              </div>
             </div>
-
-            {/* Headings */}
-            <h5 className="fw-bold">Documents</h5>
-
-            {/* Buttons */}
-            <div className="d-flex justify-content-center gap-2 mt-3">
-              <button className="btn btn-primary">
-                Upload file
-              </button>
-            </div>
-
-            {/* Uploaded File Display */}
-            <div className="mt-3">
-              <p className="text-primary">Uploaded: example_file.txt</p>
-            </div>
-
-            <DocumentList />
           </div>
-        );
+        </div>
+      )}
 
+      {/* File Upload Modal */}
+      {showFileModal && (
+        <div className="modal fade show d-block" tabIndex="-1" role="dialog">
+          <div className="modal-dialog" role="document">
+            <div className="modal-content">
+              <div className="modal-header">
+                <h5 className="modal-title">Upload File</h5>
+                <button type="button" className="btn-close" onClick={() => setShowFileModal(false)}></button>
+              </div>
+              <div className="modal-body">
+                <input
+                  type="text"
+                  className="form-control mb-2"
+                  placeholder="Enter title"
+                  value={fileTitle}
+                  onChange={(e) => setFileTitle(e.target.value)}
+                />
+                <input
+                  type="file"
+                  className="form-control"
+                  onChange={handleFileChange}
+                />
+              </div>
+              <div className="modal-footer">
+                <button className="btn btn-secondary" onClick={() => setShowFileModal(false)}>Cancel</button>
+                <button className="btn btn-primary" onClick={handleFileSubmit}>Upload</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+       <div className="container mt-4">
+      
+
+      {/* Preview Modal */}
+      {previewUrl && (
+        <div className="modal fade show d-block" tabIndex="-1" role="dialog">
+          <div className="modal-dialog modal-lg" role="document">
+            <div className="modal-content">
+              <div className="modal-header">
+                <h5 className="modal-title">Preview File</h5>
+                <button
+                  type="button"
+                  className="btn-close"
+                  onClick={() => setPreviewUrl(null)}
+                ></button>
+              </div>
+              <div className="modal-body text-center">
+                {previewUrl.endsWith(".pdf") ? (
+                  <iframe
+                    src={previewUrl}
+                    title="PDF Preview"
+                    width="100%"
+                    height="500px"
+                  />
+                ) : (
+                  <img src={previewUrl} alt="Preview" style={{ maxWidth: "100%" }} />
+                )}
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+    <DocumentList
+  documents={documents}
+  previewUrl={previewUrl}
+  setPreviewUrl={setPreviewUrl}
+/>
+    </div>
+
+        );
       case "Logs":
         return (
           <div className="tab-content-box">
