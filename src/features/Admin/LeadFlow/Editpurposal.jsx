@@ -1387,6 +1387,7 @@ import { fetchProject } from "../../../redux/slices/ProjectsSlice";
  import {  createDocument, fetchDocumentById } from  "../../../redux/slices/saveDocumentSlice";
  import { useDispatch,useSelector } from "react-redux";
 import DocumentList from "./DocumentList";
+import JobCost from "./JobCost";
 // const DocumentList = () => {
 //   const documents = [
 //     { id: 1, title: "Document 1", file_urls: ["example_file_1.pdf"] },
@@ -1807,6 +1808,7 @@ const handleUploadClick = () => {
                 </Row>
               </div>
             </div>
+            <JobCost/>
           </div>
         );
 
