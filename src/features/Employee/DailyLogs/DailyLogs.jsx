@@ -168,7 +168,7 @@ const DailyLogs = () => {
 
       </div>
 
-      {dailyLogs.length === 0 ? (
+      {dailyLogs?.filter(item=>item.job_id==proposalId).length === 0 ? (
         <Card className="text-center p-4">
           <Card.Body>
             <h5>No daily logs found</h5>
@@ -182,7 +182,7 @@ const DailyLogs = () => {
           </Card.Body>
         </Card>
       ) : (
-        dailyLogs.map((log, idx) => (
+        dailyLogs?.filter(item=>item.job_id==proposalId).map((log, idx) => (
 
           <Card key={log.id} className="mb-4 shadow-sm">
             <Card.Body>
