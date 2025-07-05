@@ -113,7 +113,7 @@ function NewJobsList() {
 
   const handleSubmitRejection = () => {
     const selectedJobIds = Object.keys(selectedJobs).filter((id) => selectedJobs[id]);
-    console.log(selectedJobIds);
+    // console.log(selectedJobIds);
 
     if (!rejectionReason.trim()) {
       setErrorMessage("Please enter a reason for rejection.");
@@ -176,29 +176,29 @@ function NewJobsList() {
     }
   };
 
- const getStatusClass = (status) => {
-  switch (status.toLowerCase().trim()) {
-    case "in progress":
-    case "in_progress":
-      return "bg-warning text-dark";     // Yellow
-    case "completed":
-      return "bg-success text-white";    // Green
-    case "cancelled":
-      return "bg-danger text-white";     // Red
-    case "active":
-      return "bg-primary text-white";    // Blue
-    case "reject":
-      return "bg-danger text-white";
-    case "review":
-      return "bg-info text-dark";
-    case "not started":
-      return "bg-secondary text-white";
-    case "open":
-      return "bg-primary text-white";
-    default:
-      return "bg-light text-dark";
-  }
-};
+  const getStatusClass = (status) => {
+    switch (status.toLowerCase().trim()) {
+      case "in progress":
+      case "in_progress":
+        return "bg-warning text-dark";     // Yellow
+      case "completed":
+        return "bg-success text-white";    // Green
+      case "cancelled":
+        return "bg-danger text-white";     // Red
+      case "active":
+        return "bg-primary text-white";    // Blue
+      case "reject":
+        return "bg-danger text-white";
+      case "review":
+        return "bg-info text-dark";
+      case "not started":
+        return "bg-secondary text-white";
+      case "open":
+        return "bg-primary text-white";
+      default:
+        return "bg-light text-dark";
+    }
+  };
 
 
   const filteredJobs = (job?.jobs || [])
@@ -298,7 +298,7 @@ function NewJobsList() {
         selectedDesigner.toLowerCase()) &&
       selectedDesigner !== ""
   );
-  console.log("lllll", filteredAssignment);
+  // console.log("lllll", filteredAssignment);
 
   const paginatedAssignment = filteredAssignment.slice(
     (currentAssignment - 1) * itemsAssignment,
@@ -313,11 +313,11 @@ function NewJobsList() {
       selectDesigner: selectedDesigner,
       description: assignmentDescription,
     };
-    console.log("Assignment Payload:", payload);
+    // console.log("Assignment Payload:", payload);
     dispatch(createAssigns(payload))
       .unwrap()
       .then((response) => {
-        console.log("API Response:", response);
+        // console.log("API Response:", response);
         if (response.success) {
           toast.success(response.message || "Project Assigned Successfully!");
           setShowAssignModal(false);
@@ -339,7 +339,7 @@ function NewJobsList() {
       id: selectedIds,
       assign: assignTo,
     };
-    console.log("Assignment Payload:", payload);
+    // console.log("Assignment Payload:", payload);
     dispatch(UpdateJobAssign(payload))
       .then(() => {
         // Swal.fire("Success!", "Jobs assigned successfully", "success");

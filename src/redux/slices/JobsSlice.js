@@ -4,12 +4,12 @@ import { apiUrl } from '../../redux/utils/config';
 
 
 export const Project_job_Id = createAsyncThunk(
- 'job/Project_job_Id',
+  'job/Project_job_Id',
   async (id, { rejectWithValue }) => {
     try {
       const response = await axiosInstance.get(`${apiUrl}/jobs/${id}`);
-      console.log("respos",response.data);
-      
+      // console.log("respos",response.data);
+
       return response.data
     } catch (error) {
       return rejectWithValue(error.response?.data || error.message);
@@ -86,7 +86,7 @@ export const updatejob = createAsyncThunk('jobs/updatejob', async ({ id, data },
     });
 
     if (!response.ok) {
-      const errorText = await response.text(); 
+      const errorText = await response.text();
       throw new Error(`Failed to update job: ${errorText}`);
     }
 
@@ -96,14 +96,14 @@ export const updatejob = createAsyncThunk('jobs/updatejob', async ({ id, data },
   }
 });
 
-  // Assign Job
+// Assign Job
 export const UpdateJobAssign = createAsyncThunk('jobs/updatejob', async ({ id, assign }) => {
   const response = await fetch(`${apiUrl}/jobs/${id}`, {
     method: "put",
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({ id, assign }),  
+    body: JSON.stringify({ id, assign }),
   });
 
   if (!response.ok) throw new Error("Failed to update jobs");
@@ -123,7 +123,7 @@ const jobsSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
-    // Project_job_Id
+      // Project_job_Id
       .addCase(Project_job_Id.pending, (state) => {
         state.status = 'loading';
       })
@@ -135,19 +135,19 @@ const jobsSlice = createSlice({
         state.status = 'failed';
         state.error = action.payload;
       })
-          // Add
-        //   .addCase(createjob.pending, (state) => {
-        //     state.loading = true;
-        //     state.error = null;
-        //   })
-        //   .addCase(createjob.fulfilled, (state, action) => {
-        //     state.loading = false;
-        //     state.job.push(action.payload);
-        //   })
-        //   .addCase(createjob.rejected, (state, action) => {
-        //     state.loading = false;
-        //     state.error = action.payload;
-        //   })
+      // Add
+      //   .addCase(createjob.pending, (state) => {
+      //     state.loading = true;
+      //     state.error = null;
+      //   })
+      //   .addCase(createjob.fulfilled, (state, action) => {
+      //     state.loading = false;
+      //     state.job.push(action.payload);
+      //   })
+      //   .addCase(createjob.rejected, (state, action) => {
+      //     state.loading = false;
+      //     state.error = action.payload;
+      //   })
       .addCase(fetchjobs.pending, (state) => {
         state.status = 'loading';
       })

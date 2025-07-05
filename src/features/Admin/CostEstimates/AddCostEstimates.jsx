@@ -26,8 +26,6 @@ function AddCostEstimates() {
   const location = useLocation();
   const po = location.state?.po;
   const id = po?._id;
-  console.log("po", po);
-
   const navigate = useNavigate();
   const dispatch = useDispatch();
 

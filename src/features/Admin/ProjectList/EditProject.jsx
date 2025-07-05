@@ -28,7 +28,7 @@ const DocumentList = () => {
         const confirm = window.confirm("Are you sure you want to delete this document?");
         if (!confirm) return;
         // Static delete handling
-        console.log(`Document with id ${id} deleted.`);
+        // console.log(`Document with id ${id} deleted.`);
     };
     return (
         <>
@@ -136,7 +136,7 @@ const EditProject = () => {
     const navigate = useNavigate();
     const location = useLocation();
     const job = location.state.item;
-    console.log("job", job);
+    // console.log("job", job);
 
     const stage = job?.p?.stage;
 

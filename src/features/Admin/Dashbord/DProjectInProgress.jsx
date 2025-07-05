@@ -14,7 +14,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchjobs } from "../../../redux/slices/JobsSlice";
 import { fetchProject } from "../../../redux/slices/ProjectsSlice";
 
-function  DProjectInProgress() {
+function DProjectInProgress() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { job } = useSelector((state) => state.jobs);
@@ -41,17 +41,17 @@ function  DProjectInProgress() {
   }, [dispatch]);
 
   const handleSwitchDesigner = (jobId) => {
-    console.log("Switching designer for job:", jobId);
+    // console.log("Switching designer for job:", jobId);
     setSelectedJob(jobId);
     setShowDesignerModal(true);
   };
 
   const handleCancelBrief = (jobId) => {
-    console.log("Cancelling brief for job:", jobId);
+    // console.log("Cancelling brief for job:", jobId);
   };
 
   const handleDesignerChange = (designer) => {
-    console.log("Selected designer:", designer);
+    // console.log("Selected designer:", designer);
     setShowDesignerModal(false);
     // Dispatch update logic here
   };
@@ -102,7 +102,7 @@ function  DProjectInProgress() {
   };
 
   const handleUpdate = (project) => {
-    console.log("Update project:", project);
+    // console.log("Update project:", project);
   };
 
   // ✅ FILTER PROJECTS by status === in_progress / in progress
@@ -136,7 +136,7 @@ function  DProjectInProgress() {
   const getPageNumbers = () => {
     const pageNumbers = [];
     const maxPagesToShow = 5; // Show maximum 5 page numbers at a time
-    
+
     if (totalPages <= maxPagesToShow) {
       // If total pages are less than maxPagesToShow, show all pages
       for (let i = 1; i <= totalPages; i++) {
@@ -145,35 +145,35 @@ function  DProjectInProgress() {
     } else {
       // Always show first page
       pageNumbers.push(1);
-      
+
       // Calculate start and end of page numbers to show
       let startPage = Math.max(2, currentPage - 1);
       let endPage = Math.min(totalPages - 1, currentPage + 1);
-      
+
       // Add ellipsis if needed
       if (startPage > 2) {
         pageNumbers.push('...');
       }
-      
+
       // Add middle pages
       for (let i = startPage; i <= endPage; i++) {
         pageNumbers.push(i);
       }
-      
+
       // Add ellipsis if needed
       if (endPage < totalPages - 1) {
         pageNumbers.push('...');
       }
-      
+
       // Always show last page
       pageNumbers.push(totalPages);
     }
-    
+
     return pageNumbers;
   };
 
 
-    const CreatJobs = (id) => {
+  const CreatJobs = (id) => {
     navigate(`/admin/ProjectOverview/${id}`, { state: { id, openTab: 'jobs' } });
   };
 
@@ -223,9 +223,9 @@ function  DProjectInProgress() {
                       onChange={() => handleCheckboxChange(project.id)}
                     />
                   </td> */}
-                        <td onClick={() => CreatJobs(project.id)}>
-                               <Link style={{ textDecoration: 'none' }}>{project.projectNo}</Link>
-                             </td>
+                  <td onClick={() => CreatJobs(project.id)}>
+                    <Link style={{ textDecoration: 'none' }}>{project.projectNo}</Link>
+                  </td>
                   <td style={{ whiteSpace: 'nowrap' }}>{project.projectName}</td>
                   <td style={{ whiteSpace: 'nowrap' }}>{project.description}</td>
                   <td>
@@ -241,11 +241,11 @@ function  DProjectInProgress() {
                   <td>{project.client}</td>
                   <td>
                     {project.projectRequirements &&
-                    project.projectRequirements.length > 0
+                      project.projectRequirements.length > 0
                       ? Object.entries(project.projectRequirements[0])
-                          .filter(([_, value]) => value === true)
-                          .map(([key]) => key)
-                          .join(", ")
+                        .filter(([_, value]) => value === true)
+                        .map(([key]) => key)
+                        .join(", ")
                       : "N/A"}
                   </td>
                   <td>
@@ -284,15 +284,15 @@ function  DProjectInProgress() {
       {!loading && !error && searchFilteredProjects?.length > 0 && (
         <div className="d-flex justify-content-between align-items-center mt-3">
           <div>
-            Showing {indexOfFirstProject + 1} to {Math.min(indexOfLastProject, searchFilteredProjects.length)} 
+            Showing {indexOfFirstProject + 1} to {Math.min(indexOfLastProject, searchFilteredProjects.length)}
           </div>
           <Pagination className="m-0">
-            <Pagination.First 
+            <Pagination.First
               onClick={() => handlePageChange(1)}
               disabled={currentPage === 1}
             />
-           
-            
+
+
             {getPageNumbers().map((pageNum, index) => (
               pageNum === '...' ? (
                 <Pagination.Ellipsis key={`ellipsis-${index}`} disabled />
@@ -346,4 +346,4 @@ function  DProjectInProgress() {
   );
 }
 
-export default  DProjectInProgress;
+export default DProjectInProgress;

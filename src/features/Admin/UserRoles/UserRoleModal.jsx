@@ -14,9 +14,9 @@ function UserRoleModal() {
   const location = useLocation();
   const { user } = location.state || {};
   const _id = user?._id;
-    console.log("hhhhhhhhhh", user);
+  // console.log("hhhhhhhhhh", user);
 
-    const { userAll, loading, error } = useSelector((state) => state.user);
+  const { userAll, loading, error } = useSelector((state) => state.user);
   useEffect(() => {
     dispatch(fetchusers());
   }, [dispatch]);
@@ -134,72 +134,72 @@ function UserRoleModal() {
       accessLevel: e.target.value
     }));
   };
-  
-const handleSubmit = (e) => {
-  e.preventDefault();
 
-  if (!_id && formData.password !== formData.passwordConfirm) {
-    toast.error('Passwords do not match!');
-    return;
-  }
+  const handleSubmit = (e) => {
+    e.preventDefault();
 
-  const filteredpermissions = Object.fromEntries(
-    Object.entries(formData.permissions).filter(([_, value]) => value === true)
-  );
+    if (!_id && formData.password !== formData.passwordConfirm) {
+      toast.error('Passwords do not match!');
+      return;
+    }
 
-  const accessLevelPayload = {
-    [formData.accessLevel]: true
+    const filteredpermissions = Object.fromEntries(
+      Object.entries(formData.permissions).filter(([_, value]) => value === true)
+    );
+
+    const accessLevelPayload = {
+      [formData.accessLevel]: true
+    };
+
+    // Use FormData to send image as binary
+    const data = new FormData();
+    data.append('firstName', formData.firstName);
+    data.append('lastName', formData.lastName);
+    data.append('email', formData.email);
+    data.append('phone', formData.phone);
+    if (!_id) {
+      data.append('password', formData.password);
+      data.append('passwordConfirm', formData.passwordConfirm);
+    }
+    data.append('state', formData.state);
+    data.append('country', formData.country);
+    data.append('assign', formData.assign);
+    data.append('role', formData.role);
+    data.append('permissions', JSON.stringify(filteredpermissions));
+    data.append('accessLevel', JSON.stringify(accessLevelPayload));
+    if (formData.image && typeof formData.image !== 'string') {
+      data.append('image', formData.image);
+    }
+
+    // console.log('Payload to be sent (FormData):', data);
+
+    if (_id) {
+      // For update, you may need to adjust the action to accept FormData
+      dispatch(UpdateUsers({ _id, data }))
+        .unwrap()
+        .then(() => {
+          toast.success("User updated successfully!");
+          navigate('/admin/UserRoles', { state: { openTab: 'users' } })
+          dispatch(fetchusers());
+        })
+        .catch((err) => {
+          const message = err?.message || (typeof err === 'string' ? err : "Failed to update user!");
+          toast.error(message);
+        });
+    } else {
+      dispatch(SignUp(data))
+        .unwrap()
+        .then(() => {
+          navigate('/admin/UserRoles', { state: { openTab: 'users' } });
+          toast.success("User created successfully!");
+          dispatch(fetchusers());
+        })
+        .catch((err) => {
+          const message = err?.message || (typeof err === 'string' ? err : "Error creating user");
+          toast.error(message);
+        });
+    }
   };
-
-  // Use FormData to send image as binary
-  const data = new FormData();
-  data.append('firstName', formData.firstName);
-  data.append('lastName', formData.lastName);
-  data.append('email', formData.email);
-  data.append('phone', formData.phone);
-  if (!_id) {
-    data.append('password', formData.password);
-    data.append('passwordConfirm', formData.passwordConfirm);
-  }
-  data.append('state', formData.state);
-  data.append('country', formData.country);
-  data.append('assign', formData.assign);
-  data.append('role', formData.role);
-  data.append('permissions', JSON.stringify(filteredpermissions));
-  data.append('accessLevel', JSON.stringify(accessLevelPayload));
-  if (formData.image && typeof formData.image !== 'string') {
-    data.append('image', formData.image);
-  }
-
-  console.log('Payload to be sent (FormData):', data);
-
-  if (_id) {
-    // For update, you may need to adjust the action to accept FormData
-       dispatch(UpdateUsers({ _id, data }))
-      .unwrap()
-      .then(() => {
-        toast.success("User updated successfully!");
-        navigate('/admin/UserRoles', { state: { openTab: 'users' } })
-        dispatch(fetchusers());
-      })
-      .catch((err) => {
-        const message = err?.message || (typeof err === 'string' ? err : "Failed to update user!");
-        toast.error(message);
-      });
-  } else {
-    dispatch(SignUp(data))
-      .unwrap()
-      .then(() => {
-        navigate('/admin/UserRoles', { state: { openTab: 'users' } });
-        toast.success("User created successfully!");
-        dispatch(fetchusers());
-      })
-      .catch((err) => {
-        const message = err?.message || (typeof err === 'string' ? err : "Error creating user");
-        toast.error(message);
-      });
-  }
-};
 
 
   // const handleSubmit = async (e) => {
@@ -236,16 +236,16 @@ const handleSubmit = (e) => {
         <div className="card-body">
           <h5 className="card-title mb-4">Add New User</h5>
           <form onSubmit={handleSubmit}>
-        
-          <div style={{display:"flex",alignItems:"center",justifyContent:"center"}}>
-             {formData.image && (
-                  <img src={typeof formData.image === 'string' ? formData.image : URL.createObjectURL(formData.image)} alt="Preview" className="img-thumbnail mt-2" style={{ maxWidth: '120px' }} />
-                )}
-          </div>
-          <div className="col-md-6">
-                <label className="form-label">Profile Image</label>
-                <input type="file" className="form-control" name="image" accept="image/*" onChange={handleInputChange} required />
-              </div>
+
+            <div style={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
+              {formData.image && (
+                <img src={typeof formData.image === 'string' ? formData.image : URL.createObjectURL(formData.image)} alt="Preview" className="img-thumbnail mt-2" style={{ maxWidth: '120px' }} />
+              )}
+            </div>
+            <div className="col-md-6">
+              <label className="form-label">Profile Image</label>
+              <input type="file" className="form-control" name="image" accept="image/*" onChange={handleInputChange} required />
+            </div>
             <div className="row g-3 mb-3">
               <div className="col-md-6">
                 <label className="form-label">First Name</label>
@@ -300,24 +300,24 @@ const handleSubmit = (e) => {
                   <option value="Production">Production</option>
                 </select>
               </div>
-          
+
               <div className="col-md-6">
-              <label className="form-label">Role Name</label>
-              <select
-                className="form-select"
-                name="role"
-                value={formData.role}
-                onChange={handleInputChange}
-                required
-              >
-                <option value="">Select a role</option>
-                <option value="admin">Admin</option>
-                <option value="client">Client</option>
-                <option value="employee">Employee</option>
-              </select>
+                <label className="form-label">Role Name</label>
+                <select
+                  className="form-select"
+                  name="role"
+                  value={formData.role}
+                  onChange={handleInputChange}
+                  required
+                >
+                  <option value="">Select a role</option>
+                  <option value="admin">Admin</option>
+                  <option value="client">Client</option>
+                  <option value="employee">Employee</option>
+                </select>
+              </div>
             </div>
-            </div>
-            
+
 
             <div className="mb-4">
               <label className="form-label">permissions (Select Only One)</label>

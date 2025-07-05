@@ -333,7 +333,7 @@ const ProposalEmailUI = () => {
         }
       );
       toast.success("Email sent successfully!");
-      console.log(response.data);
+      // console.log(response.data);
     } catch (error) {
       toast.error("Failed to send email.");
       console.error(error);

@@ -21,7 +21,7 @@ function AddTimesheetWorklog() {
   const { userAll, loading, error } = useSelector((state) => state.user);
 
 
-  console.log(" Data:", entry);
+  // console.log(" Data:", entry);
 
   const [formData, setFormData] = useState({
     projectId: '',
@@ -223,8 +223,8 @@ function AddTimesheetWorklog() {
                         const selectedEmployee = reversedEmployeeList.find(
                           (emp) => String(emp._id) === String(selectedId)
                         );
-                        console.log("Selected ID:", selectedId);
-                        console.log("Selected Employee:", selectedEmployee);
+                        // console.log("Selected ID:", selectedId);
+                        // console.log("Selected Employee:", selectedEmployee);
 
                         setFormData((prev) => ({
                           ...prev,

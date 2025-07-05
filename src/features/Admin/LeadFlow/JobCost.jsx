@@ -1,35 +1,35 @@
-import {useEffect, useState} from "react";
+import { useEffect, useState } from "react";
 import { Table, Card, Container } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
- import axios from 'axios';
- 
-   
-const JobCost = ({jobStatus}) => {
-  
-   const proposalId = localStorage.getItem("proposalId")
- 
-const [data,setData] = useState()
-const getData = async () => {
-  try {
-    const response = await axios.get(`https://netaai-crm-backend-production-c306.up.railway.app/api/job_planning`);
+import axios from 'axios';
 
-    if (response.status === 200) {
-      console.log('Data received:', response.data.data);
-      setData(response.data?.data)
-      return response.data;
-    } else {
-      throw new Error('Unexpected response status');
+
+const JobCost = ({ jobStatus }) => {
+
+  const proposalId = localStorage.getItem("proposalId")
+
+  const [data, setData] = useState()
+  const getData = async () => {
+    try {
+      const response = await axios.get(`https://netaai-crm-backend-production-c306.up.railway.app/api/job_planning`);
+
+      if (response.status === 200) {
+        // console.log('Data received:', response.data.data);
+        setData(response.data?.data)
+        return response.data;
+      } else {
+        throw new Error('Unexpected response status');
+      }
+    } catch (error) {
+      console.error('Error fetching data:', error.response?.data?.message || error.message);
+      return null;
     }
-  } catch (error) {
-    console.error('Error fetching data:', error.response?.data?.message || error.message);
-    return null;
-  }
-};
-useEffect(() => {
-  getData();
-}, []);
+  };
+  useEffect(() => {
+    getData();
+  }, []);
 
-   
+
 
   // const tableData = generateRandomData(10);
 
@@ -64,7 +64,7 @@ useEffect(() => {
                         item.jobStatus === "Completed" ? "bg-success" :
                         item.jobStatus === "On Hold" ? "bg-warning" : "bg-danger"
                       }`}> */}
-                        {jobStatus}
+                      {jobStatus}
                       {/* </span> */}
                     </td>
                     <td>{item?.phase_name}</td>

@@ -24,7 +24,7 @@ export const fetchAllProposals = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     try {
       const res = await api.get(BASE_URL);
-      console.log("API response", res.data);
+      // console.log("API response", res.data);
       // Try to always return an array
       if (Array.isArray(res.data.data)) {
         return res.data.data;
@@ -138,7 +138,7 @@ const proposalSlice = createSlice({
         state.error = null;
       })
       .addCase(fetchAllProposals.fulfilled, (state, action) => {
-        console.log("Payload in reducer", action.payload);
+        // console.log("Payload in reducer", action.payload);
         state.loading = false;
         state.proposals = action.payload;
       })

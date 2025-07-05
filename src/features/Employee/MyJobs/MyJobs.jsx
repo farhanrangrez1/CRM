@@ -41,7 +41,7 @@ function MyJobs() {
   const handleFileChange = (event) => {
     const file = event.target.files[0];
     if (file) {
-      console.log("Selected file:", file);
+      // console.log("Selected file:", file);
     }
   };
 
@@ -133,7 +133,7 @@ function MyJobs() {
     const payload = {
       jobId: selectedJobIds
     };
-    console.log("Payload to send:", payload);
+    // console.log("Payload to send:", payload);
   };
 
   const handleSubmitRejection = () => {
@@ -311,7 +311,7 @@ function MyJobs() {
                       variant="dark"
                       onClick={() => handleLogTime(job._id)}
                     >
-                      <FaRegClock/> {/* Time icon with margin */}
+                      <FaRegClock /> {/* Time icon with margin */}
                     </Button>
                   </Link>
 

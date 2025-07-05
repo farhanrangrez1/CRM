@@ -118,9 +118,9 @@ function Invoicing_Billing() {
           let json;
           try {
             json = JSON.parse(reader.result);
-            console.log('PDF API response as JSON:', json);
+            // console.log('PDF API response as JSON:', json);
           } catch (e) {
-            console.log('PDF API response as text:', reader.result);
+            // console.log('PDF API response as text:', reader.result);
             Swal.fire("Error", "Invalid JSON data received.", "error");
             return;
           }
@@ -446,7 +446,7 @@ function Invoicing_Billing() {
   // };
 
   const { invocing, loading, error } = useSelector((state) => state.InvoicingBilling);
-  console.log(invocing?.InvoicingBilling);
+  // console.log(invocing?.InvoicingBilling);
 
   useEffect(() => {
     dispatch(fetchInvoicingBilling());
@@ -663,8 +663,8 @@ function Invoicing_Billing() {
                       <FaTrash />
                     </button> */}
                   <button
-                  
-                      style={{color:'#DDC62F',border:"1px solid #DDC62F"}}
+
+                    style={{ color: '#DDC62F', border: "1px solid #DDC62F" }}
                     className="btn btn-sm btn-outline-primary"
                     onClick={() => handleDownloadPDF(invoice)} // Pass current invoice
                   >

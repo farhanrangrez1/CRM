@@ -235,7 +235,7 @@ import { Link } from "react-router-dom";
 function InProgressDashboardProject() {
   const [showDesignerModal, setShowDesignerModal] = useState(false);
   const [selectedJob, setSelectedJob] = useState(null);
-  const [selectedJobs, setSelectedJobs] = useState({}); 
+  const [selectedJobs, setSelectedJobs] = useState({});
 
   const designers = [
     "Sarah Chen",
@@ -273,17 +273,17 @@ function InProgressDashboardProject() {
   ];
 
   const handleSwitchDesigner = (jobId) => {
-    console.log("Switching designer for job:", jobId);
+    // console.log("Switching designer for job:", jobId);
   };
 
   const handleCancelBrief = (jobId) => {
-    console.log("Cancelling brief for job:", jobId);
+    // console.log("Cancelling brief for job:", jobId);
   };
 
   const handleCheckboxChange = (jobId) => {
     setSelectedJobs((prev) => ({
       ...prev,
-      [jobId]: !prev[jobId], 
+      [jobId]: !prev[jobId],
     }));
   };
 
@@ -296,21 +296,21 @@ function InProgressDashboardProject() {
     setSelectedJobs(allJobs);
   };
 
-   const [status, setStatus] = useState("In Process"); // Default to "In Process"
+  const [status, setStatus] = useState("In Process"); // Default to "In Process"
 
-   // Array of status options
-   const statusOptions = [
-     "All Status",
-     "In Process",
-     "Completed",
-     "Pending",
-     "Not Started",
-     "In Review",
-   ];
+  // Array of status options
+  const statusOptions = [
+    "All Status",
+    "In Process",
+    "Completed",
+    "Pending",
+    "Not Started",
+    "In Review",
+  ];
 
-   const handleChange = (event) => {
-     setStatus(event.target.value); // Update the selected status
-   };
+  const handleChange = (event) => {
+    setStatus(event.target.value); // Update the selected status
+  };
 
 
   const getStatusClass = (status) => {
@@ -404,7 +404,7 @@ function InProgressDashboardProject() {
                     >
                       <FaExchangeAlt />
                     </button>
-                       <button className="btn btn-sm btn-outline-primary">
+                    <button className="btn btn-sm btn-outline-primary">
                       <BsPencil />
                     </button>
                   </div>

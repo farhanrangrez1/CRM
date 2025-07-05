@@ -13,7 +13,7 @@ function ReceivablePurchaseOrders() {
   const [currentPage, setCurrentPage] = useState(1);
   const [showFilters, setShowFilters] = useState(false);
   const dispatch = useDispatch();
-  const navigate=useNavigate()
+  const navigate = useNavigate()
 
   const { purchases, loading, error } = useSelector(
     (state) => state.receivablePurchases
@@ -103,41 +103,41 @@ function ReceivablePurchaseOrders() {
   };
 
 
-// const handleToBeInvoiced = (clientName, projectName) => {
-//   const invoice = {
-//     clientName,
-//     projectName
-//   };
+  // const handleToBeInvoiced = (clientName, projectName) => {
+  //   const invoice = {
+  //     clientName,
+  //     projectName
+  //   };
 
-//   navigate("/admin/AddInvoice", {
-//     state: { invoice }
-//   });
-// };
+  //   navigate("/admin/AddInvoice", {
+  //     state: { invoice }
+  //   });
+  // };
 
-const handleToBeInvoiced = (po) => {
-  console.log("po",po._id)
-const ReceivablePurchaseId = po._id;
-  const client = po.ClientId?.[0];
-  const project = po.projectId?.[0];
-const CostEstimatesId = po.CostEstimatesId?.[0];
-// console.log("pocost",po.CostEstimatesId[0]._id)
-  const invoice = {
-    clientId: client?._id,
-    clientName: client?.clientName,
-    projectId: project?._id,
-    projectName: project?.projectName,
-    CostEstimatesId: po.CostEstimatesId[0]._id,
-    ReceivablePurchaseId:po?._id,
+  const handleToBeInvoiced = (po) => {
+    // console.log("po",po._id)
+    const ReceivablePurchaseId = po._id;
+    const client = po.ClientId?.[0];
+    const project = po.projectId?.[0];
+    const CostEstimatesId = po.CostEstimatesId?.[0];
+    // console.log("pocost",po.CostEstimatesId[0]._id)
+    const invoice = {
+      clientId: client?._id,
+      clientName: client?.clientName,
+      projectId: project?._id,
+      projectName: project?.projectName,
+      CostEstimatesId: po.CostEstimatesId[0]._id,
+      ReceivablePurchaseId: po?._id,
+    };
+    // console.log("Invoice Data:", invoice);
+
+
+    navigate("/admin/AddInvoice", {
+      state: { invoice }
+    });
   };
-  console.log("Invoice Data:", invoice);
-  
-
-  navigate("/admin/AddInvoice", {
-    state: { invoice }
-  });
-};
   return (
-    <div  className="p-4 m-2"
+    <div className="p-4 m-2"
       style={{ backgroundColor: "white", borderRadius: "10px" }}
     >
       <h2 className="mb-4">Receivable Purchase Orders</h2>
@@ -272,7 +272,7 @@ const CostEstimatesId = po.CostEstimatesId?.[0];
               >
                 Amount
               </th>
-                   <th
+              <th
                 onClick={() => handleSort("Status")}
                 style={{ cursor: "pointer" }}
               >
@@ -313,22 +313,22 @@ const CostEstimatesId = po.CostEstimatesId?.[0];
                   <Badge bg={getStatusBadgeVariant(po.Status)}>{po.POStatus}</Badge>
                 </td>
                 <div>
-                 
-                    <Button
-                      variant="outline-primary"
-                      size="sm"
-                      onClick={() => handleToBeInvoiced(po)}
-                      className="px-3 py-1 fw-semibold border-2"
-                      style={{
-                        transition: 'all 0.3s ease',
-                        borderRadius: '6px',
-                        fontSize: '12px',
-                        textTransform: 'uppercase',
-                        letterSpacing: '0.5px'
-                      }}
-                    >
-                      To be invoiced
-                    </Button>
+
+                  <Button
+                    variant="outline-primary"
+                    size="sm"
+                    onClick={() => handleToBeInvoiced(po)}
+                    className="px-3 py-1 fw-semibold border-2"
+                    style={{
+                      transition: 'all 0.3s ease',
+                      borderRadius: '6px',
+                      fontSize: '12px',
+                      textTransform: 'uppercase',
+                      letterSpacing: '0.5px'
+                    }}
+                  >
+                    To be invoiced
+                  </Button>
                 </div>
               </tr>
             ))}

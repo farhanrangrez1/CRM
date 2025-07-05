@@ -548,16 +548,16 @@ function AddInvoice({ onInvoiceComplete }) {
 
 
   useEffect(() => {
-    console.log(invoice);
+    // console.log(invoice);
 
     if (invoice?._id) {
-      console.log(invoice?.id);
+      // console.log(invoice?.id);
       dispatch(getDocumentsByProposalId(invoice?._id))
         .unwrap()
         .then((res) => {
-          console.log(res);
+          // console.log(res);
           if (Array.isArray(res) && res.length > 0) {
-            console.log(res);
+            // console.log(res);
 
             setExistingDocId(res[0].id); // ✅ Save the existing document ID
             const doc = res[0];
@@ -667,7 +667,7 @@ function AddInvoice({ onInvoiceComplete }) {
       line_items: items,
     };
 
-    console.log(payload);
+    // console.log(payload);
 
 
     if (existingDocId) {

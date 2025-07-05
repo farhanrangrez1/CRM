@@ -1554,7 +1554,7 @@ const Editpurposal = () => {
         'https://netaai-crm-backend-production-c306.up.railway.app/api/job_planning',
         payload
       );
-      console.log(payload)
+
       if (response.status === 200 || response.status === 201) {
         Swal.fire("Success", "Job planning created successfully!", "success");
       } else {
@@ -1576,7 +1576,7 @@ const Editpurposal = () => {
 
       if (response.status === 200) {
         // You can return the data or use it directly
-        console.log("Budget Summary:", response.data);
+
         return response.data;
       } else {
         throw new Error("Failed to fetch budget summary");
@@ -1593,7 +1593,6 @@ const Editpurposal = () => {
       formData.append("folder_name", folderName);
 
       const res = dispatch(createDocument(formData))
-      console.log("✅ Folder Created:", res.data);
 
 
       setShowFolderModal(false);
@@ -1604,14 +1603,13 @@ const Editpurposal = () => {
   };
   const handleFileSubmit = async () => {
     try {
-      console.log("handle Submit")
       const formData = new FormData();
       formData.append("proposal_id", proposalId);
       formData.append("title", fileTitle);
       formData.append("fileUrls", selectedFile);
 
       const res = await dispatch(createDocument(formData))
-      console.log("✅ File Uploaded:", res.data);
+      // console.log("✅ File Uploaded:", res.data);
       dispatch(fetchDocumentById(proposalId))
 
       setUploadedFile(selectedFile?.name);
@@ -1619,11 +1617,11 @@ const Editpurposal = () => {
       setFileTitle("");
       setSelectedFile(null);
     } catch (error) {
-      console.error("❌ File Upload Error:", error);
+      // console.error("❌ File Upload Error:", error);
     }
   };
   const documents = useSelector((state) => state?.documents?.document?.data)
-  console.log("wedw", documents)
+  // console.log("wedw", documents)
   const handleFileChange = (e) => {
     const file = e.target.files[0];
     setUploadedFile(file?.name);
@@ -1637,7 +1635,7 @@ const Editpurposal = () => {
       const data = await getBudgetSummaryByProposalId(project_id);
       if (data) {
         // Handle your state update here
-        console.log(data);
+        // console.log(data);
       }
     };
 
@@ -1808,7 +1806,7 @@ const Editpurposal = () => {
                 </Row>
               </div>
             </div>
-            <JobCost jobStatus={job?.status}/>
+            <JobCost jobStatus={job?.status} />
           </div>
         );
 

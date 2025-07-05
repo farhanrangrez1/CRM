@@ -40,17 +40,17 @@ function DCompletedProject() {
   }, [dispatch]);
 
   const handleSwitchDesigner = (jobId) => {
-    console.log("Switching designer for job:", jobId);
+    // console.log("Switching designer for job:", jobId);
     setSelectedJob(jobId);
     setShowDesignerModal(true);
   };
 
   const handleCancelBrief = (jobId) => {
-    console.log("Cancelling brief for job:", jobId);
+    // console.log("Cancelling brief for job:", jobId);
   };
 
   const handleDesignerChange = (designer) => {
-    console.log("Selected designer:", designer);
+    // console.log("Selected designer:", designer);
     setShowDesignerModal(false);
     // Dispatch update logic here
   };
@@ -101,16 +101,16 @@ function DCompletedProject() {
   };
 
   const CreatJobs = (projectId) => {
-    console.log("Create jobs for project:", projectId);
+    // console.log("Create jobs for project:", projectId);
   };
 
   const handleUpdate = (project) => {
-    console.log("Update project:", project);
+    // console.log("Update project:", project);
   };
 
   // Add function to handle invoicing
   const handleToBeInvoiced = (project) => {
-    console.log("To be invoiced for project:", project);
+    // console.log("To be invoiced for project:", project);
     // Add your invoicing logic here
   };
 

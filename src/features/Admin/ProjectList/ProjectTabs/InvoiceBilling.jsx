@@ -1,6 +1,6 @@
 
 import React, { useEffect, useState } from 'react';
-import { Form, Table, Badge, InputGroup, Button,Dropdown  } from 'react-bootstrap';
+import { Form, Table, Badge, InputGroup, Button, Dropdown } from 'react-bootstrap';
 import { FaSearch, FaSort, FaEdit, FaTrash, FaDownload, FaFilter } from 'react-icons/fa';
 import { Link, useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
@@ -118,9 +118,9 @@ function InvoiceBilling() {
           let json;
           try {
             json = JSON.parse(reader.result);
-            console.log('PDF API response as JSON:', json);
+            // console.log('PDF API response as JSON:', json);
           } catch (e) {
-            console.log('PDF API response as text:', reader.result);
+            // console.log('PDF API response as text:', reader.result);
             Swal.fire("Error", "Invalid JSON data received.", "error");
             return;
           }
@@ -199,7 +199,7 @@ function InvoiceBilling() {
       projectNo: project?.projectNo || 'N/A',
       projectName: project?.projectName || 'N/A',
     };
-    
+
     const bankDetails = {
       accountName: client?.financialInformation?.[0]?.bankName || 'Company Name',
       bankName: client?.financialInformation?.[0]?.bankName || 'Company Bank Name',
@@ -446,7 +446,7 @@ function InvoiceBilling() {
   // };
 
   const { invocing, loading, error } = useSelector((state) => state.InvoicingBilling);
-  console.log(invocing?.InvoicingBilling);
+  // console.log(invocing?.InvoicingBilling);
 
   useEffect(() => {
     dispatch(fetchInvoicingBilling());
@@ -628,13 +628,13 @@ function InvoiceBilling() {
       <Table hover responsive>
         <thead>
           <tr>
-            <th onClick={() => handleSort('invoiceNumber')} style={{ whiteSpace: "nowrap",whiteSpace: 'nowrap' }}>Invoice #</th>
-            <th onClick={() => handleSort('project')} style={{ cursor: 'pointer',whiteSpace: 'nowrap' }}>Project</th>
-            <th onClick={() => handleSort('client')} style={{ cursor: 'pointer',whiteSpace: 'nowrap' }}>Client Name</th>
-            <th onClick={() => handleSort('email')} style={{ cursor: 'pointer',whiteSpace: 'nowrap' }}>Client Email</th>
-            <th onClick={() => handleSort('amount')} style={{ cursor: 'pointer',whiteSpace: 'nowrap' }}>Amount</th>
-            <th onClick={() => handleSort('status')} style={{ cursor: 'pointer',whiteSpace: 'nowrap' }}>Status</th>
-            <th onClick={() => handleSort('dueDate')} style={{ cursor: 'pointer',whiteSpace: 'nowrap' }}>Due Date</th>
+            <th onClick={() => handleSort('invoiceNumber')} style={{ whiteSpace: "nowrap", whiteSpace: 'nowrap' }}>Invoice #</th>
+            <th onClick={() => handleSort('project')} style={{ cursor: 'pointer', whiteSpace: 'nowrap' }}>Project</th>
+            <th onClick={() => handleSort('client')} style={{ cursor: 'pointer', whiteSpace: 'nowrap' }}>Client Name</th>
+            <th onClick={() => handleSort('email')} style={{ cursor: 'pointer', whiteSpace: 'nowrap' }}>Client Email</th>
+            <th onClick={() => handleSort('amount')} style={{ cursor: 'pointer', whiteSpace: 'nowrap' }}>Amount</th>
+            <th onClick={() => handleSort('status')} style={{ cursor: 'pointer', whiteSpace: 'nowrap' }}>Status</th>
+            <th onClick={() => handleSort('dueDate')} style={{ cursor: 'pointer', whiteSpace: 'nowrap' }}>Due Date</th>
             <th>Actions</th>
           </tr>
         </thead>

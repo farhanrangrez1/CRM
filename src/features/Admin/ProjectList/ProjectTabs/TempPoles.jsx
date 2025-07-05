@@ -1677,7 +1677,7 @@ const TempPoles = ({ data }) => {
     const { project, error, loading } = useSelector((state) => state.projects);
 
     const proposals = project && project.data && project.data.length > 0 ? project.data : initialProposals;
-    console.log(proposals, "proposals");
+    // console.log(proposals, "proposals");
 
     const [filterRows, setFilterRows] = useState([
         { field: '', value: '' }

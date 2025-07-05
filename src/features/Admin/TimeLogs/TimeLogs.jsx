@@ -60,7 +60,7 @@ function TimeLogs() {
       extraHours: extraHours,
     };
 
-    console.log("Dispatching payload:", payload);
+    // console.log("Dispatching payload:", payload);
 
     dispatch(updateExtraHours(payload))
       .unwrap()
@@ -85,7 +85,7 @@ function TimeLogs() {
   // }, [dispatch]);
 
   const { timesheetWorklog, error, loading } = useSelector((state) => state.TimesheetWorklogs);
-  console.log(timesheetWorklog.TimesheetWorklogss);
+  // console.log(timesheetWorklog.TimesheetWorklogss);
 
   useEffect(() => {
     dispatch(fetchTimesheetWorklogs());

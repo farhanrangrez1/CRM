@@ -1706,9 +1706,9 @@ const LeadFlow = ({ data }) => {
 
 
   const project = useSelector((state) => state?.projects?.project?.data) || [];
-  console.log("abc", project)
+  // console.log("abc", project)
   const { reduxProposals, loading } = useSelector((state) => state?.proposal?.proposals);
-  console.log(reduxProposals, "reduxProposals");
+  // console.log(reduxProposals, "reduxProposals");
   const proposals = reduxProposals && reduxProposals.length > 0 ? reduxProposals : initialProposals;
 
   useEffect(() => {
@@ -2070,7 +2070,7 @@ const LeadFlow = ({ data }) => {
 
         // Fetch updated list
         await dispatch(fetchProject());
-        console.log("fetcing project...");
+        // console.log("fetcing project...");
 
         setKanbanData(prevData => {
           const updatedData = { ...prevData };
