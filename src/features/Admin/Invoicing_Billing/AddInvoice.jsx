@@ -668,7 +668,7 @@ function AddInvoice({ onInvoiceComplete }) {
     };
 
     console.log(payload);
-    
+
 
     if (existingDocId) {
       // Update

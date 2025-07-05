@@ -243,16 +243,35 @@ const ProposalEmailUI = () => {
 
 
   useEffect(() => {
-    if (signatureData?.clientId?.id && Clients?.data?.length > 0) {
-      const client = Clients?.data?.find(c => c._id === signatureData?.clientId?.id);
-      setSelectedClient(client);
-      setClient(client);
-      setProposalData((prev) => ({
-        ...prev,
-        sendTo: selectedClient?.contactPersons[0]?.email || "",
-      }));
+    const clientId = Array.isArray(signatureData?.clientId)
+      ? signatureData.clientId[0]
+      : signatureData?.clientId;
+
+    if (clientId && Clients?.data?.length > 0) {
+      const client = Clients.data.find((c) => c._id === clientId);
+
+      if (client) {
+        setSelectedClient(client);
+        setClient(client);
+        setProposalData((prev) => ({
+          ...prev,
+          sendTo: client?.contactPersons?.[0]?.email || "",
+        }));
+      }
     }
   }, [signatureData, Clients]);
+
+  // useEffect(() => {
+  //   if ((signatureData?.clientId?.id) && Clients?.data?.length > 0) {
+  //     const client = Clients?.data?.find(c => (c._id === signatureData?.clientId?.id));
+  //     setSelectedClient(client);
+  //     setClient(client);
+  //     setProposalData((prev) => ({
+  //       ...prev,
+  //       sendTo: selectedClient?.contactPersons[0]?.email || "",
+  //     }));
+  //   }
+  // }, [signatureData, Clients]);
 
 
 

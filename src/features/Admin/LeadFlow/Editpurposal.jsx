@@ -1384,8 +1384,8 @@ import ProposalEmailUI from "./ProposalEmailUI";
 import DailyLogs from "../../Employee/DailyLogs/DailyLogs";
 import axios from 'axios';
 import { fetchProject } from "../../../redux/slices/ProjectsSlice";
- import {  createDocument, fetchDocumentById } from  "../../../redux/slices/saveDocumentSlice";
- import { useDispatch,useSelector } from "react-redux";
+import { createDocument, fetchDocumentById } from "../../../redux/slices/saveDocumentSlice";
+import { useDispatch, useSelector } from "react-redux";
 import DocumentList from "./DocumentList";
 // const DocumentList = () => {
 //   const documents = [
@@ -1465,10 +1465,10 @@ const Editpurposal = () => {
   const [showFileModal, setShowFileModal] = useState(false);
   const [uploadedFile, setUploadedFile] = useState(null);
   const [showFolderModal, setShowFolderModal] = useState(false);
- const [previewUrl, setPreviewUrl] = useState(null);
-   const [folderName, setFolderName] = useState("");
+  const [previewUrl, setPreviewUrl] = useState(null);
+  const [folderName, setFolderName] = useState("");
   const [fileTitle, setFileTitle] = useState("");
-  const [selectedFile, setSelectedFile] = useState(null);  
+  const [selectedFile, setSelectedFile] = useState(null);
 
   const [lineItems, setLineItems] = useState([
     {
@@ -1585,7 +1585,7 @@ const Editpurposal = () => {
       return null;
     }
   };
- const handleFolderSubmit = async () => {
+  const handleFolderSubmit = async () => {
     try {
       const formData = new FormData();
       formData.append("proposal_id", proposalId);
@@ -1593,7 +1593,7 @@ const Editpurposal = () => {
 
       const res = dispatch(createDocument(formData))
       console.log("✅ Folder Created:", res.data);
-       
+
 
       setShowFolderModal(false);
       setFolderName("");
@@ -1601,7 +1601,7 @@ const Editpurposal = () => {
       console.error("❌ Folder Creation Error:", error);
     }
   };
-   const handleFileSubmit = async () => {
+  const handleFileSubmit = async () => {
     try {
       console.log("handle Submit")
       const formData = new FormData();
@@ -1609,7 +1609,7 @@ const Editpurposal = () => {
       formData.append("title", fileTitle);
       formData.append("fileUrls", selectedFile);
 
-      const res = await   dispatch(createDocument(formData))
+      const res = await dispatch(createDocument(formData))
       console.log("✅ File Uploaded:", res.data);
       dispatch(fetchDocumentById(proposalId))
 
@@ -1621,14 +1621,14 @@ const Editpurposal = () => {
       console.error("❌ File Upload Error:", error);
     }
   };
-  const documents = useSelector((state)=>state?.documents?.document?.data)
-  console.log("wedw",documents)
-   const handleFileChange = (e) => {
+  const documents = useSelector((state) => state?.documents?.document?.data)
+  console.log("wedw", documents)
+  const handleFileChange = (e) => {
     const file = e.target.files[0];
     setUploadedFile(file?.name);
     setSelectedFile(file);
   };
-const handleUploadClick = () => {
+  const handleUploadClick = () => {
     setShowFileModal(true);
   };
   useEffect(() => {
@@ -1845,137 +1845,137 @@ const handleUploadClick = () => {
         );
 
       case "Documents":
-          return (
-           <div className="tab-content-box text-center">
-      {/* Placeholder Image */}
-      <div className="mb-3">
-        <img
-          src="https://img.icons8.com/ios/100/000000/document--v1.png"
-          alt="Documents"
-          width="100"
-        />
-      </div>
+        return (
+          <div className="tab-content-box text-center">
+            {/* Placeholder Image */}
+            <div className="mb-3">
+              <img
+                src="https://img.icons8.com/ios/100/000000/document--v1.png"
+                alt="Documents"
+                width="100"
+              />
+            </div>
 
-      {/* Headings */}
-      <h5 className="fw-bold">Documents</h5>
-      {/* <p className="text-muted mb-1">
+            {/* Headings */}
+            <h5 className="fw-bold">Documents</h5>
+            {/* <p className="text-muted mb-1">
         Build a central repository for all your project documents.
       </p> */}
 
-      {/* Buttons */}
-      <div className="d-flex justify-content-center gap-2 mt-3">
-        {/* <button className="btn btn-outline-secondary" onClick={handleAddFolderClick}>
+            {/* Buttons */}
+            <div className="d-flex justify-content-center gap-2 mt-3">
+              {/* <button className="btn btn-outline-secondary" onClick={handleAddFolderClick}>
           Add folder
         </button> */}
-        <button className="btn btn-primary" onClick={handleUploadClick}>
-          Upload file
-        </button>
-      </div>
-
-      {/* Uploaded File Display */}
-      {uploadedFile && (
-        <div className="mt-3">
-          <p className="text-primary">Uploaded: {uploadedFile}</p>
-        </div>
-      )}
-
-      {/* Folder Modal */}
-      {showFolderModal && (
-        <div className="modal fade show d-block" tabIndex="-1" role="dialog">
-          <div className="modal-dialog" role="document">
-            <div className="modal-content">
-              <div className="modal-header">
-                <h5 className="modal-title">Create Folder</h5>
-                <button type="button" className="btn-close" onClick={() => setShowFolderModal(false)}></button>
-              </div>
-              <div className="modal-body">
-                <input
-                  type="text"
-                  className="form-control"
-                  placeholder="Enter folder name"
-                  value={folderName}
-                  onChange={(e) => setFolderName(e.target.value)}
-                />
-              </div>
-              <div className="modal-footer">
-                <button className="btn btn-secondary" onClick={() => setShowFolderModal(false)}>Cancel</button>
-                <button className="btn btn-primary" onClick={handleFolderSubmit}>Create</button>
-              </div>
+              <button className="btn btn-primary" onClick={handleUploadClick}>
+                Upload file
+              </button>
             </div>
-          </div>
-        </div>
-      )}
 
-      {/* File Upload Modal */}
-      {showFileModal && (
-        <div className="modal fade show d-block" tabIndex="-1" role="dialog">
-          <div className="modal-dialog" role="document">
-            <div className="modal-content">
-              <div className="modal-header">
-                <h5 className="modal-title">Upload File</h5>
-                <button type="button" className="btn-close" onClick={() => setShowFileModal(false)}></button>
+            {/* Uploaded File Display */}
+            {uploadedFile && (
+              <div className="mt-3">
+                <p className="text-primary">Uploaded: {uploadedFile}</p>
               </div>
-              <div className="modal-body">
-                <input
-                  type="text"
-                  className="form-control mb-2"
-                  placeholder="Enter title"
-                  value={fileTitle}
-                  onChange={(e) => setFileTitle(e.target.value)}
-                />
-                <input
-                  type="file"
-                  className="form-control"
-                  onChange={handleFileChange}
-                />
-              </div>
-              <div className="modal-footer">
-                <button className="btn btn-secondary" onClick={() => setShowFileModal(false)}>Cancel</button>
-                <button className="btn btn-primary" onClick={handleFileSubmit}>Upload</button>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
-       <div className="container mt-4">
-      
+            )}
 
-      {/* Preview Modal */}
-      {previewUrl && (
-        <div className="modal fade show d-block" tabIndex="-1" role="dialog">
-          <div className="modal-dialog modal-lg" role="document">
-            <div className="modal-content">
-              <div className="modal-header">
-                <h5 className="modal-title">Preview File</h5>
-                <button
-                  type="button"
-                  className="btn-close"
-                  onClick={() => setPreviewUrl(null)}
-                ></button>
+            {/* Folder Modal */}
+            {showFolderModal && (
+              <div className="modal fade show d-block" tabIndex="-1" role="dialog">
+                <div className="modal-dialog" role="document">
+                  <div className="modal-content">
+                    <div className="modal-header">
+                      <h5 className="modal-title">Create Folder</h5>
+                      <button type="button" className="btn-close" onClick={() => setShowFolderModal(false)}></button>
+                    </div>
+                    <div className="modal-body">
+                      <input
+                        type="text"
+                        className="form-control"
+                        placeholder="Enter folder name"
+                        value={folderName}
+                        onChange={(e) => setFolderName(e.target.value)}
+                      />
+                    </div>
+                    <div className="modal-footer">
+                      <button className="btn btn-secondary" onClick={() => setShowFolderModal(false)}>Cancel</button>
+                      <button className="btn btn-primary" onClick={handleFolderSubmit}>Create</button>
+                    </div>
+                  </div>
+                </div>
               </div>
-              <div className="modal-body text-center">
-                {previewUrl.endsWith(".pdf") ? (
-                  <iframe
-                    src={previewUrl}
-                    title="PDF Preview"
-                    width="100%"
-                    height="500px"
-                  />
-                ) : (
-                  <img src={previewUrl} alt="Preview" style={{ maxWidth: "100%" }} />
-                )}
+            )}
+
+            {/* File Upload Modal */}
+            {showFileModal && (
+              <div className="modal fade show d-block" tabIndex="-1" role="dialog">
+                <div className="modal-dialog" role="document">
+                  <div className="modal-content">
+                    <div className="modal-header">
+                      <h5 className="modal-title">Upload File</h5>
+                      <button type="button" className="btn-close" onClick={() => setShowFileModal(false)}></button>
+                    </div>
+                    <div className="modal-body">
+                      <input
+                        type="text"
+                        className="form-control mb-2"
+                        placeholder="Enter title"
+                        value={fileTitle}
+                        onChange={(e) => setFileTitle(e.target.value)}
+                      />
+                      <input
+                        type="file"
+                        className="form-control"
+                        onChange={handleFileChange}
+                      />
+                    </div>
+                    <div className="modal-footer">
+                      <button className="btn btn-secondary" onClick={() => setShowFileModal(false)}>Cancel</button>
+                      <button className="btn btn-primary" onClick={handleFileSubmit}>Upload</button>
+                    </div>
+                  </div>
+                </div>
               </div>
+            )}
+            <div className="container mt-4">
+
+
+              {/* Preview Modal */}
+              {previewUrl && (
+                <div className="modal fade show d-block" tabIndex="-1" role="dialog">
+                  <div className="modal-dialog modal-lg" role="document">
+                    <div className="modal-content">
+                      <div className="modal-header">
+                        <h5 className="modal-title">Preview File</h5>
+                        <button
+                          type="button"
+                          className="btn-close"
+                          onClick={() => setPreviewUrl(null)}
+                        ></button>
+                      </div>
+                      <div className="modal-body text-center">
+                        {previewUrl.endsWith(".pdf") ? (
+                          <iframe
+                            src={previewUrl}
+                            title="PDF Preview"
+                            width="100%"
+                            height="500px"
+                          />
+                        ) : (
+                          <img src={previewUrl} alt="Preview" style={{ maxWidth: "100%" }} />
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )}
             </div>
+            <DocumentList
+              documents={documents}
+              previewUrl={previewUrl}
+              setPreviewUrl={setPreviewUrl}
+            />
           </div>
-        </div>
-      )}
-    </div>
-    <DocumentList
-  documents={documents}
-  previewUrl={previewUrl}
-  setPreviewUrl={setPreviewUrl}
-/>
-    </div>
 
         );
       case "Logs":
