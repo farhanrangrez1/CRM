@@ -847,7 +847,7 @@ const LeadFlow = ({ data }) => {
         active: "active",
         pending: "pending",
         closed: "closed",
-        rejected: "rejected"
+        rejected: "rejected" 
       };
       const newStatus = statusMap[destination.droppableId];
       //console.log("newStatus", newStatus)
