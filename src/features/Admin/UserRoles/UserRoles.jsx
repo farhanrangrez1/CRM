@@ -87,7 +87,7 @@ function UserRoles() {
   };
 
   const handleDeleteUser = (_id) => {
-    console.log(_id);
+    // console.log(_id);
     Swal.fire({
       title: "Are you sure?",
       text: "You won't be able to revert this!",
@@ -115,29 +115,29 @@ function UserRoles() {
 
 
 
-    const handleDelete = (id) => {
-      Swal.fire({
-        title: "Are you sure?",
-        text: "You won't be able to revert this!",
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonColor: "#3085d6",
-        cancelButtonColor: "#d33",
-        confirmButtonText: "Yes, delete it!",
-      }).then((result) => {
-        if (result.isConfirmed) {
-          dispatch(deleteproject(id))
-            .then(() => {
-              Swal.fire("Deleted!", "The document has been deleted.", "success");
-              dispatch(fetchProject());
-            })
-            .catch(() => {
-              Swal.fire("Error!", "Something went wrong.", "error");
-            });
-        }
-      });
-    }
-  
+  const handleDelete = (id) => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        dispatch(deleteproject(id))
+          .then(() => {
+            Swal.fire("Deleted!", "The document has been deleted.", "success");
+            dispatch(fetchProject());
+          })
+          .catch(() => {
+            Swal.fire("Error!", "Something went wrong.", "error");
+          });
+      }
+    });
+  }
+
   return (
     <div className=" p-4 m-3" style={{ backgroundColor: "white", borderRadius: "10px", }}>
       <div className="d-flex flex-wrap justify-content-between align-items-center mb-4 gap-2">
@@ -210,7 +210,7 @@ function UserRoles() {
                     </td>
 
                     <td>
-                      <span   style={{ backgroundColor: '#0056D2', color: '#fff' }} className={`badge ${user.role === 'Admin' ? 'text-bg-white' : user.role === 'Manager' }`}>
+                      <span style={{ backgroundColor: '#0056D2', color: '#fff' }} className={`badge ${user.role === 'Admin' ? 'text-bg-white' : user.role === 'Manager'}`}>
                         {user?.role}
                       </span>
                     </td>

@@ -263,7 +263,7 @@ function PurchaseOrder() {
 
   // //////////
   const { estimates, loading, error } = useSelector((state) => state.costEstimates);
-  console.log("Cost Estimates:", estimates.costEstimates);
+  // console.log("Cost Estimates:", estimates.costEstimates);
 
   useEffect(() => {
     dispatch(fetchCostEstimates());
@@ -299,7 +299,7 @@ function PurchaseOrder() {
   };
 
   const handleDelete = (_id) => {
-    console.log(_id);
+    // console.log(_id);
     Swal.fire({
       title: "Are you sure?",
       text: "You won't be able to revert this!",
@@ -447,7 +447,7 @@ function PurchaseOrder() {
       currentY += 14;
       doc.text(`Phone: ${client?.contactPersons[0].phone || "Phone"}`, 40, currentY);
       currentY += 25;
-      
+
       // === Table Data ===
       const tableData = lineItems.map((item, index) => [
         (index + 1).toString(),

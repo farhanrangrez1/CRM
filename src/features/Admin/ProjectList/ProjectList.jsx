@@ -264,7 +264,7 @@ function ProjectList() {
                 <td style={{ whiteSpace: 'nowrap' }}>{project.description}</td>
                 <td>{new Date(project.startDate).toLocaleDateString('en-GB').replace(/\/20/, '/')}</td>
                 <td>{new Date(project.endDate).toLocaleDateString('en-GB').replace(/\/20/, '/')}</td>
-                <td>{project?.clientId.clientName}</td>
+                <td>{project?.clientName || 'N/A'}</td>
                 <th>
                   {project.projectRequirements && project.projectRequirements.length > 0
                     ? Object.entries(project.projectRequirements[0])

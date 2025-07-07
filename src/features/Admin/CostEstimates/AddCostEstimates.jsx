@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { createCostEstimate, updateCostEstimate } from "../../../redux/slices/costEstimatesSlice";
 import { fetchProject } from "../../../redux/slices/ProjectsSlice";
 import { fetchClient } from "../../../redux/slices/ClientSlice";
+import ProposalEmailUI from "../LeadFlow/ProposalEmailUI";
 
 const currencies = [
   { label: "USD - US Dollar", value: "USD" },
@@ -25,8 +26,6 @@ function AddCostEstimates() {
   const location = useLocation();
   const po = location.state?.po;
   const id = po?._id;
-  console.log("po", po);
-
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -65,7 +64,7 @@ function AddCostEstimates() {
     Notes: "",
     currency: "USD",
     // POStatus: "",
-    Status: "",
+    Status: "Lead",
   });
 
   useEffect(() => {
@@ -169,7 +168,26 @@ function AddCostEstimates() {
         });
     }
   };
+  const [showAddInvoice, setShowAddInvoice] = useState(true);
+  const [invoice, setInvoice] = useState(null);
+  useEffect(() => {
+    const storedInvoice = localStorage.getItem("invoice");
+    if (storedInvoice) {
+      setInvoice(JSON.parse(storedInvoice));
+    }
+  }, []);
 
+  const handleSignature = () => {
+    // then call the callback
+    const payload = {
+      ...invoice,
+      ...formData,
+      line_items: items,
+    };
+
+    localStorage.setItem("SignatureData", JSON.stringify(payload));
+    setShowAddInvoice(false);
+  };
 
   return (
     <>
@@ -214,13 +232,13 @@ function AddCostEstimates() {
               </div>
 
               <div className="col-md-4 mb-3">
-              <div class="d-flex align-items-center justify-content-between mb-2">
+                <div class="d-flex align-items-center justify-content-between mb-2">
                   <label class="form-label mb-0 fw-bold">Project</label>
                   <Link to={"/admin/AddProjectList"}><button class="btn btn-sm btn-outline-primary rounded-pill px-3 py-1">
                     + Create
                   </button></Link>
                 </div>
-                <select
+                {/* <select
                   className="form-select"
                   name="projectId"
                   value={formData.projectId[0] || ""}
@@ -232,6 +250,7 @@ function AddCostEstimates() {
                       projectId: [selectedId],
                       projectName: selectedProject?.projectName || "",
                     });
+                    localStorage.setItem("invoice", JSON.stringify(selectedProject));
                   }}
                   required
                 >
@@ -239,6 +258,67 @@ function AddCostEstimates() {
                   {reversedProjectList.map((proj) => (
                     <option key={proj._id} value={proj._id}>
                       {proj.projectName}
+                    </option>
+                  ))}
+                </select> */}
+                <select
+                  className="form-select"
+                  name="projectId"
+                  value={formData.projectId[0] || ""}
+                  onChange={(e) => {
+                    const selectedId = e.target.value;
+                    const selectedProject = project?.data?.find(p => p._id === selectedId);
+
+                    if (selectedProject) {
+                      // Prepare the form data from project/invoice
+                      const newFormData = {
+                        ...formData,
+                        projectId: [selectedId],
+                        projectName: selectedProject.projectName,
+                        clientId: [selectedProject.clientId._id],
+                        clientName: selectedProject.clientId.clientName,
+                        estimateDate: new Date().toISOString().split('T')[0], // Today's date
+                        validUntil: selectedProject.endDate ? selectedProject.endDate.split('T')[0] : "", // Project end date
+                        currency: selectedProject.currency || "USD",
+                        Notes: selectedProject.description || "",
+                        Status: "Active" // Set default status
+                      };
+
+                      // Check if project has line items/budget info
+                      let lineItems = [];
+                      if (selectedProject.budgetAmount) {
+                        lineItems = [{
+                          description: `${selectedProject.projectName} Project Budget`,
+                          quantity: 1,
+                          rate: parseFloat(selectedProject.budgetAmount),
+                          amount: parseFloat(selectedProject.budgetAmount)
+                        }];
+                      } else {
+                        lineItems = [{ description: "", quantity: 0, rate: 0, amount: 0 }];
+                      }
+
+                      setFormData(newFormData);
+                      setItems(lineItems);
+
+                      // Store the complete invoice data including calculated line items
+                      const invoiceData = {
+                        ...selectedProject,
+                        lineItems: lineItems,
+                        taxRate: 0.05,
+                        subtotal: lineItems.reduce((sum, item) => sum + item.amount, 0),
+                        tax: lineItems.reduce((sum, item) => sum + item.amount, 0) * 0.05,
+                        total: lineItems.reduce((sum, item) => sum + item.amount, 0) * 1.05
+                      };
+
+                      localStorage.setItem("invoice", JSON.stringify(invoiceData));
+                    }
+                  }}
+                  required
+                >
+                  <option value="">Select a project</option>
+                  {reversedProjectList.map((proj) => (
+                    <option key={proj._id} value={proj._id}>
+                      {proj.projectName} {proj.projectNo ? `(${proj.projectNo})` : ''}
                     </option>
                   ))}
                 </select>
@@ -285,9 +365,7 @@ function AddCostEstimates() {
                 </select>
               </div>
 
-
-
-              <div className="col-md-4 mb-3">
+              {/* <div className="col-md-4 mb-3">
                 <label className="form-label">Status</label>
                 <select
                   className="form-select"
@@ -306,7 +384,7 @@ function AddCostEstimates() {
                   ))}
                 </select>
 
-              </div>
+              </div> */}
             </div>
 
             <h6 className="fw-semibold mb-3">Line Items</h6>
@@ -414,7 +492,7 @@ function AddCostEstimates() {
               </div>
             </div>
 
-            <div className="text-end mt-4">
+            <div className="text-end mt-4 d-flex gap-2 justify-content-end" >
               <button
                 className="btn btn-light me-2"
                 type="button"
@@ -424,11 +502,39 @@ function AddCostEstimates() {
               </button>
 
               <button className="btn btn-dark" type="submit">
-                Create Estimate
+                Save Draft
               </button>
+              <button type="button" className="btn btn-dark" onClick={handleSignature}>
+                Send Out For Signature
+              </button>
+              {/* <button className="btn btn-dark" type="submit">
+                Create Estimate
+              </button> */}
             </div>
           </form>
         </div>
+
+        {!showAddInvoice && (
+          <div
+            className="position-fixed top-0 start-0 w-100 h-100 bg-white shadow-lg"
+            style={{ zIndex: 1050, overflowY: "auto" }}
+          >
+            <div className="d-flex justify-content-between px-3 py-2">
+              <div>
+                <h4 className="fw-bold">Send proposal out for signature</h4>
+              </div>
+              <button
+                className="btn btn-outline-dark"
+                onClick={() => setShowAddInvoice(true)}
+              >
+                Close
+              </button>
+            </div>
+            <div className="">
+              <ProposalEmailUI />
+            </div>
+          </div>
+        )}
       </div>
     </>
   );

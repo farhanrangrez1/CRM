@@ -19,7 +19,7 @@ import Swal from 'sweetalert2';
 import { deleteproject, fetchProject } from '../../../redux/slices/ProjectsSlice';
 const DailyLogs = () => {
   // State management
-  
+
   const [showEditModal, setShowEditModal] = useState(false);
   const [showCommentModal, setShowCommentModal] = useState(false);
   const [currentLogIndex, setCurrentLogIndex] = useState(null);
@@ -46,58 +46,58 @@ const DailyLogs = () => {
     dispatch(fetchProject())
 
   }, [dispatch]);
- const handleFormChange = (e) => {
-  const { name, value, files } = e.target;
-  setFormData((prev) => ({
-    ...prev,
-    [name]: files ? files : value,  // Save files as an array
-  }));
-};
+  const handleFormChange = (e) => {
+    const { name, value, files } = e.target;
+    setFormData((prev) => ({
+      ...prev,
+      [name]: files ? files : value,  // Save files as an array
+    }));
+  };
 
 
   const handleSaveLog = () => {
-  const data = new FormData();
-  data.append("job_id", formData.job_id);
-  data.append("date", formData.date);
-  data.append("title", formData.title);
-  data.append("notes", formData.notes);
+    const data = new FormData();
+    data.append("job_id", formData.job_id);
+    data.append("date", formData.date);
+    data.append("title", formData.title);
+    data.append("notes", formData.notes);
 
-  // Append each selected image to the form data
-  if (formData.images) {
-    Array.from(formData.images).forEach((image) => {
-      data.append("images", image); // Append each image file
+    // Append each selected image to the form data
+    if (formData.images) {
+      Array.from(formData.images).forEach((image) => {
+        data.append("images", image); // Append each image file
+      });
+    }
+
+    if (currentLogIndex !== null) {
+      // If editing an existing log
+      const logId = dailyLogs[currentLogIndex]?.id;
+      dispatch(updateDailyLog({ id: logId, data }));
+    } else {
+      // If creating a new log
+      dispatch(createDailyLog(data));
+    }
+
+    // Reset form and hide the modal
+    setFormData({
+      job_id: '',
+      date: new Date().toISOString().split('T')[0],
+      title: '',
+      notes: '',
+      images: null,
     });
-  }
-
-  if (currentLogIndex !== null) {
-    // If editing an existing log
-    const logId = dailyLogs[currentLogIndex]?.id;
-    dispatch(updateDailyLog({ id: logId, data }));
-  } else {
-    // If creating a new log
-    dispatch(createDailyLog(data));
-  }
-
-  // Reset form and hide the modal
-  setFormData({
-    job_id: '',
-    date: new Date().toISOString().split('T')[0],
-    title: '',
-    notes: '',
-    images: null,
-  });
-  setShowEditModal(false);
-  setCurrentLogIndex(null);
-};
+    setShowEditModal(false);
+    setCurrentLogIndex(null);
+  };
 
 
   // const proposals = useSelector((state) => state?.proposals?.proposals || []);
   const dailyLogs = useSelector((state) => state?.dailyLogs?.logs || []);
   const comments = useSelector((state) => state?.comments?.comments || []);
- const  project = useSelector((state) => state.projects?.project?.data);
-  console.log("Daily Logs:", dailyLogs);
-   
-   console.log("pr",project)
+  const project = useSelector((state) => state.projects?.project?.data);
+  // console.log("Daily Logs:", dailyLogs);
+
+  //  console.log("pr",project)
   const [dailyLogImage, setDailyLogImage] = useState(null);
 
 
@@ -133,11 +133,11 @@ const DailyLogs = () => {
       comment: newComment,
 
     }
-    dispatch(createComment(payload))  
+    dispatch(createComment(payload))
     setNewComment('');
     setShowCommentModal(false);
   };
-  console.log("dss", logCommentsMap)
+  // console.log("dss", logCommentsMap)
   return (
     <div className="p-4">
       <div className="mb-3">
@@ -168,7 +168,7 @@ const DailyLogs = () => {
 
       </div>
 
-      {dailyLogs.length === 0 ? (
+      {dailyLogs?.filter(item => item.job_id == proposalId).length === 0 ? (
         <Card className="text-center p-4">
           <Card.Body>
             <h5>No daily logs found</h5>
@@ -182,7 +182,7 @@ const DailyLogs = () => {
           </Card.Body>
         </Card>
       ) : (
-        dailyLogs.map((log, idx) => (
+        dailyLogs?.filter(item => item.job_id == proposalId).map((log, idx) => (
 
           <Card key={log.id} className="mb-4 shadow-sm">
             <Card.Body>
@@ -244,23 +244,23 @@ const DailyLogs = () => {
                 </div>
               </div>
 
-       {/* Render images associated with the daily log */}
-<div className="d-flex flex-wrap gap-2 mb-3">
-  {log.images && log.images.map((img, i) => (
-    <img
-      key={i}
-      src={img}
-      alt={`log-image-${i}`}
-      className="rounded"
-      style={{
-        width: 90,
-        height: 70,
-        objectFit: "cover",
-        marginRight: "10px"
-      }}
-    />
-  ))}
-</div>
+              {/* Render images associated with the daily log */}
+              <div className="d-flex flex-wrap gap-2 mb-3">
+                {log.images && log.images.map((img, i) => (
+                  <img
+                    key={i}
+                    src={img}
+                    alt={`log-image-${i}`}
+                    className="rounded"
+                    style={{
+                      width: 90,
+                      height: 70,
+                      objectFit: "cover",
+                      marginRight: "10px"
+                    }}
+                  />
+                ))}
+              </div>
 
 
               {/* )} */}
@@ -290,7 +290,7 @@ const DailyLogs = () => {
                           [log.id]: result.data.comments // 👈 This stores comments under correct log.id
                         }));
 
-                        console.log(result.data.comments)
+                        // console.log(result.data.comments)
 
                       } catch (err) {
                         console.error("Failed to fetch comments", err);
@@ -308,47 +308,47 @@ const DailyLogs = () => {
               </div>
 
               {/* Comments section - shows when expanded */}
-             {expandedLogs.has(log.id) && (
-  <div className="border-top pt-3">
-    {logCommentsMap[log.id]?.length > 0 ? (
-      <div
-        className="mb-3"
-        style={{
-          maxHeight: '200px',
-          overflowY: 'auto',
-          scrollbarWidth: 'thin',
-          paddingRight: '8px'
-        }}
-      >
-        {logCommentsMap[log.id].map((comment, i) => (
-          <div key={i} className="mb-3 p-2 bg-light rounded">
-            <div className="d-flex justify-content-between">
-              <strong>User ID: {comment.user_id}</strong>
-              <span className="text-muted small">
-                {new Date(comment.created_at).toLocaleDateString()}
-              </span>
-            </div>
-            <div className="mt-1">{comment.comment}</div>
-          </div>
-        ))}
-      </div>
-    ) : (
-      <div className="text-muted small mb-3">No comments yet</div>
-    )}
+              {expandedLogs.has(log.id) && (
+                <div className="border-top pt-3">
+                  {logCommentsMap[log.id]?.length > 0 ? (
+                    <div
+                      className="mb-3"
+                      style={{
+                        maxHeight: '200px',
+                        overflowY: 'auto',
+                        scrollbarWidth: 'thin',
+                        paddingRight: '8px'
+                      }}
+                    >
+                      {logCommentsMap[log.id].map((comment, i) => (
+                        <div key={i} className="mb-3 p-2 bg-light rounded">
+                          <div className="d-flex justify-content-between">
+                            <strong>User ID: {comment.user_id}</strong>
+                            <span className="text-muted small">
+                              {new Date(comment.created_at).toLocaleDateString()}
+                            </span>
+                          </div>
+                          <div className="mt-1">{comment.comment}</div>
+                        </div>
+                      ))}
+                    </div>
+                  ) : (
+                    <div className="text-muted small mb-3">No comments yet</div>
+                  )}
 
-    <Button
-      variant="outline-primary"
-      size="sm"
-      className="mt-2"
-      onClick={() => {
-        setBlogId(log?.id);
-        setShowCommentModal(true);
-      }}
-    >
-      <i className="fas fa-plus me-1"></i> Add Comment
-    </Button>
-  </div>
-)}
+                  <Button
+                    variant="outline-primary"
+                    size="sm"
+                    className="mt-2"
+                    onClick={() => {
+                      setBlogId(log?.id);
+                      setShowCommentModal(true);
+                    }}
+                  >
+                    <i className="fas fa-plus me-1"></i> Add Comment
+                  </Button>
+                </div>
+              )}
 
 
             </Card.Body>
@@ -357,106 +357,106 @@ const DailyLogs = () => {
       )}
 
 
-       <Modal
-  show={showEditModal}
-  onHide={() => setShowEditModal(false)}
-  centered
-  size="lg"
->
-  <Modal.Header closeButton>
-    <Modal.Title>
-      {currentLogIndex !== null ? 'Edit Daily Log' : 'Create Daily Log'}
-    </Modal.Title>
-  </Modal.Header>
-  <Modal.Body>
-    <Form>
-      <Row>
-        <Col md={6}>
-          <Form.Group className="mb-3">
-            <Form.Label>Job</Form.Label>
-            <Form.Select name="job_id" value={formData.job_id} onChange={handleFormChange} required>
-              <option value="">Select Job</option>
-              {project?.map((proposal) => (
-                <option key={proposal?._id} value={proposal?._id}>
-                  {proposal?.projectName}
-                </option>
-              ))}
-            </Form.Select>
-          </Form.Group>
-          <Form.Group className="mb-3">
-            <Form.Label>Date *</Form.Label>
-            <Form.Control
-              type="date"
-              name="date"
-              value={formData.date}
-              onChange={handleFormChange}
-            />
-          </Form.Group>
-          <Form.Group className="mb-3">
-            <Form.Label>Title</Form.Label>
-            <Form.Control
-              type="text"
-              name="title"
-              value={formData.title}
-              onChange={handleFormChange}
-            />
-          </Form.Group>
-        </Col>
-        <Col md={6}>
-          <Form.Group className="mb-3">
-            <Form.Label>Notes</Form.Label>
-            <Form.Control
-              as="textarea"
-              name="notes"
-              rows={5}
-              value={formData.notes}
-              onChange={handleFormChange}
-            />
-          </Form.Group>
+      <Modal
+        show={showEditModal}
+        onHide={() => setShowEditModal(false)}
+        centered
+        size="lg"
+      >
+        <Modal.Header closeButton>
+          <Modal.Title>
+            {currentLogIndex !== null ? 'Edit Daily Log' : 'Create Daily Log'}
+          </Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Form>
+            <Row>
+              <Col md={6}>
+                <Form.Group className="mb-3">
+                  <Form.Label>Job</Form.Label>
+                  <Form.Select name="job_id" value={formData.job_id} onChange={handleFormChange} required>
+                    <option value="">Select Job</option>
+                    {project?.map((proposal) => (
+                      <option key={proposal?._id} value={proposal?._id}>
+                        {proposal?.projectName}
+                      </option>
+                    ))}
+                  </Form.Select>
+                </Form.Group>
+                <Form.Group className="mb-3">
+                  <Form.Label>Date *</Form.Label>
+                  <Form.Control
+                    type="date"
+                    name="date"
+                    value={formData.date}
+                    onChange={handleFormChange}
+                  />
+                </Form.Group>
+                <Form.Group className="mb-3">
+                  <Form.Label>Title</Form.Label>
+                  <Form.Control
+                    type="text"
+                    name="title"
+                    value={formData.title}
+                    onChange={handleFormChange}
+                  />
+                </Form.Group>
+              </Col>
+              <Col md={6}>
+                <Form.Group className="mb-3">
+                  <Form.Label>Notes</Form.Label>
+                  <Form.Control
+                    as="textarea"
+                    name="notes"
+                    rows={5}
+                    value={formData.notes}
+                    onChange={handleFormChange}
+                  />
+                </Form.Group>
 
-          {/* Multiple Images Upload */}
-          <Form.Group className="mb-3">
-            <Form.Label>Upload Images (optional)</Form.Label>
-            <Form.Control
-              type="file"
-              name="images"
-              accept="image/*"
-              multiple
-              onChange={(e) => {
-                handleFormChange(e);
-                setDailyLogImage(e.target.files); // Store multiple files
-              }}
-            />
-            {/* Preview of selected images */}
-            {dailyLogImage && (
-              <div className="mt-2">
-                <strong>Preview:</strong><br />
-                {Array.from(dailyLogImage).map((file, idx) => (
-                  <img
-                    key={idx}
-                    src={URL.createObjectURL(file)}
-                    alt="Preview"
-                    style={{
-                      maxWidth: '100%',
-                      maxHeight: '200px',
-                      borderRadius: '6px',
-                      marginRight: '10px',
+                {/* Multiple Images Upload */}
+                <Form.Group className="mb-3">
+                  <Form.Label>Upload Images (optional)</Form.Label>
+                  <Form.Control
+                    type="file"
+                    name="images"
+                    accept="image/*"
+                    multiple
+                    onChange={(e) => {
+                      handleFormChange(e);
+                      setDailyLogImage(e.target.files); // Store multiple files
                     }}
                   />
-                ))}
-              </div>
-            )}
-          </Form.Group>
-        </Col>
-      </Row>
-      <div className="d-flex justify-content-end">
-        <Button variant="primary" onClick={handleSaveLog}>
-          {currentLogIndex !== null ? 'Update Log' : 'Publish Log'}
-        </Button>
-      </div>
-    </Form>
-  </Modal.Body>
-</Modal>
+                  {/* Preview of selected images */}
+                  {dailyLogImage && (
+                    <div className="mt-2">
+                      <strong>Preview:</strong><br />
+                      {Array.from(dailyLogImage).map((file, idx) => (
+                        <img
+                          key={idx}
+                          src={URL.createObjectURL(file)}
+                          alt="Preview"
+                          style={{
+                            maxWidth: '100%',
+                            maxHeight: '200px',
+                            borderRadius: '6px',
+                            marginRight: '10px',
+                          }}
+                        />
+                      ))}
+                    </div>
+                  )}
+                </Form.Group>
+              </Col>
+            </Row>
+            <div className="d-flex justify-content-end">
+              <Button variant="primary" onClick={handleSaveLog}>
+                {currentLogIndex !== null ? 'Update Log' : 'Publish Log'}
+              </Button>
+            </div>
+          </Form>
+        </Modal.Body>
+      </Modal>
 
 
 

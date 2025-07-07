@@ -9,7 +9,7 @@ export const Project_job_Id = createAsyncThunk(
   async (id, { rejectWithValue }) => {
     try {
       const response = await axiosInstance.get(`${apiUrl}/MyJobs/${id}`);
-      console.log("respos", response.data);
+      // console.log("respos", response.data);
 
       return response.data
     } catch (error) {
@@ -27,7 +27,7 @@ export const fetchMyJobs = createAsyncThunk(
       if (!token) {
         return rejectWithValue("Token or IV is missing in localStorage");
       }
-      const decryptedToken = decryptToken(token);  
+      const decryptedToken = decryptToken(token);
       //  console.log("Decrypted Token:", decryptedToken);
 
       const tokenParts = decryptedToken.split('.');
@@ -35,9 +35,9 @@ export const fetchMyJobs = createAsyncThunk(
         return rejectWithValue("Invalid token format");
       }
       const decodedPayload = JSON.parse(atob(tokenParts[1]));
-       const userId = decodedPayload.id;
+      const userId = decodedPayload.id;
       // console.log("Decoded Payload:", decodedPayload);
-    
+
       // Construct the URL with the user ID and Status
       const response = await axiosInstance.get(
         `${apiUrl}/AssignmentJob/getbyid/${userId}`
@@ -60,7 +60,7 @@ export const ReturnJob = createAsyncThunk(
         return rejectWithValue("Token or IV is missing in localStorage");
       }
 
-      const decryptedToken = decryptToken(token);  
+      const decryptedToken = decryptToken(token);
       const tokenParts = decryptedToken.split('.');
       if (tokenParts.length !== 3) {
         return rejectWithValue("Invalid token format");
@@ -93,7 +93,7 @@ export const EmployeeDashboardData = createAsyncThunk(
       if (!token) {
         return rejectWithValue("Token or IV is missing in localStorage");
       }
-      const decryptedToken = decryptToken(token);  
+      const decryptedToken = decryptToken(token);
       //  console.log("Decrypted Token:", decryptedToken);
 
       const tokenParts = decryptedToken.split('.');
@@ -101,9 +101,9 @@ export const EmployeeDashboardData = createAsyncThunk(
         return rejectWithValue("Invalid token format");
       }
       const decodedPayload = JSON.parse(atob(tokenParts[1]));
-       const userId = decodedPayload.id;
+      const userId = decodedPayload.id;
       // console.log("Decoded Payload:", decodedPayload);
-    
+
       // Construct the URL with the user ID and Status
       const response = await axiosInstance.get(
         `${apiUrl}/employee/dashboard/${userId}`
@@ -191,7 +191,7 @@ const MyJobsSlice = createSlice({
   initialState: {
     myjobs: [],
     ProjectJob: [],
-    DasbordAll:[],
+    DasbordAll: [],
     status: 'idle',
     error: null,
   },
@@ -234,21 +234,21 @@ const MyJobsSlice = createSlice({
         state.status = 'failed';
         state.error = action.payload;
       })
-  
 
-    // Dasbord case
-          .addCase(EmployeeDashboardData.pending, (state) => {
-          state.loading = true;
-          state.error = null;
-        })
-        .addCase(EmployeeDashboardData.fulfilled, (state, action) => {
-          state.loading = false;
-          state.DasbordAll.push(action.payload);
-        })
-        .addCase(EmployeeDashboardData.rejected, (state, action) => {
-          state.loading = false;
-          state.error = action.payload;
-        })
+
+      // Dasbord case
+      .addCase(EmployeeDashboardData.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(EmployeeDashboardData.fulfilled, (state, action) => {
+        state.loading = false;
+        state.DasbordAll.push(action.payload);
+      })
+      .addCase(EmployeeDashboardData.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
   },
 });
 

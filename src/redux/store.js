@@ -17,7 +17,7 @@ import documentsRecordReducer from "../redux/slices/documentSlice"
 import MyJobsReducer from "../redux/slices/Employee/MyJobsSlice"
 import dailyLogsReducer from "../redux/slices/dailyLogsSlice"; 
 import commentReducer from "../redux/slices/commentsSlice" 
-
+import documentReducer from   "../redux/slices/saveDocumentSlice"
 export const store = configureStore({
   reducer: {
     projects: ProjectsReducer,
@@ -37,6 +37,7 @@ export const store = configureStore({
     dailyLogs : dailyLogsReducer,  
     comments: commentReducer,
     
-    documentRecord: documentsRecordReducer
+    documentRecord: documentsRecordReducer,
+     documents: documentReducer,
   }
 });

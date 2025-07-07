@@ -156,7 +156,7 @@ function AddTimeLog() {
   // Project Jobs Employee ye pora data araha hai 
   const { myjobs } = useSelector((state) => state.MyJobs);
   const MynewJobsdata = myjobs && myjobs.assignments && myjobs.assignments.length > 0 ? myjobs.assignments[0].jobId : [];
-  console.log("Hhhhhhhhhhhhhhhhhhhh", MynewJobsdata);
+  // console.log("Hhhhhhhhhhhhhhhhhhhh", MynewJobsdata);
 
   useEffect(() => {
     dispatch(fetchMyJobs());
@@ -167,7 +167,7 @@ function AddTimeLog() {
     ? MynewJobsdata.flatMap(job => job.projectId).reverse()
     : [];
 
-  const reversedJobList =Array.isArray(MynewJobsdata)
+  const reversedJobList = Array.isArray(MynewJobsdata)
     ? MynewJobsdata.flatMap(job => job.JobNo).reverse()
     : [];
 

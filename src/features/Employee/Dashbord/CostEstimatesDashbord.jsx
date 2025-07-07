@@ -124,10 +124,10 @@ function CostEstimatesDashbord() {
     };
 
     const handleSavePO = () => {
-        console.log("PO Number:", poNumber);
-        console.log("PO Date:", poDate);
-        console.log("PO Amount:", poAmount);
-        console.log("PO Document:", poDocument);
+        // console.log("PO Number:", poNumber);
+        // console.log("PO Date:", poDate);
+        // console.log("PO Amount:", poAmount);
+        // console.log("PO Document:", poDocument);
         setShowAddPOModal(false);
     };
 
@@ -178,12 +178,12 @@ function CostEstimatesDashbord() {
             case "in progress":
             case "pending":
                 return "bg-warning text-dark";
-      
+
         }
     };
 
     const handleDelete = (_id) => {
-        console.log(_id);
+        // console.log(_id);
         Swal.fire({
             title: "Are you sure?",
             text: "You won't be able to revert this!",
@@ -207,24 +207,24 @@ function CostEstimatesDashbord() {
     }
 
     // PAGINATION SETUP FOR ESTIMATES
- const [currentPage, setCurrentPage] = useState(1);
-const itemsPerPage = 7;
+    const [currentPage, setCurrentPage] = useState(1);
+    const itemsPerPage = 7;
 
-// Filter only pending estimates
-const filteredEstimates = estimates?.costEstimates?.filter(
-  (proj) =>
-    (proj.POStatus || "").toLowerCase().replace(/\s|_/g, "") === "pending"
-) || [];
+    // Filter only pending estimates
+    const filteredEstimates = estimates?.costEstimates?.filter(
+        (proj) =>
+            (proj.POStatus || "").toLowerCase().replace(/\s|_/g, "") === "pending"
+    ) || [];
 
-// Calculate pagination based on filtered data
-const totalItems = filteredEstimates.length;
-const totalPages = Math.ceil(totalItems / itemsPerPage);
+    // Calculate pagination based on filtered data
+    const totalItems = filteredEstimates.length;
+    const totalPages = Math.ceil(totalItems / itemsPerPage);
 
-// Apply pagination to filtered data
-const paginatedEstimates = filteredEstimates
-  .slice()
-  .reverse()
-  .slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
+    // Apply pagination to filtered data
+    const paginatedEstimates = filteredEstimates
+        .slice()
+        .reverse()
+        .slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
 
 
     return (

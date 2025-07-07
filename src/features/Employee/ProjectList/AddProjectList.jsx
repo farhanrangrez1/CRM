@@ -110,13 +110,13 @@ function AddProjectList() {
   }
 
 
-      //  all client 
-    const { Clients } = useSelector((state) => state.client);
-    console.log(Clients);
-  
+  //  all client 
+  const { Clients } = useSelector((state) => state.client);
+  // console.log(Clients);
+
   useEffect(() => {
-    if (Clients  && project?.data?.length) {
-      const foundProject = project.data.find(p => p._id === Clients );
+    if (Clients && project?.data?.length) {
+      const foundProject = project.data.find(p => p._id === Clients);
       if (foundProject) {
         setFormData(prev => ({
           ...prev,
@@ -124,17 +124,17 @@ function AddProjectList() {
         }));
       }
     }
-  }, [Clients , project]);
+  }, [Clients, project]);
 
-    useEffect(() => {
-      dispatch(fetchClient());
-    }, [dispatch]);
+  useEffect(() => {
+    dispatch(fetchClient());
+  }, [dispatch]);
 
 
   return (
     <Container className="py-4">
       <div className="form-container p-4 rounded shadow-sm" style={{ backgroundColor: "white", margin: "0 auto" }}>
-       <h2 className="mb-4">{id || project?._id ? "Edit Project" : "New Project"}</h2>
+        <h2 className="mb-4">{id || project?._id ? "Edit Project" : "New Project"}</h2>
 
         <Form onSubmit={handleSubmit}>
           <Row className="mb-3">
@@ -334,8 +334,8 @@ function AddProjectList() {
           <div className="d-flex justify-content-end gap-2 mt-4">
             <Button variant="secondary" className="px-4" style={{ minWidth: "120px" }} onClick={handleCancel}>Cancel</Button>
             <Button variant="dark" type="submit" className="px-4" style={{ minWidth: "120px" }}>
-        
-               {id || project?._id ? "Save" : "Create Project"}
+
+              {id || project?._id ? "Save" : "Create Project"}
             </Button>
           </div>
         </Form>

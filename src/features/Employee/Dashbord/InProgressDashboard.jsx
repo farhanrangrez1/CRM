@@ -37,17 +37,17 @@ function InProgressDashboard() {
   }, [dispatch]);
 
   const handleSwitchDesigner = (jobId) => {
-    console.log("Switching designer for job:", jobId);
+    // console.log("Switching designer for job:", jobId);
     setSelectedJob(jobId);
     setShowDesignerModal(true);
   };
 
   const handleCancelBrief = (jobId) => {
-    console.log("Cancelling brief for job:", jobId);
+    // console.log("Cancelling brief for job:", jobId);
   };
 
   const handleDesignerChange = (designer) => {
-    console.log("Selected designer:", designer);
+    // console.log("Selected designer:", designer);
     setShowDesignerModal(false);
     // Dispatch update logic here
   };
@@ -98,11 +98,11 @@ function InProgressDashboard() {
   };
 
   const CreatJobs = (projectId) => {
-    console.log("Create jobs for project:", projectId);
+    // console.log("Create jobs for project:", projectId);
   };
 
   const handleUpdate = (project) => {
-    console.log("Update project:", project);
+    // console.log("Update project:", project);
   };
 
   // ✅ FILTER PROJECTS by status === in_progress / in progress
@@ -173,11 +173,11 @@ function InProgressDashboard() {
                   <td>{project.client}</td>
                   <td>
                     {project.projectRequirements &&
-                    project.projectRequirements.length > 0
+                      project.projectRequirements.length > 0
                       ? Object.entries(project.projectRequirements[0])
-                          .filter(([_, value]) => value === true)
-                          .map(([key]) => key)
-                          .join(", ")
+                        .filter(([_, value]) => value === true)
+                        .map(([key]) => key)
+                        .join(", ")
                       : "N/A"}
                   </td>
                   <td>

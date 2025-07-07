@@ -23,7 +23,6 @@ function AddClientManagement() {
   const location = useLocation();
   const { client } = location.state || {};
   const _id = client?._id
-  console.log("oo", _id);
   
   // Initial form state
   const [formData, setFormData] = useState({
@@ -346,7 +345,6 @@ function AddClientManagement() {
       ledgerInformation,
       additionalInformation
     };
-    console.log('Full Data Object:', fullData);
     if (_id) {
       dispatch(UpdateClients({ _id, data: fullData }))
         .unwrap()

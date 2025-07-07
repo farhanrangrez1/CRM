@@ -28,9 +28,9 @@ function InProgress() {
   ];
 
   const { job, loading, error } = useSelector((state) => state.jobs);
-  console.log("erjhgkjwerfgkelgbwer",job);
+  // console.log("erjhgkjwerfgkelgbwer",job);
 
-   const [Status, setStatus] = useState("In Progress");
+  const [Status, setStatus] = useState("In Progress");
 
   useEffect(() => {
     dispatch(filterStatus(Status)); // use variable here
@@ -68,29 +68,29 @@ function InProgress() {
     }
   };
 
-const getStatusClass = (status) => {
-  switch (status.toLowerCase().trim()) {
-    case "in progress":
-    case "in_progress":
-      return "bg-warning text-dark";     // Yellow
-    case "completed":
-      return "bg-success text-white";    // Green
-    case "cancelled":
-      return "bg-danger text-white";     // Red
-    case "active":
-      return "bg-primary text-white";    // Blue
-    case "reject":
-      return "bg-danger text-white";
-    case "review":
-      return "bg-info text-dark";
-    case "not started":
-      return "bg-secondary text-white";
-    case "open":
-      return "bg-primary text-white";
-    default:
-      return "bg-light text-dark";
-  }
-};
+  const getStatusClass = (status) => {
+    switch (status.toLowerCase().trim()) {
+      case "in progress":
+      case "in_progress":
+        return "bg-warning text-dark";     // Yellow
+      case "completed":
+        return "bg-success text-white";    // Green
+      case "cancelled":
+        return "bg-danger text-white";     // Red
+      case "active":
+        return "bg-primary text-white";    // Blue
+      case "reject":
+        return "bg-danger text-white";
+      case "review":
+        return "bg-info text-dark";
+      case "not started":
+        return "bg-secondary text-white";
+      case "open":
+        return "bg-primary text-white";
+      default:
+        return "bg-light text-dark";
+    }
+  };
 
 
   const handleUpdate = (job) => {
@@ -102,50 +102,50 @@ const getStatusClass = (status) => {
   }
 
 
-const [currentPage, setCurrentPage] = useState(1);
-const itemsPerPage = 10;
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 10;
 
-const filteredProjects = (job?.jobs || []).filter((j) => {
-  // Split searchQuery by spaces, ignore empty terms
-  const terms = searchQuery.trim().split(/\s+/).filter(Boolean);
-  if (terms.length === 0) {
+  const filteredProjects = (job?.jobs || []).filter((j) => {
+    // Split searchQuery by spaces, ignore empty terms
+    const terms = searchQuery.trim().split(/\s+/).filter(Boolean);
+    if (terms.length === 0) {
+      const matchesProject =
+        selectedProject === "All Projects" ||
+        (j.projectId?.[0]?.projectName?.toLowerCase() === selectedProject.toLowerCase());
+      return matchesProject;
+    }
+    // Prepare searchable fields as strings
+    const fields = [
+      j.JobNo,
+      j.projectId?.[0]?.projectName,
+      j.brandName,
+      j.subBrand,
+      j.flavour,
+      j.packType,
+      j.packSize,
+      j.packCode,
+      j.priority,
+      j.createdAt ? new Date(j.createdAt).toLocaleDateString("en-GB") : '',
+      j.assignedTo,
+      j.updatedAt ? new Date(j.updatedAt).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' }) : '',
+      j.Status
+    ].map(f => (f || '').toString().toLowerCase());
+    // Every term must be found in at least one field
+    const matchesSearch = terms.every(term =>
+      fields.some(field => field.includes(term.toLowerCase()))
+    );
     const matchesProject =
       selectedProject === "All Projects" ||
       (j.projectId?.[0]?.projectName?.toLowerCase() === selectedProject.toLowerCase());
-    return matchesProject;
-  }
-  // Prepare searchable fields as strings
-  const fields = [
-    j.JobNo,
-    j.projectId?.[0]?.projectName,
-    j.brandName,
-    j.subBrand,
-    j.flavour,
-    j.packType,
-    j.packSize,
-    j.packCode,
-    j.priority,
-    j.createdAt ? new Date(j.createdAt).toLocaleDateString("en-GB") : '',
-    j.assignedTo,
-    j.updatedAt ? new Date(j.updatedAt).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' }) : '',
-    j.Status
-  ].map(f => (f || '').toString().toLowerCase());
-  // Every term must be found in at least one field
-  const matchesSearch = terms.every(term =>
-    fields.some(field => field.includes(term.toLowerCase()))
+    return matchesSearch && matchesProject;
+  });
+
+  const totalPages = Math.ceil(filteredProjects.length / itemsPerPage);
+
+  const paginatedProjects = filteredProjects.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
   );
-  const matchesProject =
-    selectedProject === "All Projects" ||
-    (j.projectId?.[0]?.projectName?.toLowerCase() === selectedProject.toLowerCase());
-  return matchesSearch && matchesProject;
-});
-
-const totalPages = Math.ceil(filteredProjects.length / itemsPerPage);
-
-const paginatedProjects = filteredProjects.slice(
-  (currentPage - 1) * itemsPerPage,
-  currentPage * itemsPerPage
-);
 
 
   return (
@@ -156,8 +156,8 @@ const paginatedProjects = filteredProjects.slice(
         {/* <Button id="All_btn" variant="dark" onClick={() => setShowDesignerModal(true)}>Change Designer</Button> */}
       </div>
 
-         {/* Filters */}
-         <div className="d-flex flex-wrap gap-2 mb-3 align-items-center">
+      {/* Filters */}
+      <div className="d-flex flex-wrap gap-2 mb-3 align-items-center">
         <Form.Control
           type="search"
           placeholder="Search jobs..."
@@ -178,7 +178,7 @@ const paginatedProjects = filteredProjects.slice(
                 <Dropdown.Item key={index} onClick={() => setSelectedProject(projectName)}>
                   {projectName}
                 </Dropdown.Item>
-            )
+              )
             )}
           </Dropdown.Menu>
         </Dropdown>
@@ -206,53 +206,53 @@ const paginatedProjects = filteredProjects.slice(
               <th></th>
             </tr>
           </thead>
-     <tbody>
-  {paginatedProjects.some(job => job.Status?.toLowerCase() === "in progress") ? (
-    paginatedProjects
-      .slice()
-      .reverse()
-      .filter(job => job.Status?.toLowerCase() === "in progress")
-      .map((job, index) => (
-        <tr key={job._id}>
-          <td>
-            <input
-              type="checkbox"
-              checked={selectedJobs[job._id] || false}
-              onChange={() => handleCheckboxChange(job._id)}
-            />
-          </td>
-          <td onClick={() => JobDetails(job)}>
-            <Link style={{ textDecoration: 'none' }}>{job.JobNo}</Link>
-          </td>
-          <td style={{ whiteSpace: 'nowrap' }}>{job.projectId?.[0]?.projectName || 'N/A'}</td>
-          <td style={{ whiteSpace: 'nowrap' }}>{job.brandName}</td>
-          <td style={{ whiteSpace: 'nowrap' }}>{job.subBrand}</td>
-          <td style={{ whiteSpace: 'nowrap' }}>{job.flavour}</td>
-          <td style={{ whiteSpace: 'nowrap' }}>{job.packType}</td>
-          <td style={{ whiteSpace: 'nowrap' }}>{job.packSize}</td>
-          <td style={{ whiteSpace: 'nowrap' }}>{job?.packCode}</td>
-          <td>
-            <span className={getPriorityClass(job.priority)}>{job.priority}</span>
-          </td>
-          <td>{new Date(job.createdAt).toLocaleDateString("en-GB")}</td>
-          <td style={{ whiteSpace: 'nowrap' }}>{job.assignedTo}</td>
-          <td style={{ whiteSpace: 'nowrap' }}>{new Date(job.updatedAt).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })}</td>
-          <td>
-            <span className={`badge ${getStatusClass(job.Status)} px-2 py-1`}>
-              {job.Status}
-            </span>
-          </td>
-          <td></td>
-        </tr>
-      ))
-  ) : (
-    <tr>
-      <td colSpan="15" className="text-center text-muted py-4">
-        No In Progress jobs found.
-      </td>
-    </tr>
-  )}
-</tbody>
+          <tbody>
+            {paginatedProjects.some(job => job.Status?.toLowerCase() === "in progress") ? (
+              paginatedProjects
+                .slice()
+                .reverse()
+                .filter(job => job.Status?.toLowerCase() === "in progress")
+                .map((job, index) => (
+                  <tr key={job._id}>
+                    <td>
+                      <input
+                        type="checkbox"
+                        checked={selectedJobs[job._id] || false}
+                        onChange={() => handleCheckboxChange(job._id)}
+                      />
+                    </td>
+                    <td onClick={() => JobDetails(job)}>
+                      <Link style={{ textDecoration: 'none' }}>{job.JobNo}</Link>
+                    </td>
+                    <td style={{ whiteSpace: 'nowrap' }}>{job.projectId?.[0]?.projectName || 'N/A'}</td>
+                    <td style={{ whiteSpace: 'nowrap' }}>{job.brandName}</td>
+                    <td style={{ whiteSpace: 'nowrap' }}>{job.subBrand}</td>
+                    <td style={{ whiteSpace: 'nowrap' }}>{job.flavour}</td>
+                    <td style={{ whiteSpace: 'nowrap' }}>{job.packType}</td>
+                    <td style={{ whiteSpace: 'nowrap' }}>{job.packSize}</td>
+                    <td style={{ whiteSpace: 'nowrap' }}>{job?.packCode}</td>
+                    <td>
+                      <span className={getPriorityClass(job.priority)}>{job.priority}</span>
+                    </td>
+                    <td>{new Date(job.createdAt).toLocaleDateString("en-GB")}</td>
+                    <td style={{ whiteSpace: 'nowrap' }}>{job.assignedTo}</td>
+                    <td style={{ whiteSpace: 'nowrap' }}>{new Date(job.updatedAt).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })}</td>
+                    <td>
+                      <span className={`badge ${getStatusClass(job.Status)} px-2 py-1`}>
+                        {job.Status}
+                      </span>
+                    </td>
+                    <td></td>
+                  </tr>
+                ))
+            ) : (
+              <tr>
+                <td colSpan="15" className="text-center text-muted py-4">
+                  No In Progress jobs found.
+                </td>
+              </tr>
+            )}
+          </tbody>
 
         </Table>
       </div>

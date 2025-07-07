@@ -48,15 +48,15 @@ export const deleteClients = createAsyncThunk(
 );
 
 export const fetchClientsById = createAsyncThunk('Client/fetchById', async (id) => {
-    const response = await fetch(`/api/Client/${id}`);
-    if (!response.ok) throw new Error("Failed to fetch Clients");
-    return await response.json();
-  });
+  const response = await fetch(`/api/Client/${id}`);
+  if (!response.ok) throw new Error("Failed to fetch Clients");
+  return await response.json();
+});
 
 export const UpdateClients = createAsyncThunk(
   'Client/updateClients',
   async ({ _id, data }) => {
-    console.log("DJ", _id);
+    // console.log("DJ", _id);
 
     const response = await fetch(`${apiUrl}/client/${_id}`, {
       method: "PATCH",
@@ -75,7 +75,7 @@ export const UpdateClientsAssign = createAsyncThunk('Client/UpdateClientsAssign'
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({ id, assign }),  
+    body: JSON.stringify({ id, assign }),
   });
   if (!response.ok) throw new Error("Failed to update Client");
   return await response.json();
@@ -92,19 +92,19 @@ const ClientSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
-          // Add
-        //   .addCase(createClients.pending, (state) => {
-        //     state.loading = true;
-        //     state.error = null;
-        //   })
-        //   .addCase(createClients.fulfilled, (state, action) => {
-        //     state.loading = false;
-        //     state.Clients.push(action.payload);
-        //   })
-        //   .addCase(createClients.rejected, (state, action) => {
-        //     state.loading = false;
-        //     state.error = action.payload;
-        //   })
+      // Add
+      //   .addCase(createClients.pending, (state) => {
+      //     state.loading = true;
+      //     state.error = null;
+      //   })
+      //   .addCase(createClients.fulfilled, (state, action) => {
+      //     state.loading = false;
+      //     state.Clients.push(action.payload);
+      //   })
+      //   .addCase(createClients.rejected, (state, action) => {
+      //     state.loading = false;
+      //     state.error = action.payload;
+      //   })
       .addCase(fetchClient.pending, (state) => {
         state.status = 'loading';
       })

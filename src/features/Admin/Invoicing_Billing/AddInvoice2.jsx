@@ -28,7 +28,7 @@ function AddInvoice2() {
   const location = useLocation();
   const invoice = location.state?.invoice;
   const id = invoice?._id;
-  console.log("hhel", invoice);
+  // console.log("hhel", invoice);
 
   const navigate = useNavigate();
   const dispatch = useDispatch();

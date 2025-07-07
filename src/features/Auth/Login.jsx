@@ -298,139 +298,139 @@ const Login = () => {
 
 
   const handleLogin = async (e) => {
-  e.preventDefault();
-  const { email, password } = formData;
+    e.preventDefault();
+    const { email, password } = formData;
 
-  try {
-    setLoading(true);
-    const res = await axios.post(`${apiUrl}/user/login`, { email, password });
-    console.log("API Response:", res.data);
+    try {
+      setLoading(true);
+      const res = await axios.post(`${apiUrl}/user/login`, { email, password });
+      // console.log("API Response:", res.data);
 
-    // localStorage.setItem("authResponse", JSON.stringify(res.data));
+      // localStorage.setItem("authResponse", JSON.stringify(res.data));
 
-    const { role, token } = res.data.user;
-    localStorage.setItem("encode", res.data.token.token);
-    localStorage.setItem("iv", res.data.token.iv);
-    localStorage.setItem("userRole", role);
+      const { role, token } = res.data.user;
+      localStorage.setItem("encode", res.data.token.token);
+      localStorage.setItem("iv", res.data.token.iv);
+      localStorage.setItem("userRole", role);
 
-    toast.success("Logged in successfully!");
-    
-    // Redirect based on role
-    if (role === "admin") {
-      navigate("/admin/dashboard");
-    } else if (role === "productionManager") {
-      navigate("/production/dashboard");
-    } else if (role === "employee") {
-      navigate("/employee/dashboard");
-    } else if (role === "client") {
-      navigate("/client/dashboard");
-    } else {
-      navigate("/dashboard");
+      toast.success("Logged in successfully!");
+
+      // Redirect based on role
+      if (role === "admin") {
+        navigate("/admin/dashboard");
+      } else if (role === "productionManager") {
+        navigate("/production/dashboard");
+      } else if (role === "employee") {
+        navigate("/employee/dashboard");
+      } else if (role === "client") {
+        navigate("/client/dashboard");
+      } else {
+        navigate("/dashboard");
+      }
+    } catch (error) {
+      toast.error("Error logging in. Please try again.");
+    } finally {
+      setLoading(false);
     }
-  } catch (error) {
-    toast.error("Error logging in. Please try again.");
-  } finally {
-    setLoading(false);
-  }
-};
+  };
 
   return (
-          <div className="min-vh-100 d-flex justify-content-center align-items-center" style={{ background: "#fff" }}>
-        <div className="rounded-4 shadow-lg bg-white w-100" style={{ maxWidth: 900, minHeight: 'auto' }}>
-          <div className="row g-0 h-100">
-            <div className="col-md-6 d-flex flex-column justify-content-center p-4">
-              <div className="logo-container mb-4 d-flex justify-content-center">
-                <Link to="/">
-                  <img src={bonbonlogo} alt="Bon-Bon Logo" className="img-fluid" style={{ maxWidth: "160px" }} />
-                </Link>
-              </div>
-              <h4 className="text-center mb-4 fw-bold" style={{ color: "#333" }}>Welcome Back</h4>
-
-          <form onSubmit={handleLogin}>
-            <div className="form-floating mb-3">
-              <input
-                type="email"
-                name="email"
-                className="form-control"
-                id="email"
-                value={formData.email}
-                onChange={handleChange}
-                required
-              />
-              <label htmlFor="email">Email address</label>
-            </div>
-
-            <div className="form-floating mb-3">
-              <input
-                type="password"
-                name="password"
-                className="form-control"
-                id="password"
-                placeholder="Password"
-                value={formData.password}
-                onChange={handleChange}
-                autoComplete="off"
-                required
-              />
-              <label htmlFor="password">Password</label>
-            </div>
-
-            <div className="d-flex justify-content-between mb-4">
-              <div className="form-check">
-                <input className="form-check-input" type="checkbox" id="remember" />
-                <label className="form-check-label text-secondary" htmlFor="remember">
-                  Remember me
-                </label>
-              </div>
-              <Link to={"/forgotPassword"}  className="text-decoration-none text-secondary">
-                Forgot password?
+    <div className="min-vh-100 d-flex justify-content-center align-items-center" style={{ background: "#fff" }}>
+      <div className="rounded-4 shadow-lg bg-white w-100" style={{ maxWidth: 900, minHeight: 'auto' }}>
+        <div className="row g-0 h-100">
+          <div className="col-md-6 d-flex flex-column justify-content-center p-4">
+            <div className="logo-container mb-4 d-flex justify-content-center">
+              <Link to="/">
+                <img src={bonbonlogo} alt="Bon-Bon Logo" className="img-fluid" style={{ maxWidth: "160px" }} />
               </Link>
             </div>
+            <h4 className="text-center mb-4 fw-bold" style={{ color: "#333" }}>Welcome Back</h4>
 
-            <button
-              type="submit"
-              className="btn w-100 text-white"
-              id="All_btn"
-              style={{ padding: "10px", borderRadius: "5px" }}
-              disabled={loading}
-            >
-              {loading ? "Logging in..." : "Log In"}
-            </button>
+            <form onSubmit={handleLogin}>
+              <div className="form-floating mb-3">
+                <input
+                  type="email"
+                  name="email"
+                  className="form-control"
+                  id="email"
+                  value={formData.email}
+                  onChange={handleChange}
+                  required
+                />
+                <label htmlFor="email">Email address</label>
+              </div>
 
-            {/* <p className="text-center mt-3 mb-0">
+              <div className="form-floating mb-3">
+                <input
+                  type="password"
+                  name="password"
+                  className="form-control"
+                  id="password"
+                  placeholder="Password"
+                  value={formData.password}
+                  onChange={handleChange}
+                  autoComplete="off"
+                  required
+                />
+                <label htmlFor="password">Password</label>
+              </div>
+
+              <div className="d-flex justify-content-between mb-4">
+                <div className="form-check">
+                  <input className="form-check-input" type="checkbox" id="remember" />
+                  <label className="form-check-label text-secondary" htmlFor="remember">
+                    Remember me
+                  </label>
+                </div>
+                <Link to={"/forgotPassword"} className="text-decoration-none text-secondary">
+                  Forgot password?
+                </Link>
+              </div>
+
+              <button
+                type="submit"
+                className="btn w-100 text-white"
+                id="All_btn"
+                style={{ padding: "10px", borderRadius: "5px" }}
+                disabled={loading}
+              >
+                {loading ? "Logging in..." : "Log In"}
+              </button>
+
+              {/* <p className="text-center mt-3 mb-0">
               <span className="text-secondary">Don't have an account?</span>
               <Link to="/signup" className="text-decoration-none ms-1">
                 Sign up
               </Link>
             </p> */}
 
-            <button
-              className="social-signup btn w-100 mb-3 d-flex align-items-center justify-content-center"
-              style={{
-                backgroundColor: "#ffffff",
-                color: "#5F6368",
-                border: "1px solid #dadce0",
-                fontSize: "14px",
-                fontWeight: "500",
-                padding: "10px 0",
-                borderRadius: "4px",
-                transition: "all 0.3s ease",
-                marginTop: "20px",
-              }}
-              type="button"
-            >
-              <i className="fab fa-google me-2" style={{ fontSize: "18px", color: "#4285F4" }} />
-              Continue with Google
-            </button>
-          </form>
-      </div>
-            <div className="col-md-6 d-none d-md-block p-0">
-              <img src={bonbo} alt="Login Visual" className="img-fluid w-100 h-100" style={{ objectFit: "cover", borderTopRightRadius: "1.5rem", borderBottomRightRadius: "1.5rem" }} />
-            </div>
+              <button
+                className="social-signup btn w-100 mb-3 d-flex align-items-center justify-content-center"
+                style={{
+                  backgroundColor: "#ffffff",
+                  color: "#5F6368",
+                  border: "1px solid #dadce0",
+                  fontSize: "14px",
+                  fontWeight: "500",
+                  padding: "10px 0",
+                  borderRadius: "4px",
+                  transition: "all 0.3s ease",
+                  marginTop: "20px",
+                }}
+                type="button"
+              >
+                <i className="fab fa-google me-2" style={{ fontSize: "18px", color: "#4285F4" }} />
+                Continue with Google
+              </button>
+            </form>
+          </div>
+          <div className="col-md-6 d-none d-md-block p-0">
+            <img src={bonbo} alt="Login Visual" className="img-fluid w-100 h-100" style={{ objectFit: "cover", borderTopRightRadius: "1.5rem", borderBottomRightRadius: "1.5rem" }} />
           </div>
         </div>
       </div>
-      
+    </div>
+
   );
 };
 

@@ -273,11 +273,11 @@ function InProgressDashboardProject() {
   ];
 
   const handleSwitchDesigner = (jobId) => {
-    console.log("Switching designer for job:", jobId);
+    // console.log("Switching designer for job:", jobId);
   };
 
   const handleCancelBrief = (jobId) => {
-    console.log("Cancelling brief for job:", jobId);
+    // console.log("Cancelling brief for job:", jobId);
   };
 
   const handleCheckboxChange = (jobId) => {

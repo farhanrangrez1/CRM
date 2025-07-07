@@ -12,7 +12,7 @@ import "react-toastify/dist/ReactToastify.css";
 function ProjectJobsTab() {
   const location = useLocation();
   const params = useParams();
-  console.log("hello me project id", params);
+  // console.log("hello me project id", params);
   const id = location.state?.id || params.id;
 
   const dispatch = useDispatch()
@@ -72,7 +72,7 @@ function ProjectJobsTab() {
 
   const [selectedEmployee, setSelectedEmployee] = useState("");
   const { userAll } = useSelector((state) => state.user);
-  console.log("data user", userAll?.data?.users);
+  // console.log("data user", userAll?.data?.users);
 
   useEffect(() => {
     dispatch(fetchusers());
@@ -102,13 +102,13 @@ function ProjectJobsTab() {
       description: assignmentDescription,
     };
 
-    console.log("Assignment Payload:", payload);
+    // console.log("Assignment Payload:", payload);
 
     if (id) {
       dispatch(createAssigns(payload))
         .unwrap()
         .then((response) => {
-          console.log("API Response:", response);
+          // console.log("API Response:", response);
           // ✅ Agar API success ho to navigate kare
           if (response.success) {
             toast.success(response.message || "Project Assigned Successfully!");
@@ -132,7 +132,7 @@ function ProjectJobsTab() {
       id: selectedIds,
       assign: assignTo,
     };
-    console.log("Assignment Payload:", payload);
+    // console.log("Assignment Payload:", payload);
     dispatch(UpdateJobAssign(payload))
       .then(() => {
         // Swal.fire("Success!", "Jobs assigned successfully", "success");
@@ -158,7 +158,7 @@ function ProjectJobsTab() {
   const handleCSVImport = (event) => {
     const file = event.target.files[0];
     if (file) {
-      console.log("CSV file selected:", file.name);
+      // console.log("CSV file selected:", file.name);
     }
   };
 
@@ -179,21 +179,21 @@ function ProjectJobsTab() {
   // const params = useParams();
   // const id = location.state?.id || params.id;
   useEffect(() => {
-    console.log("Project ID:", id);
+    // console.log("Project ID:", id);
   }, [id]);
 
   const { job, loading, error } = useSelector((state) => state.jobs);
-  console.log(job.jobs, "all jobs");
+  // console.log(job.jobs, "all jobs");
 
   const { ProjectJob } = useSelector((state) => state.jobs);
-  console.log(ProjectJob, "all jobs");
+  // console.log(ProjectJob, "all jobs");
 
   useEffect(() => {
     dispatch(Project_job_Id(id));
   }, [dispatch, id]);
 
   const handleDelete = (_id) => {
-    console.log(_id);
+    // console.log(_id);
     Swal.fire({
       title: "Are you sure?",
       text: "You want to mark this job as Cancelled?",
@@ -205,7 +205,7 @@ function ProjectJobsTab() {
     }).then((result) => {
       if (result.isConfirmed) {
         // dispatch(deletejob({ id: _id, data: { status: "Cancelled" } }))
-        console.log(id);
+        // console.log(id);
 
         dispatch(updatejob({ id: _id, data: { Status: "Cancelled" } }))
           .unwrap()
@@ -221,36 +221,36 @@ function ProjectJobsTab() {
   };
 
   const handleUpdate = (job) => {
-    console.log(job, "dcvhrvrejhcvwerjhcvhgv")
+    // console.log(job, "dcvhrvrejhcvwerjhcvhgv")
     navigate(`/admin/AddJobTracker/${job._id}`, { state: { job } });
   };
 
   const JobDetails = (job) => {
     navigate(`/admin/OvervieJobsTracker`, { state: { job } });
   }
- const getStatusClass = (status) => {
-  switch (status.toLowerCase().trim()) {
-    case "in progress":
-    case "in_progress":
-      return "bg-warning text-dark";     // Yellow
-    case "completed":
-      return "bg-success text-white";    // Green
-    case "cancelled":
-      return "bg-danger text-white";     // Red
-    case "active":
-      return "bg-primary text-white";    // Blue
-    case "reject":
-      return "bg-danger text-white";
-    case "review":
-      return "bg-info text-dark";
-    case "not started":
-      return "bg-secondary text-white";
-    case "open":
-      return "bg-primary text-white";
-    default:
-      return "bg-light text-dark";
-  }
-};
+  const getStatusClass = (status) => {
+    switch (status.toLowerCase().trim()) {
+      case "in progress":
+      case "in_progress":
+        return "bg-warning text-dark";     // Yellow
+      case "completed":
+        return "bg-success text-white";    // Green
+      case "cancelled":
+        return "bg-danger text-white";     // Red
+      case "active":
+        return "bg-primary text-white";    // Blue
+      case "reject":
+        return "bg-danger text-white";
+      case "review":
+        return "bg-info text-dark";
+      case "not started":
+        return "bg-secondary text-white";
+      case "open":
+        return "bg-primary text-white";
+      default:
+        return "bg-light text-dark";
+    }
+  };
 
 
   // ✅ Copy File Name & Download CSV
@@ -465,7 +465,7 @@ function ProjectJobsTab() {
               >
                 <option value="">-- Select --</option>
                 <option value="Designer">Designer</option>
-                   <option value="Production">Production</option>
+                <option value="Production">Production</option>
               </Form.Select>
             </Form.Group>
 

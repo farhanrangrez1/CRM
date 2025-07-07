@@ -147,8 +147,8 @@ function CostEstimates() {
 
 
   const Ponamehandle = (po) => {
-    console.log(po.clients[0].clientName, po.projects[0].projectName, "ddd");
-    console.log(po);
+    // console.log(po.clients[0].clientName, po.projects[0].projectName, "ddd");
+    // console.log(po);
 
     setSelectedClientId(po.clients[0]?.clientId || "");
     setSelectedProjectId(po.projects[0]?.projectId || "");
@@ -302,7 +302,7 @@ function CostEstimates() {
 
   // //////////
   const { estimates, loading, error } = useSelector((state) => state.costEstimates);
-  console.log("Cost Estimates:", estimates.costEstimates);
+  // console.log("Cost Estimates:", estimates.costEstimates);
 
   useEffect(() => {
     dispatch(fetchCostEstimates());
@@ -361,7 +361,7 @@ function CostEstimates() {
   };
 
   const handleDelete = (_id) => {
-    console.log(_id);
+    // console.log(_id);
     Swal.fire({
       title: "Are you sure?",
       text: "You won't be able to revert this!",

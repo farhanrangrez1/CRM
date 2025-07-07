@@ -71,7 +71,7 @@ const Data = {
   updatedAt: '2025-06-05T12:21:24.100Z',
 };
 function Profile() {
-  const dispatch =useDispatch()
+  const dispatch = useDispatch()
   // Form state
   const [form, setForm] = useState({
     firstName: userData.firstName,
@@ -153,8 +153,8 @@ function Profile() {
   ));
 
 
-    const { UserSingle} = useSelector((state) => state.user);
-  console.log("admin profile console", UserSingle);
+  const { UserSingle } = useSelector((state) => state.user);
+  // console.log("admin profile console", UserSingle);
   useEffect(() => {
     dispatch(SingleUser());
   }, [dispatch]);
@@ -166,23 +166,23 @@ function Profile() {
           <div className="col-lg-4 mb-4">
             <div className="card border-0 shadow-lg " style={{ background: 'linear-gradient(135deg, #f8fafc 60%, #e0e7ff 100%)', borderRadius: '1.5rem' }}>
               <div className="card-body text-center p-4 d-flex flex-column align-items-center justify-content-between h-100">
-                     <Link to={"/admin/UpdateProfile"}>
-                <div className="position-relative d-inline-block mb-3">
-                  <img
-                    src={UserSingle?.profileImage && UserSingle?.profileImage.length > 0 ? UserSingle?.profileImage[0] : '/default-profile.png'}
-                    alt="avatar"
-                    className="rounded-circle border border-3 border-primary shadow"
-                    style={{ width: '140px', height: '140px', objectFit: 'cover', background: '#fff', boxShadow: '0 4px 24px rgba(0,0,0,0.08)' }}
-                  />
-                       <button
-                                  type="button"
-                                  className="btn btn-light btn-sm rounded-circle position-absolute bottom-0 end-0 border shadow"
-                                  style={{ transform: 'translate(25%, 25%)' ,color: '#0052CC'}}
-                                  title="Change profile picture"
-                                >
-                                 <FaUserEdit />
-                                </button>
-                </div></Link>
+                <Link to={"/admin/UpdateProfile"}>
+                  <div className="position-relative d-inline-block mb-3">
+                    <img
+                      src={UserSingle?.profileImage && UserSingle?.profileImage.length > 0 ? UserSingle?.profileImage[0] : '/default-profile.png'}
+                      alt="avatar"
+                      className="rounded-circle border border-3 border-primary shadow"
+                      style={{ width: '140px', height: '140px', objectFit: 'cover', background: '#fff', boxShadow: '0 4px 24px rgba(0,0,0,0.08)' }}
+                    />
+                    <button
+                      type="button"
+                      className="btn btn-light btn-sm rounded-circle position-absolute bottom-0 end-0 border shadow"
+                      style={{ transform: 'translate(25%, 25%)', color: '#0052CC' }}
+                      title="Change profile picture"
+                    >
+                      <FaUserEdit />
+                    </button>
+                  </div></Link>
                 <h4 className="fw-bold mb-1 mt-2">{UserSingle?.firstName} {UserSingle?.lastName}</h4>
                 <div className="mb-2">
                   <i className="bi bi-envelope-at me-1"></i>

@@ -9,7 +9,7 @@ function ProjectJobsTab() {
   const location = useLocation();
   const params = useParams();
   const id = location.state?.id || params.id;
-  console.log("hello me project id", id);
+  // console.log("hello me project id", id);
 
   const [selectedProduction, setSelectedProduction] = useState('');
   const [selectedAdditional, setSelectedAdditional] = useState('');
@@ -100,10 +100,10 @@ function ProjectJobsTab() {
   const handleCSVImport = (event) => {
     const file = event.target.files[0];
     if (file) {
-      console.log("CSV file selected:", file.name);
+      // console.log("CSV file selected:", file.name);
     }
   };
-  
+
   const getPriorityClass = (priority) => {
     switch (priority.toLowerCase()) {
       case "high":
@@ -123,41 +123,41 @@ function ProjectJobsTab() {
   // const params = useParams();
   // const id = location.state?.id || params.id;
   useEffect(() => {
-    console.log("Project ID:", id);
+    // console.log("Project ID:", id);
   }, [id]);
 
   const { job, loading, error } = useSelector((state) => state.jobs);
-  console.log(job.jobs, "all jobs");
+  // console.log(job.jobs, "all jobs");
 
   useEffect(() => {
     dispatch(fetchjobs());
   }, [dispatch]);
 
-const handleDelete = (_id) => {
-  console.log(_id);
-  Swal.fire({
-    title: "Are you sure?",
-    text: "You want to mark this job as Cancelled?",
-    icon: "warning",
-    showCancelButton: true,
-    confirmButtonColor: "#3085d6",
-    cancelButtonColor: "#d33",
-    confirmButtonText: "Yes, mark as Cancelled!",
-  }).then((result) => {
-    if (result.isConfirmed) {
-      // dispatch(deletejob({ id: _id, data: { status: "Cancelled" } }))
-      dispatch(updatejob({ id: _id, data: { Status: "Cancelled" } }))
-        .unwrap()
-        .then(() => {
-          Swal.fire("Updated!", "The job has been marked as Cancelled.", "success");
-          dispatch(fetchjobs());
-        })
-        .catch(() => {
-          Swal.fire("Error!", "Something went wrong while updating.", "error");
-        });
-    }
-  });
-};
+  const handleDelete = (_id) => {
+    // console.log(_id);
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You want to mark this job as Cancelled?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, mark as Cancelled!",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        // dispatch(deletejob({ id: _id, data: { status: "Cancelled" } }))
+        dispatch(updatejob({ id: _id, data: { Status: "Cancelled" } }))
+          .unwrap()
+          .then(() => {
+            Swal.fire("Updated!", "The job has been marked as Cancelled.", "success");
+            dispatch(fetchjobs());
+          })
+          .catch(() => {
+            Swal.fire("Error!", "Something went wrong while updating.", "error");
+          });
+      }
+    });
+  };
 
   const handleUpdate = (job) => {
     navigate(`/admin/AddJobTracker`, { state: { job } });
@@ -192,7 +192,7 @@ const handleDelete = (_id) => {
       id: selectedIds,
       assign: assignTo,
     };
-    console.log("Assignment Payload:", payload);
+    // console.log("Assignment Payload:", payload);
     dispatch(UpdateJobAssign(payload))
       .then(() => {
         // Swal.fire("Success!", "Jobs assigned successfully", "success");
@@ -231,7 +231,7 @@ const handleDelete = (_id) => {
   const paginatedProjects = filteredProjects.slice(
     (currentPage - 1) * itemsPerPage,
     currentPage * itemsPerPage
- );
+  );
 
   return (
     <div className="card">
@@ -275,7 +275,7 @@ const handleDelete = (_id) => {
             state={{ id }} // ID pass kar rahe hain yahan
           >
             <button id="All_btn" className="btn btn-primary">
-              <i className="bi bi-plus"></i> Add Job 
+              <i className="bi bi-plus"></i> Add Job
             </button>
           </Link>
         </div>

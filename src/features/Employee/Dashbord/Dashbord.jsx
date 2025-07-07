@@ -23,7 +23,7 @@ const EmployeeDashboard = () => {
 
   const { DasbordAll, loading, error } = useSelector((state) => state.MyJobs);
 
-  console.log("DasbordAll", DasbordAll[0]?.data); 
+  // console.log("DasbordAll", DasbordAll[0]?.data); 
 
   useEffect(() => {
     dispatch(EmployeeDashboardData());

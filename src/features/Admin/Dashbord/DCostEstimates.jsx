@@ -124,10 +124,10 @@ function DCostEstimates() {
     };
 
     const handleSavePO = () => {
-        console.log("PO Number:", poNumber);
-        console.log("PO Date:", poDate);
-        console.log("PO Amount:", poAmount);
-        console.log("PO Document:", poDocument);
+        // console.log("PO Number:", poNumber);
+        // console.log("PO Date:", poDate);
+        // console.log("PO Amount:", poAmount);
+        // console.log("PO Document:", poDocument);
         setShowAddPOModal(false);
     };
 
@@ -220,7 +220,7 @@ function DCostEstimates() {
     };
 
     const handleDelete = (_id) => {
-        console.log(_id);
+        // console.log(_id);
         Swal.fire({
             title: "Are you sure?",
             text: "You won't be able to revert this!",
@@ -275,32 +275,32 @@ function DCostEstimates() {
     const getPageNumbers = () => {
         const pageNumbers = [];
         const maxPagesToShow = 5;
-        
+
         if (totalPages <= maxPagesToShow) {
             for (let i = 1; i <= totalPages; i++) {
                 pageNumbers.push(i);
             }
         } else {
             pageNumbers.push(1);
-            
+
             let startPage = Math.max(2, currentPage - 1);
             let endPage = Math.min(totalPages - 1, currentPage + 1);
-            
+
             if (startPage > 2) {
                 pageNumbers.push('...');
             }
-            
+
             for (let i = startPage; i <= endPage; i++) {
                 pageNumbers.push(i);
             }
-            
+
             if (endPage < totalPages - 1) {
                 pageNumbers.push('...');
             }
-            
+
             pageNumbers.push(totalPages);
         }
-        
+
         return pageNumbers;
     };
 
@@ -345,7 +345,7 @@ function DCostEstimates() {
                             <tr style={{ whiteSpace: "nowrap" }} key={po.poNumber}>
                                 {/* <td><input type="checkbox" /></td> */}
                                 <td onClick={() => CreatJobs(po.projectId)}>
-                                     <Link to={"/admin/receivable"} style={{ textDecoration: 'none' }}>
+                                    <Link to={"/admin/receivable"} style={{ textDecoration: 'none' }}>
                                         {po.estimateRef}
                                     </Link>
                                 </td>
@@ -545,7 +545,7 @@ function DCostEstimates() {
             {!loading && !error && searchFilteredEstimates.length > 0 && (
                 <div className="d-flex justify-content-between align-items-center mt-3">
                     <div className="text-muted small">
-                        Showing {(currentPage - 1) * itemsPerPage + 1} to {Math.min(currentPage * itemsPerPage, totalItems)} 
+                        Showing {(currentPage - 1) * itemsPerPage + 1} to {Math.min(currentPage * itemsPerPage, totalItems)}
                     </div>
                     <ul className="pagination pagination-sm mb-0">
                         <li className={`page-item ${currentPage === 1 ? 'disabled' : ''}`}>
@@ -553,8 +553,8 @@ function DCostEstimates() {
                                 <span aria-hidden="true">&laquo;&laquo;</span>
                             </button>
                         </li>
-                  
-                        
+
+
                         {getPageNumbers().map((pageNum, index) => (
                             pageNum === '...' ? (
                                 <li key={`ellipsis-${index}`} className="page-item disabled">
@@ -568,7 +568,7 @@ function DCostEstimates() {
                                 </li>
                             )
                         ))}
-                        
+
 
                         <li className={`page-item ${currentPage === totalPages ? 'disabled' : ''}`}>
                             <button className="page-link" onClick={() => setCurrentPage(totalPages)}>

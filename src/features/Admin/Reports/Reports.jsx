@@ -341,7 +341,7 @@ function Reports() {
     dispatch(fetchReports());
   }, [dispatch]);
 
-  console.log(Reports);
+  // console.log(Reports);
 
   const data = Reports?.data || {};
 

@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from "react";
-import { Container, Row, Col, Button, Form, Table, Pagination, Badge, Modal,Dropdown } from "react-bootstrap";
+import { Container, Row, Col, Button, Form, Table, Pagination, Badge, Modal, Dropdown } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
 import * as XLSX from 'xlsx';
 import { useDispatch, useSelector } from "react-redux";
@@ -38,7 +38,7 @@ function MyJobs() {
   };
 
   const handleUpload = (jobId) => {
-    console.log('Upload for job:', jobId);
+    // console.log('Upload for job:', jobId);
   };
 
   const handleLogTime = (jobId) => {
@@ -57,7 +57,7 @@ function MyJobs() {
   const handleFileChange = (event) => {
     const file = event.target.files[0];
     if (file) {
-      console.log("Selected file:", file);
+      // console.log("Selected file:", file);
     }
   };
 
@@ -110,7 +110,7 @@ function MyJobs() {
   }, [dispatch]);
 
   const { assigns } = useSelector((state) => state.Assign);
-  console.log("fvrfjk", assigns.assignments);
+  // console.log("fvrfjk", assigns.assignments);
 
   useEffect(() => {
     dispatch(fetchAssign());
@@ -123,7 +123,7 @@ function MyJobs() {
     // Split searchQuery by spaces, ignore empty terms
     const terms = searchQuery.trim().split(/\s+/).filter(Boolean);
     // Prepare searchable fields as strings
-    const employeeName = job.employeeId 
+    const employeeName = job.employeeId
       ? `${job.employeeId.firstName} ${job.employeeId.lastName}`.toLowerCase()
       : '';
     const employeeEmail = (job.employeeId?.email || '').toLowerCase();
@@ -232,13 +232,13 @@ function MyJobs() {
               <Dropdown.Item onClick={() => setSelectedEmployee("All Employees")}>
                 All Employees
               </Dropdown.Item>
-              {[...new Set((assigns?.assignments || []).map(job => 
-                job.employeeId 
+              {[...new Set((assigns?.assignments || []).map(job =>
+                job.employeeId
                   ? `${job.employeeId.firstName} ${job.employeeId.lastName}`
                   : 'No Employee'
               ))].map((employeeName, index) => (
-                <Dropdown.Item 
-                  key={index} 
+                <Dropdown.Item
+                  key={index}
                   onClick={() => setSelectedEmployee(employeeName)}
                 >
                   {employeeName}
@@ -265,7 +265,7 @@ function MyJobs() {
           <Button id="All_btn" variant="dark" className="w-lg-auto" onClick={handleReturnJob}>
             Return Job
           </Button>
-        </Col>      
+        </Col>
       </Row>
 
       {/* Table */}
@@ -305,7 +305,7 @@ function MyJobs() {
                       ? `${job.employeeId.firstName} ${job.employeeId.lastName}`
                       : 'No Employee'}
                   </td>
-                 <td style={{ whiteSpace: "nowrap" }}>{job.employeeId?.email}</td>
+                  <td style={{ whiteSpace: "nowrap" }}>{job.employeeId?.email}</td>
                   <td style={{ whiteSpace: "nowrap" }}>{job.description}</td>
                   <td>{job.jobId?.[0]?.brandName || 'N/A'}</td>
                   <td style={{ whiteSpace: 'nowrap' }}>{job.jobId?.[0]?.subBrand || 'N/A'}</td>

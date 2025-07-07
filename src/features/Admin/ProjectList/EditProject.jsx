@@ -27,7 +27,7 @@ const DocumentList = () => {
         const confirm = window.confirm("Are you sure you want to delete this document?");
         if (!confirm) return;
         // Static delete handling
-        console.log(`Document with id ${id} deleted.`);
+        // console.log(`Document with id ${id} deleted.`);
     };
     return (
         <>
@@ -134,9 +134,9 @@ const EditProject = () => {
 
     const navigate = useNavigate();
     const location = useLocation();
-    const job = location?.state?.item;
 
-    // Handle missing job data
+    const job = location?.state?.item;
+        // Handle missing job data
     if (!job) {
         return (
             <div className="container mt-5 text-center">

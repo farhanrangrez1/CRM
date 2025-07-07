@@ -137,12 +137,25 @@ const projectsSlice = createSlice({
         state.loading = true;
         state.error = null;
       })
+      // .addCase(updateProject.fulfilled, (state, action) => {
+      //   const updated = action.payload;
+      //   const index = state.proposals.findIndex(p => p.id === updated.id);
+      //   if (index !== -1) {
+      //     state.proposals[index] = updated;
+      //   }
+      //   state.loading = false;
+      // })
       .addCase(updateProject.fulfilled, (state, action) => {
         const updated = action.payload;
-        const index = state.proposals.findIndex(p => p.id === updated.id);
+        if (!Array.isArray(state.proposals)) {
+          state.proposals = []; // fallback if ever undefined
+        }
+
+        const index = state.proposals.findIndex(p => p.id === updated.id || p._id === updated._id);
         if (index !== -1) {
           state.proposals[index] = updated;
         }
+
         state.loading = false;
       })
       .addCase(updateProject.rejected, (state, action) => {

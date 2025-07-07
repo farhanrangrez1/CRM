@@ -13,7 +13,7 @@ function AddTimeLog() {
   const { id } = useParams();
   const location = useLocation();
   const { log } = location.state || {};
-  console.log("ghiuo", log);
+  // console.log("ghiuo", log);
 
   const { project } = useSelector((state) => state.projects);
   const { job } = useSelector((state) => state.jobs);

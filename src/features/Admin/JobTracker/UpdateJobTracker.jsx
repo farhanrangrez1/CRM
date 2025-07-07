@@ -71,7 +71,7 @@ function UpdateJobTracker() {
       const apiUrl = 'http://localhost:5000/client/createClient';
 
       const res = await axios.post(apiUrl, formData);
-      console.log('Client Submitted:', res.data);
+      // console.log('Client Submitted:', res.data);
 
       toast.success('Client created successfully!');
 
@@ -152,15 +152,15 @@ function UpdateJobTracker() {
                 <input type="text" className="form-control" name="jobNumber" value={formData.jobNumber} onChange={handleChange} />
               </div> */}
               <div className="col-md-6">
-               <label className="form-label">Project Name</label>
-               <select className="form-control border-bold">
-                    <option value="">Select project</option>
-                    <option value="project1">Project 1</option>
-             <option value="project2">Project 2</option>
-    <option value="project3">Project 3</option>
-    {/* Add more options as needed */}
-  </select>
-</div>
+                <label className="form-label">Project Name</label>
+                <select className="form-control border-bold">
+                  <option value="">Select project</option>
+                  <option value="project1">Project 1</option>
+                  <option value="project2">Project 2</option>
+                  <option value="project3">Project 3</option>
+                  {/* Add more options as needed */}
+                </select>
+              </div>
               <div className="col-md-6">
                 <label className="form-label">Brand Name</label>
                 <input type="text" className="form-control" name="brandName" value={formData.brandName} onChange={handleChange} />

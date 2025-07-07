@@ -715,7 +715,7 @@ const ProjectView = ({ data }) => {
     // const { reduxProposals,  } = useSelector((state) => state?.proposal?.proposals);
     // Instead, get proposals from project.data or fallback to initialProposals
     const proposals = project && project.data && project.data.length > 0 ? project.data : initialProposals;
-    console.log(proposals, "proposals");
+    // console.log(proposals, "proposals");
 
     const [filterRows, setFilterRows] = useState([
         { field: '', value: '' }
