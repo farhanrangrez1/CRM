@@ -557,92 +557,43 @@ const LeadFlow = ({ data }) => {
       rejected: []
     });
 
-    // useEffect(() => {
-    //   if (!project || !Array.isArray(project)) return;
-
-    //   const initialData = {
-    //     active: project.filter(p => (p.status || '').toLowerCase() === "lead"),
-    //     pending: project.filter(p => (p.status || '').toLowerCase() === "bidding"),
-    //     closed: project.filter(p => (p.status || '').toLowerCase() === "signature"),
-    //     rejected: project.filter(p => (p.status || '').toLowerCase() === "expired"),
-    //   };
-
-    //   setKanbanData(initialData);
-    // }, [project]);
-
-
-    // const handleCardDrop = async (result) => {
-    //   const { source, destination, draggableId } = result;
-    //   if (!destination || (source.droppableId === destination.droppableId && source.index === destination.index)) return;
-
-    //   const statusMap = {
-    //     active: "Lead",
-    //     pending: "Bidding",
-    //     closed: "Signature",
-    //     rejected: "Expired"
-    //   };
-
-    //   const newStatus = statusMap[destination.droppableId];
-
-    //   // Optimistically update UI
-    //   dispatch(updateProposalStatusLocally({ id: draggableId, status: newStatus }));
-    //   setIsUpdating(true);
-
-    //   // Update local kanbanData immediately
-    //   setKanbanData(prevData => {
-    //     const updatedData = { ...prevData };
-    //     // Remove the item from its current stage
-    //     const currentStage = Object.keys(prevData).find(key => prevData[key].some(item => item._id === draggableId));
-    //     updatedData[currentStage] = updatedData[currentStage].filter(item => item._id !== draggableId);
-    //     // Add the item to the new stage
-    //     const foundItem = project.find(item => item._id === draggableId);
-    //     const updatedItem = { ...foundItem, status: newStatus };
-    //     updatedData[destination.droppableId].push(updatedItem);
-    //     return updatedData;
-    //   });
-
-    //   try {
-    //     await dispatch(updateProject({ id: draggableId, payload: { status: newStatus } }));
-    //     await dispatch(fetchProject());
-    //   } catch (error) {
-    //     console.error("Failed to update status", error);
-    //   }
-
-    //   setIsUpdating(false);
-    // };
+    
        useEffect(() => {
     const processProjects = async () => {
       if (!Array.isArray(project)) return;
 
-      // Step 1: Check all "signature" projects and update if completed
+      
       const updatedProjects = await Promise.all(
-        project.map(async (p) => {
-          const status = (p.status || "").toLowerCase();
+  project.map(async (p) => {
+    const status = (p.status || "").toLowerCase();
 
-          if (status === "signature") {
-            try {
-              const res = await axios.get(
-                `${apiUrl}/getEnvelopesByProjectId/${p._id}`
-              );
-              //  console.log(res.data.data)
-              if (res?.data?.data[0]?.current_status === "completed") {
-                await dispatch(
-                  updateProject({
-                    id: p._id,
-                    payload: { status: "Active Project" },
-                  })
-                );
-                 console.log("Signature is completed")
-                return { ...p, status: "completed" }; // Locally update for filtering
-              }
-            } catch (error) {
-              console.error(`Error checking project ${p._id}`, error.message);
-            }
-          }
+    if (status === "signature") {
+      try {
+        const res = await axios.get(
+          `${apiUrl}/getEnvelopesByProjectId/${p._id}`
+        );
 
-          return p;
-        })
-      );
+        if (res?.data?.data[0]?.current_status === "completed") {
+          const isTempPoles = p.tempPoles === "true"; // or === true if it's boolean
+          const newStatus = isTempPoles ? "Open" : "Active Project";
+
+          await dispatch(
+            updateProject({
+              id: p._id,
+              payload: { status: newStatus },
+            })
+          );
+          return { ...p, status: "completed" }; // Optional: update local copy
+        }
+      } catch (error) {
+        console.error(`Error checking project ${p._id}`, error.message);
+      }
+    }
+
+    return p;
+  })
+);
+
 
       // Step 2: Filter into Kanban columns
       const result = {

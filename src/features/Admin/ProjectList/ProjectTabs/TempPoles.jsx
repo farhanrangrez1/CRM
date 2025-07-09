@@ -577,24 +577,26 @@ const TempPoles = ({ data }) => {
   }));
 
 
-        function mapStatus(status) {
-            const map = {
-                "Open": "open",
-                "Need Payment": "needPayment",
-                "Need to Pay DWP": "needToPayDWP",
-                "Need to Install": "needToInstall",
-                "Inspection Scheduled": "inspectionScheduled",
-                "Passed Inspection": "passedInspection",
-                "Waiting on Meter": "waitingOnMeter",
-                "Remove Breakers": "removeBreakers",
-                "Meter Installed": "meterInstalled",
-                "Requested to Remove": "requestedToRemove",
-                "Temp Pole Removed": "tempPoleRemoved",
-                "Temp Pole Only": "tempPoleOnly",
-                "Lost": "lost"
-            };
-            return map[status] || "open";  
-        }
+       function mapStatus(status) {
+  const map = {
+    "open": "open",
+    "need payment": "needPayment",
+    "need to pay dwp": "needToPayDWP",
+    "need to install": "needToInstall",
+    "inspection scheduled": "inspectionScheduled",
+    "passed inspection": "passedInspection",
+    "waiting on meter": "waitingOnMeter",
+    "remove breakers": "removeBreakers",
+    "meter installed": "meterInstalled",
+    "requested to remove": "requestedToRemove",
+    "temp pole removed": "tempPoleRemoved",
+    "temp pole only": "tempPoleOnly",
+    "lost": "lost"
+  };
+
+  return map[status?.toLowerCase()] ?? null; // ✅ return null if not found
+}
+
 
         const dispatch = useDispatch();
         const [isUpdating, setIsUpdating] = useState(false);

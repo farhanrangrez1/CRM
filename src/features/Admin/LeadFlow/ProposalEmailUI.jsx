@@ -1,200 +1,4 @@
-// import React, { useState } from "react";
-// import "bootstrap/dist/css/bootstrap.min.css";
-
-// const ProposalEmailUI = () => {
-//   const proposalData = {
-//     sendTo: "bob@bobsburgers.com",
-//     subject: "Proposal for serdhbdf",
-//     message: `Hi,
-
-// Please find attached the proposal for serdhbdf. You can view and either accept or reject the proposal by clicking the following link:
-// ^Link^
-
-// Regards,
-// Lalit Singh`,
-//     pdfImagePreview: "https://cdn.openai.com/chatgpt/4caf8052-e5e5-41f9-9352-2cd78723a4cc.png",
-//   };
-
-//   const [selectedFile, setSelectedFile] = useState(null);
-
-//   const handleFileChange = (e) => {
-//     const file = e.target.files[0];
-//     if (file) {
-//       setSelectedFile({
-//         name: file.name,
-//         size: `${(file.size / 1024).toFixed(2)} KB`,
-//       });
-//     }
-//   };
-
-//   const handleProjectDocSelect = () => {
-//     const fakeFile = {
-//       name: "project-document.pdf",
-//       size: "240 KB",
-//     };
-//     setSelectedFile(fakeFile);
-//   };
-
-//   return (
-//     <div className="container-fluid bg-light p-4">
-//       <div className="row mb-4">
-//         <div className="col-12">
-//           <h5 className="text-muted">serdhbdf</h5>
-//           <p>Complete email details and verify preview to send out for signature.</p>
-//         </div>
-//       </div>
-//       <div className="row">
-//         {/* Email Form Section */}
-//         <div className="col-md-7 mb-4">
-//           <div className="card shadow-sm p-4">
-//             <h6 className="fw-bold mb-3">Email details</h6>
-//             <form>
-//               <div className="mb-3">
-//                 <label className="form-label">Send to</label>
-//                 <input type="email" className="form-control" value={proposalData.sendTo} readOnly />
-//               </div>
-
-//               <div className="mb-3">
-//                 <label className="form-label">Subject</label>
-//                 <input type="text" className="form-control" value={proposalData.subject} readOnly />
-//               </div>
-
-//               <div className="mb-3">
-//                 <label className="form-label">Message</label>
-//                 <textarea
-//                   className="form-control"
-//                   rows={6}
-//                   value={proposalData.message}
-//                   readOnly
-//                 ></textarea>
-//               </div>
-
-//               <div className="mb-3">
-//                 <label className="form-label">Attachments</label>
-
-//                 <div className="d-flex gap-2 mb-2">
-//                   <input type="file" onChange={handleFileChange} className="form-control" />
-//                   <button type="button" className="btn btn-outline-primary" onClick={handleProjectDocSelect}>
-//                     Select from Project
-//                   </button>
-//                 </div>
-
-//                 {selectedFile && (
-//                   <div className="d-flex justify-content-between align-items-center border p-2 rounded">
-//                     <span className="text-primary">📎 {selectedFile.name}</span>
-//                     <small className="text-muted">{selectedFile.size}</small>
-//                   </div>
-//                 )}
-//               </div>
-
-//               <button type="button" className="btn btn-success me-2">Send email</button>
-//               <button type="button" className="btn btn-outline-secondary">Discard</button>
-//             </form>
-
-//             <div className="mt-4">
-//               <button type="button" className="btn btn-link p-0">Advanced settings ▾</button>
-//             </div>
-//           </div>
-//         </div>
-
-//         {/* Proposal HTML Preview Section */}
-//         <div className="col-md-5">
-//           <div className="card shadow-sm p-3">
-//             <div className="d-flex justify-content-between align-items-center">
-//               <h6 className="fw-bold">Preview PDF</h6>
-//               <span className="text-muted">Page 1/1</span>
-//             </div>
-//             <div
-//               className="mt-3 border rounded overflow-auto"
-//               style={{ height: "600px", background: "#fff", padding: "1rem" }}
-//             >
-//               <div className="proposal">
-//                 <h5 className="text-center fw-bold border-bottom pb-2">PROPOSAL</h5>
-
-//                 <div className="row mb-3">
-//                   <div className="col-6"><strong>ATTN:</strong> 33</div>
-//                   <div className="col-6"><strong>PROJECT:</strong> serhbdhf</div>
-//                 </div>
-//                 <div className="row mb-3">
-//                   <div className="col-6">
-//                     <strong>TO:</strong><br />
-//                     Bob Belcher<br />
-//                     303 Ocean Avenue<br />
-//                     Jersey City, NJ 07305
-//                   </div>
-//                   <div className="col-6">
-//                     <strong>LOCATION:</strong> 303 Ocean Avenue<br />
-//                     Jersey City, NJ<br />
-//                     <strong>DATE:</strong> 7/2/2025
-//                   </div>
-//                 </div>
-
-//                 <p>
-//                   We propose to furnish all materials, equipment, and labor, subject to any exclusions listed below,
-//                   required to complete the following:
-//                 </p>
-
-//                 <table className="table table-bordered mt-3">
-//                   <tbody>
-//                     <tr>
-//                       <td>1.</td>
-//                       <td>dd</td>
-//                       <td className="text-end">$4,444.00</td>
-//                     </tr>
-//                     <tr>
-//                       <td>2.</td>
-//                       <td>interior</td>
-//                       <td className="text-end">$44.00</td>
-//                     </tr>
-//                     <tr>
-//                       <td colSpan="2" className="text-end"><strong>Total Proposal Value:</strong></td>
-//                       <td className="text-end fw-bold">$4,488.00</td>
-//                     </tr>
-//                   </tbody>
-//                 </table>
-
-//                 <p>
-//                   The above price is valid for 30 days. kiaan technology agrees that they will enter into a standard AIA
-//                   subcontract with General Contractor, and that basic provisions such as insurance and W-9 shall be in
-//                   place prior to start.
-//                 </p>
-
-//                 <div className="row mt-5 align-items-end">
-//                   <div className="col-6">
-//                     <p><strong>Contractor:</strong> <u>Lalit Singh</u><br />
-//                       <small>kiaan technology</small>
-//                     </p>
-//                   </div>
-//                   <div className="col-6 text-end">
-//                     <p><small>Date</small><br />7/2/2025</p>
-//                   </div>
-//                 </div>
-
-//                 <p><strong>ACCEPTANCE OF PROPOSAL:</strong> The above prices, scope, specifications and conditions are satisfactory and hereby accepted. You are authorized to do the work specified.</p>
-
-//                 <div className="row mt-4">
-//                   <div className="col-6">
-//                     <p><strong>ACCEPTED BY:</strong> _____________________________</p>
-//                   </div>
-//                   <div className="col-6">
-//                     <p>______________________</p>
-//                   </div>
-//                 </div>
-
-//                 <p className="text-center small mt-5">
-//                   kiaan technology · 02 Revenue Nagar Anpurna Road Above Bajaj Shorom · Indore, MP 452001
-//                 </p>
-//               </div>
-//             </div>
-//           </div>
-//         </div>
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default ProposalEmailUI;
-
+ 
 import React, { useState, useRef, useEffect } from "react";
 import jsPDF from "jspdf";
 import html2canvas from "html2canvas";
@@ -205,6 +9,7 @@ import { useDispatch } from "react-redux";
 import { fetchClient } from "../../../redux/slices/ClientSlice";
 import { useSelector } from "react-redux";
 import { apiUrl } from "../../../redux/utils/config";
+import { updateProject } from "../../../redux/slices/ProjectsSlice";
 const ProposalEmailUI = ({setShowAddInvoice}) => {
   const proposalRef = useRef();
   const [pdfUrl, setPdfUrl] = useState(null);
@@ -325,7 +130,7 @@ const ProposalEmailUI = ({setShowAddInvoice}) => {
     formData.append("attachment", selectedFile.file);
     formData.append("project_id", projectId);
 
-    try {
+    try { console.log("email sent")
       const response = await axios.post(
          `${apiUrl}/sendProposalForSignature`,
         formData,
@@ -333,7 +138,14 @@ const ProposalEmailUI = ({setShowAddInvoice}) => {
           headers: { "Content-Type": "multipart/form-data" },
         }
       );
+      await dispatch(
+                  updateProject({
+                    id: localStorage.getItem("proposalId"),
+                    payload: { status:  "Signature" },
+                  })
+                );
       toast.success("Email sent successfully!");
+      console.log("email sent successfully")
       setShowAddInvoice(true);
       // console.log(response.data);
     } catch (error) {
