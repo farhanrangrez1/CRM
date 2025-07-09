@@ -2054,17 +2054,10 @@ const LeadFlow = ({ data }) => {
       if (!destination || (source.droppableId === destination.droppableId && source.index === destination.index)) return;
 
       const statusMap = {
-
-        active: "active",
-        pending: "pending",
-        closed: "closed",
-        rejected: "rejected" 
-
-        // active: "Lead",
-        // pending: "Bidding",
-        // closed: "Signature",
-        // rejected: "Expired"
-
+        active: "Lead",
+        pending: "Bidding",
+        closed: "Signature",
+        rejected: "Expired"
       };
 
       const newStatus = statusMap[destination.droppableId];

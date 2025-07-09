@@ -326,7 +326,7 @@ const ProposalEmailUI = () => {
 
     try {
       const response = await axios.post(
-        "https://netaai-crm-backend-production-c306.up.railway.app/api/sendProposalEmail",
+        "https://hrb5wx2v-8000.inc1.devtunnels.ms/api/sendProposalForSignature",
         formData,
         {
           headers: { "Content-Type": "multipart/form-data" },
