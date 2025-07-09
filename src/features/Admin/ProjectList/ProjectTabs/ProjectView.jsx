@@ -1067,7 +1067,7 @@ const ProjectView = ({ data }) => {
                 "Done Final Payment": "doneFinalPayment",
                 "Photos of Job": "photosOfJob"
             };
-            return map[status] || "serviceCalls"; // fallback
+            return map[status] ?? null; 
         }
 
         const dispatch = useDispatch();
@@ -1269,7 +1269,7 @@ const ProjectView = ({ data }) => {
                                                         onClick={() => {
                                                             localStorage.setItem("proposalId", item._id);
                                                             localStorage.setItem("invoice", JSON.stringify(item));
-                                                            navigate("/admin/Project/Details", { state: { item: item } });
+                                                              navigate("/admin/LeadFlow/Details", { state: { item: item } });
                                                         }}
                                                     >
                                                         <div className="fw-semibold text-primary" style={{ fontSize: 15 }}>

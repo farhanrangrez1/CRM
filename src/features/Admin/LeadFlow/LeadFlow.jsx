@@ -900,7 +900,7 @@ const LeadFlow = ({ data }) => {
                       onClick={() => navigate("/admin/AddCostEstimates")}
                       className="d-flex align-items-center"
                     >
-                      Add Proposal
+                      Create Proposal
                     </Button>
                   </ButtonGroup>
                 </div>

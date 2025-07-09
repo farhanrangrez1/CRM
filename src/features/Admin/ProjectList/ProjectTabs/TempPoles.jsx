@@ -773,7 +773,7 @@ const TempPoles = ({ data }) => {
                                                         onClick={() => {
                                                             localStorage.setItem("proposalId", item._id);
                                                             localStorage.setItem("invoice", JSON.stringify(item));
-                                                            navigate("/admin/Project/Details", { state: { item: item } });
+                                                            navigate("/admin/LeadFlow/Details", { state: { item: item } });
                                                         }}
                                                     >
                                                         <div className="fw-semibold text-primary" style={{ fontSize: 15 }}>
