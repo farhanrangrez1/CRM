@@ -34,7 +34,8 @@ function AddProjectList() {
     },
     budgetAmount: '',
     currency: 'USD',
-    totalTime: ''
+    totalTime: '',
+    tempPoles: false
   });
 
   // ✅ Populate form in edit mode
@@ -43,7 +44,8 @@ function AddProjectList() {
       setFormData({
         ...project,
         clientId: project.clientId?._id || '', // 🔧 Fix here
-        projectRequirements: project.projectRequirements?.[0] || {}
+        projectRequirements: project.projectRequirements?.[0] || {},
+        tempPoles: project.tempPoles || false
       });
     } else if (paramId) {
       dispatch(fetchProjectById(paramId)).then((res) => {
@@ -202,6 +204,20 @@ function AddProjectList() {
                   <option value="low">Low</option>
                 </Form.Select>
               </Form.Group>
+<Form.Group className="mb-3 mt-6">
+  <Form.Check
+    type="checkbox"
+    label="Temp Poles"
+    name="tempPoles"
+    checked={formData.tempPoles}
+    onChange={(e) => setFormData({ ...formData, tempPoles: e.target.checked })}
+  />
+</Form.Group>
+
+                <Form.Group className="mb-3">
+  
+</Form.Group>
+
             </Col>
             {/* <Col md={6}>
               <Form.Group>
@@ -222,6 +238,7 @@ function AddProjectList() {
                 </Form.Select>
               </Form.Group>
             </Col> */}
+            
           </Row>
 
           <Form.Group className="mb-3">
