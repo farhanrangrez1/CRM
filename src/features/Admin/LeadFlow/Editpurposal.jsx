@@ -1836,7 +1836,7 @@ const Editpurposal = () => {
                   </button>
                 </div>
                 <div className="">
-                  <ProposalEmailUI />
+                  <ProposalEmailUI setShowAddInvoice={setShowAddInvoice} />
                 </div>
               </div>
             )}

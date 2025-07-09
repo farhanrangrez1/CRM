@@ -204,8 +204,8 @@ import { toast } from "react-toastify";
 import { useDispatch } from "react-redux";
 import { fetchClient } from "../../../redux/slices/ClientSlice";
 import { useSelector } from "react-redux";
-
-const ProposalEmailUI = () => {
+import { apiUrl } from "../../../redux/utils/config";
+const ProposalEmailUI = ({setShowAddInvoice}) => {
   const proposalRef = useRef();
   const [pdfUrl, setPdfUrl] = useState(null);
   const [selectedFile, setSelectedFile] = useState(null);
@@ -219,7 +219,7 @@ const ProposalEmailUI = () => {
   useEffect(() => {
     dispatch(fetchClient());
   }, [dispatch]);
-
+ const projectId = localStorage.getItem("proposalId")
 
   useEffect(() => {
     const storedSignature = localStorage.getItem("SignatureData");
@@ -323,16 +323,18 @@ const ProposalEmailUI = () => {
     formData.append("subject", proposalData.subject);
     formData.append("message", proposalData.message);
     formData.append("attachment", selectedFile.file);
+    formData.append("project_id", projectId);
 
     try {
       const response = await axios.post(
-        "https://hrb5wx2v-8000.inc1.devtunnels.ms/api/sendProposalForSignature",
+         `${apiUrl}/sendProposalForSignature`,
         formData,
         {
           headers: { "Content-Type": "multipart/form-data" },
         }
       );
       toast.success("Email sent successfully!");
+      setShowAddInvoice(true);
       // console.log(response.data);
     } catch (error) {
       toast.error("Failed to send email.");
