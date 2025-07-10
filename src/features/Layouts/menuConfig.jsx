@@ -56,37 +56,37 @@ export const adminMenuItems = [
       { title: "Completed", path: "/admin/completedJobs" },
     ],
   },
-  {
-    title: "Designer Panel",
-    icon: <FaPencilRuler className="menu-icon" />,
-    submenu: [
-      { title: "My Jobs", path: "/admin/MyJobs" },
-      { title: "Time Logs", path: "/admin/TimeLogs" },
-    ],
-  },
+  // {
+  //   title: "Designer Panel",
+  //   icon: <FaPencilRuler className="menu-icon" />,
+  //   submenu: [
+  //     { title: "My Jobs", path: "/admin/MyJobs" },
+  //     { title: "Time Logs", path: "/admin/TimeLogs" },
+  //   ],
+  // },
   {
     title: "Cost Estimates",
     icon: <FaFileInvoiceDollar className="menu-icon" />,
     path: "/admin/CostEstimates",
   },
-  {
-    title: "Purchase Orders",
-    icon: <FaShoppingCart className="menu-icon" />,
-    submenu: [
-      { title: "Receivable POs", path: "/admin/receivable" },
-      // { title: "Issuable POs", path: "/admin/IssuablePurchase" },
-    ],
-  },
+  // {
+  //   title: "Purchase Orders",
+  //   icon: <FaShoppingCart className="menu-icon" />,
+  //   submenu: [
+  //     { title: "Receivable POs", path: "/admin/receivable" },
+  //     // { title: "Issuable POs", path: "/admin/IssuablePurchase" },
+  //   ],
+  // },
   {
     title: "Invoicing & Billing",
     icon: <FaFileAlt className="menu-icon" />,
     path: "/admin/Invoicing_Billing",
   },
-  {
-    title: "Timesheet & Worklog",
-    icon: <FaClock className="menu-icon" />,
-    path: "/admin/TimesheetWorklog",
-  },
+  // {
+  //   title: "Timesheet & Worklog",
+  //   icon: <FaClock className="menu-icon" />,
+  //   path: "/admin/TimesheetWorklog",
+  // },
   {
     title: "Client/Supplier",
     icon: <FaUsersCog className="menu-icon" />,
