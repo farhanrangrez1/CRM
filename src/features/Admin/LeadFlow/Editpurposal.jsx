@@ -608,7 +608,7 @@ const Editpurposal = () => {
           </div>
 
         );
-      case "Logs":
+      case "Daily Logs":
         return (
           <div className="tab-content-box">
             <DailyLogs />
@@ -749,7 +749,7 @@ const Editpurposal = () => {
           // "Contract & Change Orders",
           "Create Proposal",
           "Documents",
-          "Logs",
+          "Daily Logs",
           // "Activity",
           // "Reports",
         ].map((tab, i) => (

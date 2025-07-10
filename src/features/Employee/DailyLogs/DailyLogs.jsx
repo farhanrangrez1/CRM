@@ -140,11 +140,11 @@ const DailyLogs = () => {
   // console.log("dss", logCommentsMap)
   return (
     <div className="p-4">
-      <div className="mb-3">
+      {/* <div className="mb-3">
         <Button variant="outline-secondary" onClick={() => navigate(-1)}>
           <FaArrowLeft className="me-1" /> Back
         </Button>
-      </div>
+      </div> */}
 
       <div className="d-flex justify-content-between align-items-center mb-4">
         <h4 className="fw-bold mb-0">Daily Logs</h4>
@@ -373,9 +373,9 @@ const DailyLogs = () => {
             <Row>
               <Col md={6}>
                 <Form.Group className="mb-3">
-                  <Form.Label>Job</Form.Label>
+                  <Form.Label>Project</Form.Label>
                   <Form.Select name="job_id" value={formData.job_id} onChange={handleFormChange} required>
-                    <option value="">Select Job</option>
+                    <option value="">Select Project</option>
                     {project?.map((proposal) => (
                       <option key={proposal?._id} value={proposal?._id}>
                         {proposal?.projectName}
