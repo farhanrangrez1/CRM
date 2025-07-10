@@ -1,4 +1,4 @@
- 
+
 
 import React, { useEffect, useState } from "react";
 import axios from "axios";
@@ -78,9 +78,9 @@ function AddInvoice({ onInvoiceComplete }) {
     start_date: "",
     end_date: ""
   });
-  
+
   useEffect(() => {
-     
+
     if (invoice?._id) {
       // console.log(invoice?.id);
       dispatch(getDocumentsByProposalId(invoice?._id))
@@ -145,44 +145,44 @@ function AddInvoice({ onInvoiceComplete }) {
   const tax = subtotal * taxRate;
   const total = subtotal + tax;
 
-  
 
-   const handleSubmit = async (e, isSignatureFlow = false) => {
-  if (e) e.preventDefault();
 
-  const payload = {
-    ...formData,
-    line_items: items,
+  const handleSubmit = async (e, isSignatureFlow = false) => {
+    if (e) e.preventDefault();
+
+    const payload = {
+      ...formData,
+      line_items: items,
+    };
+
+    try {
+      if (existingDocId) {
+        // Update document
+        await dispatch(updateDocumentRecord({ id: existingDocId, data: payload })).unwrap();
+        toast.success("Document updated successfully");
+      } else {
+        // Create document
+        await dispatch(createDocumentRecord(payload)).unwrap();
+
+        // Set project to bidding
+        // await dispatch(updateProject({ id, payload: { status: "Bidding" } })).unwrap();
+        toast.success("Document created successfully");
+      }
+
+      // ✅ If this was triggered from "Send Out For Signature"
+      if (isSignatureFlow) {
+        const fullPayload = {
+          ...invoice,
+          ...formData,
+          line_items: items,
+        };
+        localStorage.setItem("SignatureData", JSON.stringify(fullPayload));
+        onInvoiceComplete(); // Proceed to signature
+      }
+    } catch (error) {
+      toast.error("Something went wrong while saving the document.");
+    }
   };
-
-  try {
-    if (existingDocId) {
-      // Update document
-      await dispatch(updateDocumentRecord({ id: existingDocId, data: payload })).unwrap();
-      toast.success("Document updated successfully");
-    } else {
-      // Create document
-      await dispatch(createDocumentRecord(payload)).unwrap();
-
-      // Set project to bidding
-      await dispatch(updateProject({ id, payload: { status: "Bidding" } })).unwrap();
-      toast.success("Document created successfully");
-    }
-
-    // ✅ If this was triggered from "Send Out For Signature"
-    if (isSignatureFlow) {
-      const fullPayload = {
-        ...invoice,
-        ...formData,
-        line_items: items,
-      };
-      localStorage.setItem("SignatureData", JSON.stringify(fullPayload));
-      onInvoiceComplete(); // Proceed to signature
-    }
-  } catch (error) {
-    toast.error("Something went wrong while saving the document.");
-  }
-};
 
 
 
@@ -476,12 +476,12 @@ function AddInvoice({ onInvoiceComplete }) {
               Send Out For Signature
             </button> */}
             <button
-  type="button"
-  className="btn btn-dark"
-  onClick={() => handleSubmit(null, true)} // custom flag
->
-  Send Out For Signature
-</button>
+              type="button"
+              className="btn btn-dark"
+              onClick={() => handleSubmit(null, true)} // custom flag
+            >
+              Send Out For Signature
+            </button>
 
           </div>
         </form>

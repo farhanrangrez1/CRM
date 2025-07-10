@@ -1,4 +1,4 @@
- 
+
 import React, { useState, useRef, useEffect } from "react";
 import jsPDF from "jspdf";
 import html2canvas from "html2canvas";
@@ -10,7 +10,7 @@ import { fetchClient } from "../../../redux/slices/ClientSlice";
 import { useSelector } from "react-redux";
 import { apiUrl } from "../../../redux/utils/config";
 import { updateProject } from "../../../redux/slices/ProjectsSlice";
-const ProposalEmailUI = ({setShowAddInvoice}) => {
+const ProposalEmailUI = ({ setShowAddInvoice }) => {
   const proposalRef = useRef();
   const [pdfUrl, setPdfUrl] = useState(null);
   const [selectedFile, setSelectedFile] = useState(null);
@@ -24,7 +24,7 @@ const ProposalEmailUI = ({setShowAddInvoice}) => {
   useEffect(() => {
     dispatch(fetchClient());
   }, [dispatch]);
- const projectId = localStorage.getItem("proposalId")
+  const projectId = localStorage.getItem("proposalId")
 
   useEffect(() => {
     const storedSignature = localStorage.getItem("SignatureData");
@@ -130,20 +130,22 @@ const ProposalEmailUI = ({setShowAddInvoice}) => {
     formData.append("attachment", selectedFile.file);
     formData.append("project_id", projectId);
 
-    try { console.log("email sent")
+    try {
+      console.log("email sent")
       const response = await axios.post(
-         `${apiUrl}/sendProposalForSignature`,
+        `${apiUrl}/sendProposalForSignature`,
         formData,
         {
           headers: { "Content-Type": "multipart/form-data" },
         }
       );
       await dispatch(
-                  updateProject({
-                    id: localStorage.getItem("proposalId"),
-                    payload: { status:  "Signature" },
-                  })
-                );
+        updateProject({
+          id: localStorage.getItem("proposalId"),
+          // payload: { status: "Signature" },
+          payload: { status: "Bidding" },
+        })
+      );
       toast.success("Email sent successfully!");
       console.log("email sent successfully")
       setShowAddInvoice(true);
