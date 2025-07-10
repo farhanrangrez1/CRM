@@ -18,62 +18,7 @@ import { createDocument, fetchDocumentById } from "../../../redux/slices/saveDoc
 import { useDispatch, useSelector } from "react-redux";
 import DocumentList from "./DocumentList";
 import JobCost from "./JobCost";
-// const DocumentList = () => {
-//   const documents = [
-//     { id: 1, title: "Document 1", file_urls: ["example_file_1.pdf"] },
-//     { id: 2, title: "Document 2", file_urls: ["example_file_2.pdf"] },
-//   ];
-//   const handlePreview = (url) => {
-//     // Static preview handling
-//   };
-//   const handleDownload = (url) => {
-//     const a = document.createElement("a");
-//     a.href = url;
-//     a.download = url.split("/").pop();
-//     a.click();
-//   };
-//   const handleDelete = (id) => {
-//     const confirm = window.confirm("Are you sure you want to delete this document?");
-//     if (!confirm) return;
-//     // Static delete handling
-//     console.log(`Document with id ${id} deleted.`);
-//   };
-//   return (
-//     <>
-//       <div className="container mt-4">
-//         <h4 className="fw-bold mb-3">Uploaded Documents</h4>
-//         <ul className="list-group">
-//           {documents.map((doc) => (
-//             <li key={doc.id} className="list-group-item d-flex justify-content-between align-items-center">
-//               <span
-//                 className="text-primary cursor-pointer"
-//                 style={{ cursor: "pointer" }}
-//                 onClick={() => handlePreview(doc.file_urls[0])}
-//               >
-//                 {doc.title}
-//               </span>
-//               <div>
-//                 <button
-//                   className="btn btn-sm btn-outline-success me-2"
-//                   onClick={() => handleDownload(doc.file_urls[0])}
-//                 >
-//                   Download
-//                 </button>
-//                 <button
-//                   className="btn btn-sm btn-outline-danger"
-//                   onClick={() => handleDelete(doc.id)}
-//                 >
-//                   Delete
-//                 </button>
-//               </div>
-//             </li>
-//           ))}
-//         </ul>
-//       </div>
-//     </>
-//   );
-// };
-
+ 
 const Editpurposal = () => {
   const [manager, setManager] = useState(null);
   const [lead, setLead] = useState(null);
@@ -153,8 +98,10 @@ const Editpurposal = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const job = location.state.item;
-  const project_id = localStorage.getItem("proposalId");
-  const proposalId = localStorage.getItem("proposalId")
+  // const project_id = localStorage.getItem("proposalId");
+  const project_id = job?.id;
+  const proposalId =  job?.id;
+  
   const resetForm = () => {
     setPhaseName("");
     setMaterialsBudget("");
