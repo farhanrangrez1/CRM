@@ -142,7 +142,7 @@ export const adminMenuItems = [
     ],
   },
   {
-    title: "Production",
+    title: "Tasks",
     icon: <FaIndustry className="menu-icon" />,
     permissionKey: "tasks",
     submenu: [

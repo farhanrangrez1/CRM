@@ -876,7 +876,7 @@ const LeadFlow = ({ data }) => {
 
 
                 <div className="col-12 col-md-6 d-flex justify-content-md-end gap-2 mb-3">
-                  <ButtonGroup>
+                  {/* <ButtonGroup> */}
                     {/* <Button
                       variant={activeTab === 'manage' ? 'primary' : 'outline-primary'}
                       active={activeTab === 'manage'}
@@ -902,7 +902,16 @@ const LeadFlow = ({ data }) => {
                     >
                       Create Proposal
                     </Button>
-                  </ButtonGroup>
+                     <Button
+                      variant='primary'
+                      // active={activeTab === 'reports'}
+                      // onClick={() => navigate("/admin/AddProjectList")}
+                      onClick={() => navigate("/admin/AddProjectList")}
+                      className="d-flex align-items-center"
+                    >
+                      Create Project
+                    </Button>
+                  {/* </ButtonGroup> */}
                 </div>
 
               </div>

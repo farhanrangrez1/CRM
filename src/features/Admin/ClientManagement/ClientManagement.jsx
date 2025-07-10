@@ -181,7 +181,7 @@ function ClientManagement() {
                 <th>Email</th>
                 <th>Phone</th>
                 <th>Industry</th>
-                <th>Status</th>
+                {/* <th>Status</th> */}
                 <th>Actions</th>
               </tr>
             </thead>
@@ -195,11 +195,11 @@ function ClientManagement() {
                     <td style={{ whiteSpace: "nowrap" }}>{client.contactPersons?.[0]?.email || 'N/A'}</td>
                     <td style={{ whiteSpace: "nowrap" }}>{client.contactPersons?.[0]?.phone || 'N/A'}</td>
                     <td style={{ whiteSpace: "nowrap" }}>{client.industry || 'N/A'}</td>
-                    <td>
-                      <span className={getStatusBadgeClass(client.Status)}>
+                    {/* <td> */}
+                      {/* <span className={getStatusBadgeClass(client.Status)}>
                         {client.Status || 'Unknown'}
-                      </span>
-                    </td>
+                      </span> */}
+                    {/* </td> */}
                     <td>
                       <div className="action-buttons d-flex">
                         <Button onClick={() => UpdateData(client)} id="icone_btn" size="sm">
