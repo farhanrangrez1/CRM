@@ -1,460 +1,22 @@
-import React, { useEffect, useState } from 'react';
-import { useLocation, useNavigate, useParams } from 'react-router-dom';
-import axios from 'axios';
-import { useDispatch, useSelector } from 'react-redux';
-import { fetchusers, SignUp, UpdateUsers, updateusers } from '../../../redux/slices/userSlice';
-import { toast, ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-
-function UserRoleModal() {
-  const navigate = useNavigate();
-  const dispatch = useDispatch();
-
-  const { id } = useParams();
-  const location = useLocation();
-  const { user } = location.state || {};
-  const _id = user?._id;
-  // console.log("hhhhhhhhhh", user);
-
-  const { userAll, loading, error } = useSelector((state) => state.user);
-  useEffect(() => {
-    dispatch(fetchusers());
-  }, [dispatch]);
-
-  const [formData, setFormData] = useState({
-    firstName: '',
-    lastName: '',
-    email: '',
-    phone: '',
-    password: '',
-    passwordConfirm: '',
-    role: '',
-    assign: '',
-    state: '',
-    country: '',
-    image: null,
-    permissions: {
-      dashboardAccess: false,
-      clientManagement: false,
-      projectManagement: false,
-      designTools: false,
-      financialManagement: false,
-      userManagement: false,
-      reportGeneration: false,
-      systemSettings: false
-    },
-    accessLevel: ''
-  });
-  const [showPasswordMismatch, setShowPasswordMismatch] = useState(false);
-
-  const handleInputChange = (e) => {
-    const { name, value, type, files } = e.target;
-    if (type === 'file') {
-      setFormData(prev => ({
-        ...prev,
-        [name]: files[0]
-      }));
-    } else {
-      setFormData(prev => ({
-        ...prev,
-        [name]: value
-      }));
-      // Real-time password match check
-      if (name === 'password' || name === 'passwordConfirm') {
-        setShowPasswordMismatch(
-          name === 'password'
-            ? value !== formData.passwordConfirm && formData.passwordConfirm !== ''
-            : value !== formData.password && value !== ''
-        );
-      }
-    }
-  };
-  useEffect(() => {
-    if (user) {
-      let parsedPermissions = {};
-      let parsedAccessLevel = 'fullAccess';
-
-      try {
-        parsedPermissions = typeof user.permissions === 'string'
-          ? JSON.parse(user.permissions)
-          : user.permissions || {};
-
-        const accessLevelData = typeof user.accessLevel === 'string'
-          ? JSON.parse(user.accessLevel)
-          : {};
-
-        parsedAccessLevel = Object.keys(accessLevelData).find(key => accessLevelData[key]) || 'fullAccess';
-      } catch (error) {
-        console.error('Error parsing permissions or access level:', error);
-      }
-
-      setFormData({
-        firstName: user.firstName || '',
-        lastName: user.lastName || '',
-        email: user.email || '',
-        phone: user.phone || '',
-        password: '',
-        passwordConfirm: '',
-        state: user.state || '',
-        country: user.country || '',
-        assign: user.assign || 'Not Assign',
-        image: user.image || null,
-        role: user.role || '',
-        permissions: {
-          dashboardAccess: false,
-          clientManagement: false,
-          projectManagement: false,
-          designTools: false,
-          financialManagement: false,
-          userManagement: false,
-          reportGeneration: false,
-          systemSettings: false,
-          ...parsedPermissions
-        },
-        accessLevel: parsedAccessLevel
-      });
-
-    }
-  }, [user]);
-
-  const handlePermissionChange = (e) => {
-    const { name } = e.target;
-    const updatedpermissions = Object.fromEntries(
-      Object.keys(formData.permissions).map((key) => [key, key === name])
-    );
-    setFormData(prev => ({
-      ...prev,
-      permissions: updatedpermissions
-    }));
-  };
-
-  const handleaccessLevelChange = (e) => {
-    setFormData(prev => ({
-      ...prev,
-      accessLevel: e.target.value
-    }));
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-
-    if (!_id && formData.password !== formData.passwordConfirm) {
-      toast.error('Passwords do not match!');
-      return;
-    }
-
-    const filteredpermissions = Object.fromEntries(
-      Object.entries(formData.permissions).filter(([_, value]) => value === true)
-    );
-
-    const accessLevelPayload = {
-      [formData.accessLevel]: true
-    };
-
-    // Use FormData to send image as binary
-    const data = new FormData();
-    data.append('firstName', formData.firstName);
-    data.append('lastName', formData.lastName);
-    data.append('email', formData.email);
-    data.append('phone', formData.phone);
-    if (!_id) {
-      data.append('password', formData.password);
-      data.append('passwordConfirm', formData.passwordConfirm);
-    }
-    data.append('state', formData.state);
-    data.append('country', formData.country);
-    data.append('assign', formData.assign);
-    data.append('role', formData.role);
-    data.append('permissions', JSON.stringify(filteredpermissions));
-    data.append('accessLevel', JSON.stringify(accessLevelPayload));
-    if (formData.image && typeof formData.image !== 'string') {
-      data.append('image', formData.image);
-    }
-
-    // console.log('Payload to be sent (FormData):', data);
-
-    if (_id) {
-      // For update, you may need to adjust the action to accept FormData
-      dispatch(UpdateUsers({ _id, data }))
-        .unwrap()
-        .then(() => {
-          toast.success("User updated successfully!");
-          navigate('/admin/UserRoles', { state: { openTab: 'users' } })
-          dispatch(fetchusers());
-        })
-        .catch((err) => {
-          const message = err?.message || (typeof err === 'string' ? err : "Failed to update user!");
-          toast.error(message);
-        });
-    } else {
-      dispatch(SignUp(data))
-        .unwrap()
-        .then(() => {
-          navigate('/admin/UserRoles', { state: { openTab: 'users' } });
-          toast.success("User created successfully!");
-          dispatch(fetchusers());
-        })
-        .catch((err) => {
-          const message = err?.message || (typeof err === 'string' ? err : "Error creating user");
-          toast.error(message);
-        });
-    }
-  };
-
-
-  // const handleSubmit = async (e) => {
-  //   e.preventDefault();
-
-  //   const filteredpermissions = Object.fromEntries(
-  //     Object.entries(formData.permissions).filter(([_, value]) => value === true)
-  //   );
-
-  //   const payload = {
-  //     role: formData.role,
-  //     roleDescription: formData.roleDescription,
-  //     permissions: filteredpermissions,
-  //     accessLevel: formData.accessLevel
-  //   };
-
-  //   console.log('Payload to be sent:', payload);
-  //   try {
-  //     await axios.post('/api/roles', payload);
-  //     navigate(-1);
-  //   } catch (error) {
-  //     console.error('Error submitting form:', error);
-  //     alert('Failed to create role. Please try again.');
-  //   }
-  // };
-
-  const handleCancel = () => {
-    navigate(-1);
-  };
-
-  return (
-    <div className="container py-4">
-      <div className="card shadow-sm">
-        <div className="card-body">
-          <h5 className="card-title mb-4">Add New User</h5>
-          <form onSubmit={handleSubmit}>
-
-            <div style={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
-              {formData.image && (
-                <img src={typeof formData.image === 'string' ? formData.image : URL.createObjectURL(formData.image)} alt="Preview" className="img-thumbnail mt-2" style={{ maxWidth: '120px' }} />
-              )}
-            </div>
-            <div className="col-md-6">
-              <label className="form-label">Profile Image</label>
-              <input type="file" className="form-control" name="image" accept="image/*" onChange={handleInputChange} required />
-            </div>
-            <div className="row g-3 mb-3">
-              <div className="col-md-6">
-                <label className="form-label">First Name</label>
-                <input type="text" className="form-control" name="firstName" value={formData.firstName} onChange={handleInputChange} required />
-              </div>
-              <div className="col-md-6">
-                <label className="form-label">Last Name</label>
-                <input type="text" className="form-control" name="lastName" value={formData.lastName} onChange={handleInputChange} required />
-              </div>
-            </div>
-            <div className="row g-3 mb-3">
-              <div className="col-md-6">
-                <label className="form-label">Email</label>
-                <input type="email" className="form-control" name="email" value={formData.email} onChange={handleInputChange} required />
-              </div>
-              <div className="col-md-6">
-                <label className="form-label">Phone</label>
-                <input type="text" className="form-control" name="phone" value={formData.phone} onChange={handleInputChange} required />
-              </div>
-            </div>
-            {!_id && (
-              <div className="row g-3 mb-3">
-                <div className="col-md-6">
-                  <label className="form-label">Password</label>
-                  <input type="password" className="form-control" name="password" value={formData.password} onChange={handleInputChange} required />
-                </div>
-                <div className="col-md-6">
-                  <label className="form-label">Confirm Password</label>
-                  <input type="password" className="form-control" name="passwordConfirm" value={formData.passwordConfirm} onChange={handleInputChange} required />
-                  {showPasswordMismatch && (
-                    <div style={{ color: 'red', fontSize: '0.9em' }}>Passwords do not match!</div>
-                  )}
-                </div>
-              </div>
-            )}
-            <div className="row g-3 mb-3">
-              <div className="col-md-6">
-                <label className="form-label">State</label>
-                <input type="text" className="form-control" name="state" value={formData.state} onChange={handleInputChange} required />
-              </div>
-              <div className="col-md-6">
-                <label className="form-label">Country</label>
-                <input type="text" className="form-control" name="country" value={formData.country} onChange={handleInputChange} required />
-              </div>
-            </div>
-            <div className="row g-3 mb-3">
-              <div className="col-md-6">
-                <label className="form-label">Assign</label>
-                <select className="form-select" name="assign" value={formData.assign} onChange={handleInputChange} required>
-                  <option value="Not Assign">Not Assign</option>
-                  <option value="Designer">Designer</option>
-                  <option value="Production">Production</option>
-                </select>
-              </div>
-
-              <div className="col-md-6">
-                <label className="form-label">Role Name</label>
-                <select
-                  className="form-select"
-                  name="role"
-                  value={formData.role}
-                  onChange={handleInputChange}
-                  required
-                >
-                  <option value="">Select a role</option>
-                  <option value="admin">Admin</option>
-                  <option value="client">Client</option>
-                  <option value="employee">Employee</option>
-                </select>
-              </div>
-            </div>
-
-
-            <div className="mb-4">
-              <label className="form-label">permissions (Select Only One)</label>
-              <div className="row g-3">
-                {Object.keys(formData.permissions).map((key) => (
-                  <div className="col-md-6" key={key}>
-                    <div className="form-check">
-                      <input
-                        type="checkbox"
-                        className="form-check-input"
-                        name={key}
-                        checked={formData.permissions[key]}
-                        onChange={handlePermissionChange}
-                      />
-                      <label className="form-check-label text-capitalize">
-                        {key.replace(/([A-Z])/g, ' $1')}
-                      </label>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            <div className="mb-4">
-              <label className="form-label">Access Level</label>
-              <div>
-                {['fullAccess', 'limitedAccess', 'viewOnly'].map((level) => (
-                  <div className="form-check" key={level}>
-                    <input
-                      type="radio"
-                      className="form-check-input"
-                      name="accessLevel"
-                      value={level}
-                      checked={formData.accessLevel === level}
-                      onChange={handleaccessLevelChange}
-                    />
-                    <label className="form-check-label text-capitalize">{level.replace(/([A-Z])/g, ' $1')}</label>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            <div className="d-flex justify-content-end gap-2">
-              <button type="button" className="btn btn-outline-secondary" onClick={handleCancel}>Cancel</button>
-              <button type="submit" className="btn btn-dark">Create User</button>
-            </div>
-          </form>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-export default UserRoleModal;
-
 // import React, { useEffect, useState } from 'react';
 // import { useLocation, useNavigate, useParams } from 'react-router-dom';
+// import axios from 'axios';
 // import { useDispatch, useSelector } from 'react-redux';
-// import { fetchusers, SignUp, UpdateUsers } from '../../../redux/slices/userSlice';
-// import { toast } from 'react-toastify';
+// import { fetchusers, SignUp, UpdateUsers, updateusers } from '../../../redux/slices/userSlice';
+// import { toast, ToastContainer } from 'react-toastify';
 // import 'react-toastify/dist/ReactToastify.css';
-
-// const groupedPermissions = {
-//   "Dashboard": [
-//     "viewDashboard",
-//     "viewAnalytics",
-//     "viewQuickStats"
-//   ],
-//   "Client Management": [
-//     "viewClients",
-//     "editClients",
-//     "deleteClients",
-//     "addClients"
-//   ],
-//   "Project Management": [
-//     "viewProjects",
-//     "editProjects",
-//     "deleteProjects",
-//     "addProjects"
-//   ],
-//   "Daily Logs": [
-//     "viewDailyLogs",
-//     "addDailyLogs",
-//     "editDailyLogs",
-//     "deleteDailyLogs",
-//     "exportDailyLogs"
-//   ],
-//   "Project Subsections": [
-//     "viewProjectOverview",
-//     "viewProjectTasks",
-//     "viewProjectFiles",
-//     "viewProjectSchedule",
-//     "viewProjectBudget",
-//     "viewProjectTeam"
-//   ],
-//   "Design Tools": [
-//     "accessDesignBoard",
-//     "viewDesignRequests",
-//     "editDesignAssets"
-//   ],
-//   "Financial Management": [
-//     "viewInvoices",
-//     "editInvoices",
-//     "viewEstimates",
-//     "viewPayments"
-//   ],
-//   "User Management": [
-//     "viewUsers",
-//     "editUsers",
-//     "deleteUsers",
-//     "assignRoles"
-//   ],
-//   "Report Generation": [
-//     "viewReports",
-//     "exportReports"
-//   ],
-//   "System Settings": [
-//     "manageSettings",
-//     "manageIntegrations",
-//     "manageBackups"
-//   ]
-// };
-
-// const defaultPermissions = Object.values(groupedPermissions).flat().reduce((acc, key) => {
-//   acc[key] = false;
-//   return acc;
-// }, {});
 
 // function UserRoleModal() {
 //   const navigate = useNavigate();
 //   const dispatch = useDispatch();
+
 //   const { id } = useParams();
 //   const location = useLocation();
 //   const { user } = location.state || {};
 //   const _id = user?._id;
+//   // console.log("hhhhhhhhhh", user);
 
-//   const { userAll } = useSelector((state) => state.user);
+//   const { userAll, loading, error } = useSelector((state) => state.user);
 //   useEffect(() => {
 //     dispatch(fetchusers());
 //   }, [dispatch]);
@@ -471,10 +33,18 @@ export default UserRoleModal;
 //     state: '',
 //     country: '',
 //     image: null,
-//     permissions: defaultPermissions,
+//     permissions: {
+//       dashboardAccess: false,
+//       clientManagement: false,
+//       projectManagement: false,
+//       designTools: false,
+//       financialManagement: false,
+//       userManagement: false,
+//       reportGeneration: false,
+//       systemSettings: false
+//     },
 //     accessLevel: ''
 //   });
-
 //   const [showPasswordMismatch, setShowPasswordMismatch] = useState(false);
 
 //   const handleInputChange = (e) => {
@@ -489,6 +59,7 @@ export default UserRoleModal;
 //         ...prev,
 //         [name]: value
 //       }));
+//       // Real-time password match check
 //       if (name === 'password' || name === 'passwordConfirm') {
 //         setShowPasswordMismatch(
 //           name === 'password'
@@ -498,11 +69,11 @@ export default UserRoleModal;
 //       }
 //     }
 //   };
-
 //   useEffect(() => {
 //     if (user) {
 //       let parsedPermissions = {};
 //       let parsedAccessLevel = 'fullAccess';
+
 //       try {
 //         parsedPermissions = typeof user.permissions === 'string'
 //           ? JSON.parse(user.permissions)
@@ -529,20 +100,31 @@ export default UserRoleModal;
 //         assign: user.assign || 'Not Assign',
 //         image: user.image || null,
 //         role: user.role || '',
-//         permissions: { ...defaultPermissions, ...parsedPermissions },
+//         permissions: {
+//           dashboardAccess: false,
+//           clientManagement: false,
+//           projectManagement: false,
+//           designTools: false,
+//           financialManagement: false,
+//           userManagement: false,
+//           reportGeneration: false,
+//           systemSettings: false,
+//           ...parsedPermissions
+//         },
 //         accessLevel: parsedAccessLevel
 //       });
+
 //     }
 //   }, [user]);
 
 //   const handlePermissionChange = (e) => {
-//     const { name, checked } = e.target;
+//     const { name } = e.target;
+//     const updatedpermissions = Object.fromEntries(
+//       Object.keys(formData.permissions).map((key) => [key, key === name])
+//     );
 //     setFormData(prev => ({
 //       ...prev,
-//       permissions: {
-//         ...prev.permissions,
-//         [name]: checked
-//       }
+//       permissions: updatedpermissions
 //     }));
 //   };
 
@@ -562,13 +144,14 @@ export default UserRoleModal;
 //     }
 
 //     const filteredpermissions = Object.fromEntries(
-//       Object.entries(formData.permissions).filter(([_, value]) => value)
+//       Object.entries(formData.permissions).filter(([_, value]) => value === true)
 //     );
 
 //     const accessLevelPayload = {
 //       [formData.accessLevel]: true
 //     };
 
+//     // Use FormData to send image as binary
 //     const data = new FormData();
 //     data.append('firstName', formData.firstName);
 //     data.append('lastName', formData.lastName);
@@ -588,50 +171,81 @@ export default UserRoleModal;
 //       data.append('image', formData.image);
 //     }
 
+//     // console.log('Payload to be sent (FormData):', data);
+
 //     if (_id) {
+//       // For update, you may need to adjust the action to accept FormData
 //       dispatch(UpdateUsers({ _id, data }))
 //         .unwrap()
 //         .then(() => {
 //           toast.success("User updated successfully!");
-//           navigate('/admin/UserRoles', { state: { openTab: 'users' } });
+//           navigate('/admin/UserRoles', { state: { openTab: 'users' } })
 //           dispatch(fetchusers());
 //         })
 //         .catch((err) => {
-//           toast.error(err?.message || "Failed to update user!");
+//           const message = err?.message || (typeof err === 'string' ? err : "Failed to update user!");
+//           toast.error(message);
 //         });
 //     } else {
 //       dispatch(SignUp(data))
 //         .unwrap()
 //         .then(() => {
-//           toast.success("User created successfully!");
 //           navigate('/admin/UserRoles', { state: { openTab: 'users' } });
+//           toast.success("User created successfully!");
 //           dispatch(fetchusers());
 //         })
 //         .catch((err) => {
-//           toast.error(err?.message || "Error creating user");
+//           const message = err?.message || (typeof err === 'string' ? err : "Error creating user");
+//           toast.error(message);
 //         });
 //     }
 //   };
 
-//   const handleCancel = () => navigate(-1);
+
+//   // const handleSubmit = async (e) => {
+//   //   e.preventDefault();
+
+//   //   const filteredpermissions = Object.fromEntries(
+//   //     Object.entries(formData.permissions).filter(([_, value]) => value === true)
+//   //   );
+
+//   //   const payload = {
+//   //     role: formData.role,
+//   //     roleDescription: formData.roleDescription,
+//   //     permissions: filteredpermissions,
+//   //     accessLevel: formData.accessLevel
+//   //   };
+
+//   //   console.log('Payload to be sent:', payload);
+//   //   try {
+//   //     await axios.post('/api/roles', payload);
+//   //     navigate(-1);
+//   //   } catch (error) {
+//   //     console.error('Error submitting form:', error);
+//   //     alert('Failed to create role. Please try again.');
+//   //   }
+//   // };
+
+//   const handleCancel = () => {
+//     navigate(-1);
+//   };
 
 //   return (
 //     <div className="container py-4">
 //       <div className="card shadow-sm">
 //         <div className="card-body">
-//           <h5 className="card-title mb-4">{_id ? 'Edit User' : 'Add New User'}</h5>
+//           <h5 className="card-title mb-4">Add New User</h5>
 //           <form onSubmit={handleSubmit}>
-//             <div className="text-center mb-3">
+
+//             <div style={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
 //               {formData.image && (
-//                 <img src={typeof formData.image === 'string' ? formData.image : URL.createObjectURL(formData.image)} alt="Preview" className="img-thumbnail" style={{ maxWidth: '120px' }} />
+//                 <img src={typeof formData.image === 'string' ? formData.image : URL.createObjectURL(formData.image)} alt="Preview" className="img-thumbnail mt-2" style={{ maxWidth: '120px' }} />
 //               )}
 //             </div>
-
-//             <div className="mb-3">
+//             <div className="col-md-6">
 //               <label className="form-label">Profile Image</label>
-//               <input type="file" className="form-control" name="image" accept="image/*" onChange={handleInputChange} required={!_id} />
+//               <input type="file" className="form-control" name="image" accept="image/*" onChange={handleInputChange} required />
 //             </div>
-
 //             <div className="row g-3 mb-3">
 //               <div className="col-md-6">
 //                 <label className="form-label">First Name</label>
@@ -642,7 +256,6 @@ export default UserRoleModal;
 //                 <input type="text" className="form-control" name="lastName" value={formData.lastName} onChange={handleInputChange} required />
 //               </div>
 //             </div>
-
 //             <div className="row g-3 mb-3">
 //               <div className="col-md-6">
 //                 <label className="form-label">Email</label>
@@ -653,7 +266,6 @@ export default UserRoleModal;
 //                 <input type="text" className="form-control" name="phone" value={formData.phone} onChange={handleInputChange} required />
 //               </div>
 //             </div>
-
 //             {!_id && (
 //               <div className="row g-3 mb-3">
 //                 <div className="col-md-6">
@@ -664,12 +276,11 @@ export default UserRoleModal;
 //                   <label className="form-label">Confirm Password</label>
 //                   <input type="password" className="form-control" name="passwordConfirm" value={formData.passwordConfirm} onChange={handleInputChange} required />
 //                   {showPasswordMismatch && (
-//                     <div className="text-danger small">Passwords do not match!</div>
+//                     <div style={{ color: 'red', fontSize: '0.9em' }}>Passwords do not match!</div>
 //                   )}
 //                 </div>
 //               </div>
 //             )}
-
 //             <div className="row g-3 mb-3">
 //               <div className="col-md-6">
 //                 <label className="form-label">State</label>
@@ -680,7 +291,6 @@ export default UserRoleModal;
 //                 <input type="text" className="form-control" name="country" value={formData.country} onChange={handleInputChange} required />
 //               </div>
 //             </div>
-
 //             <div className="row g-3 mb-3">
 //               <div className="col-md-6">
 //                 <label className="form-label">Assign</label>
@@ -693,7 +303,13 @@ export default UserRoleModal;
 
 //               <div className="col-md-6">
 //                 <label className="form-label">Role Name</label>
-//                 <select className="form-select" name="role" value={formData.role} onChange={handleInputChange} required>
+//                 <select
+//                   className="form-select"
+//                   name="role"
+//                   value={formData.role}
+//                   onChange={handleInputChange}
+//                   required
+//                 >
 //                   <option value="">Select a role</option>
 //                   <option value="admin">Admin</option>
 //                   <option value="client">Client</option>
@@ -702,53 +318,51 @@ export default UserRoleModal;
 //               </div>
 //             </div>
 
+
 //             <div className="mb-4">
-//               <label className="form-label">Permissions (select any)</label>
-//               {Object.entries(groupedPermissions).map(([group, permissions]) => (
-//                 <div key={group} className="mb-3">
-//                   <strong>{group}</strong>
-//                   <div className="row">
-//                     {permissions.map((perm) => (
-//                       <div className="col-md-4" key={perm}>
-//                         <div className="form-check">
-//                           <input
-//                             type="checkbox"
-//                             className="form-check-input"
-//                             name={perm}
-//                             checked={formData.permissions[perm]}
-//                             onChange={handlePermissionChange}
-//                           />
-//                           <label className="form-check-label text-capitalize">
-//                             {perm.replace(/([A-Z])/g, ' $1')}
-//                           </label>
-//                         </div>
-//                       </div>
-//                     ))}
+//               <label className="form-label">permissions (Select Only One)</label>
+//               <div className="row g-3">
+//                 {Object.keys(formData.permissions).map((key) => (
+//                   <div className="col-md-6" key={key}>
+//                     <div className="form-check">
+//                       <input
+//                         type="checkbox"
+//                         className="form-check-input"
+//                         name={key}
+//                         checked={formData.permissions[key]}
+//                         onChange={handlePermissionChange}
+//                       />
+//                       <label className="form-check-label text-capitalize">
+//                         {key.replace(/([A-Z])/g, ' $1')}
+//                       </label>
+//                     </div>
 //                   </div>
-//                 </div>
-//               ))}
+//                 ))}
+//               </div>
 //             </div>
 
 //             <div className="mb-4">
 //               <label className="form-label">Access Level</label>
-//               {['fullAccess', 'limitedAccess', 'viewOnly'].map((level) => (
-//                 <div className="form-check" key={level}>
-//                   <input
-//                     type="radio"
-//                     className="form-check-input"
-//                     name="accessLevel"
-//                     value={level}
-//                     checked={formData.accessLevel === level}
-//                     onChange={handleaccessLevelChange}
-//                   />
-//                   <label className="form-check-label text-capitalize">{level.replace(/([A-Z])/g, ' $1')}</label>
-//                 </div>
-//               ))}
+//               <div>
+//                 {['fullAccess', 'limitedAccess', 'viewOnly'].map((level) => (
+//                   <div className="form-check" key={level}>
+//                     <input
+//                       type="radio"
+//                       className="form-check-input"
+//                       name="accessLevel"
+//                       value={level}
+//                       checked={formData.accessLevel === level}
+//                       onChange={handleaccessLevelChange}
+//                     />
+//                     <label className="form-check-label text-capitalize">{level.replace(/([A-Z])/g, ' $1')}</label>
+//                   </div>
+//                 ))}
+//               </div>
 //             </div>
 
 //             <div className="d-flex justify-content-end gap-2">
 //               <button type="button" className="btn btn-outline-secondary" onClick={handleCancel}>Cancel</button>
-//               <button type="submit" className="btn btn-dark">{_id ? 'Update User' : 'Create User'}</button>
+//               <button type="submit" className="btn btn-dark">Create User</button>
 //             </div>
 //           </form>
 //         </div>
@@ -758,3 +372,648 @@ export default UserRoleModal;
 // }
 
 // export default UserRoleModal;
+
+// import React, { useEffect, useState } from 'react';
+// import { useLocation, useNavigate, useParams } from 'react-router-dom';
+// import { useDispatch, useSelector } from 'react-redux';
+// import { fetchusers, SignUp, UpdateUsers } from '../../../redux/slices/userSlice';
+// import { toast } from 'react-toastify';
+// import 'react-toastify/dist/ReactToastify.css';
+
+// function UserRoleModal() {
+//   const navigate = useNavigate();
+//   const dispatch = useDispatch();
+//   const { id } = useParams();
+//   const location = useLocation();
+//   const { user } = location.state || {};
+//   const _id = user?._id;
+
+//   const { userAll } = useSelector((state) => state.user);
+//   useEffect(() => {
+//     dispatch(fetchusers());
+//   }, [dispatch]);
+
+//   const [formData, setFormData] = useState({
+//     firstName: '',
+//     lastName: '',
+//     email: '',
+//     phone: '',
+//     password: '',
+//     passwordConfirm: '',
+//     role: '',
+//     assign: '',
+//     state: '',
+//     country: '',
+//     image: null,
+//   });
+
+//   const [showPasswordMismatch, setShowPasswordMismatch] = useState(false);
+
+//   const handleInputChange = (e) => {
+//     const { name, value, type, files } = e.target;
+//     if (type === 'file') {
+//       setFormData((prev) => ({ ...prev, [name]: files[0] }));
+//     } else {
+//       setFormData((prev) => ({ ...prev, [name]: value }));
+//       if (name === 'password' || name === 'passwordConfirm') {
+//         setShowPasswordMismatch(
+//           name === 'password'
+//             ? value !== formData.passwordConfirm && formData.passwordConfirm !== ''
+//             : value !== formData.password && value !== ''
+//         );
+//       }
+//     }
+//   };
+
+//   useEffect(() => {
+//     if (user) {
+//       setFormData({
+//         firstName: user.firstName || '',
+//         lastName: user.lastName || '',
+//         email: user.email || '',
+//         phone: user.phone || '',
+//         password: '',
+//         passwordConfirm: '',
+//         state: user.state || '',
+//         country: user.country || '',
+//         assign: user.assign || 'Not Assign',
+//         image: user.image || null,
+//         role: user.role || '',
+//       });
+//     }
+//   }, [user]);
+
+//   const handleSubmit = (e) => {
+//     e.preventDefault();
+
+//     if (!_id && formData.password !== formData.passwordConfirm) {
+//       toast.error('Passwords do not match!');
+//       return;
+//     }
+
+//     const data = new FormData();
+//     data.append('firstName', formData.firstName);
+//     data.append('lastName', formData.lastName);
+//     data.append('email', formData.email);
+//     data.append('phone', formData.phone);
+//     if (!_id) {
+//       data.append('password', formData.password);
+//       data.append('passwordConfirm', formData.passwordConfirm);
+//     }
+//     data.append('state', formData.state);
+//     data.append('country', formData.country);
+//     data.append('assign', formData.assign);
+//     data.append('role', formData.role);
+//     if (formData.image && typeof formData.image !== 'string') {
+//       data.append('image', formData.image);
+//     }
+
+//     if (_id) {
+//       dispatch(UpdateUsers({ _id, data }))
+//         .unwrap()
+//         .then(() => {
+//           toast.success('User updated successfully!');
+//           navigate('/admin/UserRoles', { state: { openTab: 'users' } });
+//           dispatch(fetchusers());
+//         })
+//         .catch((err) => {
+//           const message = err?.message || (typeof err === 'string' ? err : 'Failed to update user!');
+//           toast.error(message);
+//         });
+//     } else {
+//       dispatch(SignUp(data))
+//         .unwrap()
+//         .then(() => {
+//           navigate('/admin/UserRoles', { state: { openTab: 'users' } });
+//           toast.success('User created successfully!');
+//           dispatch(fetchusers());
+//         })
+//         .catch((err) => {
+//           const message = err?.message || (typeof err === 'string' ? err : 'Error creating user');
+//           toast.error(message);
+//         });
+//     }
+//   };
+
+//   const handleCancel = () => {
+//     navigate(-1);
+//   };
+
+//   return (
+//     <div className="container py-4">
+//       <div className="card shadow-sm">
+//         <div className="card-body">
+//           <h5 className="card-title mb-4">{_id ? 'Update User' : 'Add New User'}</h5>
+//           <form onSubmit={handleSubmit}>
+//             <div className="text-center mb-3">
+//               {formData.image && (
+//                 <img
+//                   src={typeof formData.image === 'string' ? formData.image : URL.createObjectURL(formData.image)}
+//                   alt="Preview"
+//                   className="img-thumbnail mt-2"
+//                   style={{ maxWidth: '120px' }}
+//                 />
+//               )}
+//             </div>
+
+//             <div className="col-md-6">
+//               <label className="form-label">Profile Image</label>
+//               <input
+//                 type="file"
+//                 className="form-control"
+//                 name="image"
+//                 accept="image/*"
+//                 onChange={handleInputChange}
+//                 required={!_id}
+//               />
+//             </div>
+
+//             <div className="row g-3 mb-3">
+//               <div className="col-md-6">
+//                 <label className="form-label">First Name</label>
+//                 <input
+//                   type="text"
+//                   className="form-control"
+//                   name="firstName"
+//                   value={formData.firstName}
+//                   onChange={handleInputChange}
+//                   required
+//                 />
+//               </div>
+//               <div className="col-md-6">
+//                 <label className="form-label">Last Name</label>
+//                 <input
+//                   type="text"
+//                   className="form-control"
+//                   name="lastName"
+//                   value={formData.lastName}
+//                   onChange={handleInputChange}
+//                   required
+//                 />
+//               </div>
+//             </div>
+
+//             <div className="row g-3 mb-3">
+//               <div className="col-md-6">
+//                 <label className="form-label">Email</label>
+//                 <input
+//                   type="email"
+//                   className="form-control"
+//                   name="email"
+//                   value={formData.email}
+//                   onChange={handleInputChange}
+//                   required
+//                 />
+//               </div>
+//               <div className="col-md-6">
+//                 <label className="form-label">Phone</label>
+//                 <input
+//                   type="text"
+//                   className="form-control"
+//                   name="phone"
+//                   value={formData.phone}
+//                   onChange={handleInputChange}
+//                   required
+//                 />
+//               </div>
+//             </div>
+
+//             {!_id && (
+//               <div className="row g-3 mb-3">
+//                 <div className="col-md-6">
+//                   <label className="form-label">Password</label>
+//                   <input
+//                     type="password"
+//                     className="form-control"
+//                     name="password"
+//                     value={formData.password}
+//                     onChange={handleInputChange}
+//                     required
+//                   />
+//                 </div>
+//                 <div className="col-md-6">
+//                   <label className="form-label">Confirm Password</label>
+//                   <input
+//                     type="password"
+//                     className="form-control"
+//                     name="passwordConfirm"
+//                     value={formData.passwordConfirm}
+//                     onChange={handleInputChange}
+//                     required
+//                   />
+//                   {showPasswordMismatch && (
+//                     <div style={{ color: 'red', fontSize: '0.9em' }}>Passwords do not match!</div>
+//                   )}
+//                 </div>
+//               </div>
+//             )}
+
+//             <div className="row g-3 mb-3">
+//               <div className="col-md-6">
+//                 <label className="form-label">State</label>
+//                 <input
+//                   type="text"
+//                   className="form-control"
+//                   name="state"
+//                   value={formData.state}
+//                   onChange={handleInputChange}
+//                   required
+//                 />
+//               </div>
+//               <div className="col-md-6">
+//                 <label className="form-label">Country</label>
+//                 <input
+//                   type="text"
+//                   className="form-control"
+//                   name="country"
+//                   value={formData.country}
+//                   onChange={handleInputChange}
+//                   required
+//                 />
+//               </div>
+//             </div>
+
+//             <div className="row g-3 mb-4">
+//               <div className="col-md-6">
+//                 <label className="form-label">Assign</label>
+//                 <select
+//                   className="form-select"
+//                   name="assign"
+//                   value={formData.assign}
+//                   onChange={handleInputChange}
+//                   required
+//                 >
+//                   <option value="Not Assign">Not Assign</option>
+//                   <option value="Designer">Designer</option>
+//                   <option value="Production">Production</option>
+//                 </select>
+//               </div>
+
+//               <div className="col-md-6">
+//                 <label className="form-label">Role Name</label>
+//                 <select
+//                   className="form-select"
+//                   name="role"
+//                   value={formData.role}
+//                   onChange={handleInputChange}
+//                   required
+//                 >
+//                   <option value="">Select a role</option>
+//                   <option value="admin">Admin</option>
+//                   <option value="client">Client</option>
+//                   <option value="employee">Employee</option>
+//                 </select>
+//               </div>
+//             </div>
+
+//             <div className="d-flex justify-content-end gap-2">
+//               <button type="button" className="btn btn-outline-secondary" onClick={handleCancel}>
+//                 Cancel
+//               </button>
+//               <button type="submit" className="btn btn-dark">
+//                 {_id ? 'Update User' : 'Create User'}
+//               </button>
+//             </div>
+//           </form>
+//         </div>
+//       </div>
+//     </div>
+//   );
+// }
+
+// export default UserRoleModal;
+
+import React, { useEffect, useState } from 'react';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchusers, SignUp, UpdateUsers } from '../../../redux/slices/userSlice';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
+function UserRoleModal() {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const { id } = useParams();
+  const location = useLocation();
+  const { user } = location.state || {};
+  const _id = user?._id;
+
+  const { userAll } = useSelector((state) => state.user);
+
+  useEffect(() => {
+    dispatch(fetchusers());
+  }, [dispatch]);
+
+  const defaultPermission = () => ({ view: false, edit: false, create: false, delete: false });
+
+  const [formData, setFormData] = useState({
+    firstName: '',
+    lastName: '',
+    email: '',
+    phone: '',
+    password: '',
+    passwordConfirm: '',
+    role: '',
+    assign: '',
+    state: '',
+    country: '',
+    image: null,
+    proposal: defaultPermission(),
+    tasks: defaultPermission(),
+    reports: defaultPermission(),
+    user: defaultPermission(),
+    client: defaultPermission(),
+    dailylogs: defaultPermission(),
+    projectsAndJobs: defaultPermission(),
+    invoiceAndBilling: defaultPermission()
+  });
+
+  const [showPasswordMismatch, setShowPasswordMismatch] = useState(false);
+
+  const handleInputChange = (e) => {
+    const { name, value, type, files } = e.target;
+    if (type === 'file') {
+      setFormData((prev) => ({ ...prev, [name]: files[0] }));
+    } else {
+      setFormData((prev) => ({ ...prev, [name]: value }));
+      if (name === 'password' || name === 'passwordConfirm') {
+        setShowPasswordMismatch(
+          name === 'password'
+            ? value !== formData.passwordConfirm && formData.passwordConfirm !== ''
+            : value !== formData.password && value !== ''
+        );
+      }
+    }
+  };
+
+  const handlePermissionCheckbox = (module, action) => (e) => {
+    setFormData((prev) => ({
+      ...prev,
+      [module]: {
+        ...prev[module],
+        [action]: e.target.checked
+      }
+    }));
+  };
+
+  // useEffect(() => {
+  //   if (user) {
+  //     const loadPermissions = (module) =>
+  //       typeof user[module] === 'object' ? user[module] : defaultPermission();
+
+  //     setFormData({
+  //       firstName: user.firstName || '',
+  //       lastName: user.lastName || '',
+  //       email: user.email || '',
+  //       phone: user.phone || '',
+  //       password: '',
+  //       passwordConfirm: '',
+  //       state: user.state || '',
+  //       country: user.country || '',
+  //       assign: user.assign || 'Not Assign',
+  //       image: user.image || null,
+  //       role: user.role || '',
+  //       proposal: loadPermissions('proposal'),
+  //       tasks: loadPermissions('tasks'),
+  //       reports: loadPermissions('reports'),
+  //       user: loadPermissions('user'),
+  //       client: loadPermissions('client'),
+  //       dailylogs: loadPermissions('dailylogs'),
+  //       projectsAndJobs: loadPermissions('projectsAndJobs'),
+  //       invoiceAndBilling: loadPermissions('invoiceAndBilling')
+  //     });
+  //   }
+  // }, [user]);
+
+  useEffect(() => {
+    if (user) {
+      const loadPermissions = (module) =>
+        typeof user?.permissions?.[module] === 'object'
+          ? {
+            view: user.permissions[module].view === 'true',
+            edit: user.permissions[module].edit === 'true',
+            create: user.permissions[module].create === 'true',
+            delete: user.permissions[module].delete === 'true',
+          }
+          : defaultPermission();
+
+      setFormData({
+        firstName: user.firstName || '',
+        lastName: user.lastName || '',
+        email: user.email || '',
+        phone: user.phone || '',
+        password: '',
+        passwordConfirm: '',
+        state: user.state || '',
+        country: user.country || '',
+        assign: user.assign || 'Not Assign',
+        image: user.image || user.profileImage?.[0] || null,
+        role: user.role || '',
+        proposal: loadPermissions('proposal'),
+        tasks: loadPermissions('tasks'),
+        reports: loadPermissions('reports'),
+        user: loadPermissions('user'),
+        client: loadPermissions('client'),
+        dailylogs: loadPermissions('dailylogs'),
+        projectsAndJobs: loadPermissions('projectsAndJobs'),
+        invoiceAndBilling: loadPermissions('invoiceAndBilling')
+      });
+    }
+  }, [user]);
+
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (!_id && formData.password !== formData.passwordConfirm) {
+      toast.error('Passwords do not match!');
+      return;
+    }
+
+    const data = new FormData();
+    Object.entries(formData).forEach(([key, value]) => {
+      if (typeof value === 'object' && value !== null && !(value instanceof File)) {
+        data.append(key, JSON.stringify(value));
+      } else {
+        data.append(key, value);
+      }
+    });
+
+    if (_id) {
+      dispatch(UpdateUsers({ _id, data }))
+        .unwrap()
+        .then(() => {
+          toast.success('User updated successfully!');
+          navigate('/admin/UserRoles', { state: { openTab: 'users' } });
+          dispatch(fetchusers());
+        })
+        .catch((err) => {
+          toast.error(err?.message || 'Failed to update user!');
+        });
+    } else {
+      dispatch(SignUp(data))
+        .unwrap()
+        .then(() => {
+          toast.success('User created successfully!');
+          navigate('/admin/UserRoles', { state: { openTab: 'users' } });
+          dispatch(fetchusers());
+        })
+        .catch((err) => {
+          toast.error(err?.message || 'Error creating user');
+        });
+    }
+  };
+
+  const handleCancel = () => navigate(-1);
+
+  const renderPermissionSection = () => {
+    const modules = [
+      'proposal',
+      'tasks',
+      'reports',
+      'user',
+      'client',
+      'dailylogs',
+      'projectsAndJobs',
+      'invoiceAndBilling'
+    ];
+
+    return modules.map((module) => (
+      <div key={module} className="mb-3 border p-2 rounded">
+        <strong className="text-capitalize">{module.replace(/([A-Z])/g, ' $1')}</strong>
+        <div className="row mt-2">
+          {['view', 'edit', 'create', 'delete'].map((action) => (
+            <div className="col-3" key={action}>
+              <div className="form-check">
+                <input
+                  type="checkbox"
+                  className="form-check-input"
+                  id={`${module}-${action}`}
+                  checked={formData[module][action]}
+                  onChange={handlePermissionCheckbox(module, action)}
+                />
+                <label className="form-check-label text-capitalize" htmlFor={`${module}-${action}`}>
+                  {action}
+                </label>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    ));
+  };
+
+  return (
+    <div className="container py-4">
+      <div className="card shadow-sm">
+        <div className="card-body">
+          <h5 className="card-title mb-4">{_id ? 'Update User' : 'Add New User'}</h5>
+          <form onSubmit={handleSubmit}>
+            <div className="text-center mb-3">
+              {formData.image && (
+                <img
+                  src={typeof formData.image === 'string' ? formData.image : URL.createObjectURL(formData.image)}
+                  alt="Preview"
+                  className="img-thumbnail mt-2"
+                  style={{ maxWidth: '120px' }}
+                />
+              )}
+            </div>
+
+            <div className="col-md-6 mb-3">
+              <label className="form-label">Profile Image</label>
+              <input
+                type="file"
+                className="form-control"
+                name="image"
+                accept="image/*"
+                onChange={handleInputChange}
+                required={!_id}
+              />
+            </div>
+
+            <div className="row g-3 mb-3">
+              <div className="col-md-6">
+                <label className="form-label">First Name</label>
+                <input type="text" className="form-control" name="firstName" value={formData.firstName} onChange={handleInputChange} required />
+              </div>
+              <div className="col-md-6">
+                <label className="form-label">Last Name</label>
+                <input type="text" className="form-control" name="lastName" value={formData.lastName} onChange={handleInputChange} required />
+              </div>
+            </div>
+
+            <div className="row g-3 mb-3">
+              <div className="col-md-6">
+                <label className="form-label">Email</label>
+                <input type="email" className="form-control" name="email" value={formData.email} onChange={handleInputChange} required />
+              </div>
+              <div className="col-md-6">
+                <label className="form-label">Phone</label>
+                <input type="text" className="form-control" name="phone" value={formData.phone} onChange={handleInputChange} required />
+              </div>
+            </div>
+
+            {!_id && (
+              <div className="row g-3 mb-3">
+                <div className="col-md-6">
+                  <label className="form-label">Password</label>
+                  <input type="password" className="form-control" name="password" value={formData.password} onChange={handleInputChange} required />
+                </div>
+                <div className="col-md-6">
+                  <label className="form-label">Confirm Password</label>
+                  <input type="password" className="form-control" name="passwordConfirm" value={formData.passwordConfirm} onChange={handleInputChange} required />
+                  {showPasswordMismatch && <div style={{ color: 'red', fontSize: '0.9em' }}>Passwords do not match!</div>}
+                </div>
+              </div>
+            )}
+
+            <div className="row g-3 mb-3">
+              <div className="col-md-6">
+                <label className="form-label">State</label>
+                <input type="text" className="form-control" name="state" value={formData.state} onChange={handleInputChange} required />
+              </div>
+              <div className="col-md-6">
+                <label className="form-label">Country</label>
+                <input type="text" className="form-control" name="country" value={formData.country} onChange={handleInputChange} required />
+              </div>
+            </div>
+
+            <div className="row g-3 mb-4">
+              <div className="col-md-6">
+                <label className="form-label">Assign</label>
+                <select className="form-select" name="assign" value={formData.assign} onChange={handleInputChange} required>
+                  <option value="Not Assign">Not Assign</option>
+                  <option value="Designer">Designer</option>
+                  <option value="Production">Production</option>
+                </select>
+              </div>
+              <div className="col-md-6">
+                <label className="form-label">Role Name</label>
+                <select className="form-select" name="role" value={formData.role} onChange={handleInputChange} required>
+                  <option value="">Select a role</option>
+                  <option value="admin">Admin</option>
+                  <option value="client">Client</option>
+                  <option value="employee">Employee</option>
+                </select>
+              </div>
+            </div>
+
+            <h6 className="mb-3">Permissions</h6>
+            {renderPermissionSection()}
+
+            <div className="d-flex justify-content-end gap-2">
+              <button type="button" className="btn btn-outline-secondary" onClick={handleCancel}>
+                Cancel
+              </button>
+              <button type="submit" className="btn btn-dark">
+                {_id ? 'Update User' : 'Create User'}
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export default UserRoleModal;
