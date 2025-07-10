@@ -604,7 +604,7 @@ const LeadFlow = ({ data }) => {
           (p) => (p.status || "").toLowerCase() === "bidding"
         ),
         closed: updatedProjects.filter(
-          (p) => (p.status || "").toLowerCase() === "signature"
+          (p) => (p.status || "").toLowerCase() === "open" || (p.status || "").toLowerCase() === "Active Project"
         ),
         rejected: updatedProjects.filter(
           (p) => (p.status || "").toLowerCase() === "expired"

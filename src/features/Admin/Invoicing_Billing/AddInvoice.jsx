@@ -165,7 +165,7 @@ function AddInvoice({ onInvoiceComplete }) {
       await dispatch(createDocumentRecord(payload)).unwrap();
 
       // Set project to bidding
-      await dispatch(updateProject({ id, payload: { status: "Bidding" } })).unwrap();
+      // await dispatch(updateProject({ id, payload: { status: "Bidding" } })).unwrap();
       toast.success("Document created successfully");
     }
 

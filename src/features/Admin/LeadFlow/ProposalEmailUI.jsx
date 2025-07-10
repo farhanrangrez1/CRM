@@ -141,7 +141,7 @@ const ProposalEmailUI = ({setShowAddInvoice}) => {
       await dispatch(
                   updateProject({
                     id: localStorage.getItem("proposalId"),
-                    payload: { status:  "Signature" },
+                    payload: { status:  "Bidding" },
                   })
                 );
       toast.success("Email sent successfully!");

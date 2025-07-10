@@ -1053,7 +1053,7 @@ const ProjectView = ({ data }) => {
 
         function mapStatus(status) {
             const map = {
-                "Active Project": "pendingProposalApproval",
+                "Active Project": "signature",
                 "Pending": "serviceCalls",
                 "Closed": "pendingRough",
                 "UG Pipes": "ugPipes",
