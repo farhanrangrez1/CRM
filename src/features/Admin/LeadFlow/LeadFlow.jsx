@@ -1,4 +1,4 @@
- 
+
 
 import React, { useState, useEffect, useRef } from 'react';
 import { Button, Form, Dropdown, ButtonGroup, Badge, Container, Row, Col, ProgressBar, Modal, Popover, Overlay, Accordion } from 'react-bootstrap';
@@ -557,65 +557,65 @@ const LeadFlow = ({ data }) => {
       rejected: []
     });
 
-    
-       useEffect(() => {
-    const processProjects = async () => {
-      if (!Array.isArray(project)) return;
 
-      
-      const updatedProjects = await Promise.all(
-  project.map(async (p) => {
-    const status = (p.status || "").toLowerCase();
+    useEffect(() => {
+      const processProjects = async () => {
+        if (!Array.isArray(project)) return;
 
-    if (status === "signature") {
-      try {
-        const res = await axios.get(
-          `${apiUrl}/getEnvelopesByProjectId/${p._id}`
+
+        const updatedProjects = await Promise.all(
+          project.map(async (p) => {
+            const status = (p.status || "").toLowerCase();
+
+            if (status === "signature") {
+              try {
+                const res = await axios.get(
+                  `${apiUrl}/getEnvelopesByProjectId/${p._id}`
+                );
+
+                if (res?.data?.data[0]?.current_status === "completed") {
+                  const isTempPoles = p.tempPoles === "true"; // or === true if it's boolean
+                  const newStatus = isTempPoles ? "Open" : "Active Project";
+
+                  await dispatch(
+                    updateProject({
+                      id: p._id,
+                      payload: { status: newStatus },
+                    })
+                  );
+                  return { ...p, status: "completed" }; // Optional: update local copy
+                }
+              } catch (error) {
+                console.error(`Error checking project ${p._id}`, error.message);
+              }
+            }
+
+            return p;
+          })
         );
 
-        if (res?.data?.data[0]?.current_status === "completed") {
-          const isTempPoles = p.tempPoles === "true"; // or === true if it's boolean
-          const newStatus = isTempPoles ? "Open" : "Active Project";
 
-          await dispatch(
-            updateProject({
-              id: p._id,
-              payload: { status: newStatus },
-            })
-          );
-          return { ...p, status: "completed" }; // Optional: update local copy
-        }
-      } catch (error) {
-        console.error(`Error checking project ${p._id}`, error.message);
-      }
-    }
+        // Step 2: Filter into Kanban columns
+        const result = {
+          active: updatedProjects.filter(
+            (p) => (p.status || "").toLowerCase() === "lead"
+          ),
+          pending: updatedProjects.filter(
+            (p) => (p.status || "").toLowerCase() === "bidding"
+          ),
+          closed: updatedProjects.filter(
+            (p) => (p.status || "").toLowerCase() === "signature"
+          ),
+          rejected: updatedProjects.filter(
+            (p) => (p.status || "").toLowerCase() === "expired"
+          ),
+        };
 
-    return p;
-  })
-);
-
-
-      // Step 2: Filter into Kanban columns
-      const result = {
-        active: updatedProjects.filter(
-          (p) => (p.status || "").toLowerCase() === "lead"
-        ),
-        pending: updatedProjects.filter(
-          (p) => (p.status || "").toLowerCase() === "bidding"
-        ),
-        closed: updatedProjects.filter(
-          (p) => (p.status || "").toLowerCase() === "signature"
-        ),
-        rejected: updatedProjects.filter(
-          (p) => (p.status || "").toLowerCase() === "expired"
-        ),
+        setKanbanData(result);
       };
 
-      setKanbanData(result);
-    };
-
-    processProjects();
-  }, [project, dispatch]);
+      processProjects();
+    }, [project, dispatch]);
     const handleCardDrop = async (result) => {
       const { source, destination, draggableId } = result;
       if (!destination || (source.droppableId === destination.droppableId && source.index === destination.index)) return;
@@ -924,7 +924,7 @@ const LeadFlow = ({ data }) => {
                 ))}
               </ul>
 
-               
+
 
               <div className="d-flex d-md-none">
                 <Dropdown>
