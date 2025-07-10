@@ -992,7 +992,6 @@ function UserRoleModal() {
                 <select className="form-select" name="role" value={formData.role} onChange={handleInputChange} required>
                   <option value="">Select a role</option>
                   <option value="admin">Admin</option>
-                  <option value="client">Client</option>
                   <option value="employee">Employee</option>
                 </select>
               </div>

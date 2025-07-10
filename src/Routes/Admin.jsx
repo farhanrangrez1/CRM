@@ -65,7 +65,7 @@ import ProjectView from "../features/Admin/ProjectList/ProjectTabs/ProjectView.j
 import UpdateProfile from "../features/Admin/Profile/UpdateProfile.jsx";
 import LeadFlow from "../features/Admin/LeadFlow/LeadFlow.jsx";
 import Editpurposal from "../features/Admin/LeadFlow/Editpurposal.jsx";
-import EditProject from "../features/Admin/ProjectList/EditProject.jsx";
+// import EditProject from "../features/Admin/ProjectList/EditProject.jsx";
 import AddInvoice2 from "../features/Admin/Invoicing_Billing/AddInvoice2.jsx";
 import TempPoles from "../features/Admin/ProjectList/ProjectTabs/TempPoles.jsx";
 
@@ -109,7 +109,7 @@ function Admin() {
             <Route path="/CostEstimates" element={<ProtectedRoute><CostEstimates /></ProtectedRoute>} />
             <Route path="/LeadFlow" element={<ProtectedRoute><LeadFlow /></ProtectedRoute>} />
             <Route path="/LeadFlow/Details" element={<ProtectedRoute><Editpurposal /></ProtectedRoute>} />
-            <Route path="/Project/Details" element={<ProtectedRoute><EditProject/></ProtectedRoute>} />
+            {/* <Route path="/Project/Details" element={<ProtectedRoute><EditProject/></ProtectedRoute>} /> */}
 
             <Route path="/AddCostEstimates" element={<ProtectedRoute><AddCostEstimates /></ProtectedRoute>} />
             <Route path="/duplicate/AddCostEstimates/:id" element={<ProtectedRoute><AddCostEstimates /></ProtectedRoute>} />
