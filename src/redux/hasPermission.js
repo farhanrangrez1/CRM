@@ -1,7 +1,7 @@
 // utils/permissionChecker.js
 export const hasPermission = (module, action) => {
     try {
-        const user = JSON.parse(localStorage.getItem('login_detail'));
+        const user = JSON.parse(localStorage.getItem('permissions'));
 
         if (!user) return false;
 

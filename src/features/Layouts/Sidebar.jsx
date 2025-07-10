@@ -7,6 +7,7 @@ import "./Sidebar.css";
 
 import bonbonlogo from "../../assets/Supplyblack.png";
 import bonbo from "../../assets/bonbo.png";
+import { hasPermission } from "../../redux/hasPermission";
 const Sidebar = ({ isOpen, toggleSidebar }) => {
   const [openMenuIndex, setOpenMenuIndex] = useState(null);
   const [activeMenuIndex, setActiveMenuIndex] = useState(null);
@@ -16,15 +17,40 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
   const navigate = useNavigate();
   const location = useLocation();
 
+  // const menuItems =
+  //   roleData === "admin"
+  //     ? adminMenuItems
+  //     : roleData === "employee"
+  //       ? employeeMenuItems
+  //       : roleData === "client"
+  //         ? clientMenuItems
+  //         : [];
+
+  const getFilteredMenuItems = (menuList) => {
+    return menuList
+      .filter((item) => {
+        if (!item.permissionKey) return true; // show if no permission check needed
+        return hasPermission(item.permissionKey, "view");
+      })
+      .map((item) => {
+        if (item.submenu) {
+          return {
+            ...item,
+            submenu: item.submenu,
+          };
+        }
+        return item;
+      });
+  };
+
   const menuItems =
     roleData === "admin"
-      ? adminMenuItems
+      ? getFilteredMenuItems(adminMenuItems)
       : roleData === "employee"
-        ? employeeMenuItems
+        ? getFilteredMenuItems(adminMenuItems)
         : roleData === "client"
-          ? clientMenuItems
+          ? getFilteredMenuItems(adminMenuItems)
           : [];
-
 
   useEffect(() => {
     if (!location) return;
@@ -86,12 +112,12 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
           <li
             key={index}
             className={`menu-item ${item.submenu
-                ? openMenuIndex === index
-                  ? "open"
-                  : ""
-                : activeMenuIndex === index
-                  ? "active"
-                  : ""
+              ? openMenuIndex === index
+                ? "open"
+                : ""
+              : activeMenuIndex === index
+                ? "active"
+                : ""
               }`}
             onClick={() => {
               if (item.submenu) {
