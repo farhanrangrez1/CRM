@@ -1,7 +1,13 @@
-import { useSelector,useDispatch } from "react-redux";
-import { deleteDocument,fetchDocumentById } from   "../../../redux/slices/saveDocumentSlice";
+import { useSelector, useDispatch } from "react-redux";
+import {
+  deleteDocument,
+  fetchDocumentById,
+} from "../../../redux/slices/saveDocumentSlice";
+
 const DocumentList = ({ documents, previewUrl, setPreviewUrl }) => {
-    const dispatch = useDispatch()
+  const dispatch = useDispatch();
+  const proposalId = localStorage.getItem("proposalId");
+
   const handlePreview = (url) => setPreviewUrl(url);
 
   const handleDownload = (url) => {
@@ -10,18 +16,18 @@ const DocumentList = ({ documents, previewUrl, setPreviewUrl }) => {
     a.download = url.split("/").pop();
     a.click();
   };
-    const proposalId = localStorage.getItem("proposalId")
-   const handleDelete = async (id) => {
-  const confirm = window.confirm("Are you sure you want to delete this document?");
-  if (!confirm) return;
 
-  try {
-    await dispatch(deleteDocument(id)).unwrap();  // Wait for delete to complete
-    await dispatch(fetchDocumentById(proposalId)); // Then refresh document list
-  } catch (err) {
-    console.error("Failed to delete or fetch documents:", err);
-  }
-};
+  const handleDelete = async (id) => {
+    const confirm = window.confirm("Are you sure you want to delete this document?");
+    if (!confirm) return;
+
+    try {
+      await dispatch(deleteDocument(id)).unwrap();
+      await dispatch(fetchDocumentById(proposalId));
+    } catch (err) {
+      console.error("Failed to delete or fetch documents:", err);
+    }
+  };
 
   return (
     <>
@@ -29,14 +35,35 @@ const DocumentList = ({ documents, previewUrl, setPreviewUrl }) => {
         <h4 className="fw-bold mb-3">Uploaded Documents</h4>
         <ul className="list-group">
           {documents?.map((doc) => (
-            <li key={doc.id} className="list-group-item d-flex justify-content-between align-items-center">
-              <span
-                className="text-primary cursor-pointer"
+            <li
+              key={doc.id}
+              className="list-group-item d-flex justify-content-between align-items-center"
+            >
+              <div
+                className="d-flex align-items-center gap-3"
                 style={{ cursor: "pointer" }}
                 onClick={() => handlePreview(doc.file_urls[0])}
               >
-                {doc.title}
-              </span>
+                {doc.file_urls[0]?.endsWith(".pdf") ? (
+                  <img
+                    src="https://upload.wikimedia.org/wikipedia/commons/8/87/PDF_file_icon.svg"
+                    alt="PDF Icon"
+                    style={{ width: "40px", height: "auto" }}
+                  />
+                ) : (
+                  <img
+                    src={doc.file_urls[0]}
+                    alt={doc.title}
+                    style={{
+                      width: "60px",
+                      height: "auto",
+                      objectFit: "cover",
+                      borderRadius: "4px",
+                    }}
+                  />
+                )}
+                <span className="text-primary">{doc.title}</span>
+              </div>
 
               <div>
                 <button
@@ -78,7 +105,11 @@ const DocumentList = ({ documents, previewUrl, setPreviewUrl }) => {
                       height="500px"
                     />
                   ) : (
-                    <img src={previewUrl} alt="Preview" style={{ maxWidth: "100%" }} />
+                    <img
+                      src={previewUrl}
+                      alt="Preview"
+                      style={{ maxWidth: "100%" }}
+                    />
                   )}
                 </div>
               </div>
