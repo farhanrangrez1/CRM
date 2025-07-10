@@ -18,7 +18,7 @@ import { createDocument, fetchDocumentById } from "../../../redux/slices/saveDoc
 import { useDispatch, useSelector } from "react-redux";
 import DocumentList from "./DocumentList";
 import JobCost from "./JobCost";
- 
+
 const Editpurposal = () => {
   const [manager, setManager] = useState(null);
   const [lead, setLead] = useState(null);
@@ -100,8 +100,8 @@ const Editpurposal = () => {
   const job = location.state.item;
   // const project_id = localStorage.getItem("proposalId");
   const project_id = job?.id;
-  const proposalId =  job?.id;
-  
+  const proposalId = job?.id;
+
   const resetForm = () => {
     setPhaseName("");
     setMaterialsBudget("");

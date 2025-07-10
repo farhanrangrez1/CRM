@@ -17,40 +17,40 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  // const menuItems =
-  //   roleData === "admin"
-  //     ? adminMenuItems
-  //     : roleData === "employee"
-  //       ? employeeMenuItems
-  //       : roleData === "client"
-  //         ? clientMenuItems
-  //         : [];
-
-  const getFilteredMenuItems = (menuList) => {
-    return menuList
-      .filter((item) => {
-        if (!item.permissionKey) return true; // show if no permission check needed
-        return hasPermission(item.permissionKey, "view");
-      })
-      .map((item) => {
-        if (item.submenu) {
-          return {
-            ...item,
-            submenu: item.submenu,
-          };
-        }
-        return item;
-      });
-  };
-
   const menuItems =
     roleData === "admin"
-      ? getFilteredMenuItems(adminMenuItems)
+      ? adminMenuItems
       : roleData === "employee"
-        ? getFilteredMenuItems(adminMenuItems)
+        ? employeeMenuItems
         : roleData === "client"
-          ? getFilteredMenuItems(adminMenuItems)
+          ? clientMenuItems
           : [];
+
+  // const getFilteredMenuItems = (menuList) => {
+  //   return menuList
+  //     .filter((item) => {
+  //       if (!item.permissionKey) return true; // show if no permission check needed
+  //       return hasPermission(item.permissionKey, "view");
+  //     })
+  //     .map((item) => {
+  //       if (item.submenu) {
+  //         return {
+  //           ...item,
+  //           submenu: item.submenu,
+  //         };
+  //       }
+  //       return item;
+  //     });
+  // };
+
+  // const menuItems =
+  //   roleData === "admin"
+  //     ? getFilteredMenuItems(adminMenuItems)
+  //     : roleData === "employee"
+  //       ? getFilteredMenuItems(adminMenuItems)
+  //       : roleData === "client"
+  //         ? getFilteredMenuItems(adminMenuItems)
+  //         : [];
 
   useEffect(() => {
     if (!location) return;
