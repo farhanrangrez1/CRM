@@ -109,7 +109,7 @@ function Admin() {
             <Route path="/CostEstimates" element={<ProtectedRoute><CostEstimates /></ProtectedRoute>} />
             <Route path="/LeadFlow" element={<ProtectedRoute><LeadFlow /></ProtectedRoute>} />
             <Route path="/LeadFlow/Details" element={<ProtectedRoute><Editpurposal /></ProtectedRoute>} />
-            <Route path="/Project/Details" element={<ProtectedRoute><EditProject/></ProtectedRoute>} />
+            <Route path="/Project/Details" element={<ProtectedRoute><EditProject /></ProtectedRoute>} />
 
             <Route path="/AddCostEstimates" element={<ProtectedRoute><AddCostEstimates /></ProtectedRoute>} />
             <Route path="/duplicate/AddCostEstimates/:id" element={<ProtectedRoute><AddCostEstimates /></ProtectedRoute>} />
@@ -118,8 +118,8 @@ function Admin() {
             <Route path="/AddIssuablePurchase" element={<ProtectedRoute><AddIssuablePurchase /></ProtectedRoute>} />
             <Route path="/projectList" element={<ProtectedRoute><ProjectList /></ProtectedRoute>} />
             <Route path="/AddProjectList" element={<ProtectedRoute><AddProjectList /></ProtectedRoute>} />
-            <Route path="/projectView" element={<ProtectedRoute><ProjectView/></ProtectedRoute>} />
-              <Route path="/TempPoles" element={<ProtectedRoute><TempPoles/></ProtectedRoute>} />
+            <Route path="/projectView" element={<ProtectedRoute><ProjectView /></ProtectedRoute>} />
+            <Route path="/TempPoles" element={<ProtectedRoute><TempPoles /></ProtectedRoute>} />
             <Route path="/OvervieJobsProject" element={<ProtectedRoute><OvervieJobsProject /></ProtectedRoute>} />
             <Route path="/ProjectOverview/:id" element={<ProtectedRoute><ProjectOverview /></ProtectedRoute>} />
             <Route path="/UpdateProjectLis" element={<ProtectedRoute><UpdateProjectLis /></ProtectedRoute>} />
