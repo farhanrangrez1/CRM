@@ -771,7 +771,7 @@ const TempPoles = ({ data }) => {
                                                             ...provided.draggableProps.style
                                                         }}
                                                         onClick={() => {
-                                                            localStorage.setItem("proposalId", item._id);
+                                                            localStorage.setItem("proposalId", item.id);
                                                             localStorage.setItem("invoice", JSON.stringify(item));
                                                             navigate("/admin/LeadFlow/Details", { state: { item: item } });
                                                         }}
