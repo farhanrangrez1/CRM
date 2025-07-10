@@ -48,7 +48,7 @@ export const adminMenuItems = [
     ],
   },
   {
-    title: "Production",
+    title: "Tasks",
     icon: <FaIndustry className="menu-icon" />,
     submenu: [
       { title: "Assign Job", path: "/admin/newJobsList" },

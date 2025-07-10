@@ -237,26 +237,26 @@ const Editpurposal = () => {
                   {/* <p>Lead</p> */}
                   <p>{job?.status}</p>
                 </div>
-                <div className="col-md-6">
+                {/* <div className="col-md-6">
                   <p className="mb-1 text-muted">Job Type</p>
                   <p>{job?.job_type}</p>
-                </div>
-                <div className="col-md-6">
+                </div> */}
+                {/* <div className="col-md-6">
                   <p className="mb-1 text-muted">Sales Lead</p>
                   <p>{lead?.first_name} {lead?.last_name}</p>
-                </div>
-                <div className="col-md-6">
+                </div> */}
+                {/* <div className="col-md-6">
                   <p className="mb-1 text-muted">Project Manager</p>
                   <p>{manager?.first_name} {manager?.last_name}</p>
-                </div>
-                <div className="col-12 mt-4">
+                </div> */}
+                {/* <div className="col-12 mt-4">
                   <p className="mb-1 text-muted">Location</p>
                   <p>{job?.job_address}</p>
-                </div>
+                </div> */}
               </div>
             </div>
 
-            <div className="col-md-4">
+            {/* <div className="col-md-4">
               <div className="bg-light p-3 rounded mb-3">
                 <h6 className="fw-bold">Tasks</h6>
                 <div className="d-flex justify-content-between mb-3">
@@ -281,7 +281,7 @@ const Editpurposal = () => {
                   🔗 Click here to create a portal for this job
                 </button>
               </div>
-            </div>
+            </div> */}
           </div>
         );
 
