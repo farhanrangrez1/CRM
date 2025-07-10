@@ -23,16 +23,16 @@ function AddClientManagement() {
   const location = useLocation();
   const { client } = location.state || {};
   const _id = client?._id
-  
+
   // Initial form state
   const [formData, setFormData] = useState({
     clientName: '',
-    industry: '',
+    // industry: '',
     website: '',
     clientAddress: '',
-    TaxID_VATNumber: '',
-    CSRCode: '',
-    Status: ''
+    // TaxID_VATNumber: '',
+    // CSRCode: '',
+    // Status: ''
   });
 
   // Contact persons state
@@ -54,32 +54,32 @@ function AddClientManagement() {
       billingContactName: '',
       billingEmail: '',
       billingPhone: '',
-      currency: '',
-      preferredPaymentMethod: ''
+      // currency: '',
+      // preferredPaymentMethod: ''
     }
   ]);
   // Shipping information state
-  const [shippingInformation, setShippingInformation] = useState([
-    {
-      shippingAddress: '',
-      shippingContactName: '',
-      shippingEmail: '',
-      shippingPhone: '',
-      preferredShippingMethod: '',
-      specialInstructions: ''
-    }
-  ]);
+  // const [shippingInformation, setShippingInformation] = useState([
+  //   {
+  //     shippingAddress: '',
+  //     shippingContactName: '',
+  //     shippingEmail: '',
+  //     shippingPhone: '',
+  //     preferredShippingMethod: '',
+  //     specialInstructions: ''
+  //   }
+  // ]);
   // Financial information state
-  const [financialInformation, setFinancialInformation] = useState([
-    {
-      annualRevenue: '',
-      creditRating: '',
-      bankName: '',
-      accountNumber: '',
-      fiscalYearEnd: '',
-      financialContact: ''
-    }
-  ]);
+  // const [financialInformation, setFinancialInformation] = useState([
+  //   {
+  //     annualRevenue: '',
+  //     creditRating: '',
+  //     bankName: '',
+  //     accountNumber: '',
+  //     fiscalYearEnd: '',
+  //     financialContact: ''
+  //   }
+  // ]);
 
   // Ledger information state
   const [ledgerInformation, setLedgerInformation] = useState([
@@ -88,7 +88,7 @@ function AddClientManagement() {
       accountType: '',
       openingBalance: '',
       balanceDate: '',
-      taxCategory: '',
+      // taxCategory: '',
       costCenter: ''
     }
   ]);
@@ -107,23 +107,23 @@ function AddClientManagement() {
     const updateStates = (clientData) => {
       setFormData({
         clientName: clientData.clientName || '',
-        industry: clientData.industry || '',
+        // industry: clientData.industry || '',
         website: clientData.website || '',
         clientAddress: clientData.clientAddress || '',
-        TaxID_VATNumber: clientData.TaxID_VATNumber || '',
-        CSRCode: clientData.CSRCode || '',
-        Status: clientData.Status || ''
+        // TaxID_VATNumber: clientData.TaxID_VATNumber || '',
+        // CSRCode: clientData.CSRCode || '',
+        // Status: clientData.Status || ''
       });
 
       setContactPersons(clientData.contactPersons || []);
       setBillingInformation(clientData.billingInformation || []);
-      setShippingInformation(clientData.shippingInformation || []);
-      setFinancialInformation(
-        (clientData.financialInformation || []).map((item) => ({
-          ...item,
-          fiscalYearEnd: formatDate(item.fiscalYearEnd),
-        }))
-      );
+      // setShippingInformation(clientData.shippingInformation || []);
+      // setFinancialInformation(
+      //   (clientData.financialInformation || []).map((item) => ({
+      //     ...item,
+      //     fiscalYearEnd: formatDate(item.fiscalYearEnd),
+      //   }))
+      // );
       setLedgerInformation(
         (clientData.ledgerInformation || []).map((item) => ({
           ...item,
@@ -191,44 +191,44 @@ function AddClientManagement() {
   };
 
   // Handle shipping information changes
-  const handleShippingChange = (index, e) => {
-    const { name, value } = e.target;
-    let newValue = value;
-    if (name === 'shippingPhone') {
-      newValue = newValue.replace(/[^\d]/g, '').slice(0, 10);
-    }
-    const updatedShipping = [...shippingInformation];
-    updatedShipping[index] = {
-      ...updatedShipping[index],
-      [name]: newValue
-    };
-    setShippingInformation(updatedShipping);
-  };
+  // const handleShippingChange = (index, e) => {
+  //   const { name, value } = e.target;
+  //   let newValue = value;
+  //   if (name === 'shippingPhone') {
+  //     newValue = newValue.replace(/[^\d]/g, '').slice(0, 10);
+  //   }
+  //   const updatedShipping = [...shippingInformation];
+  //   updatedShipping[index] = {
+  //     ...updatedShipping[index],
+  //     [name]: newValue
+  //   };
+  //   setShippingInformation(updatedShipping);
+  // };
 
   // Handle financial information changes
-  const handleFinancialChange = (index, e) => {
-    const { name, value } = e.target;
-    let newValue = value;
-    if (name === 'creditRating') {
-      // Only allow numbers between 1 and 5
-      let num = Number(newValue);
-      if (newValue === '') {
-        newValue = '';
-      } else if (num < 1) {
-        newValue = '1';
-      } else if (num > 5) {
-        newValue = '5';
-      } else {
-        newValue = String(num);
-      }
-    }
-    const updatedFinancial = [...financialInformation];
-    updatedFinancial[index] = {
-      ...updatedFinancial[index],
-      [name]: newValue
-    };
-    setFinancialInformation(updatedFinancial);
-  };
+  // const handleFinancialChange = (index, e) => {
+  //   const { name, value } = e.target;
+  //   let newValue = value;
+  //   if (name === 'creditRating') {
+  //     // Only allow numbers between 1 and 5
+  //     let num = Number(newValue);
+  //     if (newValue === '') {
+  //       newValue = '';
+  //     } else if (num < 1) {
+  //       newValue = '1';
+  //     } else if (num > 5) {
+  //       newValue = '5';
+  //     } else {
+  //       newValue = String(num);
+  //     }
+  //   }
+  //   const updatedFinancial = [...financialInformation];
+  //   updatedFinancial[index] = {
+  //     ...updatedFinancial[index],
+  //     [name]: newValue
+  //   };
+  //   setFinancialInformation(updatedFinancial);
+  // };
 
   // Handle ledger information changes
   const handleLedgerChange = (index, e) => {
@@ -256,13 +256,13 @@ function AddClientManagement() {
 
     // Basic form fields
     if (!formData.clientName.trim()) newErrors.clientName = 'Name is required';
-    if (!formData.industry) newErrors.industry = 'Industry is required';
+    // if (!formData.industry) newErrors.industry = 'Industry is required';
     if (!formData.website.trim()) newErrors.website = 'Website is required';
     else if (!/^https?:\/\//.test(formData.website)) newErrors.website = 'Website must start with http:// or https://';
     if (!formData.clientAddress.trim()) newErrors.clientAddress = 'Client Address is required';
-    if (!formData.TaxID_VATNumber.trim()) newErrors.TaxID_VATNumber = 'Tax ID/VAT Number is required';
-    if (!formData.CSRCode.trim()) newErrors.CSRCode = 'CSR Code is required';
-    if (!formData.Status) newErrors.Status = 'Status is required';
+    // if (!formData.TaxID_VATNumber.trim()) newErrors.TaxID_VATNumber = 'Tax ID/VAT Number is required';
+    // if (!formData.CSRCode.trim()) newErrors.CSRCode = 'CSR Code is required';
+    // if (!formData.Status) newErrors.Status = 'Status is required';
 
     // Contact Persons
     contactPersons.forEach((contact, idx) => {
@@ -284,30 +284,30 @@ function AddClientManagement() {
     else if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(billing.billingEmail)) newErrors.billingEmail = 'Invalid email';
     if (!billing.billingPhone.trim()) newErrors.billingPhone = 'Billing Phone is required';
     else if (!/^\d{10}$/.test(billing.billingPhone)) newErrors.billingPhone = 'Phone must be 10 digits';
-    if (!billing.currency) newErrors.currency = 'Currency is required';
-    if (!billing.preferredPaymentMethod) newErrors.preferredPaymentMethod = 'Preferred Payment Method is required';
+    // if (!billing.currency) newErrors.currency = 'Currency is required';
+    // if (!billing.preferredPaymentMethod) newErrors.preferredPaymentMethod = 'Preferred Payment Method is required';
 
     // Shipping Information (first item)
-    const shipping = shippingInformation[0] || {};
-    if (!shipping.shippingAddress.trim()) newErrors.shippingAddress = 'Shipping Address is required';
-    if (!shipping.shippingContactName.trim()) newErrors.shippingContactName = 'Shipping Contact Name is required';
-    if (!shipping.shippingEmail.trim()) newErrors.shippingEmail = 'Shipping Email is required';
-    else if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(shipping.shippingEmail)) newErrors.shippingEmail = 'Invalid email';
-    if (!shipping.shippingPhone.trim()) newErrors.shippingPhone = 'Shipping Phone is required';
-    else if (!/^\d{10}$/.test(shipping.shippingPhone)) newErrors.shippingPhone = 'Phone must be 10 digits';
-    if (!shipping.preferredShippingMethod) newErrors.preferredShippingMethod = 'Preferred Shipping Method is required';
-    if (!shipping.specialInstructions.trim()) newErrors.specialInstructions = 'Special Instructions are required';
+    // const shipping = shippingInformation[0] || {};
+    // if (!shipping.shippingAddress.trim()) newErrors.shippingAddress = 'Shipping Address is required';
+    // if (!shipping.shippingContactName.trim()) newErrors.shippingContactName = 'Shipping Contact Name is required';
+    // if (!shipping.shippingEmail.trim()) newErrors.shippingEmail = 'Shipping Email is required';
+    // else if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(shipping.shippingEmail)) newErrors.shippingEmail = 'Invalid email';
+    // if (!shipping.shippingPhone.trim()) newErrors.shippingPhone = 'Shipping Phone is required';
+    // else if (!/^\d{10}$/.test(shipping.shippingPhone)) newErrors.shippingPhone = 'Phone must be 10 digits';
+    // if (!shipping.preferredShippingMethod) newErrors.preferredShippingMethod = 'Preferred Shipping Method is required';
+    // if (!shipping.specialInstructions.trim()) newErrors.specialInstructions = 'Special Instructions are required';
 
     // Financial Information (first item)
-    const financial = financialInformation[0] || {};
-    if (!financial.annualRevenue) newErrors.annualRevenue = 'Annual Revenue is required';
-    else if (isNaN(financial.annualRevenue) || Number(financial.annualRevenue) < 0) newErrors.annualRevenue = 'Annual Revenue must be a positive number';
-    if (!financial.creditRating) newErrors.creditRating = 'Credit Rating is required';
-    else if (isNaN(financial.creditRating) || Number(financial.creditRating) < 1 || Number(financial.creditRating) > 5) newErrors.creditRating = 'Credit Rating must be between 1 and 5';
-    if (!financial.bankName.trim()) newErrors.bankName = 'Bank Name is required';
-    if (!financial.accountNumber.trim()) newErrors.accountNumber = 'Account Number is required';
-    if (!financial.fiscalYearEnd) newErrors.fiscalYearEnd = 'Fiscal Year End is required';
-    if (!financial.financialContact.trim()) newErrors.financialContact = 'Financial Contact is required';
+    // const financial = financialInformation[0] || {};
+    // if (!financial.annualRevenue) newErrors.annualRevenue = 'Annual Revenue is required';
+    // else if (isNaN(financial.annualRevenue) || Number(financial.annualRevenue) < 0) newErrors.annualRevenue = 'Annual Revenue must be a positive number';
+    // if (!financial.creditRating) newErrors.creditRating = 'Credit Rating is required';
+    // else if (isNaN(financial.creditRating) || Number(financial.creditRating) < 1 || Number(financial.creditRating) > 5) newErrors.creditRating = 'Credit Rating must be between 1 and 5';
+    // if (!financial.bankName.trim()) newErrors.bankName = 'Bank Name is required';
+    // if (!financial.accountNumber.trim()) newErrors.accountNumber = 'Account Number is required';
+    // if (!financial.fiscalYearEnd) newErrors.fiscalYearEnd = 'Fiscal Year End is required';
+    // if (!financial.financialContact.trim()) newErrors.financialContact = 'Financial Contact is required';
 
     // Ledger Information (first item)
     const ledger = ledgerInformation[0] || {};
@@ -316,7 +316,7 @@ function AddClientManagement() {
     if (!ledger.openingBalance) newErrors.openingBalance = 'Opening Balance is required';
     else if (isNaN(ledger.openingBalance)) newErrors.openingBalance = 'Opening Balance must be a number';
     if (!ledger.balanceDate) newErrors.balanceDate = 'Balance Date is required';
-    if (!ledger.taxCategory) newErrors.taxCategory = 'Tax Category is required';
+    // if (!ledger.taxCategory) newErrors.taxCategory = 'Tax Category is required';
     if (!ledger.costCenter.trim()) newErrors.costCenter = 'Cost Center is required';
 
     // Additional Information
@@ -340,8 +340,8 @@ function AddClientManagement() {
       ...formData,
       contactPersons,
       billingInformation,
-      shippingInformation,
-      financialInformation,
+      // shippingInformation,
+      // financialInformation,
       ledgerInformation,
       additionalInformation
     };
@@ -410,7 +410,7 @@ function AddClientManagement() {
                 <input required type="text" name="clientName" value={formData.clientName} onChange={handleChange} className="form-control" placeholder="Enter  name" />
                 {errors.clientName && <div className="text-danger small">{errors.clientName}</div>}
               </div>
-              <div className="col-md-6">
+              {/* <div className="col-md-6">
                 <label className="form-label">Industry</label>
                 <select className="form-select" name="industry" required value={formData.industry} onChange={handleChange}>
                   <option value="">Select industry</option>
@@ -419,7 +419,7 @@ function AddClientManagement() {
                   <option value="retail">Retail</option>
                 </select>
                 {errors.industry && <div className="text-danger small">{errors.industry}</div>}
-              </div>
+              </div> */}
               <div className="col-md-6">
                 <label className="form-label">Website</label>
                 <input required type="url" name="website" value={formData.website} onChange={handleChange} className="form-control" placeholder="https://" />
@@ -430,17 +430,17 @@ function AddClientManagement() {
                 <textarea required className="form-control" name="clientAddress" value={formData.clientAddress} onChange={handleChange}></textarea>
                 {errors.clientAddress && <div className="text-danger small">{errors.clientAddress}</div>}
               </div>
-              <div className="col-md-6">
+              {/* <div className="col-md-6">
                 <label className="form-label">Tax ID/VAT Number</label>
                 <input required type="text" name="TaxID_VATNumber" value={formData.TaxID_VATNumber} onChange={handleChange} className="form-control" />
                 {errors.TaxID_VATNumber && <div className="text-danger small">{errors.TaxID_VATNumber}</div>}
-              </div>
-              <div className="col-md-6">
+              </div> */}
+              {/* <div className="col-md-6">
                 <label className="form-label">CSR Code</label>
                 <input type="text" name="CSRCode" required value={formData.CSRCode} onChange={handleChange} className="form-control" />
                 {errors.CSRCode && <div className="text-danger small">{errors.CSRCode}</div>}
-              </div>
-              <div className="col-md-6">
+              </div> */}
+              {/* <div className="col-md-6">
                 <label className="form-label">Status</label>
                 <select
                   className="form-select"
@@ -449,12 +449,12 @@ function AddClientManagement() {
                   value={formData.Status}
                   onChange={handleChange}
                 >
-                  <option value="">Select Status</option> {/* empty option for forcing selection */}
+                  <option value="">Select Status</option>
                   <option value="Active">Active</option>
                   <option value="Inactive">Inactive</option>
                 </select>
                 {errors.Status && <div className="text-danger small">{errors.Status}</div>}
-              </div>
+              </div> */}
 
               <div className='col-md-12 row'>
                 <h5 className="mb-3 mt-4">Contact Persons</h5>
@@ -613,7 +613,7 @@ function AddClientManagement() {
                   <input type="tel" className="form-control" name="billingPhone" required value={billingInformation[0].billingPhone} onChange={(e) => handleBillingChange(0, e)} maxLength={10} />
                   {errors.billingPhone && <div className="text-danger small">{errors.billingPhone}</div>}
                 </div>
-                <div className="col-md-6">
+                {/* <div className="col-md-6">
                   <label className="form-label">Currency</label>
                   <select className="form-select" name="currency" required value={billingInformation[0].currency} onChange={(e) => handleBillingChange(0, e)}>
                     <option value="">Select Currency</option>
@@ -622,8 +622,8 @@ function AddClientManagement() {
                     <option value="GBP">GBP</option>
                   </select>
                   {errors.currency && <div className="text-danger small">{errors.currency}</div>}
-                </div>
-                <div className="col-md-6">
+                </div> */}
+                {/* <div className="col-md-6">
                   <label className="form-label">Preferred Payment Method</label>
                   <select className="form-select" name="preferredPaymentMethod" required value={billingInformation[0].preferredPaymentMethod} onChange={(e) => handleBillingChange(0, e)}>
                     <option value="">Select Payment Method</option>
@@ -632,10 +632,10 @@ function AddClientManagement() {
                     <option value="Check">Check</option>
                   </select>
                   {errors.preferredPaymentMethod && <div className="text-danger small">{errors.preferredPaymentMethod}</div>}
-                </div>
+                </div> */}
 
                 {/* Shipping Information */}
-                <h5 className="mb-3 mt-4">Shipping Information</h5>
+                {/* <h5 className="mb-3 mt-4">Shipping Information</h5>
                 <div className="col-md-12">
                   <label className="form-label">Shipping Address</label>
                   <textarea className="form-control" rows="3" name="shippingAddress" required value={shippingInformation[0].shippingAddress} onChange={(e) => handleShippingChange(0, e)}></textarea>
@@ -671,10 +671,10 @@ function AddClientManagement() {
                   <label className="form-label">Special Instructions</label>
                   <textarea className="form-control" rows="3" name="specialInstructions" required value={shippingInformation[0].specialInstructions} onChange={(e) => handleShippingChange(0, e)}></textarea>
                   {errors.specialInstructions && <div className="text-danger small">{errors.specialInstructions}</div>}
-                </div>
+                </div> */}
 
                 {/* Financial Information */}
-                <h5 className="mb-3 mt-4">Financial Information</h5>
+                {/* <h5 className="mb-3 mt-4">Financial Information</h5>
                 <div className="col-md-6">
                   <label className="form-label">Annual Revenue</label>
                   <input type="number" className="form-control" name="annualRevenue" required value={financialInformation[0].annualRevenue} onChange={(e) => handleFinancialChange(0, e)} />
@@ -704,7 +704,7 @@ function AddClientManagement() {
                   <label className="form-label">Financial Contact</label>
                   <input type="text" className="form-control" name="financialContact" required value={financialInformation[0].financialContact} onChange={(e) => handleFinancialChange(0, e)} />
                   {errors.financialContact && <div className="text-danger small">{errors.financialContact}</div>}
-                </div>
+                </div> */}
 
                 {/* Ledger Information */}
                 <h5 className="mb-3 mt-4">Ledger Information</h5>

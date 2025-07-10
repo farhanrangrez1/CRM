@@ -132,46 +132,46 @@ function ProductionManager() {
         </Row>
 
         <Table responsive borderless hover className="text-center" >
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Department</th>
-      <th>Email</th>
-      <th>Contact</th>
-      <th>Projects</th>
-      <th>Status</th>
-      <th>Actions</th>
-    </tr>
-  </thead>
-  <tbody>
-    {getCurrentPageData().map(manager => (
-      <tr key={manager.id}>
-        <td>{manager.name}</td>
-        <td>{manager.department}</td>
-        <td>{manager.email}</td>
-        <td>{manager.contact}</td>
-        <td>{manager.totalProjects}</td>
-        <td>
-          <span className={`badge ${manager.status === 'Active' ? 'bg-success' : 'bg-danger'}`}>
-            {manager.status}
-          </span>
-        </td>
-        <td>
-          <Dropdown align="end">
-            <Dropdown.Toggle variant="link" className="text-dark">
-              <FaEllipsisV />
-            </Dropdown.Toggle>
-            <Dropdown.Menu>
-              <Dropdown.Item onClick={() => handleManagerAction('view', manager.id)}>View</Dropdown.Item>
-              <Dropdown.Item onClick={() => handleManagerAction('delete', manager.id)}>Delete</Dropdown.Item>
-              <Dropdown.Item onClick={() => handleManagerAction('export', manager.id)}>Export</Dropdown.Item>
-            </Dropdown.Menu>
-          </Dropdown>
-        </td>
-      </tr>
-    ))}
-  </tbody>
-</Table>
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Department</th>
+              <th>Email</th>
+              <th>Contact</th>
+              <th>Projects</th>
+              <th>Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {getCurrentPageData().map(manager => (
+              <tr key={manager.id}>
+                <td>{manager.name}</td>
+                <td>{manager.department}</td>
+                <td>{manager.email}</td>
+                <td>{manager.contact}</td>
+                <td>{manager.totalProjects}</td>
+                <td>
+                  <span className={`badge ${manager.status === 'Active' ? 'bg-success' : 'bg-danger'}`}>
+                    {manager.status}
+                  </span>
+                </td>
+                <td>
+                  <Dropdown align="end">
+                    <Dropdown.Toggle variant="link" className="text-dark">
+                      <FaEllipsisV />
+                    </Dropdown.Toggle>
+                    <Dropdown.Menu>
+                      <Dropdown.Item onClick={() => handleManagerAction('view', manager.id)}>View</Dropdown.Item>
+                      <Dropdown.Item onClick={() => handleManagerAction('delete', manager.id)}>Delete</Dropdown.Item>
+                      <Dropdown.Item onClick={() => handleManagerAction('export', manager.id)}>Export</Dropdown.Item>
+                    </Dropdown.Menu>
+                  </Dropdown>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </Table>
 
 
         <Row className="mt-3">

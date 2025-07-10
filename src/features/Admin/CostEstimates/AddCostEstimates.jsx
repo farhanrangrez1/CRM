@@ -176,7 +176,7 @@ function AddCostEstimates() {
       setInvoice(JSON.parse(storedInvoice));
     }
   }, []);
- 
+
   const handleSignature = () => {
     // then call the callback
     const payload = {
