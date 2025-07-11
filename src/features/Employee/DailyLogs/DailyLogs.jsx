@@ -27,14 +27,33 @@ const DailyLogs = () => {
   const [logCommentsMap, setLogCommentsMap] = useState({});
   const [expandedLogs, setExpandedLogs] = useState(new Set());
 
-  const proposalId = localStorage.getItem("proposalId")
+
+  const [invoice, setInvoice] = useState(null);
+  useEffect(() => {
+    const storedInvoice = localStorage.getItem("invoice");
+    if (storedInvoice) {
+      setInvoice(JSON.parse(storedInvoice));
+    }
+  }, []);
+
+  // const proposalId = localStorage.getItem("proposalId");
   const [formData, setFormData] = useState({
-    job_id: '',
+    job_id: invoice?._id,
     date: new Date().toISOString().split('T')[0],
     title: '',
     notes: '',
     image: null
   });
+
+  useEffect(() => {
+    if (invoice) {
+      setFormData((prev) => ({
+        ...prev,
+        job_id: invoice?._id
+      }));
+    }
+  }, [invoice]);
+
   const [blogId, setBlogId] = useState('')
 
   const navigate = useNavigate();
@@ -46,6 +65,7 @@ const DailyLogs = () => {
     dispatch(fetchProject())
 
   }, [dispatch]);
+
   const handleFormChange = (e) => {
     const { name, value, files } = e.target;
     setFormData((prev) => ({
@@ -53,6 +73,7 @@ const DailyLogs = () => {
       [name]: files ? files : value,  // Save files as an array
     }));
   };
+
 
 
   const handleSaveLog = () => {
@@ -80,12 +101,13 @@ const DailyLogs = () => {
 
     // Reset form and hide the modal
     setFormData({
-      job_id: '',
+      job_id: invoice?._id || '',
       date: new Date().toISOString().split('T')[0],
       title: '',
       notes: '',
-      images: null,
+      image: null
     });
+
     setShowEditModal(false);
     setCurrentLogIndex(null);
   };
@@ -153,7 +175,7 @@ const DailyLogs = () => {
           onClick={() => {
             setCurrentLogIndex(null);
             setFormData({
-              job_id: '',
+              job_id: invoice?._id,
               date: new Date().toISOString().split('T')[0],
               title: '',
               notes: '',
@@ -168,7 +190,7 @@ const DailyLogs = () => {
 
       </div>
 
-      {dailyLogs?.filter(item => item.job_id == proposalId).length === 0 ? (
+      {dailyLogs?.filter(item => item.job_id == invoice?._id).length === 0 ? (
         <Card className="text-center p-4">
           <Card.Body>
             <h5>No daily logs found</h5>
@@ -182,7 +204,7 @@ const DailyLogs = () => {
           </Card.Body>
         </Card>
       ) : (
-        dailyLogs?.filter(item => item.job_id == proposalId).map((log, idx) => (
+        dailyLogs?.filter(item => item.job_id == invoice?._id).map((log, idx) => (
 
           <Card key={log.id} className="mb-4 shadow-sm">
             <Card.Body>

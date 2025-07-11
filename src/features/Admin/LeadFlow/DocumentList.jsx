@@ -3,10 +3,22 @@ import {
   deleteDocument,
   fetchDocumentById,
 } from "../../../redux/slices/saveDocumentSlice";
+import { useEffect, useState } from "react";
 
 const DocumentList = ({ documents, previewUrl, setPreviewUrl }) => {
   const dispatch = useDispatch();
-  const proposalId = localStorage.getItem("proposalId");
+  const [invoice, setInvoice] = useState(null);
+  useEffect(() => {
+    const storedInvoice = localStorage.getItem("invoice");
+    if (storedInvoice) {
+      setInvoice(JSON.parse(storedInvoice));
+    }
+  }, []);
+  // const proposalId = localStorage.getItem("proposalId");
+
+  useEffect(() => {
+    dispatch(fetchDocumentById(invoice?._id));
+  }, [invoice, dispatch])
 
   const handlePreview = (url) => setPreviewUrl(url);
 
@@ -23,7 +35,7 @@ const DocumentList = ({ documents, previewUrl, setPreviewUrl }) => {
 
     try {
       await dispatch(deleteDocument(id)).unwrap();
-      await dispatch(fetchDocumentById(proposalId));
+      await dispatch(fetchDocumentById(invoice?._id));
     } catch (err) {
       console.error("Failed to delete or fetch documents:", err);
     }
@@ -34,7 +46,7 @@ const DocumentList = ({ documents, previewUrl, setPreviewUrl }) => {
       <div className="container mt-4">
         <h4 className="fw-bold mb-3">Uploaded Documents</h4>
         <ul className="list-group">
-          {documents?.map((doc) => (
+          {documents?.filter((item) => item.proposal_id == invoice?._id)?.map((doc) => (
             <li
               key={doc.id}
               className="list-group-item d-flex justify-content-between align-items-center"

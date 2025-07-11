@@ -131,7 +131,6 @@ const ProposalEmailUI = ({ setShowAddInvoice }) => {
     formData.append("project_id", projectId);
 
     try {
-      console.log("email sent")
       const response = await axios.post(
         `${apiUrl}/sendProposalForSignature`,
         formData,

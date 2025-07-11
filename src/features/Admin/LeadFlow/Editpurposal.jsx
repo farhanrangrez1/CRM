@@ -18,6 +18,7 @@ import { createDocument, fetchDocumentById } from "../../../redux/slices/saveDoc
 import { useDispatch, useSelector } from "react-redux";
 import DocumentList from "./DocumentList";
 import JobCost from "./JobCost";
+import { getDocumentsByProposalId } from "../../../redux/slices/documentSlice";
 
 const Editpurposal = () => {
   const [manager, setManager] = useState(null);
@@ -93,7 +94,29 @@ const Editpurposal = () => {
     updated.splice(index, 1);
     setLineItems(updated);
   };
+  const [existingDocId, setExistingDocId] = useState(null);
 
+  const [invoice, setInvoice] = useState(null);
+  useEffect(() => {
+    const storedInvoice = localStorage.getItem("invoice");
+    if (storedInvoice) {
+      setInvoice(JSON.parse(storedInvoice));
+    }
+  }, []);
+  useEffect(() => {
+
+    if (invoice?._id) {
+      dispatch(getDocumentsByProposalId(invoice?._id))
+        .unwrap()
+        .then((res) => {
+          if (Array.isArray(res) && res.length > 0) {
+            setExistingDocId(res[0].id);
+          }
+        }
+        )
+    }
+
+  }, []);
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -515,8 +538,6 @@ const Editpurposal = () => {
               </div>
             )}
             <div className="container mt-4">
-
-
               {/* Preview Modal */}
               {previewUrl && (
                 <div className="modal fade show d-block" tabIndex="-1" role="dialog">
@@ -555,6 +576,7 @@ const Editpurposal = () => {
           </div>
 
         );
+
       case "Daily Logs":
         return (
           <div className="tab-content-box">
@@ -565,102 +587,131 @@ const Editpurposal = () => {
 
       case "Contract & Change Orders":
         return (
-          <div className="tab-content-box container">
-            {/* Header */}
-            <div className="d-flex justify-content-between align-items-center mb-4">
-              <h5 className="fw-bold">Fixed price | AIA-style billing</h5>
-              <button className="btn btn-primary">Invoice now</button>
-            </div>
+          // <div className="tab-content-box container">
+          //   {/* Header */}
+          //   <div className="d-flex justify-content-between align-items-center mb-4">
+          //     <h5 className="fw-bold">Fixed price | AIA-style billing</h5>
+          //     <button className="btn btn-primary">Invoice now</button>
+          //   </div>
 
-            {/* Value summary */}
-            <div className="d-flex flex-wrap gap-4 mb-3">
-              <div><strong>Value:</strong> $264,000.00</div>
-              <div><strong>Invoiced:</strong> $45,000.00</div>
-              <div><strong>Retained:</strong> $5,000.00</div>
-            </div>
+          //   {/* Value summary */}
+          //   <div className="d-flex flex-wrap gap-4 mb-3">
+          //     <div><strong>Value:</strong> $264,000.00</div>
+          //     <div><strong>Invoiced:</strong> $45,000.00</div>
+          //     <div><strong>Retained:</strong> $5,000.00</div>
+          //   </div>
 
-            {/* Contract details */}
-            <div className="row mb-4">
-              <div className="col-md-6">
-                <p><strong>GC Contract#:</strong> 4235</p>
-                <p><strong>GC contract date:</strong> 11/1/22</p>
-              </div>
-              <div className="col-md-6">
-                <p><strong>Retainage for work:</strong> 10%</p>
-                <p><strong>Retainage for materials:</strong> 10%</p>
-                <p><strong>Payment terms:</strong> NET7</p>
-              </div>
-            </div>
+          //   {/* Contract details */}
+          //   <div className="row mb-4">
+          //     <div className="col-md-6">
+          //       <p><strong>GC Contract#:</strong> 4235</p>
+          //       <p><strong>GC contract date:</strong> 11/1/22</p>
+          //     </div>
+          //     <div className="col-md-6">
+          //       <p><strong>Retainage for work:</strong> 10%</p>
+          //       <p><strong>Retainage for materials:</strong> 10%</p>
+          //       <p><strong>Payment terms:</strong> NET7</p>
+          //     </div>
+          //   </div>
 
-            <button className="btn btn-link p-0 mb-3">✏️ Edit this information</button>
+          //   <button className="btn btn-link p-0 mb-3">✏️ Edit this information</button>
 
-            {/* Schedule of Values */}
-            <div className="border-top pt-3 mb-4">
-              <h6 className="fw-bold">SCHEDULE OF VALUES</h6>
+          //   {/* Schedule of Values */}
+          //   <div className="border-top pt-3 mb-4">
+          //     <h6 className="fw-bold">SCHEDULE OF VALUES</h6>
 
-              {/* Item 1 */}
-              <div className="border rounded p-3 mb-3 bg-light">
-                <h6 className="mb-1">1. Demolition / Clear Out</h6>
-                <p className="mb-1"><strong>Value:</strong> $108,000.00</p>
-                <p className="mb-1"><strong>Invoiced:</strong> 46.30%</p>
-                <p><strong>Balance:</strong> $58,000.00</p>
-              </div>
+          //     {/* Item 1 */}
+          //     <div className="border rounded p-3 mb-3 bg-light">
+          //       <h6 className="mb-1">1. Demolition / Clear Out</h6>
+          //       <p className="mb-1"><strong>Value:</strong> $108,000.00</p>
+          //       <p className="mb-1"><strong>Invoiced:</strong> 46.30%</p>
+          //       <p><strong>Balance:</strong> $58,000.00</p>
+          //     </div>
 
-              {/* Item 2 */}
-              <div className="border rounded p-3 mb-3 bg-light">
-                <h6 className="mb-1">2. Asphalt</h6>
-                <p className="mb-1"><strong>Value:</strong> $156,000.00</p>
-                <p className="mb-1"><strong>Invoiced:</strong> 0%</p>
-                <p><strong>Balance:</strong> $156,000.00</p>
-              </div>
+          //     {/* Item 2 */}
+          //     <div className="border rounded p-3 mb-3 bg-light">
+          //       <h6 className="mb-1">2. Asphalt</h6>
+          //       <p className="mb-1"><strong>Value:</strong> $156,000.00</p>
+          //       <p className="mb-1"><strong>Invoiced:</strong> 0%</p>
+          //       <p><strong>Balance:</strong> $156,000.00</p>
+          //     </div>
 
-              <button className="btn btn-primary">Add change order</button>
-            </div>
+          //     <button className="btn btn-primary">Add change order</button>
+          //   </div>
 
-            {/* Financial Summary */}
-            <div className="bg-primary bg-opacity-10 p-3 rounded mb-4">
-              <div className="row mb-2">
-                <div className="col-md-6"><strong>A1. Original bid Sum:</strong></div>
-                <div className="col-md-6 text-md-end">$264,000.00</div>
-              </div>
-              <div className="row mb-2">
-                <div className="col-md-6"><strong>A2. Original contract sum:</strong></div>
-                <div className="col-md-6 text-md-end">$264,000.00</div>
-              </div>
-              <div className="row mb-2">
-                <div className="col-md-6"><strong>B1. Pending change orders:</strong></div>
-                <div className="col-md-6 text-md-end">$0.00</div>
-              </div>
-              <div className="row mb-2">
-                <div className="col-md-6"><strong>B2. Net change by approved change orders:</strong></div>
-                <div className="col-md-6 text-md-end">$0.00</div>
-              </div>
-              <div className="row mb-2 fw-bold">
-                <div className="col-md-6"><strong>C. Contract sum to date (A+B1+B2):</strong></div>
-                <div className="col-md-6 text-md-end">$264,000.00</div>
-              </div>
-              <div className="row fw-bold">
-                <div className="col-md-6"><strong>D. Approved contract sum to date (A+B2):</strong></div>
-                <div className="col-md-6 text-md-end">$264,000.00</div>
-              </div>
-            </div>
+          //   {/* Financial Summary */}
+          //   <div className="bg-primary bg-opacity-10 p-3 rounded mb-4">
+          //     <div className="row mb-2">
+          //       <div className="col-md-6"><strong>A1. Original bid Sum:</strong></div>
+          //       <div className="col-md-6 text-md-end">$264,000.00</div>
+          //     </div>
+          //     <div className="row mb-2">
+          //       <div className="col-md-6"><strong>A2. Original contract sum:</strong></div>
+          //       <div className="col-md-6 text-md-end">$264,000.00</div>
+          //     </div>
+          //     <div className="row mb-2">
+          //       <div className="col-md-6"><strong>B1. Pending change orders:</strong></div>
+          //       <div className="col-md-6 text-md-end">$0.00</div>
+          //     </div>
+          //     <div className="row mb-2">
+          //       <div className="col-md-6"><strong>B2. Net change by approved change orders:</strong></div>
+          //       <div className="col-md-6 text-md-end">$0.00</div>
+          //     </div>
+          //     <div className="row mb-2 fw-bold">
+          //       <div className="col-md-6"><strong>C. Contract sum to date (A+B1+B2):</strong></div>
+          //       <div className="col-md-6 text-md-end">$264,000.00</div>
+          //     </div>
+          //     <div className="row fw-bold">
+          //       <div className="col-md-6"><strong>D. Approved contract sum to date (A+B2):</strong></div>
+          //       <div className="col-md-6 text-md-end">$264,000.00</div>
+          //     </div>
+          //   </div>
 
-            {/* Additional Options */}
-            <div className="mb-4">
-              <h6 className="fw-bold">ADDITIONAL OPTIONS</h6>
-              <select className="form-select w-auto">
-                <option>Display line item subtotals</option>
-              </select>
-            </div>
+          //   {/* Additional Options */}
+          //   <div className="mb-4">
+          //     <h6 className="fw-bold">ADDITIONAL OPTIONS</h6>
+          //     <select className="form-select w-auto">
+          //       <option>Display line item subtotals</option>
+          //     </select>
+          //   </div>
 
-            {/* Terms and Conditions */}
-            <div className="mb-4">
-              <h6 className="fw-bold">TERMS AND CONDITIONS</h6>
-              <p className="text-muted mb-0">
-                The above price is valid for 30 days. Test Data agrees that they will enter into a standard AIA subcontract with General Contractor,
-                and that basic provisions such as insurance and W-9 shall be in place prior to start.
-              </p>
-            </div>
+          //   {/* Terms and Conditions */}
+          //   <div className="mb-4">
+          //     <h6 className="fw-bold">TERMS AND CONDITIONS</h6>
+          //     <p className="text-muted mb-0">
+          //       The above price is valid for 30 days. Test Data agrees that they will enter into a standard AIA subcontract with General Contractor,
+          //       and that basic provisions such as insurance and W-9 shall be in place prior to start.
+          //     </p>
+          //   </div>
+          // </div>
+          <div className="container mt-4 mb-5">
+            {/* Main Page: AddInvoice */}
+            {showAddInvoice && (
+              <AddInvoice onInvoiceComplete={() => setShowAddInvoice(false)} />
+            )}
+
+            {/* Fullscreen Overlay Modal for ProposalEmailUI */}
+            {!showAddInvoice && (
+              <div
+                className="position-fixed top-0 start-0 w-100 h-100 bg-white shadow-lg"
+                style={{ zIndex: 1050, overflowY: "auto" }}
+              >
+                <div className="d-flex justify-content-between px-3 py-2">
+                  <div>
+                    <h4 className="fw-bold">Send proposal out for signature</h4>
+                  </div>
+                  <button
+                    className="btn btn-outline-dark"
+                    onClick={() => setShowAddInvoice(true)}
+                  >
+                    Close
+                  </button>
+                </div>
+                <div className="">
+                  <ProposalEmailUI setShowAddInvoice={setShowAddInvoice} />
+                </div>
+              </div>
+            )}
           </div>
         );
 
@@ -694,7 +745,7 @@ const Editpurposal = () => {
           "Job Costs",
           // stage === "lead" ? "Client Proposal" : "Draft Proposal",
           // "Contract & Change Orders",
-          "Create Proposal",
+          existingDocId ? "Create Proposal" : "Contract & Change Orders",
           "Documents",
           "Daily Logs",
           // "Activity",

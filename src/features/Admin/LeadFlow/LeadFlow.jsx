@@ -877,7 +877,7 @@ const LeadFlow = ({ data }) => {
 
                 <div className="col-12 col-md-6 d-flex justify-content-md-end gap-2 mb-3">
                   {/* <ButtonGroup> */}
-                    {/* <Button
+                  {/* <Button
                       variant={activeTab === 'manage' ? 'primary' : 'outline-primary'}
                       active={activeTab === 'manage'}
                       onClick={() => setActiveTab('manage')}
@@ -885,7 +885,7 @@ const LeadFlow = ({ data }) => {
                     >
                       <MdManageAccounts className="me-2" size={18} /> Manage Leads
                     </Button> */}
-                    {/* <Button
+                  {/* <Button
                       variant={activeTab === 'reports' ? 'primary' : 'outline-primary'}
                       active={activeTab === 'reports'}
                       onClick={() => setActiveTab('reports')}
@@ -893,24 +893,24 @@ const LeadFlow = ({ data }) => {
                     >
                       <HiOutlineDocumentReport className="me-2" size={18} /> Lead Reports
                     </Button> */}
-                    <Button
-                      variant='primary'
-                      // active={activeTab === 'reports'}
-                      // onClick={() => navigate("/admin/AddProjectList")}
-                      onClick={() => navigate("/admin/AddCostEstimates")}
-                      className="d-flex align-items-center"
-                    >
-                      Create Proposal
-                    </Button>
-                     <Button
-                      variant='primary'
-                      // active={activeTab === 'reports'}
-                      // onClick={() => navigate("/admin/AddProjectList")}
-                      onClick={() => navigate("/admin/AddProjectList")}
-                      className="d-flex align-items-center"
-                    >
-                      Create Project
-                    </Button>
+                  <Button
+                    variant='primary'
+                    // active={activeTab === 'reports'}
+                    // onClick={() => navigate("/admin/AddProjectList")}
+                    onClick={() => navigate("/admin/AddCostEstimates")}
+                    className="d-flex align-items-center"
+                  >
+                    Create Proposal
+                  </Button>
+                  <Button
+                    variant='primary'
+                    // active={activeTab === 'reports'}
+                    // onClick={() => navigate("/admin/AddProjectList")}
+                    onClick={() => navigate("/admin/AddProjectList")}
+                    className="d-flex align-items-center"
+                  >
+                    Create Project
+                  </Button>
                   {/* </ButtonGroup> */}
                 </div>
 

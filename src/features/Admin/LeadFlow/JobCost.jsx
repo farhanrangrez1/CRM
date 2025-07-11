@@ -6,6 +6,14 @@ import axios from 'axios';
 
 const JobCost = ({ jobStatus }) => {
 
+  const [invoice, setInvoice] = useState(null);
+  useEffect(() => {
+    const storedInvoice = localStorage.getItem("invoice");
+    if (storedInvoice) {
+      setInvoice(JSON.parse(storedInvoice));
+    }
+  }, []);
+
   const proposalId = localStorage.getItem("proposalId")
 
   const [data, setData] = useState()
@@ -54,7 +62,7 @@ const JobCost = ({ jobStatus }) => {
                 </tr>
               </thead>
               <tbody>
-                {data?.map((item) => (
+                {data?.filter((item) => item.proposal_id == invoice?._id)?.map((item) => (
                   <tr key={item?.id}>
                     <td>{item?.id}</td>
                     <td>
