@@ -317,7 +317,7 @@
 
 // export default Sidebar;
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { adminMenuItems, employeeMenuItems, clientMenuItems } from "../Layouts/menuConfig";
 import "./Sidebar.css";
@@ -333,22 +333,26 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
   const navigate = useNavigate();
   const location = useLocation();
 
+
   // const getFilteredMenuItems = (menuList) => {
   //   return menuList
   //     .map((item) => {
+  //       // Check if the item has a permissionKey
   //       const hasPermissionKey = item.permissionKey ? hasPermission(item.permissionKey, "view") : true;
   //       console.log(`Checking item: ${item.title}, has permission: ${hasPermissionKey}`);
 
   //       let filteredSubmenu = null;
   //       if (item.submenu) {
+  //         // Ensure submenu items have permission keys if required
   //         const submenuItems = item.submenu.filter(sub => {
   //           const hasSubPermission = sub.permissionKey ? hasPermission(sub.permissionKey, "view") : true;
   //           console.log(`Checking submenu item: ${sub.title}, has permission: ${hasSubPermission}`);
-  //           return hasSubPermission;
+  //           return hasSubPermission; // Only include submenu items with permission
   //         });
-  //         filteredSubmenu = submenuItems.length > 0 ? submenuItems : null;
+  //         filteredSubmenu = submenuItems.length > 0 ? submenuItems : null; // Show submenu if there are visible items
   //       }
 
+  //       // Determine if the item should be visible based on permissions
   //       const isVisible = hasPermissionKey || (filteredSubmenu && filteredSubmenu.length > 0);
   //       console.log(`Item: ${item.title}, visible: ${isVisible}`);
 
@@ -358,48 +362,64 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
   //         visible: isVisible,
   //       };
   //     })
-  //     .filter(item => item.visible);
+  //     .filter(item => item.visible); // Only return items that are visible
   // };
 
-const getFilteredMenuItems = (menuList) => {
-  return menuList
-    .map((item) => {
-      // Check if the item has a permissionKey
-      const hasPermissionKey = item.permissionKey ? hasPermission(item.permissionKey, "view") : true;
-      console.log(`Checking item: ${item.title}, has permission: ${hasPermissionKey}`);
+  const getFilteredMenuItems = (menuList) => {
+    return menuList
+      .map((item) => {
+        // Check parent menu permission
+        const hasPermissionKey = item.permissionKey ? hasPermission(item.permissionKey, "view") : true;
+        console.log(`Checking item: ${item.title}, has permission: ${hasPermissionKey}`);
 
-      let filteredSubmenu = null;
-      if (item.submenu) {
-        // Ensure submenu items have permission keys if required
-        const submenuItems = item.submenu.filter(sub => {
-          const hasSubPermission = sub.permissionKey ? hasPermission(sub.permissionKey, "view") : true;
-          console.log(`Checking submenu item: ${sub.title}, has permission: ${hasSubPermission}`);
-          return hasSubPermission; // Only include submenu items with permission
-        });
-        filteredSubmenu = submenuItems.length > 0 ? submenuItems : null; // Show submenu if there are visible items
-      }
+        let filteredSubmenu = null;
 
-      // Determine if the item should be visible based on permissions
-      const isVisible = hasPermissionKey || (filteredSubmenu && filteredSubmenu.length > 0);
-      console.log(`Item: ${item.title}, visible: ${isVisible}`);
+        if (item.submenu) {
+          let submenuItems;
 
-      return {
-        ...item,
-        submenu: filteredSubmenu,
-        visible: isVisible,
-      };
-    })
-    .filter(item => item.visible); // Only return items that are visible
-};
+          // ✅ If parent has permission, skip individual submenu permission checks
+          if (hasPermissionKey) {
+            submenuItems = item.submenu; // All submenus allowed
+          } else {
+            // 🔒 If parent has no permission, still check submenus (optional)
+            submenuItems = item.submenu.filter(sub => {
+              const hasSubPermission = sub.permissionKey ? hasPermission(sub.permissionKey, "view") : true;
+              console.log(`Checking submenu item: ${sub.title}, has permission: ${hasSubPermission}`);
+              return hasSubPermission;
+            });
+          }
 
-  const menuItems =
-    roleData === "admin"
-      ? getFilteredMenuItems(adminMenuItems)
-      : roleData === "employee"
-        ? getFilteredMenuItems(employeeMenuItems)
-        : roleData === "client"
-          ? getFilteredMenuItems(clientMenuItems)
-          : [];
+          filteredSubmenu = submenuItems.length > 0 ? submenuItems : null;
+        }
+
+        // If parent has permission or at least one submenu is visible, show it
+        const isVisible = hasPermissionKey || (filteredSubmenu && filteredSubmenu.length > 0);
+        console.log(`Item: ${item.title}, visible: ${isVisible}`);
+
+        return {
+          ...item,
+          submenu: filteredSubmenu,
+          visible: isVisible,
+        };
+      })
+      .filter(item => item.visible); // Return only visible items
+  };
+
+
+  // const menuItems =
+  //   roleData === "admin"
+  //     ? getFilteredMenuItems(adminMenuItems)
+  //     : roleData === "employee"
+  //       ? getFilteredMenuItems(employeeMenuItems)
+  //       : roleData === "client"
+  //         ? getFilteredMenuItems(clientMenuItems)
+  //         : [];
+  const menuItems = useMemo(() => {
+    if (roleData === "admin") return getFilteredMenuItems(adminMenuItems);
+    if (roleData === "employee") return getFilteredMenuItems(employeeMenuItems);
+    if (roleData === "client") return getFilteredMenuItems(clientMenuItems);
+    return [];
+  }, [roleData]);
 
   useEffect(() => {
     if (!location) return;
