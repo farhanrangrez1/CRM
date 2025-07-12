@@ -557,11 +557,79 @@ const LeadFlow = ({ data }) => {
       rejected: []
     });
 
+    const [loadingSpinner, setLoadingSpinner] = useState(false); // 👈 Add loading state
+
+
+
+    // useEffect(() => {
+    //   const processProjects = async () => {
+    //     if (!Array.isArray(project)) return;
+    //     setLoadingSpinner(true);
+
+    //     const updatedProjects = await Promise.all(
+    //       project.map(async (p) => {
+    //         const status = (p.status || "").toLowerCase();
+
+    //         if (status === "signature") {
+    //           try {
+    //             const res = await axios.get(
+    //               `${apiUrl}/getEnvelopesByProjectId/${p._id}`
+    //             );
+
+    //             if (res?.data?.data[0]?.current_status === "completed") {
+    //               const isTempPoles = p.tempPoles === "true"; // or === true if it's boolean
+    //               const newStatus = isTempPoles ? "Open" : "Active Project";
+
+    //               await dispatch(
+    //                 updateProject({
+    //                   id: p._id,
+    //                   payload: { status: newStatus },
+    //                 })
+    //               );
+    //               return { ...p, status: "completed" }; // Optional: update local copy
+    //             }
+    //           } catch (error) {
+    //             console.error(`Error checking project ${p._id}`, error.message);
+    //           }
+    //         }
+
+    //         return p;
+    //       })
+    //     );
+
+
+    //     // Step 2: Filter into Kanban columns
+    //     const result = {
+    //       active: updatedProjects.filter(
+    //         (p) => (p.status || "").toLowerCase() === "lead"
+    //       ),
+    //       pending: updatedProjects.filter(
+    //         (p) => (p.status || "").toLowerCase() === "bidding"
+    //       ),
+    //       closed: updatedProjects.filter(
+    //         (p) => (p.status || "").toLowerCase() === "open" || (p.status || "").toLowerCase() === "Active Project"
+    //       ),
+    //       rejected: updatedProjects.filter(
+    //         (p) => (p.status || "").toLowerCase() === "expired"
+    //       ),
+    //     };
+
+    //     setKanbanData(result);
+
+    //   };
+    //   setLoadingSpinner(false);
+
+    //   processProjects();
+    //   // }, [project, dispatch]);
+
+
+    // }, [reduxProposals, dispatch]);
+
 
     useEffect(() => {
       const processProjects = async () => {
         if (!Array.isArray(project)) return;
-
+        setLoadingSpinner(true);
 
         const updatedProjects = await Promise.all(
           project.map(async (p) => {
@@ -594,7 +662,6 @@ const LeadFlow = ({ data }) => {
           })
         );
 
-
         // Step 2: Filter into Kanban columns
         const result = {
           active: updatedProjects.filter(
@@ -612,10 +679,13 @@ const LeadFlow = ({ data }) => {
         };
 
         setKanbanData(result);
+        setLoadingSpinner(false);
       };
 
       processProjects();
-    }, [project, dispatch]);
+    }, []);
+
+
     const handleCardDrop = async (result) => {
       const { source, destination, draggableId } = result;
       if (!destination || (source.droppableId === destination.droppableId && source.index === destination.index)) return;
@@ -694,65 +764,74 @@ const LeadFlow = ({ data }) => {
             Updating...
           </div>
         )}
-        <DragDropContext key={project.map(p => p.id).join('-')} onDragEnd={handleCardDrop}>
-          <div className="kanban-board d-flex flex-nowrap gap-3 py-3" style={{ overflowX: "auto", minHeight: 350, marginLeft: "20px", WebkitOverflowScrolling: 'touch' }}>
-            {columns.map(col => (
-              <Droppable droppableId={col.id} key={col.id}>
-                {(provided, snapshot) => (
-                  <div
-                    ref={provided.innerRef}
-                    {...provided.droppableProps}
-                    className="kanban-stage bg-light border rounded p-2 flex-shrink-0 d-flex flex-column"
-                    style={{ minWidth: 220, maxWidth: 320, minHeight: 320, width: '100%', flex: '1 1 260px', background: snapshot.isDraggingOver ? '#e3f2fd' : undefined }}
-                  >
-                    <div className="fw-bold mb-2 d-flex align-items-center gap-2">
-                      <span className="text-dark" style={{ fontSize: 14 }}>
-                        <span className="me-1" style={{ fontSize: 10 }}>●</span>
-                        {col.title}
-                      </span>
-                      <span className="badge bg-light text-dark border ms-auto">{kanbanData[col.id]?.length || 0}</span>
-                    </div>
-                    {kanbanData[col.id]?.map((item, idx) => (
-                      <Draggable draggableId={String(item._id)} index={idx} key={item._id}>
-                        {(provided, snapshot) => (
-                          <div
-                            ref={provided.innerRef}
-                            {...provided.draggableProps}
-                            {...provided.dragHandleProps}
-                            className="bg-white border rounded mb-2 p-2 shadow-sm"
-                            style={{
-                              minHeight: 110,
-                              wordBreak: 'break-word',
-                              maxWidth: '100%',
-                              background: snapshot.isDragging ? '#fffde7' : undefined,
-                              ...provided.draggableProps.style
-                            }}
-                            onClick={() => {
-                              localStorage.setItem("proposalId", item._id);
-                              localStorage.setItem("invoice", JSON.stringify(item));
-                              navigate("/admin/LeadFlow/Details", { state: { item: item } });
-                            }}
-                          >
-                            <div className="fw-semibold text-primary" style={{ fontSize: 15 }}>
-                              {item.projectName || item.title}
-                            </div>
-                            <div className="text-muted small mb-1">Client: {item?.clientId?.clientName}</div>
-                            <div className="small text-secondary mb-1">Billing: {item.billing || item.job_type}</div>
-                            <div className="small text-secondary mb-1">Phases: {item.phases}</div>
-                            <div className="d-flex flex-wrap gap-2 align-items-center mb-1">
-                              <Badge bg="info" className="me-1">{(item.status == 'Open' || item.status == 'Active Project') ? 'Signature' : item.status}</Badge>
-                            </div>
-                          </div>
-                        )}
-                      </Draggable>
-                    ))}
-                    {provided.placeholder}
-                  </div>
-                )}
-              </Droppable>
-            ))}
+        {loadingSpinner ? (
+          <div className="d-flex flex-column justify-content-center align-items-center" style={{ minHeight: "400px" }}>
+            <div className="spinner-border text-primary" role="status">
+              <span className="visually-hidden">Loading...</span>
+            </div>
+            <div className="mt-3">Loading...</div>
           </div>
-        </DragDropContext>
+        ) : (
+          <DragDropContext key={project.map(p => p.id).join('-')} onDragEnd={handleCardDrop}>
+            <div className="kanban-board d-flex flex-nowrap gap-3 py-3" style={{ overflowX: "auto", minHeight: 350, marginLeft: "20px", WebkitOverflowScrolling: 'touch' }}>
+              {columns.map(col => (
+                <Droppable droppableId={col.id} key={col.id}>
+                  {(provided, snapshot) => (
+                    <div
+                      ref={provided.innerRef}
+                      {...provided.droppableProps}
+                      className="kanban-stage bg-light border rounded p-2 flex-shrink-0 d-flex flex-column"
+                      style={{ minWidth: 220, maxWidth: 320, minHeight: 320, width: '100%', flex: '1 1 260px', background: snapshot.isDraggingOver ? '#e3f2fd' : undefined }}
+                    >
+                      <div className="fw-bold mb-2 d-flex align-items-center gap-2">
+                        <span className="text-dark" style={{ fontSize: 14 }}>
+                          <span className="me-1" style={{ fontSize: 10 }}>●</span>
+                          {col.title}
+                        </span>
+                        <span className="badge bg-light text-dark border ms-auto">{kanbanData[col.id]?.length || 0}</span>
+                      </div>
+                      {kanbanData[col.id]?.map((item, idx) => (
+                        <Draggable draggableId={String(item._id)} index={idx} key={item._id}>
+                          {(provided, snapshot) => (
+                            <div
+                              ref={provided.innerRef}
+                              {...provided.draggableProps}
+                              {...provided.dragHandleProps}
+                              className="bg-white border rounded mb-2 p-2 shadow-sm"
+                              style={{
+                                minHeight: 110,
+                                wordBreak: 'break-word',
+                                maxWidth: '100%',
+                                background: snapshot.isDragging ? '#fffde7' : undefined,
+                                ...provided.draggableProps.style
+                              }}
+                              onClick={() => {
+                                localStorage.setItem("proposalId", item._id);
+                                localStorage.setItem("invoice", JSON.stringify(item));
+                                navigate("/admin/LeadFlow/Details", { state: { item: item } });
+                              }}
+                            >
+                              <div className="fw-semibold text-primary" style={{ fontSize: 15 }}>
+                                {item.projectName || item.title}
+                              </div>
+                              <div className="text-muted small mb-1">Client: {item?.clientId?.clientName}</div>
+                              <div className="small text-secondary mb-1">Billing: {item.billing || item.job_type}</div>
+                              <div className="small text-secondary mb-1">Phases: {item.phases}</div>
+                              <div className="d-flex flex-wrap gap-2 align-items-center mb-1">
+                                <Badge bg="info" className="me-1">{(item.status == 'Open' || item.status == 'Active Project') ? 'Signature' : item.status}</Badge>
+                              </div>
+                            </div>
+                          )}
+                        </Draggable>
+                      ))}
+                      {provided.placeholder}
+                    </div>
+                  )}
+                </Droppable>
+              ))}
+            </div>
+          </DragDropContext>
+        )}
       </div>
     );
   };

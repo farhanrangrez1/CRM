@@ -48,7 +48,7 @@ export const SingleUser = createAsyncThunk(
       if (!token) {
         return rejectWithValue("Token or IV is missing in localStorage");
       }
-      const decryptedToken = decryptToken(token);  
+      const decryptedToken = decryptToken(token);
       //  console.log("Decrypted Token:", decryptedToken);
 
       const tokenParts = decryptedToken.split('.');
@@ -56,14 +56,14 @@ export const SingleUser = createAsyncThunk(
         return rejectWithValue("Invalid token format");
       }
       const decodedPayload = JSON.parse(atob(tokenParts[1]));
-       const userId = decodedPayload.id;
+      const userId = decodedPayload.id;
       // console.log("Decoded Payload:", decodedPayload);
-    
+
       // Construct the URL with the user ID and Status
       const response = await axiosInstance.get(
         `${apiUrl}/user/${userId}`
       );
-      return response.data;
+      return response?.data?.data;
     } catch (error) {
       console.error("Error occurred while fetching jobs:", error);
       return rejectWithValue(error.response?.data || error.message);
@@ -144,7 +144,7 @@ const userSlice = createSlice({
   name: 'user',
   initialState: {
     userAll: [],
-    UserSingle:[],
+    UserSingle: [],
     status: 'idle',
     error: null,
   },
@@ -152,7 +152,7 @@ const userSlice = createSlice({
   extraReducers: (builder) => {
     builder
 
-         .addCase(SingleUser.pending, (state) => {
+      .addCase(SingleUser.pending, (state) => {
         state.status = 'loading';
       })
       .addCase(SingleUser.fulfilled, (state, action) => {
@@ -164,7 +164,7 @@ const userSlice = createSlice({
         state.error = action.payload;
       })
 
-      
+
       // Add
       //   .addCase(createusers.pending, (state) => {
       //     state.loading = true;

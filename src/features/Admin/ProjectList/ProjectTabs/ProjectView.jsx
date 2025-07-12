@@ -848,7 +848,7 @@ const ProjectView = ({ data }) => {
 
         function mapStatus(status) {
             const map = {
-                "Active Project": "signature",
+                "Active Project": "Active Project",
                 "Pending": "serviceCalls",
                 "Closed": "pendingRough",
                 "UG Pipes": "ugPipes",
@@ -869,7 +869,7 @@ const ProjectView = ({ data }) => {
         const [isUpdating, setIsUpdating] = useState(false);
 
         const kanbanData = {
-            pendingProposalApproval: reduxProposals.filter(p => p.status === "pendingProposalApproval"),
+            pendingProposalApproval: reduxProposals.filter(p => p.status === "Active Project" || p.status === "Open" || p.status === "Signature" || p.status === "open" || p.status === "signature"),
             serviceCalls: reduxProposals.filter(p => p.status === "serviceCalls"),
             pendingRough: reduxProposals.filter(p => p.status === "pendingRough"),
             ugPipes: reduxProposals.filter(p => p.status === "ugPipes"),
