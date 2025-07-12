@@ -124,6 +124,8 @@ const Editpurposal = () => {
   // const project_id = localStorage.getItem("proposalId");
   const project_id = job?.id;
   const proposalId = job?.id;
+  const [refreshJobCost, setRefreshJobCost] = useState(false);
+
 
   const resetForm = () => {
     setPhaseName("");
@@ -156,7 +158,9 @@ const Editpurposal = () => {
       );
 
       if (response.status === 200 || response.status === 201) {
-        Swal.fire("Success", "Job planning created successfully!", "success");
+        Swal.fire("Success", "Job planning created successfully!", "success").then(() => {
+          setRefreshJobCost(prev => !prev); // toggle to trigger refresh
+        });
       } else {
         throw new Error("Unexpected response status");
       }
@@ -230,22 +234,50 @@ const Editpurposal = () => {
   const handleUploadClick = () => {
     setShowFileModal(true);
   };
-  useEffect(() => {
-    const fetchBudgetSummary = async () => {
-      const data = await getBudgetSummaryByProposalId(project_id);
-      if (data) {
-        // Handle your state update here
-        // console.log(data);
-      }
-    };
+  // useEffect(() => {
+  //   const fetchBudgetSummary = async () => {
+  //     const data = await getBudgetSummaryByProposalId(project_id);
+  //     if (data) {
+  //       // Handle your state update here
+  //       // console.log(data);
+  //     }
+  //   };
 
-    fetchBudgetSummary();
-  }, [saveJob]);
+  //   fetchBudgetSummary();
+  // }, [saveJob]);
 
 
   // const stage = job?.p?.stage;
 
   const [showAddInvoice, setShowAddInvoice] = useState(true);
+  const calculateAmount = (quantity, rate) => quantity * rate;
+
+  const [items, setItems] = useState([{ description: "", quantity: 0, rate: 0, amount: 0 }]);
+
+  useEffect(() => {
+    dispatch(getDocumentsByProposalId(invoice?._id)).unwrap().then((res) => {
+      if (Array.isArray(res) && res.length > 0) {
+
+        setExistingDocId(res[0].id);
+        const doc = res[0];
+        if (Array.isArray(doc.line_items)) {
+          setItems(doc.line_items);
+        }
+      }
+    })
+  }, [])
+
+  const handleItemChange = (index, field, value) => {
+    const newItems = [...items];
+    newItems[index][field] = value;
+    newItems[index].amount = calculateAmount(newItems[index].quantity, newItems[index].rate);
+    setItems(newItems);
+  };
+  const removeItem = (index) => {
+    const newItems = [...items];
+    newItems.splice(index, 1);
+    setItems(newItems);
+  };
 
   const renderTabContent = () => {
     switch (activeTab) {
@@ -259,6 +291,10 @@ const Editpurposal = () => {
                   <p className="mb-1 text-muted">Job Status</p>
                   {/* <p>Lead</p> */}
                   <p>{job?.status}</p>
+                </div>
+                <div className="col-md-6">
+                  <p className="mb-1 text-muted">Job Address</p>
+                  <p>{invoice?.projectAddress}</p>
                 </div>
                 {/* <div className="col-md-6">
                   <p className="mb-1 text-muted">Job Type</p>
@@ -277,6 +313,65 @@ const Editpurposal = () => {
                   <p>{job?.job_address}</p>
                 </div> */}
               </div>
+
+
+            </div>
+            <div>
+              <h6 className="fw-semibold mb-3">Line Items</h6>
+              {items.map((item, index) => (
+                <div
+                  className="row gx-2 gy-2 align-items-center mb-2 px-2 py-2"
+                  key={index}
+                  style={{ background: "#f9f9f9", borderRadius: "8px" }}
+                >
+                  <div className="col-md-5">
+                    <input
+                      readOnly
+                      type="text"
+                      className="form-control"
+                      placeholder="Item description"
+                      required
+                      value={item.description}
+                      onChange={(e) => handleItemChange(index, "description", e.target.value)}
+                    />
+                  </div>
+                  <div className="col-md-2">
+                    <input
+                      readOnly
+                      type="number"
+                      className="form-control"
+                      required
+                      value={item.quantity}
+                      onChange={(e) =>
+                        handleItemChange(index, "quantity", parseInt(e.target.value))
+                      }
+                    />
+                  </div>
+                  <div className="col-md-2">
+                    <input
+                      readOnly
+                      type="number"
+                      required
+                      value={item.rate}
+                      onChange={(e) => handleItemChange(index, "rate", parseFloat(e.target.value))}
+                      className="form-control"
+                    />
+                  </div>
+                  <div className="col-md-2">
+                    <span>
+                      ${item.amount.toFixed(2)}
+                    </span>
+                  </div>
+                  <div className="col-md-1 text-end">
+                    <button type="button"
+                      className="btn btn-link text-danger p-0"
+                      onClick={() => removeItem(index)}
+                    >
+                      remove
+                    </button>
+                  </div>
+                </div>
+              ))}
             </div>
 
             {/* <div className="col-md-4">
@@ -406,7 +501,8 @@ const Editpurposal = () => {
                 </Row>
               </div>
             </div>
-            <JobCost jobStatus={job?.status} />
+            <JobCost jobStatus={job?.status} refreshTrigger={refreshJobCost} />
+
           </div>
         );
 

@@ -269,6 +269,8 @@ function AddCostEstimates() {
                     const selectedId = e.target.value;
                     const selectedProject = project?.data?.find(p => p._id === selectedId);
 
+                    localStorage.setItem("proposalId", formData.projectId[0]);
+
                     if (selectedProject) {
                       // Prepare the form data from project/invoice
                       const newFormData = {
@@ -315,8 +317,8 @@ function AddCostEstimates() {
                   }}
                   required
                 >
-                  <option value="">Select a project</option>
-                  {reversedProjectList.map((proj) => (
+                  <option value="">Select a project / Create Project</option>
+                  {reversedProjectList.filter((list) => list.status == "Lead" || list.status == "lead").map((proj) => (
                     <option key={proj._id} value={proj._id}>
                       {proj.projectName} {proj.projectNo ? `(${proj.projectNo})` : ''}
                     </option>

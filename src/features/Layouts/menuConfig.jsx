@@ -126,7 +126,7 @@ export const adminMenuItems = [
     path: "/admin/dashboard"
   },
   {
-    title: "Praposal",
+    title: "Proposal",
     icon: <FaSitemap className="menu-icon" />,
     path: "/admin/LeadFlow",
     permissionKey: "proposal",
@@ -200,11 +200,11 @@ export const adminMenuItems = [
     icon: <FaUserCircle className="menu-icon" />,
     path: "/admin/profile",
   },
-  {
-    title: "Settings",
-    icon: <FaCog className="menu-icon" />,
-    path: "/admin/Settings",
-  },
+  // {
+  //   title: "Settings",
+  //   icon: <FaCog className="menu-icon" />,
+  //   path: "/admin/Settings",
+  // },
 ];
 
 

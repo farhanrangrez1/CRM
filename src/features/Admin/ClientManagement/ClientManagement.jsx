@@ -196,7 +196,7 @@ function ClientManagement() {
                     <td style={{ whiteSpace: "nowrap" }}>{client.contactPersons?.[0]?.phone || 'N/A'}</td>
                     <td style={{ whiteSpace: "nowrap" }}>{client.industry || 'N/A'}</td>
                     {/* <td> */}
-                      {/* <span className={getStatusBadgeClass(client.Status)}>
+                    {/* <span className={getStatusBadgeClass(client.Status)}>
                         {client.Status || 'Unknown'}
                       </span> */}
                     {/* </td> */}

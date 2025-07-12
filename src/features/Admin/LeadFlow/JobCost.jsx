@@ -4,7 +4,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import axios from 'axios';
 
 
-const JobCost = ({ jobStatus }) => {
+const JobCost = ({ jobStatus, refreshTrigger }) => {
 
   const [invoice, setInvoice] = useState(null);
   useEffect(() => {
@@ -35,9 +35,7 @@ const JobCost = ({ jobStatus }) => {
   };
   useEffect(() => {
     getData();
-  }, []);
-
-
+  }, [refreshTrigger]);
 
   // const tableData = generateRandomData(10);
 

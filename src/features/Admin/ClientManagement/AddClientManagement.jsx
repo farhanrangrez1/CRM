@@ -394,6 +394,11 @@ function AddClientManagement() {
 
   // };
 
+  const handleCancel = () => {
+    navigate(-1);
+  };
+
+
   return (
     <>
       <ToastContainer />
@@ -779,7 +784,7 @@ function AddClientManagement() {
               </div>
 
               <div className="col-12 d-flex justify-content-end gap-2 mt-4">
-                <button type="button" className="btn btn-outline-secondary">Cancel</button>
+                <button type="button" className="btn btn-outline-secondary" onClick={handleCancel}>Cancel</button>
                 <button type="submit" id="btn-All" className="btn btn-dark">{id || client?._id ? "Update client" : "Create"}</button>
               </div>
             </form>

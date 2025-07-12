@@ -22,6 +22,7 @@ function AddProjectList() {
     startDate: '',
     endDate: '',
     projectPriority: '',
+    projectAddress: '',
     description: '',
     status: 'Lead',
     projectRequirements: {
@@ -113,9 +114,13 @@ function AddProjectList() {
     }
   };
 
+  // const handleCancel = () => {
+  //   navigate("/admin/projectList");
+  // };
   const handleCancel = () => {
-    navigate("/admin/projectList");
+    navigate(-1); // Goes one step back in the browser history
   };
+
 
   const { Clients } = useSelector((state) => state.client);
   useEffect(() => {
@@ -204,19 +209,19 @@ function AddProjectList() {
                   <option value="low">Low</option>
                 </Form.Select>
               </Form.Group>
-<Form.Group className="mb-3 mt-6">
-  <Form.Check
-    type="checkbox"
-    label="Temp Poles"
-    name="tempPoles"
-    checked={formData.tempPoles}
-    onChange={(e) => setFormData({ ...formData, tempPoles: e.target.checked })}
-  />
-</Form.Group>
+              <Form.Group className="mb-3 mt-6">
+                <Form.Check
+                  type="checkbox"
+                  label="Temp Poles"
+                  name="tempPoles"
+                  checked={formData.tempPoles}
+                  onChange={(e) => setFormData({ ...formData, tempPoles: e.target.checked })}
+                />
+              </Form.Group>
 
-                <Form.Group className="mb-3">
-  
-</Form.Group>
+              <Form.Group className="mb-3">
+
+              </Form.Group>
 
             </Col>
             {/* <Col md={6}>
@@ -238,7 +243,19 @@ function AddProjectList() {
                 </Form.Select>
               </Form.Group>
             </Col> */}
-            
+            <Col md={6}>
+              <Form.Group>
+                <Form.Label className="text-muted mb-1">Project Address</Form.Label>
+                <Form.Control
+                  type="text"
+                  name="projectAddress"
+                  value={formData.projectAddress}
+                  onChange={handleInputChange}
+                  required
+                />
+              </Form.Group>
+            </Col>
+
           </Row>
 
           <Form.Group className="mb-3">
