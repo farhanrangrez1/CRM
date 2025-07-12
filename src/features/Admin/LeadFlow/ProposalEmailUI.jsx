@@ -489,7 +489,7 @@ const ProposalEmailUI = ({ setShowAddInvoice }) => {
       );
       toast.success("Email sent successfully!");
       if (location.pathname === "/admin/AddCostEstimates") {
-        navigate(-1); // go back
+        navigate(-1);
       } else {
         setShowAddInvoice(true);
       }

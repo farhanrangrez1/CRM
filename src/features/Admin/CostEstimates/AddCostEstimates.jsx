@@ -269,47 +269,52 @@ function AddCostEstimates() {
                     const selectedId = e.target.value;
                     const selectedProject = project?.data?.find(p => p._id === selectedId);
 
-                    localStorage.setItem("proposalId", formData.projectId[0]);
+                    // Always update the proposalId in localStorage
+                    localStorage.setItem("proposalId", selectedId);
 
                     if (selectedProject) {
-                      // Prepare the form data from project/invoice
                       const newFormData = {
                         ...formData,
                         projectId: [selectedId],
                         projectName: selectedProject.projectName,
                         clientId: [selectedProject.clientId._id],
                         clientName: selectedProject.clientId.clientName,
-                        estimateDate: new Date().toISOString().split('T')[0], // Today's date
-                        validUntil: selectedProject.endDate ? selectedProject.endDate.split('T')[0] : "", // Project end date
+                        estimateDate: new Date().toISOString().split('T')[0],
+                        validUntil: selectedProject.endDate ? selectedProject.endDate.split('T')[0] : "",
                         currency: selectedProject.currency || "USD",
                         Notes: selectedProject.description || "",
-                        Status: "Active" // Set default status
+                        Status: "Active"
                       };
 
-                      // Check if project has line items/budget info
-                      let lineItems = [];
-                      if (selectedProject.budgetAmount) {
-                        lineItems = [{
+                      const lineItems = selectedProject.budgetAmount
+                        ? [{
                           description: `${selectedProject.projectName} Project Budget`,
                           quantity: 1,
                           rate: parseFloat(selectedProject.budgetAmount),
                           amount: parseFloat(selectedProject.budgetAmount)
+                        }]
+                        : [{
+                          description: "",
+                          quantity: 0,
+                          rate: 0,
+                          amount: 0
                         }];
-                      } else {
-                        lineItems = [{ description: "", quantity: 0, rate: 0, amount: 0 }];
-                      }
 
                       setFormData(newFormData);
                       setItems(lineItems);
 
-                      // Store the complete invoice data including calculated line items
+                      const subtotal = lineItems.reduce((sum, item) => sum + item.amount, 0);
+                      const taxRate = 0.05;
+                      const tax = subtotal * taxRate;
+                      const total = subtotal + tax;
+
                       const invoiceData = {
                         ...selectedProject,
-                        lineItems: lineItems,
-                        taxRate: 0.05,
-                        subtotal: lineItems.reduce((sum, item) => sum + item.amount, 0),
-                        tax: lineItems.reduce((sum, item) => sum + item.amount, 0) * 0.05,
-                        total: lineItems.reduce((sum, item) => sum + item.amount, 0) * 1.05
+                        lineItems,
+                        taxRate,
+                        subtotal,
+                        tax,
+                        total
                       };
 
                       localStorage.setItem("invoice", JSON.stringify(invoiceData));
@@ -318,12 +323,15 @@ function AddCostEstimates() {
                   required
                 >
                   <option value="">Select a project / Create Project</option>
-                  {reversedProjectList.filter((list) => list.status == "Lead" || list.status == "lead").map((proj) => (
-                    <option key={proj._id} value={proj._id}>
-                      {proj.projectName} {proj.projectNo ? `(${proj.projectNo})` : ''}
-                    </option>
-                  ))}
+                  {reversedProjectList
+                    .filter(list => list.status === "Lead" || list.status === "lead")
+                    .map(proj => (
+                      <option key={proj._id} value={proj._id}>
+                        {proj.projectName} {proj.projectNo ? `(${proj.projectNo})` : ''}
+                      </option>
+                    ))}
                 </select>
+
               </div>
 
               <div className="col-md-4 mb-3">

@@ -636,26 +636,26 @@ const LeadFlow = ({ data }) => {
             const status = (p.status || "").toLowerCase();
 
             if (status === "signature") {
-              try {
-                const res = await axios.get(
-                  `${apiUrl}/getEnvelopesByProjectId/${p._id}`
-                );
+              // try {
+              //   const res = await axios.get(
+              //     `${apiUrl}/getEnvelopesByProjectId/${p._id}`
+              //   );
 
-                if (res?.data?.data[0]?.current_status === "completed") {
-                  const isTempPoles = p.tempPoles === "true"; // or === true if it's boolean
-                  const newStatus = isTempPoles ? "Open" : "Active Project";
+              //   if (res?.data?.data[0]?.current_status === "completed") {
+              const isTempPoles = p.tempPoles === "true";
+              const newStatus = isTempPoles ? "Open" : "Active Project";
 
-                  await dispatch(
-                    updateProject({
-                      id: p._id,
-                      payload: { status: newStatus },
-                    })
-                  );
-                  return { ...p, status: "completed" }; // Optional: update local copy
-                }
-              } catch (error) {
-                console.error(`Error checking project ${p._id}`, error.message);
-              }
+              await dispatch(
+                updateProject({
+                  id: p._id,
+                  payload: { status: newStatus },
+                })
+              );
+              return { ...p, status: "completed" }; // Optional: update local copy
+              //   }
+              // } catch (error) {
+              //   console.error(`Error checking project ${p._id}`, error.message);
+              // }
             }
 
             return p;
@@ -811,14 +811,25 @@ const LeadFlow = ({ data }) => {
                                 navigate("/admin/LeadFlow/Details", { state: { item: item } });
                               }}
                             >
-                              <div className="fw-semibold text-primary" style={{ fontSize: 15 }}>
-                                {item.projectName || item.title}
-                              </div>
+                              {item.status == "signature" || item.status == "Signature" || item.status == "open" || item.status == "Open" || item.status == 'Active Project' ? <div className='d-flex justify-content-between'>
+                                <div className="fw-semibold text-primary" style={{ fontSize: 15 }}>
+                                  {item.projectName || item.title}
+                                </div>
+                                ✅
+                              </div> :
+                                <div className="fw-semibold text-primary" style={{ fontSize: 15 }}>
+                                  {item.projectName || item.title}
+                                </div>}
                               <div className="text-muted small mb-1">Client: {item?.clientId?.clientName}</div>
                               <div className="small text-secondary mb-1">Billing: {item.billing || item.job_type}</div>
                               <div className="small text-secondary mb-1">Phases: {item.phases}</div>
                               <div className="d-flex flex-wrap gap-2 align-items-center mb-1">
-                                <Badge bg="info" className="me-1">{(item.status == 'Open' || item.status == 'Active Project') ? 'Signature' : item.status}</Badge>
+                                <Badge
+                                  bg={item.status === 'Open' || item.status === 'Active Project' ? 'success' : (item.status === 'Bidding' ? 'warning' : 'info')}
+                                  className="me-1"
+                                >
+                                  {item.status === 'Open' || item.status === 'Active Project' ? 'Signature' : (item.status == "Bidding" ? "mail sent" : item.status)}
+                                </Badge>
                               </div>
                             </div>
                           )}
