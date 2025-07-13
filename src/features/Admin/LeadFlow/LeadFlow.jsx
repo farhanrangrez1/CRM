@@ -15,6 +15,7 @@ import { HiOutlineDocumentReport } from 'react-icons/hi';
 import { fetchProject, updateProject } from '../../../redux/slices/ProjectsSlice';
 import { apiUrl } from '../../../redux/utils/config';
 import axios from 'axios';
+import { getAllDocumentsRecord } from '../../../redux/slices/documentSlice';
 
 const initialProposals = [
   {
@@ -559,6 +560,19 @@ const LeadFlow = ({ data }) => {
 
     const [loadingSpinner, setLoadingSpinner] = useState(false); // 👈 Add loading state
 
+    // Fetch document records
+    useEffect(() => {
+      dispatch(getAllDocumentsRecord());
+    }, [dispatch]);
+
+    const records = useSelector((state) => state?.documentRecord?.records?.data) || [];
+
+    const proposalTotalsMap = records.reduce((acc, record) => {
+      const proposalId = record.proposal_id;
+      const total = record.line_items?.reduce((sum, item) => sum + (item.amount || 0), 0);
+      acc[proposalId] = (acc[proposalId] || 0) + total;
+      return acc;
+    }, {});
 
 
     // useEffect(() => {
@@ -825,6 +839,9 @@ const LeadFlow = ({ data }) => {
                               <div className="text-muted small mb-1">Client: {item?.clientId?.clientName}</div>
                               <div className="small text-secondary mb-1">Address: {item.billing || item.projectAddress}</div>
                               <div className="small text-secondary mb-1">Phases: {item.phases}</div>
+                              <div className="fw-semibold text-success" style={{ fontSize: 15 }}>
+                                Total: ${proposalTotalsMap[item._id] || 0}
+                              </div>
                               <div className="d-flex flex-wrap gap-2 align-items-center mb-1">
                                 <Badge
                                   bg={item.status === 'Open' || item.status === 'Active Project' ? 'success' : (item.status === 'Bidding' ? 'warning' : 'info')}
@@ -848,6 +865,7 @@ const LeadFlow = ({ data }) => {
       </div>
     );
   };
+
 
 
   const [selectedStatus, setSelectedStatus] = useState('All');

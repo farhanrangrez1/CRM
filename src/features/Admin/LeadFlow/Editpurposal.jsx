@@ -999,7 +999,7 @@ const Editpurposal = () => {
           "Job Costs",
           // stage === "lead" ? "Client Proposal" : "Draft Proposal",
           // "Contract & Change Orders",
-          existingDocId ? "Create Proposal" : "Contract & Change Orders",
+          !existingDocId ? "Create Proposal" : "Contract & Change Orders",
           "Documents",
           "Daily Logs",
           // "Activity",

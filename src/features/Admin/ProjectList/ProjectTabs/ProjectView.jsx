@@ -10,6 +10,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { MdManageAccounts } from 'react-icons/md';
 import { HiOutlineDocumentReport } from 'react-icons/hi';
 import { fetchProject, updateProject, updateProjectStatusLocally } from '../../../../redux/slices/ProjectsSlice';
+import { getAllDocumentsRecord } from '../../../../redux/slices/documentSlice';
 
 
 // --- Kanban Workflow Data ---
@@ -868,6 +869,21 @@ const ProjectView = ({ data }) => {
         const dispatch = useDispatch();
         const [isUpdating, setIsUpdating] = useState(false);
 
+        useEffect(() => {
+            dispatch(getAllDocumentsRecord());
+        }, [dispatch]);
+
+        const records = useSelector((state) => state?.documentRecord?.records?.data) || [];
+
+        const proposalTotalsMap = records.reduce((acc, record) => {
+            const proposalId = record.proposal_id;
+            const total = record.line_items?.reduce((sum, item) => sum + (item.amount || 0), 0);
+            acc[proposalId] = (acc[proposalId] || 0) + total;
+            return acc;
+        }, {});
+
+
+
         const kanbanData = {
             pendingProposalApproval: reduxProposals.filter(p => p.status === "Active Project" || p.status === "Open" || p.status === "Signature" || p.status === "open" || p.status === "signature"),
             serviceCalls: reduxProposals.filter(p => p.status === "serviceCalls"),
@@ -1074,6 +1090,9 @@ const ProjectView = ({ data }) => {
                                                         <div className="text-muted small mb-1">Address: {item.address || "N/A"}</div>
                                                         <div className="small text-secondary mb-1">Phases: {item.phases}</div>
                                                         {/* <div className="d-flex flex-wrap gap-2 align-items-center mb-1"> */}
+                                                        <div className="fw-semibold text-success" style={{ fontSize: 15 }}>
+                                                            Total: ${proposalTotalsMap[item._id] || 0}
+                                                        </div>
                                                         <div className="d-flex flex-wrap gap-2 align-items-center mb-1">
                                                             <Badge bg={getStatusBadgeColor(item.status)} className={`me-1 ${getTextColor(item.status)}`}>
                                                                 {item.status}
