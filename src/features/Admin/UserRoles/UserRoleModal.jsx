@@ -713,10 +713,10 @@ function UserRoleModal() {
     phone: '',
     password: '',
     passwordConfirm: '',
-    role: '',
-    assign: '',
-    state: '',
-    country: '',
+    role: 'admin',
+    // assign: '',
+    // state: '',
+    // country: '',
     image: null,
     proposal: defaultPermission(),
     tasks: defaultPermission(),
@@ -804,9 +804,9 @@ function UserRoleModal() {
         phone: user.phone || '',
         password: '',
         passwordConfirm: '',
-        state: user.state || '',
-        country: user.country || '',
-        assign: user.assign || 'Not Assign',
+        // state: user.state || '',
+        // country: user.country || '',
+        // assign: user.assign || 'Not Assign',
         image: user.image || user.profileImage?.[0] || null,
         role: user.role || '',
         proposal: loadPermissions('proposal'),
@@ -967,7 +967,7 @@ function UserRoleModal() {
               </div>
             )}
 
-            <div className="row g-3 mb-3">
+            {/* <div className="row g-3 mb-3">
               <div className="col-md-6">
                 <label className="form-label">State</label>
                 <input type="text" className="form-control" name="state" value={formData.state} onChange={handleInputChange} required />
@@ -995,7 +995,7 @@ function UserRoleModal() {
                   <option value="employee">Employee</option>
                 </select>
               </div>
-            </div>
+            </div> */}
 
             <h6 className="mb-3">Permissions</h6>
             {renderPermissionSection()}

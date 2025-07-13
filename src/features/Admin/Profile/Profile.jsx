@@ -158,6 +158,8 @@ function Profile() {
   useEffect(() => {
     dispatch(SingleUser());
   }, [dispatch]);
+
+
   return (
     <>
       <div className="container py-2">

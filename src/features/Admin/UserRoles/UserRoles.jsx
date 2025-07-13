@@ -181,9 +181,9 @@ function UserRoles() {
               <thead>
                 <tr>
                   <th>User</th>
-                  <th>Role</th>
-                  <th>Status</th>
-                  <th>Permissions</th>
+                  <th>Phone</th>
+                  {/* <th>Status</th> */}
+                  {/* <th>Permissions</th> */}
                   <th>Access</th>
                   <th>Actions</th>
                 </tr>
@@ -210,25 +210,25 @@ function UserRoles() {
                     </td>
 
                     <td>
-                      <span style={{ backgroundColor: '#0056D2', color: '#fff' }} className={`badge ${user.role === 'Admin' ? 'text-bg-white' : user.role === 'Manager'}`}>
-                        {user?.role}
+                      <span>
+                        {user?.phone}
                       </span>
                     </td>
-                    <td>
+                    {/* <td>
                       <span className={`badge ${user.state === 'Active' ? 'text-bg-success' : 'text-bg-warning'}`}>
                         {user?.state}
                       </span>
-                    </td>
-                    <th style={{ fontWeight: "400", whiteSpace: 'nowrap' }}>
+                    </td> */}
+                    {/* <th style={{ fontWeight: "400", whiteSpace: 'nowrap' }}>
                       {user && user.permissions
                         ? Object.entries(user.permissions)
                           .filter(([_, value]) => value === true)
                           .map(([key]) => key)
                           .join(', ')
                         : 'N/A'}
-                    </th>
+                    </th> */}
 
-                    <td style={{ whiteSpace: 'nowrap' }}>
+                    <td td style={{ whiteSpace: 'nowrap' }}>
                       {Object.entries(user?.accessLevel || {})
                         .filter(([_, v]) => v)
                         .map(([k]) =>
@@ -260,7 +260,7 @@ function UserRoles() {
             </table>
           </div>
         </div>
-      </div>
+      </div >
 
       <div className="d-flex justify-content-between align-items-center mt-3">
         <div className="text-muted small">
@@ -293,7 +293,7 @@ function UserRoles() {
         onSave={handleSaveUser}
         editingUser={editingUser}
       /> */}
-    </div>
+    </div >
   );
 }
 
