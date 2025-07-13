@@ -124,7 +124,7 @@ function ClientManagement() {
         {/* Filters - show by default on desktop, toggle on mobile */}
         {(showMobileFilters || window.innerWidth >= 768) && (
           <Row className="mb-4 align-items-center">
-            <Col md={3} className="mb-2">
+            <Col md={6} className="mb-2">
               <Form.Control
                 type="search"
                 placeholder="Search clients..."
@@ -136,7 +136,7 @@ function ClientManagement() {
               />
             </Col>
 
-            <Col md={2} className="mb-2">
+            {/* <Col md={2} className="mb-2">
               <Form.Select
                 value={statusFilter}
                 onChange={(e) => {
@@ -148,9 +148,9 @@ function ClientManagement() {
                 <option value="Active">Active</option>
                 <option value="Inactive">Inactive</option>
               </Form.Select>
-            </Col>
+            </Col> */}
 
-            <Col md={2} className="mb-2">
+            {/* <Col md={2} className="mb-2">
               <Form.Select
                 name="industry"
                 value={formData.industry}
@@ -160,7 +160,7 @@ function ClientManagement() {
                 <option value="Sup">Suppliers</option>
                 <option value="Other">Other</option>
               </Form.Select>
-            </Col>
+            </Col> */}
 
             <Col md className="mb-2 d-flex justify-content-md-end">
               <Link to="/admin/AddClientManagement">
@@ -176,7 +176,7 @@ function ClientManagement() {
             <thead>
               <tr>
                 <th>SL</th>
-                <th style={{ whiteSpace: "nowrap" }}>Client Name</th>
+                <th style={{ whiteSpace: "nowrap" }}>Company Name</th>
                 <th style={{ whiteSpace: "nowrap" }}>Contact Person</th>
                 <th>Email</th>
                 <th>Phone</th>

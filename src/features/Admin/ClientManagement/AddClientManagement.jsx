@@ -28,7 +28,7 @@ function AddClientManagement() {
   const [formData, setFormData] = useState({
     clientName: '',
     // industry: '',
-    website: '',
+    // website: '',
     clientAddress: '',
     // TaxID_VATNumber: '',
     // CSRCode: '',
@@ -42,8 +42,8 @@ function AddClientManagement() {
       jobTitle: '',
       email: '',
       phone: '',
-      department: '',
-      salesRepresentative: ''
+      // department: '',
+      // salesRepresentative: ''
     }
   ]);
 
@@ -82,16 +82,16 @@ function AddClientManagement() {
   // ]);
 
   // Ledger information state
-  const [ledgerInformation, setLedgerInformation] = useState([
-    {
-      accountCode: '',
-      accountType: '',
-      openingBalance: '',
-      balanceDate: '',
-      // taxCategory: '',
-      costCenter: ''
-    }
-  ]);
+  // const [ledgerInformation, setLedgerInformation] = useState([
+  //   {
+  //     accountCode: '',
+  //     accountType: '',
+  //     openingBalance: '',
+  //     balanceDate: '',
+  //     // taxCategory: '',
+  //     costCenter: ''
+  //   }
+  // ]);
 
   // Additional information state
   const [additionalInformation, setAdditionalInformation] = useState({
@@ -108,7 +108,7 @@ function AddClientManagement() {
       setFormData({
         clientName: clientData.clientName || '',
         // industry: clientData.industry || '',
-        website: clientData.website || '',
+        // website: clientData.website || '',
         clientAddress: clientData.clientAddress || '',
         // TaxID_VATNumber: clientData.TaxID_VATNumber || '',
         // CSRCode: clientData.CSRCode || '',
@@ -124,12 +124,12 @@ function AddClientManagement() {
       //     fiscalYearEnd: formatDate(item.fiscalYearEnd),
       //   }))
       // );
-      setLedgerInformation(
-        (clientData.ledgerInformation || []).map((item) => ({
-          ...item,
-          balanceDate: formatDate(item.balanceDate),
-        }))
-      );
+      // setLedgerInformation(
+      //   (clientData.ledgerInformation || []).map((item) => ({
+      //     ...item,
+      //     balanceDate: formatDate(item.balanceDate),
+      //   }))
+      // );
       setAdditionalInformation(clientData.additionalInformation || {
         paymentTerms: '',
         creditLimit: '',
@@ -257,8 +257,8 @@ function AddClientManagement() {
     // Basic form fields
     if (!formData.clientName.trim()) newErrors.clientName = 'Name is required';
     // if (!formData.industry) newErrors.industry = 'Industry is required';
-    if (!formData.website.trim()) newErrors.website = 'Website is required';
-    else if (!/^https?:\/\//.test(formData.website)) newErrors.website = 'Website must start with http:// or https://';
+    // if (!formData.website.trim()) newErrors.website = 'Website is required';
+    // else if (!/^https?:\/\//.test(formData.website)) newErrors.website = 'Website must start with http:// or https://';
     if (!formData.clientAddress.trim()) newErrors.clientAddress = 'Client Address is required';
     // if (!formData.TaxID_VATNumber.trim()) newErrors.TaxID_VATNumber = 'Tax ID/VAT Number is required';
     // if (!formData.CSRCode.trim()) newErrors.CSRCode = 'CSR Code is required';
@@ -272,8 +272,8 @@ function AddClientManagement() {
       else if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(contact.email)) newErrors[`email_${idx}`] = 'Invalid email';
       if (!contact.phone.trim()) newErrors[`phone_${idx}`] = 'Phone is required';
       else if (!/^\d{10}$/.test(contact.phone)) newErrors[`phone_${idx}`] = 'Phone must be 10 digits';
-      if (!contact.department.trim()) newErrors[`department_${idx}`] = 'Department is required';
-      if (!contact.salesRepresentative.trim()) newErrors[`salesRepresentative_${idx}`] = 'Sales Representative is required';
+      // if (!contact.department.trim()) newErrors[`department_${idx}`] = 'Department is required';
+      // if (!contact.salesRepresentative.trim()) newErrors[`salesRepresentative_${idx}`] = 'Sales Representative is required';
     });
 
     // Billing Information (first item)
@@ -310,14 +310,14 @@ function AddClientManagement() {
     // if (!financial.financialContact.trim()) newErrors.financialContact = 'Financial Contact is required';
 
     // Ledger Information (first item)
-    const ledger = ledgerInformation[0] || {};
-    if (!ledger.accountCode.trim()) newErrors.accountCode = 'Account Code is required';
-    if (!ledger.accountType) newErrors.accountType = 'Account Type is required';
-    if (!ledger.openingBalance) newErrors.openingBalance = 'Opening Balance is required';
-    else if (isNaN(ledger.openingBalance)) newErrors.openingBalance = 'Opening Balance must be a number';
-    if (!ledger.balanceDate) newErrors.balanceDate = 'Balance Date is required';
-    // if (!ledger.taxCategory) newErrors.taxCategory = 'Tax Category is required';
-    if (!ledger.costCenter.trim()) newErrors.costCenter = 'Cost Center is required';
+    // const ledger = ledgerInformation[0] || {};
+    // if (!ledger.accountCode.trim()) newErrors.accountCode = 'Account Code is required';
+    // if (!ledger.accountType) newErrors.accountType = 'Account Type is required';
+    // if (!ledger.openingBalance) newErrors.openingBalance = 'Opening Balance is required';
+    // else if (isNaN(ledger.openingBalance)) newErrors.openingBalance = 'Opening Balance must be a number';
+    // if (!ledger.balanceDate) newErrors.balanceDate = 'Balance Date is required';
+    // // if (!ledger.taxCategory) newErrors.taxCategory = 'Tax Category is required';
+    // if (!ledger.costCenter.trim()) newErrors.costCenter = 'Cost Center is required';
 
     // Additional Information
     if (!additionalInformation.paymentTerms) newErrors.paymentTerms = 'Payment Terms is required';
@@ -342,7 +342,7 @@ function AddClientManagement() {
       billingInformation,
       // shippingInformation,
       // financialInformation,
-      ledgerInformation,
+      // ledgerInformation,
       additionalInformation
     };
     if (_id) {
@@ -411,7 +411,7 @@ function AddClientManagement() {
               <div className='col-md-3'>  <h6 className="mb-3">Client/Supplier Information</h6></div>
               <div className="col-md-6"></div>
               <div className="col-md-6">
-                <label className="form-label">Name</label>
+                <label className="form-label">Company</label>
                 <input required type="text" name="clientName" value={formData.clientName} onChange={handleChange} className="form-control" placeholder="Enter  name" />
                 {errors.clientName && <div className="text-danger small">{errors.clientName}</div>}
               </div>
@@ -425,11 +425,11 @@ function AddClientManagement() {
                 </select>
                 {errors.industry && <div className="text-danger small">{errors.industry}</div>}
               </div> */}
-              <div className="col-md-6">
+              {/* <div className="col-md-6">
                 <label className="form-label">Website</label>
                 <input required type="url" name="website" value={formData.website} onChange={handleChange} className="form-control" placeholder="https://" />
                 {errors.website && <div className="text-danger small">{errors.website}</div>}
-              </div>
+              </div> */}
               <div className="col-md-6">
                 <label className="form-label">Client Address</label>
                 <textarea required className="form-control" name="clientAddress" value={formData.clientAddress} onChange={handleChange}></textarea>
@@ -524,7 +524,7 @@ function AddClientManagement() {
                         {errors[`phone_${index}`] && <div className="text-danger small">{errors[`phone_${index}`]}</div>}
                       </div>
 
-                      <div className="col-md-6">
+                      {/* <div className="col-md-6">
                         <label className="form-label">Department</label>
                         <input
                           type="text"
@@ -536,9 +536,9 @@ function AddClientManagement() {
                           placeholder="Enter Department"
                         />
                         {errors[`department_${index}`] && <div className="text-danger small">{errors[`department_${index}`]}</div>}
-                      </div>
+                      </div> */}
 
-                      <div className="col-md-6">
+                      {/* <div className="col-md-6">
                         <label className="form-label">Sales Representative</label>
                         <input
                           type="text"
@@ -550,7 +550,7 @@ function AddClientManagement() {
                           placeholder="Enter Sales Representative"
                         />
                         {errors[`salesRepresentative_${index}`] && <div className="text-danger small">{errors[`salesRepresentative_${index}`]}</div>}
-                      </div>
+                      </div> */}
 
                       <div className="col-md-12 mt-2 d-flex justify-content-end">
                         {contactPersons.length > 1 && (
@@ -712,7 +712,7 @@ function AddClientManagement() {
                 </div> */}
 
                 {/* Ledger Information */}
-                <h5 className="mb-3 mt-4">Ledger Information</h5>
+                {/* <h5 className="mb-3 mt-4">Ledger Information</h5>
                 <div className="col-md-6">
                   <label className="form-label">Account Code</label>
                   <input type="text" className="form-control" name="accountCode" required value={ledgerInformation[0].accountCode} onChange={(e) => handleLedgerChange(0, e)} />
@@ -750,7 +750,7 @@ function AddClientManagement() {
                   <label className="form-label">Cost Center</label>
                   <input type="text" className="form-control" name="costCenter" required value={ledgerInformation[0].costCenter} onChange={(e) => handleLedgerChange(0, e)} />
                   {errors.costCenter && <div className="text-danger small">{errors.costCenter}</div>}
-                </div>
+                </div> */}
 
                 {/* Additional Information */}
                 <h5 className="mb-3 mt-4">Additional Information</h5>
@@ -763,7 +763,7 @@ function AddClientManagement() {
                     value={additionalInformation.paymentTerms}
                     onChange={handleAdditionalChange}
                   >
-                    <option value="">Select Payment Terms</option>  {/* <-- placeholder */}
+                    <option value="">Select Payment Terms</option>
                     <option value="net30">Net 30</option>
                     <option value="net60">Net 60</option>
                     <option value="net90">Net 90</option>
