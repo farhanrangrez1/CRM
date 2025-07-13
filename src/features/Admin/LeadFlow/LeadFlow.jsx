@@ -671,7 +671,9 @@ const LeadFlow = ({ data }) => {
             (p) => (p.status || "").toLowerCase() === "bidding"
           ),
           closed: updatedProjects.filter(
-            (p) => (p.status || "").toLowerCase() === "open" || (p.status || "").toLowerCase() === "Active Project"
+            (p) => ["open", "active project", "signature"].includes(
+              (p.status || "").toLowerCase()
+            )
           ),
           rejected: updatedProjects.filter(
             (p) => (p.status || "").toLowerCase() === "expired"
@@ -821,7 +823,7 @@ const LeadFlow = ({ data }) => {
                                   {item.projectName || item.title}
                                 </div>}
                               <div className="text-muted small mb-1">Client: {item?.clientId?.clientName}</div>
-                              <div className="small text-secondary mb-1">Billing: {item.billing || item.job_type}</div>
+                              <div className="small text-secondary mb-1">Address: {item.billing || item.projectAddress}</div>
                               <div className="small text-secondary mb-1">Phases: {item.phases}</div>
                               <div className="d-flex flex-wrap gap-2 align-items-center mb-1">
                                 <Badge
