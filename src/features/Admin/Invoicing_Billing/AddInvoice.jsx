@@ -102,11 +102,14 @@ function AddInvoice({ onInvoiceComplete }) {
           } else {
             setFormData((prev) => ({
               ...prev,
-              client_id: invoice?.clientId?.id || "",
+              client_id: invoice?.clientId?._id || "",
               proposal_id: invoice?._id || "",
               start_date: invoice.startDate?.substring(0, 10) || "",
               end_date: invoice.endDate?.substring(0, 10) || "",
             }));
+            if (Array.isArray(invoice.lineItems)) {
+              setItems(invoice.lineItems);
+            }
           }
         })
         .catch(() => {

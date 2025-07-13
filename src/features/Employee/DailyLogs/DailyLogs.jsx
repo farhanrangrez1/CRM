@@ -76,30 +76,66 @@ const DailyLogs = () => {
 
 
 
+  // const handleSaveLog = () => {
+  //   const data = new FormData();
+  //   data.append("job_id", formData.job_id);
+  //   data.append("date", formData.date);
+  //   data.append("title", formData.title);
+  //   data.append("notes", formData.notes);
+
+  //   // Append each selected image to the form data
+  //   if (formData.images) {
+  //     Array.from(formData.images).forEach((image) => {
+  //       data.append("images", image); // Append each image file
+  //     });
+  //   }
+
+  //   if (currentLogIndex !== null) {
+  //     // If editing an existing log
+  //     const logId = dailyLogs[currentLogIndex]?.id;
+  //     dispatch(updateDailyLog({ id: logId, data }));
+  //   } else {
+  //     // If creating a new log
+  //     dispatch(createDailyLog(data));
+  //   }
+
+  //   // Reset form and hide the modal
+  //   setFormData({
+  //     job_id: invoice?._id || '',
+  //     date: new Date().toISOString().split('T')[0],
+  //     title: '',
+  //     notes: '',
+  //     image: null
+  //   });
+
+  //   setShowEditModal(false);
+  //   setCurrentLogIndex(null);
+  // };
+
   const handleSaveLog = () => {
+    const permissions = JSON.parse(localStorage.getItem('permissions'));
+    const user_id = permissions?.userId;
+
     const data = new FormData();
     data.append("job_id", formData.job_id);
     data.append("date", formData.date);
     data.append("title", formData.title);
     data.append("notes", formData.notes);
+    data.append("created_by", user_id); // <-- Add this line
 
-    // Append each selected image to the form data
     if (formData.images) {
       Array.from(formData.images).forEach((image) => {
-        data.append("images", image); // Append each image file
+        data.append("images", image);
       });
     }
 
     if (currentLogIndex !== null) {
-      // If editing an existing log
       const logId = dailyLogs[currentLogIndex]?.id;
       dispatch(updateDailyLog({ id: logId, data }));
     } else {
-      // If creating a new log
       dispatch(createDailyLog(data));
     }
 
-    // Reset form and hide the modal
     setFormData({
       job_id: invoice?._id || '',
       date: new Date().toISOString().split('T')[0],
@@ -107,10 +143,12 @@ const DailyLogs = () => {
       notes: '',
       image: null
     });
+    dispatch(fetchAllDailyLogs())
 
     setShowEditModal(false);
     setCurrentLogIndex(null);
   };
+
 
 
   // const proposals = useSelector((state) => state?.proposals?.proposals || []);
@@ -213,6 +251,9 @@ const DailyLogs = () => {
                   <h5 className="mb-1">
                     {log.title} <span className="text-muted small ms-2">{log.date}</span>
                   </h5>
+                  <small className="text-muted">
+                    Created by: {log.created_by || 'Unknown'}
+                  </small>
                   {/* <div className="mb-2">
                     {log.badges.map((badge, i) => (
                       <Badge key={i} bg="secondary" className="me-1">
@@ -392,9 +433,9 @@ const DailyLogs = () => {
         </Modal.Header>
         <Modal.Body>
           <Form>
-            <Row>
-              <Col md={6}>
-                <Form.Group className="mb-3">
+            {/* <Row> */}
+            {/* <Col md={6}> */}
+            {/* <Form.Group className="mb-3">
                   <Form.Label>Project</Form.Label>
                   <Form.Select name="job_id" value={formData.job_id} onChange={handleFormChange} required>
                     <option value="">Select Project</option>
@@ -404,8 +445,8 @@ const DailyLogs = () => {
                       </option>
                     ))}
                   </Form.Select>
-                </Form.Group>
-                <Form.Group className="mb-3">
+                </Form.Group> */}
+            {/* <Form.Group className="mb-3">
                   <Form.Label>Date *</Form.Label>
                   <Form.Control
                     type="date"
@@ -413,8 +454,8 @@ const DailyLogs = () => {
                     value={formData.date}
                     onChange={handleFormChange}
                   />
-                </Form.Group>
-                <Form.Group className="mb-3">
+                </Form.Group> */}
+            {/* <Form.Group className="mb-3">
                   <Form.Label>Title</Form.Label>
                   <Form.Control
                     type="text"
@@ -422,55 +463,55 @@ const DailyLogs = () => {
                     value={formData.title}
                     onChange={handleFormChange}
                   />
-                </Form.Group>
-              </Col>
-              <Col md={6}>
-                <Form.Group className="mb-3">
-                  <Form.Label>Notes</Form.Label>
-                  <Form.Control
-                    as="textarea"
-                    name="notes"
-                    rows={5}
-                    value={formData.notes}
-                    onChange={handleFormChange}
-                  />
-                </Form.Group>
+                </Form.Group> */}
+            {/* </Col> */}
+            {/* </Row> */}
+            <Col md={12}>
+              <Form.Group className="mb-3">
+                <Form.Label>Notes</Form.Label>
+                <Form.Control
+                  as="textarea"
+                  name="notes"
+                  rows={5}
+                  value={formData.notes}
+                  onChange={handleFormChange}
+                />
+              </Form.Group>
 
-                {/* Multiple Images Upload */}
-                <Form.Group className="mb-3">
-                  <Form.Label>Upload Images (optional)</Form.Label>
-                  <Form.Control
-                    type="file"
-                    name="images"
-                    accept="image/*"
-                    multiple
-                    onChange={(e) => {
-                      handleFormChange(e);
-                      setDailyLogImage(e.target.files); // Store multiple files
-                    }}
-                  />
-                  {/* Preview of selected images */}
-                  {dailyLogImage && (
-                    <div className="mt-2">
-                      <strong>Preview:</strong><br />
-                      {Array.from(dailyLogImage).map((file, idx) => (
-                        <img
-                          key={idx}
-                          src={URL.createObjectURL(file)}
-                          alt="Preview"
-                          style={{
-                            maxWidth: '100%',
-                            maxHeight: '200px',
-                            borderRadius: '6px',
-                            marginRight: '10px',
-                          }}
-                        />
-                      ))}
-                    </div>
-                  )}
-                </Form.Group>
-              </Col>
-            </Row>
+              {/* Multiple Images Upload */}
+              <Form.Group className="mb-3">
+                <Form.Label>Upload Images (optional)</Form.Label>
+                <Form.Control
+                  type="file"
+                  name="images"
+                  accept="image/*"
+                  multiple
+                  onChange={(e) => {
+                    handleFormChange(e);
+                    setDailyLogImage(e.target.files); // Store multiple files
+                  }}
+                />
+                {/* Preview of selected images */}
+                {dailyLogImage && (
+                  <div className="mt-2">
+                    <strong>Preview:</strong><br />
+                    {Array.from(dailyLogImage).map((file, idx) => (
+                      <img
+                        key={idx}
+                        src={URL.createObjectURL(file)}
+                        alt="Preview"
+                        style={{
+                          maxWidth: '100%',
+                          maxHeight: '200px',
+                          borderRadius: '6px',
+                          marginRight: '10px',
+                        }}
+                      />
+                    ))}
+                  </div>
+                )}
+              </Form.Group>
+            </Col>
             <div className="d-flex justify-content-end">
               <Button variant="primary" onClick={handleSaveLog}>
                 {currentLogIndex !== null ? 'Update Log' : 'Publish Log'}

@@ -25,6 +25,7 @@ const statuses = ["Status Select", "Active", "Inactive", "Completed", "pending"]
 function AddCostEstimates() {
   const location = useLocation();
   const po = location.state?.po;
+  const projectID = location.state?.projectID;
   const id = po?._id;
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -66,6 +67,50 @@ function AddCostEstimates() {
     // POStatus: "",
     Status: "Lead",
   });
+
+  useEffect(() => {
+    if (projectID && project?.data?.length > 0) {
+      const selectedProject = project.data.find(p => p._id === projectID);
+      if (selectedProject) {
+        const newFormData = {
+          ...formData,
+          projectId: [projectID],
+          projectName: selectedProject.projectName,
+          clientId: [selectedProject.clientId._id],
+          clientName: selectedProject.clientId.clientName,
+          estimateDate: new Date().toISOString().split('T')[0],
+          validUntil: selectedProject.endDate ? selectedProject.endDate.split('T')[0] : "",
+          currency: selectedProject.currency || "USD",
+          Notes: selectedProject.description || "",
+          Status: "Active"
+        };
+
+        const lineItems = selectedProject.lineItems.length > 0
+          ? selectedProject.lineItems
+          : [{ description: "", quantity: 0, rate: 0, amount: 0 }];
+
+        setFormData(newFormData);
+        setItems(lineItems);
+
+        const subtotal = lineItems.reduce((sum, item) => sum + item.amount, 0);
+        const taxRate = 0.05;
+        const tax = subtotal * taxRate;
+        const total = subtotal + tax;
+
+        const invoiceData = {
+          ...selectedProject,
+          lineItems,
+          taxRate,
+          subtotal,
+          tax,
+          total
+        };
+
+        localStorage.setItem("invoice", JSON.stringify(invoiceData));
+        localStorage.setItem("proposalId", projectID);
+      }
+    }
+  }, [projectID, project?.data]);
 
   useEffect(() => {
     if (po && project?.data?.length) {
@@ -151,7 +196,8 @@ function AddCostEstimates() {
         .unwrap()
         .then(() => {
           toast.success("Estimates created successfully!");
-          navigate(-1); // Go back to previous page
+          navigate('/admin/CostEstimates'); // Go back to previous page
+          // navigate(-1); // Go back to previous page
         })
         .catch(() => {
           toast.error("Failed to create estimates");
@@ -286,19 +332,23 @@ function AddCostEstimates() {
                         Status: "Active"
                       };
 
-                      const lineItems = selectedProject.budgetAmount
-                        ? [{
-                          description: `${selectedProject.projectName} Project Budget`,
-                          quantity: 1,
-                          rate: parseFloat(selectedProject.budgetAmount),
-                          amount: parseFloat(selectedProject.budgetAmount)
-                        }]
-                        : [{
-                          description: "",
-                          quantity: 0,
-                          rate: 0,
-                          amount: 0
-                        }];
+                      // const lineItems = selectedProject.budgetAmount
+                      //   ? [{
+                      //     description: `${selectedProject.projectName} Project Budget`,
+                      //     quantity: 1,
+                      //     rate: parseFloat(selectedProject.budgetAmount),
+                      //     amount: parseFloat(selectedProject.budgetAmount)
+                      //   }]
+                      //   : [{
+                      //     description: "",
+                      //     quantity: 0,
+                      //     rate: 0,
+                      //     amount: 0
+                      //   }];
+                      // Set line items from the selected project
+                      const lineItems = selectedProject.lineItems.length > 0
+                        ? selectedProject.lineItems
+                        : [{ description: "", quantity: 0, rate: 0, amount: 0 }];
 
                       setFormData(newFormData);
                       setItems(lineItems);
@@ -334,7 +384,7 @@ function AddCostEstimates() {
 
               </div>
 
-              <div className="col-md-4 mb-3">
+              {/* <div className="col-md-4 mb-3">
                 <label className="form-label">Estimate Date</label>
                 <input
                   type="date"
@@ -344,9 +394,9 @@ function AddCostEstimates() {
                   onChange={handleFormChange}
                   required
                 />
-              </div>
+              </div> */}
 
-              <div className="col-md-4 mb-3">
+              {/* <div className="col-md-4 mb-3">
                 <label className="form-label">Valid Until</label>
                 <input
                   type="date"
@@ -356,9 +406,9 @@ function AddCostEstimates() {
                   onChange={handleFormChange}
                   required
                 />
-              </div>
+              </div> */}
 
-              <div className="col-md-4 mb-3">
+              {/* <div className="col-md-4 mb-3">
                 <label className="form-label">Currency</label>
                 <select
                   className="form-select"
@@ -373,7 +423,7 @@ function AddCostEstimates() {
                     </option>
                   ))}
                 </select>
-              </div>
+              </div> */}
 
               {/* <div className="col-md-4 mb-3">
                 <label className="form-label">Status</label>
@@ -472,7 +522,7 @@ function AddCostEstimates() {
             </button>
 
             <div className="row mt-4">
-              <div className="col-md-6">
+              {/* <div className="col-md-6">
                 <label className="form-label">VAT Rate (%)</label>
                 <input
                   type="number"
@@ -488,7 +538,7 @@ function AddCostEstimates() {
                   VAT: {formData.currency} {tax.toFixed(2)}<br />
                   <strong>Total: {formData.currency} {total.toFixed(2)}</strong>
                 </div>
-              </div>
+              </div> */}
               <div className="col-md-6">
                 <label className="form-label">Notes</label>
                 <textarea

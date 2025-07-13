@@ -420,7 +420,7 @@ const Login = () => {
                 {loading ? "Logging in..." : "Log In"}
               </button>
 
-              <button
+              {/* <button
                 className="social-signup btn w-100 mb-3 d-flex align-items-center justify-content-center"
                 style={{
                   backgroundColor: "#ffffff",
@@ -437,7 +437,7 @@ const Login = () => {
               >
                 <i className="fab fa-google me-2" style={{ fontSize: "18px", color: "#4285F4" }} />
                 Continue with Google
-              </button>
+              </button> */}
             </form>
           </div>
         </div>

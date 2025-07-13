@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import "./Editpurposal.css";
 import { FaArrowLeft } from "react-icons/fa";
 import { useNavigate, useLocation } from "react-router-dom";
-import { Button, Form, Row, Col } from "react-bootstrap";
+import { Button, Form, Row, Col, Modal } from "react-bootstrap";
 // import `DailyLogs` from "../LeadOpportunity/DailyLogs";
 import Swal from "sweetalert2";
 import AddCostEstimates from "../CostEstimates/AddCostEstimates";
@@ -58,7 +58,8 @@ const Editpurposal = () => {
       taxable: true
     }
   ]);
-  const [activeTab, setActiveTab] = useState("Create Proposal");
+  // const [activeTab, setActiveTab] = useState("Create Proposal");
+  const [activeTab, setActiveTab] = useState("Summary");
   const totalBudgetedCost = (
     parseFloat(materialsBudget || 0) +
     parseFloat(laborBudget || 0) +
@@ -103,8 +104,9 @@ const Editpurposal = () => {
       setInvoice(JSON.parse(storedInvoice));
     }
   }, []);
-  useEffect(() => {
 
+
+  useEffect(() => {
     if (invoice?._id) {
       dispatch(getDocumentsByProposalId(invoice?._id))
         .unwrap()
@@ -115,15 +117,15 @@ const Editpurposal = () => {
         }
         )
     }
-
-  }, []);
+  }, [invoice]);
 
   const navigate = useNavigate();
   const location = useLocation();
   const job = location.state.item;
-  // const project_id = localStorage.getItem("proposalId");
-  const project_id = job?.id;
-  const proposalId = job?.id;
+  const project_id = localStorage.getItem("proposalId");
+  const proposalId = localStorage.getItem("proposalId");
+  // const project_id = job?.id;
+  // const proposalId = job?.id;
   const [refreshJobCost, setRefreshJobCost] = useState(false);
 
 
@@ -255,17 +257,19 @@ const Editpurposal = () => {
   const [items, setItems] = useState([{ description: "", quantity: 0, rate: 0, amount: 0 }]);
 
   useEffect(() => {
-    dispatch(getDocumentsByProposalId(invoice?._id)).unwrap().then((res) => {
-      if (Array.isArray(res) && res.length > 0) {
+    if (invoice?._id) {
+      dispatch(getDocumentsByProposalId(invoice?._id)).unwrap().then((res) => {
+        if (Array.isArray(res) && res.length > 0) {
 
-        setExistingDocId(res[0].id);
-        const doc = res[0];
-        if (Array.isArray(doc.line_items)) {
-          setItems(doc.line_items);
+          setExistingDocId(res[0].id);
+          const doc = res[0];
+          if (Array.isArray(doc.line_items)) {
+            setItems(doc.line_items);
+          }
         }
-      }
-    })
-  }, [])
+      })
+    }
+  }, [invoice])
 
   const handleItemChange = (index, field, value) => {
     const newItems = [...items];
@@ -277,6 +281,23 @@ const Editpurposal = () => {
     const newItems = [...items];
     newItems.splice(index, 1);
     setItems(newItems);
+  };
+
+  useEffect(() => {
+    if (invoice) {
+      setItems(invoice?.lineItems)
+    }
+  }, [invoice])
+
+  const [showModal, setShowModal] = useState(false);
+
+  const handleSave = () => {
+    saveJob();
+    setShowModal(false);
+  };
+
+  const handleCancel = () => {
+    setShowModal(false);
   };
 
   const renderTabContent = () => {
@@ -405,105 +426,242 @@ const Editpurposal = () => {
 
       case "Job Costs":
         return (
-          <div className="tab-content-box row">
-            <div className="col-md-8">
-              <h5 className="mb-3 fw-bold"></h5>
-              <div className="row">
-                <div className="col-md-6 mb-3">
-                  <p className="mb-1 text-muted">Job Status</p>
-                  {/* <p>Lead</p> */}
-                  <p>{job?.status}</p>
-                </div>
-                {/* <div className="col-md-6 mb-3">
-                  <p className="mb-1 text-muted">Job Type</p>
-                  <p>{job?.job_type}</p>
-                </div> */}
-                <div className="col-md-6 mb-3">
-                  <p className="mb-1 text-muted">Total Budget</p>
-                  {/* <p>${totalBudgetedCost}</p> */}
-                  <p>${totalBudgetedCost}</p>
-                </div>
-                <div className="col-md-6 mb-3">
-                  <p className="mb-1 text-muted">Estimated Start</p>
-                  <input
-                    type="date"
-                    className="form-control"
-                    value={estimatedStart}
-                    onChange={(e) => setEstimatedStart(e.target.value)}
-                  />
-                </div>
-                <div className="col-md-6 mb-3">
-                  <p className="mb-1 text-muted">Estimated Completion</p>
-                  <input type="date" className="form-control" value={estimatedEnd} onChange={(e) => { setEstimatedEnd(e.target.value) }} />
-                </div>
+          // <div className="tab-content-box row">
+          //   <div className="col-md-8">
+          //     <h5 className="mb-3 fw-bold"></h5>
+          //     <div className="row">
+          //       <div className="col-md-6 mb-3">
+          //         <p className="mb-1 text-muted">Job Status</p>
+          //         {/* <p>Lead</p> */}
+          //         <p>{job?.status}</p>
+          //       </div>
+          //       {/* <div className="col-md-6 mb-3">
+          //         <p className="mb-1 text-muted">Job Type</p>
+          //         <p>{job?.job_type}</p>
+          //       </div> */}
+          //       <div className="col-md-6 mb-3">
+          //         <p className="mb-1 text-muted">Total Budget</p>
+          //         {/* <p>${totalBudgetedCost}</p> */}
+          //         <p>${totalBudgetedCost}</p>
+          //       </div>
+          //       <div className="col-md-6 mb-3">
+          //         <p className="mb-1 text-muted">Estimated Start</p>
+          //         <input
+          //           type="date"
+          //           className="form-control"
+          //           value={estimatedStart}
+          //           onChange={(e) => setEstimatedStart(e.target.value)}
+          //         />
+          //       </div>
+          //       <div className="col-md-6 mb-3">
+          //         <p className="mb-1 text-muted">Estimated Completion</p>
+          //         <input type="date" className="form-control" value={estimatedEnd} onChange={(e) => { setEstimatedEnd(e.target.value) }} />
+          //       </div>
 
-              </div>
-              <button className="btn btn-primary" onClick={saveJob}>Save</button>
+          //     </div>
+          //     <button className="btn btn-primary" onClick={saveJob}>Save</button>
+          //   </div>
+          //   <div className="col-md-4">
+          //     <div className="border p-3 rounded mb-4 bg-white">
+          //       <Form.Group className="mb-2">
+          //         <Form.Label>Phase Name</Form.Label>
+          //         <Form.Control
+          //           type="text"
+          //           value={phaseName}
+          //           onChange={(e) => setPhaseName(e.target.value)}
+          //         />
+          //       </Form.Group>
+          //       <div className="text-end fw-bold mb-3">
+          //         Budgeted Cost: ${totalBudgetedCost}
+          //       </div>
+          //       <Row className="mb-2">
+          //         <Col>
+          //           <Form.Label>Materials Budget</Form.Label>
+          //           <Form.Control
+          //             value={`$${materialsBudget}`}
+          //             onChange={(e) => setMaterialsBudget(e.target.value.replace("$", ""))}
+          //           />
+          //         </Col>
+          //         <Col>
+          //           <Form.Label>Labor Budget</Form.Label>
+          //           <Form.Control
+          //             placeholder="$"
+          //             value={laborBudget}
+          //             onChange={(e) => setLaborBudget(e.target.value.replace("$", ""))}
+          //           />
+          //         </Col>
+          //       </Row>
+          //       <Row className="mb-2">
+          //         <Col>
+          //           <Form.Label>Subcontractors Budget</Form.Label>
+          //           <Form.Control
+          //             value={`$${subcontractorsBudget}`}
+          //             onChange={(e) =>
+          //               setSubcontractorsBudget(e.target.value.replace("$", ""))
+          //             }
+          //           />
+          //         </Col>
+          //         <Col>
+          //           <Form.Label>Equipment Budget</Form.Label>
+          //           <Form.Control
+          //             value={`$${equipmentBudget}`}
+          //             onChange={(e) =>
+          //               setEquipmentBudget(e.target.value.replace("$", ""))
+          //             }
+          //           />
+          //         </Col>
+          //       </Row>
+          //       <Row className="mb-3">
+          //         <Col>
+          //           <Form.Label>Miscellanea Budget</Form.Label>
+          //           <Form.Control
+          //             value={`$${miscBudget}`}
+          //             onChange={(e) => setMiscBudget(e.target.value.replace("$", ""))}
+          //           />
+          //         </Col>
+          //       </Row>
+          //     </div>
+          //   </div>
+
+          //   <JobCost jobStatus={job?.status} refreshTrigger={refreshJobCost} />
+
+          // </div>
+          <>
+            {/* Top Right Button */}
+            <div className="d-flex justify-content-end mb-3">
+              <button className="btn btn-success" onClick={() => setShowModal(true)}>
+                Add Job Cost
+              </button>
             </div>
-            <div className="col-md-4">
-              <div className="border p-3 rounded mb-4 bg-white">
-                <Form.Group className="mb-2">
-                  <Form.Label>Phase Name</Form.Label>
-                  <Form.Control
-                    type="text"
-                    value={phaseName}
-                    onChange={(e) => setPhaseName(e.target.value)}
-                  />
-                </Form.Group>
-                <div className="text-end fw-bold mb-3">
-                  Budgeted Cost: ${totalBudgetedCost}
-                </div>
-                <Row className="mb-2">
-                  <Col>
-                    <Form.Label>Materials Budget</Form.Label>
-                    <Form.Control
-                      value={`$${materialsBudget}`}
-                      onChange={(e) => setMaterialsBudget(e.target.value.replace("$", ""))}
-                    />
-                  </Col>
-                  <Col>
-                    <Form.Label>Labor Budget</Form.Label>
-                    <Form.Control
-                      placeholder="$"
-                      value={laborBudget}
-                      onChange={(e) => setLaborBudget(e.target.value.replace("$", ""))}
-                    />
-                  </Col>
-                </Row>
-                <Row className="mb-2">
-                  <Col>
-                    <Form.Label>Subcontractors Budget</Form.Label>
-                    <Form.Control
-                      value={`$${subcontractorsBudget}`}
-                      onChange={(e) =>
-                        setSubcontractorsBudget(e.target.value.replace("$", ""))
-                      }
-                    />
-                  </Col>
-                  <Col>
-                    <Form.Label>Equipment Budget</Form.Label>
-                    <Form.Control
-                      value={`$${equipmentBudget}`}
-                      onChange={(e) =>
-                        setEquipmentBudget(e.target.value.replace("$", ""))
-                      }
-                    />
-                  </Col>
-                </Row>
-                <Row className="mb-3">
-                  <Col>
-                    <Form.Label>Miscellanea Budget</Form.Label>
-                    <Form.Control
-                      value={`$${miscBudget}`}
-                      onChange={(e) => setMiscBudget(e.target.value.replace("$", ""))}
-                    />
-                  </Col>
-                </Row>
-              </div>
-            </div>
+
+            {/* JobCost Component (Always Visible) */}
             <JobCost jobStatus={job?.status} refreshTrigger={refreshJobCost} />
 
-          </div>
+            {/* Modal for Add Job Cost */}
+            <Modal
+              show={showModal}
+              onHide={handleCancel}
+              size="lg"
+              centered
+              backdrop="static"
+            >
+              <Modal.Header closeButton>
+                <Modal.Title>Add Job Cost</Modal.Title>
+              </Modal.Header>
+
+              <Modal.Body>
+                <div className="row">
+                  <div className="col-md-8">
+                    <div className="row">
+                      <div className="col-md-6 mb-3">
+                        <p className="mb-1 text-muted">Job Status</p>
+                        <p>{job?.status}</p>
+                      </div>
+                      <div className="col-md-6 mb-3">
+                        <p className="mb-1 text-muted">Total Budget</p>
+                        <p>${totalBudgetedCost}</p>
+                      </div>
+                      <div className="col-md-6 mb-3">
+                        <p className="mb-1 text-muted">Estimated Start</p>
+                        <input
+                          type="date"
+                          className="form-control"
+                          value={estimatedStart}
+                          onChange={(e) => setEstimatedStart(e.target.value)}
+                        />
+                      </div>
+                      <div className="col-md-6 mb-3">
+                        <p className="mb-1 text-muted">Estimated Completion</p>
+                        <input
+                          type="date"
+                          className="form-control"
+                          value={estimatedEnd}
+                          onChange={(e) => setEstimatedEnd(e.target.value)}
+                        />
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="col-md-4">
+                    <div className="border p-3 rounded bg-light">
+                      <Form.Group className="mb-2">
+                        <Form.Label>Phase Name</Form.Label>
+                        <Form.Control
+                          type="text"
+                          value={phaseName}
+                          onChange={(e) => setPhaseName(e.target.value)}
+                        />
+                      </Form.Group>
+                      <div className="text-end fw-bold mb-3">
+                        Budgeted Cost: ${totalBudgetedCost}
+                      </div>
+                      <Row className="mb-2">
+                        <Col>
+                          <Form.Label>Materials Budget</Form.Label>
+                          <Form.Control
+                            value={`$${materialsBudget}`}
+                            onChange={(e) =>
+                              setMaterialsBudget(e.target.value.replace("$", ""))
+                            }
+                          />
+                        </Col>
+                        <Col>
+                          <Form.Label>Labor Budget</Form.Label>
+                          <Form.Control
+                            placeholder="$"
+                            value={laborBudget}
+                            onChange={(e) =>
+                              setLaborBudget(e.target.value.replace("$", ""))
+                            }
+                          />
+                        </Col>
+                      </Row>
+                      <Row className="mb-2">
+                        <Col>
+                          <Form.Label>Subcontractors Budget</Form.Label>
+                          <Form.Control
+                            value={`$${subcontractorsBudget}`}
+                            onChange={(e) =>
+                              setSubcontractorsBudget(e.target.value.replace("$", ""))
+                            }
+                          />
+                        </Col>
+                        <Col>
+                          <Form.Label>Equipment Budget</Form.Label>
+                          <Form.Control
+                            value={`$${equipmentBudget}`}
+                            onChange={(e) =>
+                              setEquipmentBudget(e.target.value.replace("$", ""))
+                            }
+                          />
+                        </Col>
+                      </Row>
+                      <Row className="mb-3">
+                        <Col>
+                          <Form.Label>Miscellanea Budget</Form.Label>
+                          <Form.Control
+                            value={`$${miscBudget}`}
+                            onChange={(e) =>
+                              setMiscBudget(e.target.value.replace("$", ""))
+                            }
+                          />
+                        </Col>
+                      </Row>
+                    </div>
+                  </div>
+                </div>
+              </Modal.Body>
+
+              <Modal.Footer>
+                <Button variant="secondary" onClick={handleCancel}>
+                  Cancel
+                </Button>
+                <Button variant="primary" onClick={handleSave}>
+                  Save
+                </Button>
+              </Modal.Footer>
+            </Modal>
+          </>
         );
 
       case "Create Proposal":

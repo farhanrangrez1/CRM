@@ -18,26 +18,50 @@ function AddProjectList() {
   const [formData, setFormData] = useState({
     projectName: '',
     clientId: '',
-    managerId: '',
-    startDate: '',
-    endDate: '',
-    projectPriority: '',
+    // managerId: '',
+    // startDate: '',
+    // endDate: '',
+    // projectPriority: '',
     projectAddress: '',
     description: '',
     status: 'Lead',
-    projectRequirements: {
-      creativeDesign: false,
-      artworkAdaptation: false,
-      prepress: false,
-      POS: false,
-      mockups: false,
-      rendering: false,
-    },
-    budgetAmount: '',
-    currency: 'USD',
-    totalTime: '',
+    // projectRequirements: {
+    //   creativeDesign: false,
+    //   artworkAdaptation: false,
+    //   prepress: false,
+    //   POS: false,
+    //   mockups: false,
+    //   rendering: false,
+    // },
+    // budgetAmount: '',
+    // currency: 'USD',
+    // totalTime: '',
     tempPoles: false
   });
+
+  const [items, setItems] = useState([
+    { description: "", quantity: 0, rate: 0, amount: 0 },
+  ]);
+
+  const calculateAmount = (quantity, rate) => quantity * rate;
+
+  const handleItemChange = (index, field, value) => {
+    const newItems = [...items];
+    newItems[index][field] = value;
+    newItems[index].amount = calculateAmount(
+      newItems[index].quantity,
+      newItems[index].rate
+    );
+    setItems(newItems);
+  };
+  const addItem = () => {
+    setItems([...items, { description: "", quantity: 0, rate: 0, amount: 0 }]);
+  };
+  const removeItem = (index) => {
+    const newItems = [...items];
+    newItems.splice(index, 1);
+    setItems(newItems);
+  };
 
   // ✅ Populate form in edit mode
   useEffect(() => {
@@ -48,6 +72,7 @@ function AddProjectList() {
         projectRequirements: project.projectRequirements?.[0] || {},
         tempPoles: project.tempPoles || false
       });
+      setItems(project?.lineItems)
     } else if (paramId) {
       dispatch(fetchProjectById(paramId)).then((res) => {
         const fetchedProject = res.payload;
@@ -86,7 +111,8 @@ function AddProjectList() {
 
     const payload = {
       ...formData,
-      projectRequirements: [formData.projectRequirements]
+      projectRequirements: [formData.projectRequirements],
+      lineItems: items
     };
 
     if (id) {
@@ -103,10 +129,22 @@ function AddProjectList() {
     } else {
       dispatch(createProject(payload))
         .unwrap()
-        .then(() => {
+        .then((res) => {
+          console.log(res);
           toast.success("Project created successfully!");
           // navigate("/admin/projectList");
-          navigate("/admin/LeadFlow");
+          if (payload.lineItems.length > 0) {
+            const confirmCreate = window.confirm("Do you want to create proposal?");
+            if (confirmCreate) {
+              navigate("/admin/AddCostEstimates", {
+                state: { projectID: res?.data?._id },
+              });
+            } else {
+              navigate("/admin/LeadFlow");
+            }
+          } else {
+            navigate("/admin/LeadFlow");
+          }
         })
         .catch(() => {
           toast.error("Error creating project");
@@ -166,7 +204,7 @@ function AddProjectList() {
             </Col>
           </Row>
 
-          <Row className="mb-3">
+          {/* <Row className="mb-3">
             <Col md={6}>
               <Form.Group>
                 <Form.Label className="text-muted mb-1">Expected Completion Date</Form.Label>
@@ -191,11 +229,11 @@ function AddProjectList() {
                 />
               </Form.Group>
             </Col>
-          </Row>
+          </Row> */}
 
           <Row className="mb-3">
             <Col md={6}>
-              <Form.Group>
+              {/* <Form.Group>
                 <Form.Label className="text-muted mb-1">Project Priority</Form.Label>
                 <Form.Select
                   name="projectPriority"
@@ -208,7 +246,7 @@ function AddProjectList() {
                   <option value="medium">Medium</option>
                   <option value="low">Low</option>
                 </Form.Select>
-              </Form.Group>
+              </Form.Group> */}
               <Form.Group className="mb-3 mt-6">
                 <Form.Check
                   type="checkbox"
@@ -269,7 +307,81 @@ function AddProjectList() {
             />
           </Form.Group>
 
-          <Form.Group className="mb-3">
+          <h6 className="fw-semibold mb-3">Line Items</h6>
+          <div className="row fw-semibold text-muted mb-2 px-2">
+            <div className="col-md-5">Description</div>
+            <div className="col-md-2">Quantity</div>
+            <div className="col-md-2">Rate</div>
+            <div className="col-md-2">Amount</div>
+            <div className="col-md-1 text-end"></div>
+          </div>
+
+          {items.map((item, index) => (
+            <div
+              className="row gx-2 gy-2 align-items-center mb-2 px-2 py-2"
+              key={index}
+              style={{ background: "#f9f9f9", borderRadius: "8px" }}
+            >
+              <div className="col-md-5">
+                <input
+                  type="text"
+                  className="form-control"
+                  placeholder="Item description"
+                  value={item.description}
+                  required
+                  onChange={(e) =>
+                    handleItemChange(index, "description", e.target.value)
+                  }
+                />
+              </div>
+              <div className="col-md-2">
+                <input
+                  type="number"
+                  className="form-control"
+                  value={item.quantity}
+                  required
+                  onChange={(e) =>
+                    handleItemChange(index, "quantity", parseInt(e.target.value))
+                  }
+                />
+              </div>
+              <div className="col-md-2">
+                <input
+                  type="number"
+                  className="form-control"
+                  value={item.rate}
+                  required
+                  onChange={(e) =>
+                    handleItemChange(index, "rate", parseFloat(e.target.value))
+                  }
+                />
+              </div>
+              <div className="col-md-2">
+                <span>
+                  {formData.currency} {item.amount.toFixed(2)}
+                </span>
+              </div>
+              <div className="col-md-1 text-end">
+                <button
+                  className="btn btn-link text-danger p-0"
+                  onClick={() => removeItem(index)}
+                  type="button"
+                >
+                  remove
+                </button>
+              </div>
+            </div>
+          ))}
+          <button
+            className="btn border rounded px-3 py-1 mb-4 text-dark"
+            onClick={addItem}
+            type="button"
+          >
+            + Add Line Item
+          </button>
+
+
+          {/* <Form.Group className="mb-3">
             <Form.Label className="text-muted mb-1">Project Requirements</Form.Label>
             <div>
               {['creativeDesign', 'artworkAdaptation', 'prepress', 'POS', 'mockups', 'rendering'].map((key) => (
@@ -290,11 +402,11 @@ function AddProjectList() {
                 />
               ))}
             </div>
-          </Form.Group>
+          </Form.Group> */}
 
-          <Form.Label className="text-muted mb-1">Budget Information</Form.Label>
+          {/* <Form.Label className="text-muted mb-1">Budget Information</Form.Label> */}
           <Row className="mb-3">
-            <Col md={6}>
+            {/* <Col md={6}>
               <Form.Group>
                 <Form.Control
                   type="number"
@@ -304,7 +416,7 @@ function AddProjectList() {
                   onChange={handleInputChange}
                 />
               </Form.Group>
-            </Col>
+            </Col> */}
             {/* <Col md={6}>
               <Form.Group>
                 <Form.Select

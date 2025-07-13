@@ -408,7 +408,7 @@ const ProposalEmailUI = ({ setShowAddInvoice }) => {
   useEffect(() => {
     const clientId = Array.isArray(signatureData?.clientId)
       ? signatureData.clientId[0]
-      : signatureData?.clientId?.id;
+      : signatureData?.clientId?._id;
 
     if (clientId && Clients?.data?.length > 0) {
       const client = Clients.data.find((c) => c._id === clientId);
