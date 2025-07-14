@@ -317,7 +317,10 @@ const Editpurposal = () => {
     try {
       const res = await fetch("https://netaai-crm-backend-production-c306.up.railway.app/api/notes");
       const data = await res.json();
-      setNotes(data?.data || []);
+      const allNotes = data?.data || [];
+      const filteredNotes = allNotes.filter(note => note.project_id === proposalId);
+      setNotes(filteredNotes || []);
+      // setNotes(data?.data || []);
     } catch (err) {
       console.error("Error fetching notes:", err);
     } finally {

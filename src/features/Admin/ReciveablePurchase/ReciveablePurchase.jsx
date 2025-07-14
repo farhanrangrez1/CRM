@@ -142,7 +142,6 @@ function ReciveablePurchase() {
     };
     // console.log("Invoice Data:", invoice);
 
-
     navigate("/admin/AddInvoice", {
       state: { invoice }
     });
