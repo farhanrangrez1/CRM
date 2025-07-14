@@ -59,9 +59,6 @@ function TimeLogs() {
       id: selectedJobIds,
       extraHours: extraHours,
     };
-
-    console.log("Dispatching payload:", payload);
-
     dispatch(updateExtraHours(payload))
       .unwrap()
       .then(() => {
@@ -168,8 +165,6 @@ function TimeLogs() {
                     id: selectedJobIds,
                     extraHours: extraHours || "0:00",
                   };
-
-                  console.log("Payload to send:", dataToSend);
 
                   setShowAssignModal(true);
                 }

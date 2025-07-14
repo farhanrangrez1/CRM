@@ -130,7 +130,6 @@ function AddProjectList() {
       dispatch(createProject(payload))
         .unwrap()
         .then((res) => {
-          console.log(res);
           toast.success("Project created successfully!");
           // navigate("/admin/projectList");
           if (payload.lineItems.length > 0) {

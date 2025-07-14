@@ -332,29 +332,29 @@ function CostEstimates() {
         return "bg-info text-dark";
       case "not started":
         return "bg-secondary text-white";
-      case "pending":
-        return "bg-warning text-dark";     // Yellow
-      case "received":
-        return "bg-info text-dark";        // Light Blue
-      case "cancelled":
-        return "bg-danger text-white";     // Red
-      case "completed":
-        return "bg-success text-white";    // Green
-      case "open":
-        return "bg-primary text-white";    // Blue
+      // case "pending":
+      //   return "bg-warning text-dark";     // Yellow
+      // case "received":
+      //   return "bg-info text-dark";        // Light Blue
+      // case "cancelled":
+      //   return "bg-danger text-white";     // Red
+      // case "completed":
+      //   return "bg-success text-white";    // Green
+      // case "open":
+      //   return "bg-primary text-white";    // Blue
       case "invoiced":
         return "bg-dark text-white";       // Dark (You can change it as needed)
-      case "in progress":
+      // case "in progress":
       case "in_progress":
         return "bg-warning text-dark";
-      case "active":
-        return "bg-primary text-white";
+      // case "active":
+      //   return "bg-primary text-white";
       case "reject":
         return "bg-danger text-white";
-      case "review":
-        return "bg-info text-dark";
-      case "not started":
-        return "bg-secondary text-white";
+      // case "review":
+      //   return "bg-info text-dark";
+      // case "not started":
+      //   return "bg-secondary text-white";
       default:
         return "bg-light text-dark";
     }

@@ -628,7 +628,7 @@ function Invoicing_Billing() {
       <Table hover responsive>
         <thead>
           <tr>
-            <th onClick={() => handleSort('invoiceNumber')} style={{ whiteSpace: "nowrap", whiteSpace: 'nowrap' }}>Invoice #</th>
+            <th onClick={() => handleSort('invoiceNumber')} style={{ cursor: 'pointer', whiteSpace: "nowrap" }}>Invoice #</th>
             <th onClick={() => handleSort('project')} style={{ cursor: 'pointer', whiteSpace: 'nowrap' }}>Project</th>
             <th onClick={() => handleSort('client')} style={{ cursor: 'pointer', whiteSpace: 'nowrap' }}>Client Name</th>
             <th onClick={() => handleSort('email')} style={{ cursor: 'pointer', whiteSpace: 'nowrap' }}>Client Email</th>

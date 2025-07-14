@@ -370,7 +370,6 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
       .map((item) => {
         // Check parent menu permission
         const hasPermissionKey = item.permissionKey ? hasPermission(item.permissionKey, "view") : true;
-        console.log(`Checking item: ${item.title}, has permission: ${hasPermissionKey}`);
 
         let filteredSubmenu = null;
 
@@ -384,7 +383,7 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
             // 🔒 If parent has no permission, still check submenus (optional)
             submenuItems = item.submenu.filter(sub => {
               const hasSubPermission = sub.permissionKey ? hasPermission(sub.permissionKey, "view") : true;
-              console.log(`Checking submenu item: ${sub.title}, has permission: ${hasSubPermission}`);
+
               return hasSubPermission;
             });
           }
@@ -394,7 +393,6 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
 
         // If parent has permission or at least one submenu is visible, show it
         const isVisible = hasPermissionKey || (filteredSubmenu && filteredSubmenu.length > 0);
-        console.log(`Item: ${item.title}, visible: ${isVisible}`);
 
         return {
           ...item,

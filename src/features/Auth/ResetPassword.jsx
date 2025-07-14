@@ -9,49 +9,49 @@ const ResetPassword = () => {
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
-  const dispatch =useDispatch()
-  const navigate =useNavigate()
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
 
-const handleSubmit = (e) => {
-  e.preventDefault();
-  setMessage("");
-  setError("");
-  if (!password || !confirmPassword) {
-    setError("Please fill in all fields.");
-    return;
-  }
-  if (password.length < 6) {
-    setError("Password must be at least 6 characters long.");
-    return;
-  }
-  if (password !== confirmPassword) {
-    setError("Passwords do not match.");
-    return;
-  }
-const queryParams = new URLSearchParams(location.search);
-  const token = queryParams.get("token");
-  // 👇 Console log the formatted object
-  console.log({
-    token:token,
-    newPassword: password,
-    confirmPassword: confirmPassword
-  });
-  dispatch(ResetPasswordThunk({
-     token:token,
-    newPassword: password,
-    confirmPassword: confirmPassword
-  }))
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    setMessage("");
+    setError("");
+    if (!password || !confirmPassword) {
+      setError("Please fill in all fields.");
+      return;
+    }
+    if (password.length < 6) {
+      setError("Password must be at least 6 characters long.");
+      return;
+    }
+    if (password !== confirmPassword) {
+      setError("Passwords do not match.");
+      return;
+    }
+    const queryParams = new URLSearchParams(location.search);
+    const token = queryParams.get("token");
+    // 👇 Console log the formatted object
+    // console.log({
+    //   token:token,
+    //   newPassword: password,
+    //   confirmPassword: confirmPassword
+    // });
+    dispatch(ResetPasswordThunk({
+      token: token,
+      newPassword: password,
+      confirmPassword: confirmPassword
+    }))
 
-  setLoading(true);
-  // Simulate API call
-  setTimeout(() => {
-    navigate("/")
-    setLoading(false);
-    setMessage("Your password has been reset a has been sent to your email successfully!");
-    setPassword("");
-    setConfirmPassword("");
-  }, 1500);
-};
+    setLoading(true);
+    // Simulate API call
+    setTimeout(() => {
+      navigate("/")
+      setLoading(false);
+      setMessage("Your password has been reset a has been sent to your email successfully!");
+      setPassword("");
+      setConfirmPassword("");
+    }, 1500);
+  };
 
 
   return (

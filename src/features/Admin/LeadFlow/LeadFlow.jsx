@@ -762,18 +762,25 @@ const LeadFlow = ({ data }) => {
     ];
 
     // Reorder columns so selectedStatus is first
+    // if (selectedStatus && selectedStatus !== 'All') {
+    //   const statusMap = {
+    //     'Active': 'active',
+    //     'Pending': 'pending',
+    //     'Closed': 'closed',
+    //     'Rejected': 'rejected',
+    //   };
+    //   const selectedId = statusMap[selectedStatus];
+    //   if (selectedId) {
+    //     columns = [columns.find(c => c.id === selectedId), ...columns.filter(c => c.id !== selectedId)];
+    //   }
+    // }
     if (selectedStatus && selectedStatus !== 'All') {
-      const statusMap = {
-        'Active': 'active',
-        'Pending': 'pending',
-        'Closed': 'closed',
-        'Rejected': 'rejected',
-      };
-      const selectedId = statusMap[selectedStatus];
-      if (selectedId) {
-        columns = [columns.find(c => c.id === selectedId), ...columns.filter(c => c.id !== selectedId)];
+      const selectedColumn = columns.find(c => c.title.toLowerCase() === selectedStatus.toLowerCase());
+      if (selectedColumn) {
+        columns = [selectedColumn, ...columns.filter(c => c.id !== selectedColumn.id)];
       }
     }
+
 
     const handleUpdateProjectCard = (project) => {
       navigate(`/admin/AddProjectList`, { state: { project } });

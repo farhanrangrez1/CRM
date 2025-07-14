@@ -462,7 +462,6 @@ const TempPoles = ({ data }) => {
 
     const proposals = project && project.data && project.data.length > 0 ? project.data : initialProposals;
     // console.log(proposals, "proposals");
-    console.log("fgdfg", project)
     const [filterRows, setFilterRows] = useState([
         { field: '', value: '' }
     ]);
@@ -598,12 +597,10 @@ const TempPoles = ({ data }) => {
             const openStatuses = ["Active Project", "Open", "Signature"];
 
             if (openStatuses.includes(status)) {
-                console.log(`Mapping status: ${status} to open`);
                 return "open";
             }
 
             const mappedStatus = map[status] ?? null;
-            console.log(`Mapping status: ${status} to ${mappedStatus}`);
             return mappedStatus;
         }
 

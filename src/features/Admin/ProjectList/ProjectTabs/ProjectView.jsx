@@ -872,12 +872,10 @@ const ProjectView = ({ data }) => {
             const pendingProposalStatuses = ["Active Project", "Open", "Signature"];
 
             if (pendingProposalStatuses.includes(status)) {
-                console.log(`Mapping status: ${status} to pendingProposalApproval`);
                 return "pendingProposalApproval";
             }
 
             const mappedStatus = defaultMap[status] ?? null;
-            console.log(`Mapping status: ${status} to ${mappedStatus}`);
             return mappedStatus;
         }
 
@@ -915,8 +913,6 @@ const ProjectView = ({ data }) => {
             doneFinalPayment: reduxProposals.filter(p => p.status === "doneFinalPayment"),
             photosOfJob: reduxProposals.filter(p => p.status === "photosOfJob"),
         };
-
-        console.log({ "kanbanData": kanbanData });
 
 
         const handleCardDrop = async (result) => {

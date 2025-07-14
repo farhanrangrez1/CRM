@@ -200,8 +200,6 @@ function TimeLogs() {
                     extraHours: extraHours || "0:00",
                   };
 
-                  console.log("Payload to send:", dataToSend);
-
                   setShowAssignModal(true);
                 }
               }}
