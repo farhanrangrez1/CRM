@@ -4,12 +4,12 @@
 
 // localhost link
 // const BASE_URL= "https://xt2cpwt7-8000.inc1.devtunnels.ms/api";
-const BASE_URL = "https://3ktt3vxd-8000.inc1.devtunnels.ms/api";
+// const BASE_URL = "https://3ktt3vxd-8000.inc1.devtunnels.ms/api";
 
 
 
 
-// const BASE_URL = "https://neta-crmmongo-backend-production.up.railway.app/api";
+const BASE_URL = "https://neta-crmmongo-backend-production.up.railway.app/api";
 
 
 export const apiUrl = BASE_URL;

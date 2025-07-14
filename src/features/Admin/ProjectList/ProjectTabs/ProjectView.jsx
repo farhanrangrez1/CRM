@@ -711,7 +711,7 @@ const ProjectView = ({ data }) => {
         dispatch(fetchAllProposals())
         dispatch(fetchProject())
     }, [])
-    const { project, error, loading } = useSelector((state) => state.projects);
+    const project = useSelector((state) => state?.projects?.project?.data) || [];
     // Remove the incorrect destructuring and useSelector for reduxProposals
     // const { reduxProposals,  } = useSelector((state) => state?.proposal?.proposals);
     // Instead, get proposals from project.data or fallback to initialProposals
@@ -832,24 +832,29 @@ const ProjectView = ({ data }) => {
     };
 
     const ProposalWorkflowBoard = ({ onNavigate, selectedStatus }) => {
-        const reduxProposals = (project.data || []).map(item => ({
-            id: item.id,
-            title: item.projectName,
-            client: item.clientId?.clientName,
-            status: mapStatus(item.status),
-            projectPriority: item.projectPriority,
-            phases: item.phases || "N/A",
-            revenue: item.budgetAmount ? `AED ${item.budgetAmount}` : "N/A",
-            startDate: item.startDate,
-            endDate: item.endDate,
-            committedCost: "4220",
-            profitLoss: "N/A",
-            updated: item.updatedAt,
-        }));
+        const reduxProposals = (project || []).map(item => {
+            return ({
+                id: item.id,
+                _id: item._id,
+                title: item.projectName,
+                address: item.projectAddress || "N/A",
+                client: item.clientId?.clientName,
+                status: mapStatus(item.status),
+                projectPriority: item.projectPriority,
+                phases: item.phases || "N/A",
+                revenue: item.budgetAmount ? `AED ${item.budgetAmount}` : "N/A",
+                startDate: item.startDate,
+                endDate: item.endDate,
+                committedCost: "4220",
+                profitLoss: "N/A",
+                updated: item.updatedAt,
+
+            })
+        }
+        );
 
         function mapStatus(status) {
-            const map = {
-                "Active Project": "Active Project",
+            const defaultMap = {
                 "Pending": "serviceCalls",
                 "Closed": "pendingRough",
                 "UG Pipes": "ugPipes",
@@ -863,8 +868,19 @@ const ProjectView = ({ data }) => {
                 "Done Final Payment": "doneFinalPayment",
                 "Photos of Job": "photosOfJob"
             };
-            return map[status] ?? null;
+
+            const pendingProposalStatuses = ["Active Project", "Open", "Signature"];
+
+            if (pendingProposalStatuses.includes(status)) {
+                console.log(`Mapping status: ${status} to pendingProposalApproval`);
+                return "pendingProposalApproval";
+            }
+
+            const mappedStatus = defaultMap[status] ?? null;
+            console.log(`Mapping status: ${status} to ${mappedStatus}`);
+            return mappedStatus;
         }
+
 
         const dispatch = useDispatch();
         const [isUpdating, setIsUpdating] = useState(false);
@@ -885,7 +901,7 @@ const ProjectView = ({ data }) => {
 
 
         const kanbanData = {
-            pendingProposalApproval: reduxProposals.filter(p => p.status === "Active Project" || p.status === "Open" || p.status === "Signature" || p.status === "open" || p.status === "signature"),
+            pendingProposalApproval: reduxProposals.filter(p => p.status === "pendingProposalApproval"),
             serviceCalls: reduxProposals.filter(p => p.status === "serviceCalls"),
             pendingRough: reduxProposals.filter(p => p.status === "pendingRough"),
             ugPipes: reduxProposals.filter(p => p.status === "ugPipes"),
@@ -899,6 +915,9 @@ const ProjectView = ({ data }) => {
             doneFinalPayment: reduxProposals.filter(p => p.status === "doneFinalPayment"),
             photosOfJob: reduxProposals.filter(p => p.status === "photosOfJob"),
         };
+
+        console.log({ "kanbanData": kanbanData });
+
 
         const handleCardDrop = async (result) => {
             const { source, destination, draggableId } = result;
@@ -1078,7 +1097,7 @@ const ProjectView = ({ data }) => {
                                                             ...provided.draggableProps.style
                                                         }}
                                                         onClick={() => {
-                                                            localStorage.setItem("proposalId", item._id);
+                                                            localStorage.setItem("proposalId", item?._id);
                                                             localStorage.setItem("invoice", JSON.stringify(item));
                                                             navigate("/admin/LeadFlow/Details", { state: { item: item } });
                                                         }}
@@ -1095,7 +1114,7 @@ const ProjectView = ({ data }) => {
                                                         </div>
                                                         <div className="d-flex flex-wrap gap-2 align-items-center mb-1">
                                                             <Badge bg={getStatusBadgeColor(item.status)} className={`me-1 ${getTextColor(item.status)}`}>
-                                                                {item.status}
+                                                                {item.status === 'Open' || item.status === 'Active Project' ? 'pendingProposalApproval' : item.status}
                                                             </Badge>
                                                         </div>
                                                         {/* </div> */}

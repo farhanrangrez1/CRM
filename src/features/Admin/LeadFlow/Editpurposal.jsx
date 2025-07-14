@@ -254,22 +254,27 @@ const Editpurposal = () => {
   const [showAddInvoice, setShowAddInvoice] = useState(true);
   const calculateAmount = (quantity, rate) => quantity * rate;
 
-  const [items, setItems] = useState([{ description: "", quantity: 0, rate: 0, amount: 0 }]);
+  // const [items, setItems] = useState([{ description: "", quantity: 0, rate: 0, amount: 0 }]);
+  const [items, setItems] = useState([]);
 
   useEffect(() => {
     if (invoice?._id) {
-      dispatch(getDocumentsByProposalId(invoice?._id)).unwrap().then((res) => {
-        if (Array.isArray(res) && res.length > 0) {
-
-          setExistingDocId(res[0].id);
-          const doc = res[0];
-          if (Array.isArray(doc.line_items)) {
-            setItems(doc.line_items);
+      dispatch(getDocumentsByProposalId(invoice?._id))
+        .unwrap()
+        .then((res) => {
+          if (Array.isArray(res) && res.length > 0) {
+            setExistingDocId(res[0].id);
+            const doc = res[0];
+            if (Array.isArray(doc?.line_items)) {
+              setItems(doc?.line_items);
+            } else {
+              setItems([]); // Ensure items is always an array
+            }
           }
-        }
-      })
+        });
     }
-  }, [invoice])
+  }, [invoice]);
+
 
   const handleItemChange = (index, field, value) => {
     const newItems = [...items];
@@ -339,7 +344,7 @@ const Editpurposal = () => {
             </div>
             <div>
               <h6 className="fw-semibold mb-3">Line Items</h6>
-              {items.map((item, index) => (
+              {items?.length > 0 && items.map((item, index) => (
                 <div
                   className="row gx-2 gy-2 align-items-center mb-2 px-2 py-2"
                   key={index}
@@ -973,53 +978,57 @@ const Editpurposal = () => {
         return <div>Select a tab</div>;
     }
   };
+  try {
+    return (
+      <div className="wwd-container container">
 
-  return (
-    <div className="wwd-container container">
+        <div className="wwd-header d-flex justify-content-between align-items-center py-3">
+          <div>
+            {/* <h4 className="mb-0">{job?.job_name}</h4> */}
+            <h4 className="mb-0">{job?.projectName || job?.job_name}</h4>
+            <p className="text-muted small">{job?.clientId?.clientName}</p>
+          </div>
+          <div className="mb-2">
+            <Button variant="outline-secondary mt-1" onClick={() => {
+              navigate('/admin/LeadFlow');
+            }}>
+              <FaArrowLeft className="me-1" /> Back
+            </Button>
+          </div>
 
-      <div className="wwd-header d-flex justify-content-between align-items-center py-3">
-        <div>
-          {/* <h4 className="mb-0">{job?.job_name}</h4> */}
-          <h4 className="mb-0">{job?.projectName || job?.job_name}</h4>
-          <p className="text-muted small">{job?.clientId?.clientName}</p>
         </div>
-        <div className="mb-2">
-          <Button variant="outline-secondary mt-1" onClick={() => {
-            navigate('/admin/LeadFlow');
-          }}>
-            <FaArrowLeft className="me-1" /> Back
-          </Button>
-        </div>
 
+        <ul className="nav nav-tabs wwd-tabs mb-4">
+          {[
+            "Summary",
+            "Job Costs",
+            // stage === "lead" ? "Client Proposal" : "Draft Proposal",
+            // "Contract & Change Orders",
+            !existingDocId ? "Create Proposal" : "Contract & Change Orders",
+            "Documents",
+            "Daily Logs",
+            // "Activity",
+            // "Reports",
+          ].map((tab, i) => (
+            <li className="nav-item" key={i}>
+              <button
+                className={`nav-link ${activeTab === tab ? "active" : ""}`}
+                style={{ background: "none", border: "none" }}
+                onClick={() => setActiveTab(tab)}
+              >
+                {tab}
+              </button>
+            </li>
+          ))}
+        </ul>
+
+        {renderTabContent()}
       </div>
-
-      <ul className="nav nav-tabs wwd-tabs mb-4">
-        {[
-          "Summary",
-          "Job Costs",
-          // stage === "lead" ? "Client Proposal" : "Draft Proposal",
-          // "Contract & Change Orders",
-          !existingDocId ? "Create Proposal" : "Contract & Change Orders",
-          "Documents",
-          "Daily Logs",
-          // "Activity",
-          // "Reports",
-        ].map((tab, i) => (
-          <li className="nav-item" key={i}>
-            <button
-              className={`nav-link ${activeTab === tab ? "active" : ""}`}
-              style={{ background: "none", border: "none" }}
-              onClick={() => setActiveTab(tab)}
-            >
-              {tab}
-            </button>
-          </li>
-        ))}
-      </ul>
-
-      {renderTabContent()}
-    </div>
-  );
+    );
+  } catch (error) {
+    console.error("Error rendering tab content:", error);
+    return <div>Something went wrong rendering this section.</div>;
+  }
 };
 
 export default Editpurposal;
