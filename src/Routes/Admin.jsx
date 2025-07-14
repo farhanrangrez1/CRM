@@ -68,6 +68,8 @@ import Editpurposal from "../features/Admin/LeadFlow/Editpurposal.jsx";
 // import EditProject from "../features/Admin/ProjectList/EditProject.jsx";
 import AddInvoice2 from "../features/Admin/Invoicing_Billing/AddInvoice2.jsx";
 import TempPoles from "../features/Admin/ProjectList/ProjectTabs/TempPoles.jsx";
+import DProjectInBidding from "../features/Admin/Dashbord/DProjectInBidding.jsx";
+import DProjectInSignature from "../features/Admin/Dashbord/DProjectInSignature.jsx";
 
 function Admin() {
   const [isSidebarOpen, setSidebarOpen] = useState(window.innerWidth >= 768);
@@ -97,7 +99,9 @@ function Admin() {
                 </ProtectedRoute>
               }
             />
-            <Route path="/DJobsInProgress" element={<ProtectedRoute><DJobsInProgress /></ProtectedRoute>} />
+            <Route path="/DJobsInBidding" element={<ProtectedRoute><DProjectInBidding /></ProtectedRoute>} />
+            <Route path="/DProjectInSignature" element={<ProtectedRoute><DProjectInSignature /></ProtectedRoute>} />
+            {/* <Route path="/DJobsInProgress" element={<ProtectedRoute><DJobsInProgress /></ProtectedRoute>} /> */}
             <Route path="/DProjectInProgress" element={<ProtectedRoute>< DProjectInProgress /></ProtectedRoute>} />
             <Route path="/DCompletedProject" element={<ProtectedRoute><DCompletedProject /></ProtectedRoute>} />
             <Route path="/DTodayJobsDue" element={<ProtectedRoute><DTodayJobsDue /></ProtectedRoute>} />

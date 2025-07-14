@@ -152,12 +152,12 @@ function Dashbord() {
                   className="rounded-circle p-3 me-3 d-flex align-items-center justify-content-center"
                   style={{ backgroundColor: "#e6f4ec", width: "50px", height: "50px" }}
                 >
-                  <FaTasks className="text-success" size={20} />
+                  <FaTasks className="text-primary" size={20} />
                 </div>
                 <div>
                   <h3 className="mb-0">{inProgressProjectsCount}</h3>
                   {/* <p className="text-muted mb-0">Projects in Lead</p> */}
-                  <small className="text-success">Projects in Lead</small>
+                  <small className="text-primary">Projects in Lead</small>
                 </div>
               </Card.Body>
             </Card>
@@ -165,16 +165,17 @@ function Dashbord() {
         </Col>
 
         <Col md={4} lg={4}>
-          <Link to="/admin/DJobsInProgress" className="text-decoration-none w-100 d-block">
+          {/* <Link to="/admin/DJobsInProgress" className="text-decoration-none w-100 d-block"> */}
+          <Link to="/admin/DJobsInBidding" className="text-decoration-none w-100 d-block">
             <Card className="h-100 shadow-sm border-0">
               <Card.Body className="d-flex align-items-center">
                 <div className="rounded-circle p-3 bg-light-green me-3">
-                  <FaProjectDiagram className="text-success" size={24} />
+                  <FaProjectDiagram className="text-warning" size={24} />
                 </div>
                 <div>
                   <h3 className="mb-0">{inProgressCount}</h3>
                   {/* <p className="text-muted mb-0">Jobs in Progress</p> */}
-                  <small className="text-info">Projects in Bidding</small>
+                  <small className="text-warning">Projects in Bidding</small>
                 </div>
               </Card.Body>
             </Card>
@@ -186,16 +187,16 @@ function Dashbord() {
 
         {/* Jobs Due Today */}
         <Col md={4} lg={4}>
-          <Link to="/admin/DTodayJobsDue" className="text-decoration-none w-100 d-block">
+          <Link to="/admin/DProjectInSignature" className="text-decoration-none w-100 d-block">
             <Card className="h-100 shadow-sm">
               <Card.Body className="d-flex align-items-center">
                 <div className="rounded-circle p-3 bg-light-yellow me-3">
-                  <FaFileInvoiceDollar className="text-warning" size={24} />
+                  <FaFileInvoiceDollar className="text-success" size={24} />
                 </div>
                 <div>
                   <h3 className="mb-0">{todaysJobsCount}</h3>
                   {/* <p className="text-muted mb-0">Jobs Due Today</p> */}
-                  <small className="text-warning">Projects Signature</small>
+                  <small className="text-success">Projects Signature</small>
                 </div>
               </Card.Body>
             </Card>
