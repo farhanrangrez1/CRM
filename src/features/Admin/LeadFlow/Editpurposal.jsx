@@ -1,9 +1,9 @@
 
 import React, { useEffect, useState } from "react";
 import "./Editpurposal.css";
-import { FaArrowLeft } from "react-icons/fa";
+import { FaArrowLeft, FaEdit } from "react-icons/fa";
 import { useNavigate, useLocation } from "react-router-dom";
-import { Button, Form, Row, Col, Modal } from "react-bootstrap";
+import { Button, Form, Row, Col, Modal, Table } from "react-bootstrap";
 // import `DailyLogs` from "../LeadOpportunity/DailyLogs";
 import Swal from "sweetalert2";
 import AddCostEstimates from "../CostEstimates/AddCostEstimates";
@@ -20,6 +20,7 @@ import DocumentList from "./DocumentList";
 import JobCost from "./JobCost";
 import { getDocumentsByProposalId } from "../../../redux/slices/documentSlice";
 import { fetchusers } from "../../../redux/slices/userSlice";
+import { Link } from "react-bootstrap-icons";
 
 const Editpurposal = () => {
   const [manager, setManager] = useState(null);
@@ -125,8 +126,6 @@ const Editpurposal = () => {
   const job = location.state.item;
   const project_id = localStorage.getItem("proposalId");
   const proposalId = localStorage.getItem("proposalId");
-  // const project_id = job?.id;
-  // const proposalId = job?.id;
   const [refreshJobCost, setRefreshJobCost] = useState(false);
 
 
@@ -175,24 +174,7 @@ const Editpurposal = () => {
   };
 
 
-  const getBudgetSummaryByProposalId = async (proposalId) => {
-    try {
-      const response = await axios.get(
-        `https://netaai-crm-backend-production-c306.up.railway.app/api/job_planning/getBudgetSummaryByProposalId/${project_id}`
-      );
 
-      if (response.status === 200) {
-        // You can return the data or use it directly
-
-        return response.data;
-      } else {
-        throw new Error("Failed to fetch budget summary");
-      }
-    } catch (error) {
-      console.error("Error fetching budget summary:", error.response?.data?.message || error.message);
-      return null;
-    }
-  };
   const handleFolderSubmit = async () => {
     try {
       const formData = new FormData();
@@ -239,20 +221,7 @@ const Editpurposal = () => {
   const handleUploadClick = () => {
     setShowFileModal(true);
   };
-  // useEffect(() => {
-  //   const fetchBudgetSummary = async () => {
-  //     const data = await getBudgetSummaryByProposalId(project_id);
-  //     if (data) {
-  //       // Handle your state update here
-  //       // console.log(data);
-  //     }
-  //   };
 
-  //   fetchBudgetSummary();
-  // }, [saveJob]);
-
-
-  // const stage = job?.p?.stage;
 
   const [showAddInvoice, setShowAddInvoice] = useState(true);
   const calculateAmount = (quantity, rate) => quantity * rate;
@@ -402,6 +371,70 @@ const Editpurposal = () => {
     }
   };
 
+  const [jobs, setJobs] = useState([]);
+
+  useEffect(() => {
+    const fetchJobs = async () => {
+      try {
+        const res = await fetch(`https://neta-crmmongo-backend-production.up.railway.app/api/jobs/${invoice?._id}`);
+        const data = await res.json();
+        setJobs(data?.jobs || []);
+      } catch (error) {
+        console.error("Error fetching jobs:", error);
+      }
+    };
+
+    if (invoice?._id) {
+      fetchJobs();
+    }
+  }, [invoice?._id]);
+
+
+
+  const getPriorityClass = (priority) => {
+    switch ((priority || "").toLowerCase()) {
+      case "high":
+        return "text-danger";
+      case "medium":
+        return "text-warning";
+      case "low":
+        return "text-success";
+      default:
+        return "";
+    }
+  };
+
+  const getStatusClass = (status) => {
+    switch (status.toLowerCase().trim()) {
+      case "in progress":
+      case "in_progress":
+        return "bg-warning text-dark";     // Yellow
+      case "completed":
+        return "bg-success text-white";    // Green
+      case "cancelled":
+        return "bg-danger text-white";     // Red
+      case "active":
+        return "bg-primary text-white";    // Blue
+      case "reject":
+        return "bg-danger text-white";
+      case "review":
+        return "bg-info text-dark";
+      case "not started":
+        return "bg-secondary text-white";
+      case "open":
+        return "bg-primary text-white";
+      default:
+        return "bg-light text-dark";
+    }
+  };
+
+  const handleUpdateTask = (job) => {
+    navigate(`/admin/AddJobTracker/${job._id}`, { state: { job } });
+  };
+
+  const JobDetails = (job) => {
+    navigate(`/admin/OvervieJobsTracker`, { state: { job } });
+  };
 
   const renderTabContent = () => {
     switch (activeTab) {
@@ -497,6 +530,79 @@ const Editpurposal = () => {
                 </ul>
               )}
             </div>
+
+            {/* 📌 Tasks Section */}
+            <div className="col-12 mt-4">
+              <h6 className="fw-bold mb-3">Tasks</h6>
+              {jobs.length === 0 ? (
+                <div className="text-muted">No Tasks available.</div>
+              ) : (
+                <div className="table-responsive">
+                  <Table className="align-middle sticky-header">
+                    <thead className="bg-light">
+                      <tr>
+                        <th>JobNo</th>
+                        <th>Project Name</th>
+                        <th>Brand</th>
+                        <th>Sub Brand</th>
+                        <th>Flavour</th>
+                        <th>PackType</th>
+                        <th>PackSize</th>
+                        <th>PackCode</th>
+                        <th>TimeLogged</th>
+                        <th>Due Date</th>
+                        <th>Assigned</th>
+                        <th>Priority</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {jobs?.slice().reverse().map((job) => (
+                        <tr key={job?._id}>
+                          <td onClick={() => JobDetails(job)} style={{ cursor: "pointer", color: "#0d6efd" }}>
+                            <span style={{ textDecoration: "underline" }}>{job?.JobNo || "N/A"}</span>
+                          </td>
+                          <td>{job.projectId?.[0]?.projectName || "N/A"}</td>
+                          <td>{job.brandName}</td>
+                          <td>{job.subBrand}</td>
+                          <td>{job.flavour}</td>
+                          <td>{job.packType}</td>
+                          <td>{job.packSize}</td>
+                          <td>{job.packCode}</td>
+                          <td>
+                            {new Date(job.updatedAt).toLocaleTimeString("en-US", {
+                              hour: "2-digit",
+                              minute: "2-digit",
+                            })}
+                          </td>
+                          <td>
+                            {new Date(job.createdAt).toLocaleDateString("en-GB")}
+                          </td>
+                          <td>{job.assignedTo}</td>
+                          <td>
+                            <span className={getPriorityClass(job.priority)}>{job.priority}</span>
+                          </td>
+                          <td>
+                            <span className={`badge ${getStatusClass(job.Status)} px-2 py-1`}>
+                              {job.Status}
+                            </span>
+                          </td>
+                          <td>
+                            <div className="d-flex gap-2">
+                              <Button id="icone_btn" size="sm" onClick={() => handleUpdateTask(job)}>
+                                <FaEdit />
+                              </Button>
+                            </div>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </Table>
+                </div>
+              )}
+            </div>
+
           </div>
         );
       // return (

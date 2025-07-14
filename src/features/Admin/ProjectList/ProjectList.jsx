@@ -101,8 +101,8 @@ function ProjectList() {
     navigate(`/admin/AddProjectList`, { state: { project } });
   };
 
-  const CreatJobs = (id) => {
-    navigate(`/admin/ProjectOverview/${id}`, { state: { id, openTab: 'jobs' } });
+  const CreatJobs = (_id) => {
+    navigate(`/admin/ProjectOverview/${_id}`, { state: { id: _id, openTab: 'jobs' } });
   };
 
   const getStatusClass = (status) => {
@@ -257,7 +257,7 @@ function ProjectList() {
                     onChange={() => handleCheckboxChange(project.id)}
                   />
                 </td>
-                <td onClick={() => CreatJobs(project.id)}>
+                <td onClick={() => CreatJobs(project._id)}>
                   <Link style={{ textDecoration: 'none' }}>{project.projectNo}</Link>
                 </td>
                 <td style={{ whiteSpace: 'nowrap' }}>{project.projectName}</td>

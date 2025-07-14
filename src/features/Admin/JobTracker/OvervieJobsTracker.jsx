@@ -81,25 +81,25 @@ const OvervieJobsTracker = ({ onClose }) => {
   ];
 
   const BackButton = () => {
-  navigate(-1);
+    navigate(-1);
   }
   return (
     <div className="container py-4 px-1 px-md-4">
       {/* Modern Header */}
-      
+
       {/* Job Details Grid */}
       <Card className="border-0 shadow-sm rounded-4 mb-4 p-4">
-      <div className="d-flex justify-content-between align-items-center mb-4 p-3 rounded-4 shadow-sm" style={{ background: "linear-gradient(90deg, #4e54c8 0%, #8f94fb 100%)" }}>
-        <div className="d-flex align-items-center gap-2">
-          <FaInfoCircle className="text-white" size={28} />
-          <h2 className="mb-0 fw-bold text-white" style={{ letterSpacing: 1 }}>Job Details</h2>
-        </div>
+        <div className="d-flex justify-content-between align-items-center mb-4 p-3 rounded-4 shadow-sm" style={{ background: "linear-gradient(90deg, #4e54c8 0%, #8f94fb 100%)" }}>
+          <div className="d-flex align-items-center gap-2">
+            <FaInfoCircle className="text-white" size={28} />
+            <h2 className="mb-0 fw-bold text-white" style={{ letterSpacing: 1 }}>Job Details</h2>
+          </div>
 
-          <Button onClick={()=>BackButton()} variant="light" size="sm" className="rounded-circle d-flex align-items-center justify-content-center shadow-sm border-0" style={{ width: 36, height: 36 }}>
+          <Button onClick={() => BackButton()} variant="light" size="sm" className="rounded-circle d-flex align-items-center justify-content-center shadow-sm border-0" style={{ width: 36, height: 36 }}>
             <FaTimes className="text-primary" size={18} />
           </Button>
 
-      </div>
+        </div>
         <Row className="g-4">
           {jobDetails.map((item, idx) => (
             <Col xs={12} md={6} key={idx}>

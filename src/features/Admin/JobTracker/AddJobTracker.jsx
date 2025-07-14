@@ -148,7 +148,8 @@ function AddJobTracker() {
     navigate("/admin/projectList");
   }
   const Cancel = () => {
-    navigate('/admin/ProjectOverview', { state: { openTab: 'jobs' } });
+    // navigate('/admin/ProjectOverview', { state: { openTab: 'jobs' } });
+    navigate(-1);
   }
 
   // Project name sho
