@@ -19,6 +19,7 @@ import { useDispatch, useSelector } from "react-redux";
 import DocumentList from "./DocumentList";
 import JobCost from "./JobCost";
 import { getDocumentsByProposalId } from "../../../redux/slices/documentSlice";
+import { fetchusers } from "../../../redux/slices/userSlice";
 
 const Editpurposal = () => {
   const [manager, setManager] = useState(null);
@@ -207,12 +208,14 @@ const Editpurposal = () => {
       console.error("❌ Folder Creation Error:", error);
     }
   };
+  const permissiondata = JSON.parse(localStorage.getItem("permissions"));
   const handleFileSubmit = async () => {
     try {
       const formData = new FormData();
       formData.append("proposal_id", proposalId);
       formData.append("title", fileTitle);
       formData.append("fileUrls", selectedFile);
+      formData.append("created_by", permissiondata?.userId);
 
       const res = await dispatch(createDocument(formData))
       // console.log("✅ File Uploaded:", res.data);
@@ -305,6 +308,98 @@ const Editpurposal = () => {
     setShowModal(false);
   };
 
+  const [notes, setNotes] = useState([]);
+  const [newNote, setNewNote] = useState("");
+  const [loadingNotes, setLoadingNotes] = useState(false);
+
+  const fetchNotes = async () => {
+    setLoadingNotes(true);
+    try {
+      const res = await fetch("https://netaai-crm-backend-production-c306.up.railway.app/api/notes");
+      const data = await res.json();
+      setNotes(data?.data || []);
+    } catch (err) {
+      console.error("Error fetching notes:", err);
+    } finally {
+      setLoadingNotes(false);
+    }
+  };
+
+  const handleAddNote = async () => {
+    if (!newNote.trim()) return;
+
+    try {
+      const res = await fetch("https://netaai-crm-backend-production-c306.up.railway.app/api/notes", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          project_id: invoice?._id,
+          name: permissiondata?.userId || "Unknown Project",
+          note: newNote,
+        }),
+      });
+
+      if (res.ok) {
+        setNewNote("");
+        fetchNotes();
+      } else {
+        console.error("Failed to add note.");
+      }
+    } catch (err) {
+      console.error("Error adding note:", err);
+    }
+  };
+
+  useEffect(() => {
+    fetchNotes();
+  }, []);
+
+  useEffect(() => {
+    dispatch(fetchusers());
+  }, [dispatch]);
+
+  const { userAll } = useSelector((state) => state.user);
+  const users = userAll?.data?.users || [];
+
+  const getUserNameById = (id) => {
+    const user = users.find((u) => u._id === id);
+    return user ? `${user.firstName || ""} ${user.lastName || ""}`.trim() : "Unknown";
+  };
+
+
+  const handleDeleteNote = async (noteId) => {
+    const result = await Swal.fire({
+      title: "Are you sure?",
+      text: "Do you want to delete this note?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#d33",
+      cancelButtonColor: "#3085d6",
+      confirmButtonText: "Yes, delete it!",
+    });
+
+    if (result.isConfirmed) {
+      try {
+        const res = await fetch(`https://netaai-crm-backend-production-c306.up.railway.app/api/notes/${noteId}`, {
+          method: "DELETE",
+        });
+
+        if (res.ok) {
+          setNotes((prev) => prev.filter((n) => n.id !== noteId));
+          Swal.fire("Deleted!", "Note has been deleted.", "success");
+        } else {
+          Swal.fire("Error!", "Failed to delete note.", "error");
+        }
+      } catch (err) {
+        console.error("Error deleting note:", err);
+        Swal.fire("Error!", "Something went wrong.", "error");
+      }
+    }
+  };
+
+
   const renderTabContent = () => {
     switch (activeTab) {
       case "Summary":
@@ -315,84 +410,44 @@ const Editpurposal = () => {
               <div className="row mb-3">
                 <div className="col-md-6">
                   <p className="mb-1 text-muted">Job Status</p>
-                  {/* <p>Lead</p> */}
                   <p>{job?.status}</p>
                 </div>
                 <div className="col-md-6">
                   <p className="mb-1 text-muted">Job Address</p>
                   <p>{invoice?.projectAddress}</p>
                 </div>
-                {/* <div className="col-md-6">
-                  <p className="mb-1 text-muted">Job Type</p>
-                  <p>{job?.job_type}</p>
-                </div> */}
-                {/* <div className="col-md-6">
-                  <p className="mb-1 text-muted">Sales Lead</p>
-                  <p>{lead?.first_name} {lead?.last_name}</p>
-                </div> */}
-                {/* <div className="col-md-6">
-                  <p className="mb-1 text-muted">Project Manager</p>
-                  <p>{manager?.first_name} {manager?.last_name}</p>
-                </div> */}
-                {/* <div className="col-12 mt-4">
-                  <p className="mb-1 text-muted">Location</p>
-                  <p>{job?.job_address}</p>
-                </div> */}
               </div>
-
-
             </div>
+
             <div>
               <h6 className="fw-semibold mb-3">Line Items</h6>
+              <div className="row fw-semibold text-muted mb-2 px-2">
+                <div className="col-md-1">OrderNo.</div>
+                <div className="col-md-4">Description</div>
+                <div className="col-md-2">Quantity</div>
+                <div className="col-md-2">Rate</div>
+                <div className="col-md-2">Amount</div>
+                <div className="col-md-1 text-end"></div>
+              </div>
               {items?.length > 0 && items.map((item, index) => (
-                <div
-                  className="row gx-2 gy-2 align-items-center mb-2 px-2 py-2"
-                  key={index}
-                  style={{ background: "#f9f9f9", borderRadius: "8px" }}
-                >
-                  <div className="col-md-5">
-                    <input
-                      readOnly
-                      type="text"
-                      className="form-control"
-                      placeholder="Item description"
-                      required
-                      value={item.description}
-                      onChange={(e) => handleItemChange(index, "description", e.target.value)}
-                    />
+                <div className="row gx-2 gy-2 align-items-center mb-2 px-2 py-2" key={index} style={{ background: "#f9f9f9", borderRadius: "8px" }}>
+                  <div className="col-md-1">
+                    <input readOnly type="text" className="form-control" value={index + 1} />
+                  </div>
+                  <div className="col-md-4">
+                    <input readOnly type="text" className="form-control" value={item.description} />
                   </div>
                   <div className="col-md-2">
-                    <input
-                      readOnly
-                      type="number"
-                      className="form-control"
-                      required
-                      value={item.quantity}
-                      onChange={(e) =>
-                        handleItemChange(index, "quantity", parseInt(e.target.value))
-                      }
-                    />
+                    <input readOnly type="number" className="form-control" value={item.quantity} />
                   </div>
                   <div className="col-md-2">
-                    <input
-                      readOnly
-                      type="number"
-                      required
-                      value={item.rate}
-                      onChange={(e) => handleItemChange(index, "rate", parseFloat(e.target.value))}
-                      className="form-control"
-                    />
+                    <input readOnly type="number" className="form-control" value={item.rate} />
                   </div>
                   <div className="col-md-2">
-                    <span>
-                      ${item.amount.toFixed(2)}
-                    </span>
+                    <span>${item.amount.toFixed(2)}</span>
                   </div>
                   <div className="col-md-1 text-end">
-                    <button type="button"
-                      className="btn btn-link text-danger p-0"
-                      onClick={() => removeItem(index)}
-                    >
+                    <button type="button" className="btn btn-link text-danger p-0" onClick={() => removeItem(index)}>
                       remove
                     </button>
                   </div>
@@ -400,34 +455,167 @@ const Editpurposal = () => {
               ))}
             </div>
 
-            {/* <div className="col-md-4">
-              <div className="bg-light p-3 rounded mb-3">
-                <h6 className="fw-bold">Tasks</h6>
-                <div className="d-flex justify-content-between mb-3">
-                  <div>
-                    <p className="mb-0 text-muted">Total</p>
-                    <p className="mb-0">0</p>
-                  </div>
-                  <div>
-                    <p className="mb-0 text-muted">Pending</p>
-                    <p className="mb-0">0</p>
-                  </div>
-                </div>
-
-                <h6 className="fw-bold">Analytics</h6>
-                <p className="text-muted small">Not enough data</p>
-                <a href="#!" className="small text-primary">Set costs/revenue previous to Knowify</a>
-              </div>
-
-              <div className="bg-light p-3 rounded">
-                <h6 className="fw-bold">Customer Portal</h6>
-                <button className="btn btn-outline-secondary btn-sm mt-2">
-                  🔗 Click here to create a portal for this job
+            {/* 📌 Notes Section */}
+            <div className="col-12 mt-4">
+              <div className="d-flex justify-content-between pb-2 align-item-center">
+                <h6 className="fw-bold mb-3">Notes</h6>
+                <button className="btn btn-primary mt-2" onClick={handleAddNote}>
+                  Add Note
                 </button>
               </div>
-            </div> */}
+
+              <div className="mb-3">
+                <textarea
+                  rows="3"
+                  className="form-control"
+                  placeholder="Add a new note..."
+                  value={newNote}
+                  onChange={(e) => setNewNote(e.target.value)}
+                />
+              </div>
+
+              {loadingNotes ? (
+                <p>Loading notes...</p>
+              ) : notes?.length === 0 ? (
+                <p className="text-muted">No notes available.</p>
+              ) : (
+                <ul className="list-group">
+                  {notes?.map((note, index) => (
+                    <li key={index} className="list-group-item d-flex justify-content-between">
+                      <strong>{getUserNameById(note.name)}:</strong>
+                      {note.note}
+                      <div className="col-md-1 text-end">
+                        <button type="button" className="btn btn-link text-danger p-0" onClick={() => handleDeleteNote(note?.id)}>
+                          remove
+                        </button>
+                      </div>
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </div>
           </div>
         );
+      // return (
+      //   <div className="tab-content-box row">
+      //     <div className="col-md-8">
+      //       <h5 className="mb-3 fw-bold">Details</h5>
+      //       <div className="row mb-3">
+      //         <div className="col-md-6">
+      //           <p className="mb-1 text-muted">Job Status</p>
+      //           {/* <p>Lead</p> */}
+      //           <p>{job?.status}</p>
+      //         </div>
+      //         <div className="col-md-6">
+      //           <p className="mb-1 text-muted">Job Address</p>
+      //           <p>{invoice?.projectAddress}</p>
+      //         </div>
+      //         {/* <div className="col-md-6">
+      //           <p className="mb-1 text-muted">Job Type</p>
+      //           <p>{job?.job_type}</p>
+      //         </div> */}
+      //         {/* <div className="col-md-6">
+      //           <p className="mb-1 text-muted">Sales Lead</p>
+      //           <p>{lead?.first_name} {lead?.last_name}</p>
+      //         </div> */}
+      //         {/* <div className="col-md-6">
+      //           <p className="mb-1 text-muted">Project Manager</p>
+      //           <p>{manager?.first_name} {manager?.last_name}</p>
+      //         </div> */}
+      //         {/* <div className="col-12 mt-4">
+      //           <p className="mb-1 text-muted">Location</p>
+      //           <p>{job?.job_address}</p>
+      //         </div> */}
+      //       </div>
+
+
+      //     </div>
+      //     <div>
+      //       <h6 className="fw-semibold mb-3">Line Items</h6>
+      //       {items?.length > 0 && items.map((item, index) => (
+      //         <div
+      //           className="row gx-2 gy-2 align-items-center mb-2 px-2 py-2"
+      //           key={index}
+      //           style={{ background: "#f9f9f9", borderRadius: "8px" }}
+      //         >
+      //           <div className="col-md-5">
+      //             <input
+      //               readOnly
+      //               type="text"
+      //               className="form-control"
+      //               placeholder="Item description"
+      //               required
+      //               value={item.description}
+      //               onChange={(e) => handleItemChange(index, "description", e.target.value)}
+      //             />
+      //           </div>
+      //           <div className="col-md-2">
+      //             <input
+      //               readOnly
+      //               type="number"
+      //               className="form-control"
+      //               required
+      //               value={item.quantity}
+      //               onChange={(e) =>
+      //                 handleItemChange(index, "quantity", parseInt(e.target.value))
+      //               }
+      //             />
+      //           </div>
+      //           <div className="col-md-2">
+      //             <input
+      //               readOnly
+      //               type="number"
+      //               required
+      //               value={item.rate}
+      //               onChange={(e) => handleItemChange(index, "rate", parseFloat(e.target.value))}
+      //               className="form-control"
+      //             />
+      //           </div>
+      //           <div className="col-md-2">
+      //             <span>
+      //               ${item.amount.toFixed(2)}
+      //             </span>
+      //           </div>
+      //           <div className="col-md-1 text-end">
+      //             <button type="button"
+      //               className="btn btn-link text-danger p-0"
+      //               onClick={() => removeItem(index)}
+      //             >
+      //               remove
+      //             </button>
+      //           </div>
+      //         </div>
+      //       ))}
+      //     </div>
+
+      //     {/* <div className="col-md-4">
+      //       <div className="bg-light p-3 rounded mb-3">
+      //         <h6 className="fw-bold">Tasks</h6>
+      //         <div className="d-flex justify-content-between mb-3">
+      //           <div>
+      //             <p className="mb-0 text-muted">Total</p>
+      //             <p className="mb-0">0</p>
+      //           </div>
+      //           <div>
+      //             <p className="mb-0 text-muted">Pending</p>
+      //             <p className="mb-0">0</p>
+      //           </div>
+      //         </div>
+
+      //         <h6 className="fw-bold">Analytics</h6>
+      //         <p className="text-muted small">Not enough data</p>
+      //         <a href="#!" className="small text-primary">Set costs/revenue previous to Knowify</a>
+      //       </div>
+
+      //       <div className="bg-light p-3 rounded">
+      //         <h6 className="fw-bold">Customer Portal</h6>
+      //         <button className="btn btn-outline-secondary btn-sm mt-2">
+      //           🔗 Click here to create a portal for this job
+      //         </button>
+      //       </div>
+      //     </div> */}
+      //   </div>
+      // );
 
       case "Job Costs":
         return (

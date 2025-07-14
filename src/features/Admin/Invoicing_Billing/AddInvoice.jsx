@@ -408,13 +408,28 @@ function AddInvoice({ onInvoiceComplete }) {
           </div>
 
           <h6 className="fw-semibold mb-3">Line Items</h6>
+          <div className="row fw-semibold text-muted mb-2 px-2">
+            <div className="col-md-1">OrderNo.</div>
+            <div className="col-md-4">Description</div>
+            <div className="col-md-2">Quantity</div>
+            <div className="col-md-2">Rate</div>
+            <div className="col-md-2">Amount</div>
+            <div className="col-md-1 text-end"></div>
+          </div>
           {items.map((item, index) => (
             <div
               className="row gx-2 gy-2 align-items-center mb-2 px-2 py-2"
               key={index}
               style={{ background: "#f9f9f9", borderRadius: "8px" }}
             >
-              <div className="col-md-5">
+              <div className="col-md-1">
+                <input
+                  type="text"
+                  className="form-control"
+                  value={index + 1}
+                />
+              </div>
+              <div className="col-md-4">
                 <input
                   type="text"
                   className="form-control"

@@ -144,6 +144,7 @@ import {
 } from "../../../redux/slices/saveDocumentSlice";
 import { useEffect, useState } from "react";
 import { fetchAllDailyLogs } from "../../../redux/slices/dailyLogsSlice";
+import { fetchusers } from "../../../redux/slices/userSlice";
 
 const DocumentList = ({ documents, previewUrl, setPreviewUrl }) => {
   const dispatch = useDispatch();
@@ -164,6 +165,17 @@ const DocumentList = ({ documents, previewUrl, setPreviewUrl }) => {
       dispatch(fetchAllDailyLogs());
     }
   }, [invoice, dispatch]);
+  useEffect(() => {
+    dispatch(fetchusers());
+  }, [dispatch]);
+
+  const { userAll } = useSelector((state) => state.user);
+  const users = userAll?.data?.users || [];
+
+  const getUserNameById = (id) => {
+    const user = users.find((u) => u._id === id);
+    return user ? `${user.firstName || ""} ${user.lastName || ""}`.trim() : "Unknown";
+  };
 
   const handlePreview = (url) => setPreviewUrl(url);
 
@@ -193,7 +205,7 @@ const DocumentList = ({ documents, previewUrl, setPreviewUrl }) => {
       title: doc.title,
       fileUrl: doc.file_urls?.[0],
       source: "Upload Tab",
-      uploadedBy: doc.uploadedBy || "Unknown",
+      uploadedBy: getUserNameById(doc.created_by),
     })) || []),
     ...(dailyLogs?.flatMap((log) =>
       (log.attachments || []).map((fileUrl, idx) => ({
@@ -201,7 +213,7 @@ const DocumentList = ({ documents, previewUrl, setPreviewUrl }) => {
         title: `Daily Log: ${log.title || "Untitled"}`,
         fileUrl,
         source: "Daily Logs",
-        uploadedBy: log.createdBy || "Unknown",
+        uploadedBy: getUserNameById(log.created_by),
       }))
     ) || []),
   ];
@@ -213,59 +225,63 @@ const DocumentList = ({ documents, previewUrl, setPreviewUrl }) => {
         <p>No documents available.</p>
       ) : (
         <ul className="list-group">
-          {allDocs.map((doc) => (
-            <li
-              key={doc.id}
-              className="list-group-item d-flex justify-content-between align-items-center"
-            >
-              <div
-                className="d-flex align-items-center gap-3"
-                style={{ cursor: "pointer" }}
-                onClick={() => handlePreview(doc.fileUrl)}
+          {allDocs.map((doc) => {
+            return (
+              <li
+                key={doc.id}
+                className="list-group-item d-flex justify-content-between align-items-center"
               >
-                {doc.fileUrl?.endsWith(".pdf") ? (
-                  <img
-                    src="https://upload.wikimedia.org/wikipedia/commons/8/87/PDF_file_icon.svg"
-                    alt="PDF Icon"
-                    style={{ width: "40px", height: "auto" }}
-                  />
-                ) : (
-                  <img
-                    src={doc.fileUrl}
-                    alt="Preview"
-                    style={{
-                      width: "60px",
-                      height: "auto",
-                      objectFit: "cover",
-                      borderRadius: "4px",
-                    }}
-                  />
-                )}
-                <div>
-                  <div className="fw-semibold text-primary">{doc.title}</div>
-                  <div className="small text-muted">Source: {doc.source}</div>
-                  <div className="small text-muted">Uploaded by: {doc.uploadedBy}</div>
-                </div>
-              </div>
-
-              <div>
-                <button
-                  className="btn btn-sm btn-outline-success me-2"
-                  onClick={() => handleDownload(doc.fileUrl)}
+                <div
+                  className="d-flex align-items-center gap-3"
+                  style={{ cursor: "pointer" }}
+                  onClick={() => handlePreview(doc.fileUrl)}
                 >
-                  Download
-                </button>
-                {doc.source === "Upload Tab" && (
+                  {doc.fileUrl?.endsWith(".pdf") ? (
+                    <img
+                      src="https://upload.wikimedia.org/wikipedia/commons/8/87/PDF_file_icon.svg"
+                      alt="PDF Icon"
+                      style={{ width: "40px", height: "auto" }}
+                    />
+                  ) : (
+                    <img
+                      src={doc.fileUrl}
+                      alt="Preview"
+                      style={{
+                        width: "60px",
+                        height: "auto",
+                        objectFit: "cover",
+                        borderRadius: "4px",
+                      }}
+                    />
+                  )}
+                  <div>
+                    <div className="fw-semibold text-primary">{doc.title}</div>
+                    <div className="small text-muted">Source: {doc.source}</div>
+                    <div className="small text-muted">Uploaded by: {doc.uploadedBy}</div>
+                  </div>
+                </div>
+
+                <div>
                   <button
-                    className="btn btn-sm btn-outline-danger"
-                    onClick={() => handleDelete(doc.id)}
+                    className="btn btn-sm btn-outline-success me-2"
+                    onClick={() => handleDownload(doc.fileUrl)}
                   >
-                    Delete
+                    Download
                   </button>
-                )}
-              </div>
-            </li>
-          ))}
+                  {doc.source === "Upload Tab" && (
+                    <button
+                      className="btn btn-sm btn-outline-danger"
+                      onClick={() => handleDelete(doc.id)}
+                    >
+                      Delete
+                    </button>
+                  )}
+                </div>
+              </li>
+            )
+          }
+
+          )}
         </ul>
       )}
 

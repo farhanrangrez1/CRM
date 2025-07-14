@@ -168,7 +168,7 @@ function AddProjectList() {
   return (
     <Container className="py-4">
       <div className="form-container p-4 rounded shadow-sm" style={{ backgroundColor: "white", margin: "0 auto" }}>
-        <h2 className="mb-4">{id ? "Edit Proposal" : "New Proposal"}</h2>
+        <h2 className="mb-4">{id ? "Edit Project" : "New Project"}</h2>
 
         <Form onSubmit={handleSubmit}>
           <Row className="mb-3">

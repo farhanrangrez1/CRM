@@ -11,6 +11,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { MdManageAccounts } from 'react-icons/md';
 import { HiOutlineDocumentReport } from 'react-icons/hi';
 import { fetchProject, updateProject, updateProjectStatusLocally } from '../../../../redux/slices/ProjectsSlice';
+import { getAllDocumentsRecord } from '../../../../redux/slices/documentSlice';
 
 
 
@@ -461,7 +462,7 @@ const TempPoles = ({ data }) => {
 
     const proposals = project && project.data && project.data.length > 0 ? project.data : initialProposals;
     // console.log(proposals, "proposals");
-    console.log("fgdfg",project)
+    console.log("fgdfg", project)
     const [filterRows, setFilterRows] = useState([
         { field: '', value: '' }
     ]);
@@ -557,49 +558,72 @@ const TempPoles = ({ data }) => {
         setShowNewContractPage(false);
     };
 
-    
+
     const ProposalWorkflowBoard = ({ onNavigate, selectedStatus }) => {
-         const reduxProposals = (project.data || [])
-  .filter(item => item.tempPoles === "true")
-  .map(item => ({
-    id: item.id,
-    title: item.projectName,
-    client: item.clientId?.clientName,
-    status: mapStatus(item.status),
-    projectPriority: item.projectPriority,
-    phases: item.phases || "N/A",
-    revenue: item.budgetAmount ? `AED ${item.budgetAmount}` : "N/A",
-    startDate: item.startDate,
-    endDate: item.endDate,
-    committedCost: "4220",
-    profitLoss: "N/A",
-    updated: item.updatedAt,
-  }));
+        const reduxProposals = (project.data || [])
+            .filter(item => item.tempPoles === true)
+            .map(item => ({
+                id: item.id,
+                _id: item._id,
+                title: item.projectName,
+                client: item.clientId?.clientName,
+                address: item.projectAddress || "N/A",
+                status: mapStatus(item.status),
+                projectPriority: item.projectPriority,
+                phases: item.phases || "N/A",
+                revenue: item.budgetAmount ? `AED ${item.budgetAmount}` : "N/A",
+                startDate: item.startDate,
+                endDate: item.endDate,
+                committedCost: "4220",
+                profitLoss: "N/A",
+                updated: item.updatedAt,
+            }));
 
 
-       function mapStatus(status) {
-  const map = {
-    "open": "open",
-    "need payment": "needPayment",
-    "need to pay dwp": "needToPayDWP",
-    "need to install": "needToInstall",
-    "inspection scheduled": "inspectionScheduled",
-    "passed inspection": "passedInspection",
-    "waiting on meter": "waitingOnMeter",
-    "remove breakers": "removeBreakers",
-    "meter installed": "meterInstalled",
-    "requested to remove": "requestedToRemove",
-    "temp pole removed": "tempPoleRemoved",
-    "temp pole only": "tempPoleOnly",
-    "lost": "lost"
-  };
+        function mapStatus(status) {
+            const map = {
+                "need payment": "needPayment",
+                "need to pay dwp": "needToPayDWP",
+                "need to install": "needToInstall",
+                "inspection scheduled": "inspectionScheduled",
+                "passed inspection": "passedInspection",
+                "waiting on meter": "waitingOnMeter",
+                "remove breakers": "removeBreakers",
+                "meter installed": "meterInstalled",
+                "requested to remove": "requestedToRemove",
+                "temp pole removed": "tempPoleRemoved",
+                "temp pole only": "tempPoleOnly",
+                "lost": "lost"
+            };
+            const openStatuses = ["Active Project", "Open", "Signature"];
 
-  return map[status?.toLowerCase()] ?? null; // ✅ return null if not found
-}
+            if (openStatuses.includes(status)) {
+                console.log(`Mapping status: ${status} to open`);
+                return "open";
+            }
+
+            const mappedStatus = map[status] ?? null;
+            console.log(`Mapping status: ${status} to ${mappedStatus}`);
+            return mappedStatus;
+        }
 
 
         const dispatch = useDispatch();
         const [isUpdating, setIsUpdating] = useState(false);
+
+        useEffect(() => {
+            dispatch(getAllDocumentsRecord());
+        }, [dispatch]);
+
+        const records = useSelector((state) => state?.documentRecord?.records?.data) || [];
+
+        const proposalTotalsMap = records.reduce((acc, record) => {
+            const proposalId = record.proposal_id;
+            const total = record.line_items?.reduce((sum, item) => sum + (item.amount || 0), 0);
+            acc[proposalId] = (acc[proposalId] || 0) + total;
+            return acc;
+        }, {});
+
 
         const kanbanData = {
             open: reduxProposals.filter(p => p.status === "open"),
@@ -782,6 +806,9 @@ const TempPoles = ({ data }) => {
                                                         <div className="text-muted small mb-1">Client: {item.client || item.client_name}</div>
                                                         <div className="text-muted small mb-1">Address: {item.address || "N/A"}</div>
                                                         <div className="small text-secondary mb-1">Phases: {item.phases}</div>
+                                                        <div className="fw-semibold text-success" style={{ fontSize: 15 }}>
+                                                            Total: ${proposalTotalsMap[item._id] || 0}
+                                                        </div>
                                                         <div className="d-flex flex-wrap gap-2 align-items-center mb-1">
                                                             <Badge bg={getStatusBadgeColor(item.status)} className={`me-1 ${getTextColor(item.status)}`}>
                                                                 {item.status}

@@ -1052,7 +1052,6 @@ const ProjectView = ({ data }) => {
             }
         };
 
-
         return (
             <div style={{ position: 'relative' }}>
                 {isUpdating && (

@@ -37,8 +37,8 @@ function Dashbord() {
   }, [dispatch]);
 
   // Job In Progress 
-  const { job ,loading, error} = useSelector((state) => state.jobs);  
-  const { project} = useSelector((state) => state.projects);
+  const { job, loading, error } = useSelector((state) => state.jobs);
+  const { project } = useSelector((state) => state.projects);
   const { estimates } = useSelector((state) => state.costEstimates);
 
   useEffect(() => {
@@ -47,64 +47,97 @@ function Dashbord() {
     dispatch(fetchCostEstimates());
   }, [dispatch]);
 
-  const inProgressProjects = (project?.data || []).filter(
-    (j) => j.status?.toLowerCase() === "in progress"
-  );
-  const inProgressProjectsCount = inProgressProjects.length;
 
-const inProgressJobs = (job?.jobs || []).filter(
-  (j) => j.Status?.toLowerCase() === "in progress"
-);
- const ProjectCompleted = (project?.data || []).filter(
+  const inProgressProjects = (project?.data || []).filter(
+    (j) => j.status === "Lead"
+  );
+
+  const inProgressProjectsCount = inProgressProjects.length;
+  // const inProgressProjects = (project?.data || []).filter(
+  //   (j) => j.status?.toLowerCase() === "in progress"
+  // );
+  // const inProgressProjectsCount = inProgressProjects.length;
+
+
+
+  const inProgressJobs = (project?.data || []).filter(
+    (j) => j.status === "Bidding"
+  );
+  // const inProgressJobs = (job?.jobs || []).filter(
+  //   (j) => j.Status?.toLowerCase() === "in progress"
+  // );
+
+
+  const ProjectCompleted = (project?.data || []).filter(
     (j) => j.status?.toLowerCase() === "completed"
   );
   const projectCompleted = ProjectCompleted.length;
- 
-  
-const inProgressCount = inProgressJobs.length;
-const Costestimates = (estimates?.costEstimates || []).filter(
-  // (j) => (j.POStatus || "").toLowerCase().replace(/\s|_/g, "") === "pending"
-(j) => (j.Status || "").toLowerCase().replace(/\s|_/g, "") === "pending"
-);
-const CostestimatesCount = Costestimates.length;
 
-const today = new Date().toLocaleDateString("en-CA");
-const todaysJobs = (job?.jobs || []).filter((j) => {
-  const dueDate = new Date(j.dueDate || j.createdAt).toLocaleDateString("en-CA");
-  return dueDate === today;
-});
-const todaysJobsCount = todaysJobs.length;
 
- // Sample filtered data
-const projects = project?.data || [];
+  const inProgressCount = inProgressJobs.length;
+  const Costestimates = (estimates?.costEstimates || []).filter(
+    // (j) => (j.POStatus || "").toLowerCase().replace(/\s|_/g, "") === "pending"
+    (j) => (j.Status || "").toLowerCase().replace(/\s|_/g, "") === "pending"
+  );
+  const CostestimatesCount = Costestimates.length;
 
-// Count for each status
-const activeProjectsCount = projects.filter(
-  (j) => j.status?.toLowerCase() === "active project"
-).length;
+  const today = new Date().toLocaleDateString("en-CA");
+  // const todaysJobs = (job?.jobs || []).filter((j) => {
+  //   const dueDate = new Date(j.dueDate || j.createdAt).toLocaleDateString("en-CA");
+  //   return dueDate === today;
+  // });
+  const todaysJobs = (project?.data || []).filter((j) => j.status === "Signature" || j.status === "Active Project" || j.status === "Open");
+  const todaysJobsCount = todaysJobs.length;
 
-const completedProjectsCount = projects.filter(
-  (j) => j.status?.toLowerCase() === "completed"
-).length;
+  // Sample filtered data
+  const projects = project?.data || [];
 
-const cancelledProjectsCount = projects.filter(
-  (j) => j.status?.toLowerCase() === "cancelled"
-).length;
+  // Count for each status
+  const activeProjectsCount = projects.filter(
+    (j) => j.status?.toLowerCase() === "active project"
+  ).length;
 
-// Chart data
-const projectStatusData = {
-  labels: ['Active Project', 'Completed', 'Pending', 'Cancelled'],
-  datasets: [{
-    data: [
-      activeProjectsCount,
-      completedProjectsCount,
-      inProgressProjectsCount,
-      cancelledProjectsCount
-    ],
-    backgroundColor: ['#3B82F6', '#22C55E', '#F59E0B', '#EF4444'],
-    borderWidth: 0,
-  }],
-};
+  const completedProjectsCount = projects.filter(
+    (j) => j.status?.toLowerCase() === "completed"
+  ).length;
+
+  const cancelledProjectsCount = projects.filter(
+    (j) => j.status?.toLowerCase() === "cancelled"
+  ).length;
+
+
+  const leadProjects = projects.filter((j) => j.status === "Lead");
+  const biddingProjects = projects.filter((j) => j.status === "Bidding");
+  const signatureProjects = projects.filter((j) =>
+    ["Signature", "Open", "Active Project"].includes(j.status)
+  );
+
+  // Chart data
+  // const projectStatusData = {
+  //   labels: ['Active Project', 'Completed', 'Pending', 'Cancelled'],
+  //   datasets: [{
+  //     data: [
+  //       activeProjectsCount,
+  //       completedProjectsCount,
+  //       inProgressProjectsCount,
+  //       cancelledProjectsCount
+  //     ],
+  //     backgroundColor: ['#3B82F6', '#22C55E', '#F59E0B', '#EF4444'],
+  //     borderWidth: 0,
+  //   }],
+  // };
+  const projectStatusData = {
+    labels: ['Lead', 'Bidding', 'Signature/Open/Active'],
+    datasets: [{
+      data: [
+        leadProjects.length,
+        biddingProjects.length,
+        signatureProjects.length
+      ],
+      backgroundColor: ['#F59E0B', '#3B82F6', '#22C55E'],
+      borderWidth: 0,
+    }],
+  };
 
   return (
     <Container fluid className="container p-3">
@@ -123,8 +156,8 @@ const projectStatusData = {
                 </div>
                 <div>
                   <h3 className="mb-0">{inProgressProjectsCount}</h3>
-                  <p className="text-muted mb-0">Projects in Progress</p>
-                  <small className="text-success">Active Projects</small>
+                  {/* <p className="text-muted mb-0">Projects in Lead</p> */}
+                  <small className="text-success">Projects in Lead</small>
                 </div>
               </Card.Body>
             </Card>
@@ -140,8 +173,8 @@ const projectStatusData = {
                 </div>
                 <div>
                   <h3 className="mb-0">{inProgressCount}</h3>
-                  <p className="text-muted mb-0">Jobs in Progress</p>
-                  <small className="text-info">Active Jobs</small>
+                  {/* <p className="text-muted mb-0">Jobs in Progress</p> */}
+                  <small className="text-info">Projects in Bidding</small>
                 </div>
               </Card.Body>
             </Card>
@@ -161,8 +194,8 @@ const projectStatusData = {
                 </div>
                 <div>
                   <h3 className="mb-0">{todaysJobsCount}</h3>
-                  <p className="text-muted mb-0">Jobs Due Today</p>
-                  <small className="text-warning">Requires attention</small>
+                  {/* <p className="text-muted mb-0">Jobs Due Today</p> */}
+                  <small className="text-warning">Projects Signature</small>
                 </div>
               </Card.Body>
             </Card>
@@ -170,7 +203,7 @@ const projectStatusData = {
         </Col>
 
         {/* Cost Estimates Awaiting POs */}
-        <Col md={4} lg={4}>
+        {/* <Col md={4} lg={4}>
           <Link to="/admin/DCostEstimates" className="text-decoration-none w-100 d-block">
             <Card className="h-100 shadow-sm">
               <Card.Body className="d-flex align-items-center">
@@ -185,10 +218,10 @@ const projectStatusData = {
               </Card.Body>
             </Card>
           </Link>
-        </Col>
+        </Col> */}
 
         {/* Completed Projects to be Invoiced */}
-        <Col md={4} lg={4}>
+        {/* <Col md={4} lg={4}>
           <Link to="/admin/DCompletedProject" className="text-decoration-none w-100 d-block">
             <Card className="h-100 shadow-sm">
               <Card.Body className="d-flex align-items-center">
@@ -203,7 +236,7 @@ const projectStatusData = {
               </Card.Body>
             </Card>
           </Link>
-        </Col>
+        </Col> */}
 
         {/* Timesheet Discrepancies */}
         {/* <Col md={4} lg={4}>
@@ -230,7 +263,10 @@ const projectStatusData = {
           <Card className="h-100 shadow-sm">
             <Card.Body>
               <h5 className="card-title mb-4">Project Status Overview</h5>
-              <div style={{ height: '350px' ,marginLeft:"50px"}}>
+              {/* <div style={{ height: '350px', marginLeft: "50px" }}>
+                <Doughnut data={projectStatusData} options={chartOptions} />
+              </div> */}
+              <div style={{ width: "500px", maxWidth: "500px", alignItems: "center" }}>
                 <Doughnut data={projectStatusData} options={chartOptions} />
               </div>
             </Card.Body>

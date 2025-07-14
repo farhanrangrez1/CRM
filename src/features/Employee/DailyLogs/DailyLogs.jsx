@@ -17,6 +17,7 @@ import { createDailyLog, fetchAllDailyLogs, updateDailyLog, deleteDailyLog } fro
 import { createComment, fetchAllComments, deleteComment, updateComment, fetchCommentById } from '../../../redux/slices/commentsSlice';
 import Swal from 'sweetalert2';
 import { deleteproject, fetchProject } from '../../../redux/slices/ProjectsSlice';
+import { fetchusers } from '../../../redux/slices/userSlice';
 const DailyLogs = () => {
   // State management
 
@@ -36,14 +37,22 @@ const DailyLogs = () => {
     }
   }, []);
 
+  const permissiondata = JSON.parse(localStorage.getItem("permissions"));
+
+
+
+
   // const proposalId = localStorage.getItem("proposalId");
   const [formData, setFormData] = useState({
     job_id: invoice?._id,
     date: new Date().toISOString().split('T')[0],
     title: '',
     notes: '',
-    image: null
+    image: null,
+    created_by: JSON.stringify(permissiondata?.userId)
   });
+
+
 
   useEffect(() => {
     if (invoice) {
@@ -184,6 +193,18 @@ const DailyLogs = () => {
     });
   }
 
+
+  useEffect(() => {
+    dispatch(fetchusers());
+  }, [dispatch]);
+
+  const { userAll } = useSelector((state) => state.user);
+  const users = userAll?.data?.users || [];
+
+  const getUserNameById = (id) => {
+    const user = users.find((u) => u._id === id);
+    return user ? `${user.firstName || ""} ${user.lastName || ""}`.trim() : "Unknown";
+  };
   const handleAddComment = () => {
     // console.log(id)
     if (newComment.trim() === '') return;
@@ -252,7 +273,7 @@ const DailyLogs = () => {
                     {log.title} <span className="text-muted small ms-2">{log.date}</span>
                   </h5>
                   <small className="text-muted">
-                    Created by: {log.created_by || 'Unknown'}
+                    Created by: {getUserNameById(log.created_by) || 'Unknown'}
                   </small>
                   {/* <div className="mb-2">
                     {log.badges.map((badge, i) => (

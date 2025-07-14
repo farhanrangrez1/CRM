@@ -18,7 +18,7 @@ function ProjectOverview() {
   }, [location.state]);
 
   const projectData = {
-    title: 'Saaranik',
+    title: 'Project',
     projectId: '0001',
     client: 'Tesco PLC',
     progress: 60,
