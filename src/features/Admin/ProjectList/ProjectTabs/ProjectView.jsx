@@ -1059,7 +1059,7 @@ const ProjectView = ({ data }) => {
                         Updating...
                     </div>
                 )}
-                <DragDropContext key={reduxProposals.map(p => p.id).join('-')} onDragEnd={handleCardDrop}>
+                <DragDropContext onDragEnd={handleCardDrop}>
                     <div
                         className="kanban-board d-flex flex-nowrap gap-3 py-3"
                         style={{ overflowX: "auto", minHeight: 350, marginLeft: "20px", WebkitOverflowScrolling: 'touch' }}
@@ -1081,7 +1081,7 @@ const ProjectView = ({ data }) => {
                                             <span className="badge bg-light text-dark border ms-auto">{kanbanData[col.id]?.length || 0}</span>
                                         </div>
                                         {kanbanData[col.id]?.map((item, idx) => (
-                                            <Draggable draggableId={String(item.id)} index={idx} key={item.id}>
+                                            <Draggable draggableId={String(item._id)} index={idx} key={item._id}>
                                                 {(provided, snapshot) => (
                                                     <div
                                                         ref={provided.innerRef}

@@ -687,8 +687,8 @@ const LeadFlow = ({ data }) => {
             (p) => (p.status || "").toLowerCase() === "bidding"
           ),
           closed: updatedProjects.filter(
-            (p) => ["open", "active project", "signature"].includes(
-              (p.status || "").toLowerCase()
+            (p) => ["open", "active project", "signature", "Open", "Active Project", "Signature"].includes(
+              (p.status || "")
             )
           ),
           rejected: updatedProjects.filter(
