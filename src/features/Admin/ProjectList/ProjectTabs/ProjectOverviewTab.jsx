@@ -7,7 +7,7 @@ function ProjectOverviewTab({ projectData }) {
   // const params = useParams();
   // const id = location.state?.id || params.id;
   // console.log("hello me project id",id);
-  
+
 
   return (
     <div className="row g-4">
@@ -19,7 +19,7 @@ function ProjectOverviewTab({ projectData }) {
             <h2 className="card-title mb-0" >{projectData.progress}%</h2>
             <div className="progress mt-2" style={{ height: '4px' }}>
               <div
-              id='All_btn'
+                id='All_btn'
                 className="progress-bar"
                 role="progressbar"
                 style={{ width: `${projectData.progress}%` }}
@@ -57,7 +57,7 @@ function ProjectOverviewTab({ projectData }) {
       <div className="col-md-3">
         <div className="card h-100">
           <div className="card-body">
-          <h6 className="card-subtitle mb-2 text-muted">Total Hours</h6>
+            <h6 className="card-subtitle mb-2 text-muted">Total Hours</h6>
             <h2 className="card-title mb-0">{projectData.teamSize}</h2>
             <p className="card-text text-muted">Logged</p>
           </div>

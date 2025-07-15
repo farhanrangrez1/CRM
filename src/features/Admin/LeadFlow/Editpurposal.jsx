@@ -21,6 +21,7 @@ import JobCost from "./JobCost";
 import { getDocumentsByProposalId } from "../../../redux/slices/documentSlice";
 import { fetchusers } from "../../../redux/slices/userSlice";
 import { Link } from "react-bootstrap-icons";
+import PurchaseOrder from "../ProjectList/ProjectTabs/PurchaseOrder";
 
 const Editpurposal = () => {
   const [manager, setManager] = useState(null);
@@ -1298,6 +1299,12 @@ const Editpurposal = () => {
           </div>
         );
 
+      case "Finance": return (
+        <div className="col-12">
+          <PurchaseOrder />
+        </div>
+      );
+
       default:
         return <div>Select a tab</div>;
     }
@@ -1309,8 +1316,8 @@ const Editpurposal = () => {
         <div className="wwd-header d-flex justify-content-between align-items-center py-3">
           <div>
             {/* <h4 className="mb-0">{job?.job_name}</h4> */}
-            <h4 className="mb-0">{job?.projectName || job?.job_name}</h4>
-            <p className="text-muted small">{job?.clientId?.clientName}</p>
+            <h4 className="mb-0">{job?.projectName || job?.job_name || invoice?.title}</h4>
+            <p className="text-muted small">{job?.clientId?.clientName || invoice?.client}</p>
           </div>
           <div className="mb-2">
             <Button variant="outline-secondary mt-1" onClick={() => {
@@ -1333,6 +1340,7 @@ const Editpurposal = () => {
             "Daily Logs",
             // "Activity",
             // "Reports",
+            "Finance"
           ].map((tab, i) => (
             <li className="nav-item" key={i}>
               <button

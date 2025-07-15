@@ -277,7 +277,7 @@ function AddInvoice({ onInvoiceComplete }) {
           .unwrap()
           .then(() => {
             toast.success("Project updated successfully!");
-            navigate("/admin/LeadFlow"); // or your required route
+            // navigate("/admin/LeadFlow"); // or your required route
           })
           .catch(() => {
             toast.error("Failed to update project!");
