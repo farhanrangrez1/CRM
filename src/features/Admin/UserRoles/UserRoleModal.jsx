@@ -756,35 +756,6 @@ function UserRoleModal() {
     }));
   };
 
-  // useEffect(() => {
-  //   if (user) {
-  //     const loadPermissions = (module) =>
-  //       typeof user[module] === 'object' ? user[module] : defaultPermission();
-
-  //     setFormData({
-  //       firstName: user.firstName || '',
-  //       lastName: user.lastName || '',
-  //       email: user.email || '',
-  //       phone: user.phone || '',
-  //       password: '',
-  //       passwordConfirm: '',
-  //       state: user.state || '',
-  //       country: user.country || '',
-  //       assign: user.assign || 'Not Assign',
-  //       image: user.image || null,
-  //       role: user.role || '',
-  //       proposal: loadPermissions('proposal'),
-  //       tasks: loadPermissions('tasks'),
-  //       reports: loadPermissions('reports'),
-  //       user: loadPermissions('user'),
-  //       client: loadPermissions('client'),
-  //       dailylogs: loadPermissions('dailylogs'),
-  //       projectsAndJobs: loadPermissions('projectsAndJobs'),
-  //       invoiceAndBilling: loadPermissions('invoiceAndBilling')
-  //     });
-  //   }
-  // }, [user]);
-
   useEffect(() => {
     if (user) {
       const loadPermissions = (module) =>
@@ -927,29 +898,29 @@ function UserRoleModal() {
                 name="image"
                 accept="image/*"
                 onChange={handleInputChange}
-                required={!_id}
+              // required={!_id}
               />
             </div>
 
             <div className="row g-3 mb-3">
               <div className="col-md-6">
                 <label className="form-label">First Name</label>
-                <input type="text" className="form-control" name="firstName" value={formData.firstName} onChange={handleInputChange} required />
+                <input type="text" className="form-control" name="firstName" value={formData.firstName} onChange={handleInputChange} />
               </div>
               <div className="col-md-6">
                 <label className="form-label">Last Name</label>
-                <input type="text" className="form-control" name="lastName" value={formData.lastName} onChange={handleInputChange} required />
+                <input type="text" className="form-control" name="lastName" value={formData.lastName} onChange={handleInputChange} />
               </div>
             </div>
 
             <div className="row g-3 mb-3">
               <div className="col-md-6">
                 <label className="form-label">Email</label>
-                <input type="email" className="form-control" name="email" value={formData.email} onChange={handleInputChange} required />
+                <input type="email" className="form-control" name="email" value={formData.email} onChange={handleInputChange} />
               </div>
               <div className="col-md-6">
                 <label className="form-label">Phone</label>
-                <input type="text" className="form-control" name="phone" value={formData.phone} onChange={handleInputChange} required />
+                <input type="text" className="form-control" name="phone" value={formData.phone} onChange={handleInputChange} />
               </div>
             </div>
 
@@ -957,11 +928,11 @@ function UserRoleModal() {
               <div className="row g-3 mb-3">
                 <div className="col-md-6">
                   <label className="form-label">Password</label>
-                  <input type="password" className="form-control" name="password" value={formData.password} onChange={handleInputChange} required />
+                  <input type="password" className="form-control" name="password" value={formData.password} onChange={handleInputChange} />
                 </div>
                 <div className="col-md-6">
                   <label className="form-label">Confirm Password</label>
-                  <input type="password" className="form-control" name="passwordConfirm" value={formData.passwordConfirm} onChange={handleInputChange} required />
+                  <input type="password" className="form-control" name="passwordConfirm" value={formData.passwordConfirm} onChange={handleInputChange} />
                   {showPasswordMismatch && <div style={{ color: 'red', fontSize: '0.9em' }}>Passwords do not match!</div>}
                 </div>
               </div>

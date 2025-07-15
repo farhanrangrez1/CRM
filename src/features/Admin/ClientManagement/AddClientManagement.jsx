@@ -3,7 +3,7 @@ import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useDispatch } from 'react-redux';
-import { createClients, fetchClient, UpdateClients } from '../../../redux/slices/ClientSlice';
+import { createClients, fetchClient, fetchClientsById, UpdateClients } from '../../../redux/slices/ClientSlice';
 import "react-toastify/dist/ReactToastify.css";
 
 // Add this function to format date for input fields
@@ -140,7 +140,7 @@ function AddClientManagement() {
     if (client) {
       updateStates(client);
     } else if (id) {
-      dispatch(fetchclientById(id)).then((res) => {
+      dispatch(fetchClientsById(id)).then((res) => {
         const fetchedclient = res.payload;
         if (fetchedclient) {
           updateStates(fetchedclient);
@@ -231,15 +231,15 @@ function AddClientManagement() {
   // };
 
   // Handle ledger information changes
-  const handleLedgerChange = (index, e) => {
-    const { name, value } = e.target;
-    const updatedLedger = [...ledgerInformation];
-    updatedLedger[index] = {
-      ...updatedLedger[index],
-      [name]: value
-    };
-    setLedgerInformation(updatedLedger);
-  };
+  // const handleLedgerChange = (index, e) => {
+  //   const { name, value } = e.target;
+  //   const updatedLedger = [...ledgerInformation];
+  //   updatedLedger[index] = {
+  //     ...updatedLedger[index],
+  //     [name]: value
+  //   };
+  //   setLedgerInformation(updatedLedger);
+  // };
 
 
   const handleAdditionalChange = (e) => {
@@ -255,35 +255,35 @@ function AddClientManagement() {
     const newErrors = {};
 
     // Basic form fields
-    if (!formData.clientName.trim()) newErrors.clientName = 'Name is required';
+    // if (!formData.clientName.trim()) newErrors.clientName = 'Name is required';
     // if (!formData.industry) newErrors.industry = 'Industry is required';
     // if (!formData.website.trim()) newErrors.website = 'Website is required';
     // else if (!/^https?:\/\//.test(formData.website)) newErrors.website = 'Website must start with http:// or https://';
-    if (!formData.clientAddress.trim()) newErrors.clientAddress = 'Client Address is required';
+    // if (!formData.clientAddress.trim()) newErrors.clientAddress = 'Client Address is required';
     // if (!formData.TaxID_VATNumber.trim()) newErrors.TaxID_VATNumber = 'Tax ID/VAT Number is required';
     // if (!formData.CSRCode.trim()) newErrors.CSRCode = 'CSR Code is required';
     // if (!formData.Status) newErrors.Status = 'Status is required';
 
     // Contact Persons
-    contactPersons.forEach((contact, idx) => {
-      if (!contact.contactName.trim()) newErrors[`contactName_${idx}`] = 'Contact Name is required';
-      if (!contact.jobTitle.trim()) newErrors[`jobTitle_${idx}`] = 'Job Title is required';
-      if (!contact.email.trim()) newErrors[`email_${idx}`] = 'Email is required';
-      else if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(contact.email)) newErrors[`email_${idx}`] = 'Invalid email';
-      if (!contact.phone.trim()) newErrors[`phone_${idx}`] = 'Phone is required';
-      else if (!/^\d{10}$/.test(contact.phone)) newErrors[`phone_${idx}`] = 'Phone must be 10 digits';
+    // contactPersons.forEach((contact, idx) => {
+    //   if (!contact.contactName.trim()) newErrors[`contactName_${idx}`] = 'Contact Name is required';
+    //   if (!contact.jobTitle.trim()) newErrors[`jobTitle_${idx}`] = 'Job Title is required';
+    //   if (!contact.email.trim()) newErrors[`email_${idx}`] = 'Email is required';
+    //   else if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(contact.email)) newErrors[`email_${idx}`] = 'Invalid email';
+    //   if (!contact.phone.trim()) newErrors[`phone_${idx}`] = 'Phone is required';
+    //   else if (!/^\d{10}$/.test(contact.phone)) newErrors[`phone_${idx}`] = 'Phone must be 10 digits';
       // if (!contact.department.trim()) newErrors[`department_${idx}`] = 'Department is required';
       // if (!contact.salesRepresentative.trim()) newErrors[`salesRepresentative_${idx}`] = 'Sales Representative is required';
-    });
+    // });
 
     // Billing Information (first item)
-    const billing = billingInformation[0] || {};
-    if (!billing.billingAddress.trim()) newErrors.billingAddress = 'Billing Address is required';
-    if (!billing.billingContactName.trim()) newErrors.billingContactName = 'Billing Contact Name is required';
-    if (!billing.billingEmail.trim()) newErrors.billingEmail = 'Billing Email is required';
-    else if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(billing.billingEmail)) newErrors.billingEmail = 'Invalid email';
-    if (!billing.billingPhone.trim()) newErrors.billingPhone = 'Billing Phone is required';
-    else if (!/^\d{10}$/.test(billing.billingPhone)) newErrors.billingPhone = 'Phone must be 10 digits';
+    // const billing = billingInformation[0] || {};
+    // if (!billing.billingAddress.trim()) newErrors.billingAddress = 'Billing Address is required';
+    // if (!billing.billingContactName.trim()) newErrors.billingContactName = 'Billing Contact Name is required';
+    // if (!billing.billingEmail.trim()) newErrors.billingEmail = 'Billing Email is required';
+    // else if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(billing.billingEmail)) newErrors.billingEmail = 'Invalid email';
+    // if (!billing.billingPhone.trim()) newErrors.billingPhone = 'Billing Phone is required';
+    // else if (!/^\d{10}$/.test(billing.billingPhone)) newErrors.billingPhone = 'Phone must be 10 digits';
     // if (!billing.currency) newErrors.currency = 'Currency is required';
     // if (!billing.preferredPaymentMethod) newErrors.preferredPaymentMethod = 'Preferred Payment Method is required';
 
@@ -320,10 +320,10 @@ function AddClientManagement() {
     // if (!ledger.costCenter.trim()) newErrors.costCenter = 'Cost Center is required';
 
     // Additional Information
-    if (!additionalInformation.paymentTerms) newErrors.paymentTerms = 'Payment Terms is required';
-    if (!additionalInformation.creditLimit) newErrors.creditLimit = 'Credit Limit is required';
-    else if (isNaN(additionalInformation.creditLimit) || Number(additionalInformation.creditLimit) < 0) newErrors.creditLimit = 'Credit Limit must be a positive number';
-    if (!additionalInformation.notes.trim()) newErrors.notes = 'Notes is required';
+    // if (!additionalInformation.paymentTerms) newErrors.paymentTerms = 'Payment Terms is required';
+    // if (!additionalInformation.creditLimit) newErrors.creditLimit = 'Credit Limit is required';
+    // else if (isNaN(additionalInformation.creditLimit) || Number(additionalInformation.creditLimit) < 0) newErrors.creditLimit = 'Credit Limit must be a positive number';
+    // if (!additionalInformation.notes.trim()) newErrors.notes = 'Notes is required';
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
@@ -412,7 +412,7 @@ function AddClientManagement() {
               <div className="col-md-6"></div>
               <div className="col-md-6">
                 <label className="form-label">Company</label>
-                <input required type="text" name="clientName" value={formData.clientName} onChange={handleChange} className="form-control" placeholder="Enter  name" />
+                <input type="text" name="clientName" value={formData.clientName} onChange={handleChange} className="form-control" placeholder="Enter  name" />
                 {errors.clientName && <div className="text-danger small">{errors.clientName}</div>}
               </div>
               {/* <div className="col-md-6">
@@ -432,7 +432,7 @@ function AddClientManagement() {
               </div> */}
               <div className="col-md-6">
                 <label className="form-label">Client Address</label>
-                <textarea required className="form-control" name="clientAddress" value={formData.clientAddress} onChange={handleChange}></textarea>
+                <textarea className="form-control" name="clientAddress" value={formData.clientAddress} onChange={handleChange}></textarea>
                 {errors.clientAddress && <div className="text-danger small">{errors.clientAddress}</div>}
               </div>
               {/* <div className="col-md-6">
@@ -472,7 +472,6 @@ function AddClientManagement() {
                         <input
                           type="text"
                           name="contactName"
-                          required
                           value={contact.contactName}
                           onChange={(e) => handleContactChange(index, e)}
                           className="form-control"
@@ -486,7 +485,6 @@ function AddClientManagement() {
                         <input
                           type="text"
                           name="jobTitle"
-                          required
                           value={contact.jobTitle}
                           onChange={(e) => handleContactChange(index, e)}
                           className="form-control"
@@ -500,7 +498,6 @@ function AddClientManagement() {
                         <input
                           type="email"
                           name="email"
-                          required
                           value={contact.email}
                           onChange={(e) => handleContactChange(index, e)}
                           className="form-control"
@@ -514,7 +511,6 @@ function AddClientManagement() {
                         <input
                           type="tel"
                           name="phone"
-                          required
                           value={contact.phone}
                           onChange={(e) => handleContactChange(index, e)}
                           className="form-control"
@@ -600,22 +596,22 @@ function AddClientManagement() {
                 <h5 className="mb-3 mt-4">Billing Information</h5>
                 <div className="col-md-12">
                   <label className="form-label">Billing Address</label>
-                  <textarea className="form-control" rows="3" name="billingAddress" required value={billingInformation[0].billingAddress} onChange={(e) => handleBillingChange(0, e)}></textarea>
+                  <textarea className="form-control" rows="3" name="billingAddress" value={billingInformation[0].billingAddress} onChange={(e) => handleBillingChange(0, e)}></textarea>
                   {errors.billingAddress && <div className="text-danger small">{errors.billingAddress}</div>}
                 </div>
                 <div className="col-md-6">
                   <label className="form-label">Billing Contact Name</label>
-                  <input type="text" className="form-control" name="billingContactName" required value={billingInformation[0].billingContactName} onChange={(e) => handleBillingChange(0, e)} />
+                  <input type="text" className="form-control" name="billingContactName" value={billingInformation[0].billingContactName} onChange={(e) => handleBillingChange(0, e)} />
                   {errors.billingContactName && <div className="text-danger small">{errors.billingContactName}</div>}
                 </div>
                 <div className="col-md-6">
                   <label className="form-label">Billing Email</label>
-                  <input type="email" className="form-control" name="billingEmail" required value={billingInformation[0].billingEmail} onChange={(e) => handleBillingChange(0, e)} />
+                  <input type="email" className="form-control" name="billingEmail" value={billingInformation[0].billingEmail} onChange={(e) => handleBillingChange(0, e)} />
                   {errors.billingEmail && <div className="text-danger small">{errors.billingEmail}</div>}
                 </div>
                 <div className="col-md-6">
                   <label className="form-label">Billing Phone</label>
-                  <input type="tel" className="form-control" name="billingPhone" required value={billingInformation[0].billingPhone} onChange={(e) => handleBillingChange(0, e)} maxLength={10} />
+                  <input type="tel" className="form-control" name="billingPhone" value={billingInformation[0].billingPhone} onChange={(e) => handleBillingChange(0, e)} maxLength={10} />
                   {errors.billingPhone && <div className="text-danger small">{errors.billingPhone}</div>}
                 </div>
                 {/* <div className="col-md-6">
@@ -753,7 +749,7 @@ function AddClientManagement() {
                 </div> */}
 
                 {/* Additional Information */}
-                <h5 className="mb-3 mt-4">Additional Information</h5>
+                {/* <h5 className="mb-3 mt-4">Additional Information</h5>
                 <div className="col-md-6">
                   <label className="form-label">Payment Terms</label>
                   <select
@@ -775,11 +771,11 @@ function AddClientManagement() {
                   <label className="form-label">Credit Limit</label>
                   <input type="number" className="form-control" name="creditLimit" required value={additionalInformation.creditLimit} onChange={handleAdditionalChange} />
                   {errors.creditLimit && <div className="text-danger small">{errors.creditLimit}</div>}
-                </div>
+                </div> */}
               </div>
               <div className="col-md-12">
                 <label className="form-label">Notes</label>
-                <textarea className="form-control" rows="3" name="notes" required value={additionalInformation.notes} onChange={handleAdditionalChange} placeholder="Additional notes"></textarea>
+                <textarea className="form-control" rows="3" name="notes" value={additionalInformation.notes} onChange={handleAdditionalChange} placeholder="Additional notes"></textarea>
                 {errors.notes && <div className="text-danger small">{errors.notes}</div>}
               </div>
 

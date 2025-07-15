@@ -9,8 +9,10 @@ import { fetchAllProposals, updateProposalStatus, updateProposalStatusLocally } 
 import { useDispatch, useSelector } from 'react-redux';
 import { MdManageAccounts } from 'react-icons/md';
 import { HiOutlineDocumentReport } from 'react-icons/hi';
-import { fetchProject, updateProject, updateProjectStatusLocally } from '../../../../redux/slices/ProjectsSlice';
+import { deleteproject, fetchProject, updateProject, updateProjectStatusLocally } from '../../../../redux/slices/ProjectsSlice';
 import { getAllDocumentsRecord } from '../../../../redux/slices/documentSlice';
+import Swal from 'sweetalert2';
+import { BsThreeDotsVertical } from 'react-icons/bs';
 
 
 // --- Kanban Workflow Data ---
@@ -1048,6 +1050,33 @@ const ProjectView = ({ data }) => {
             }
         };
 
+        const handleUpdateProjectCard = (project) => {
+            navigate(`/admin/AddProjectList`, { state: { project } });
+        };
+
+
+        const handleDeleteProject = (projectId) => {
+            Swal.fire({
+                title: 'Are you sure?',
+                text: 'This will permanently delete the project!',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Yes, delete it!',
+                cancelButtonText: 'Cancel',
+            }).then(async (result) => {
+                if (result.isConfirmed) {
+                    try {
+                        await dispatch(deleteproject(projectId));
+                        await Swal.fire('Deleted!', 'Project has been deleted.', 'success');
+                        window.location.reload();
+                    } catch (error) {
+                        Swal.fire('Error!', 'Something went wrong.', 'error');
+                    }
+                }
+            });
+        };
+
+
         return (
             <div style={{ position: 'relative' }}>
                 {isUpdating && (
@@ -1097,8 +1126,22 @@ const ProjectView = ({ data }) => {
                                                             navigate("/admin/LeadFlow/Details", { state: { item: item } });
                                                         }}
                                                     >
-                                                        <div className="fw-semibold text-primary" style={{ fontSize: 15 }}>
+                                                        {/* <div className="fw-semibold text-primary" style={{ fontSize: 15 }}>
                                                             {item.job_name || item.title}
+                                                        </div> */}
+                                                        <div className="d-flex justify-content-between align-items-start mb-1">
+                                                            <div className="fw-semibold text-primary" style={{ fontSize: 15, maxWidth: '80%', wordBreak: 'break-word' }}>
+                                                                {item.projectName || item.title || item.job_name}
+                                                            </div>
+                                                            <Dropdown align="end" onClick={(e) => e.stopPropagation()}>
+                                                                <Dropdown.Toggle as="div" style={{ cursor: "pointer" }}>
+                                                                    <BsThreeDotsVertical size={16} />
+                                                                </Dropdown.Toggle>
+                                                                <Dropdown.Menu>
+                                                                    <Dropdown.Item onClick={() => handleUpdateProjectCard(item)}>Edit</Dropdown.Item>
+                                                                    <Dropdown.Item onClick={() => handleDeleteProject(item._id)} className="text-danger">Delete</Dropdown.Item>
+                                                                </Dropdown.Menu>
+                                                            </Dropdown>
                                                         </div>
                                                         <div className="text-muted small mb-1">Client: {item.client || item.client_name}</div>
                                                         <div className="text-muted small mb-1">Address: {item.address || "N/A"}</div>
