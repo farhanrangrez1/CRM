@@ -263,7 +263,8 @@ const DailyLogs = () => {
           </Card.Body>
         </Card>
       ) : (
-        dailyLogs?.filter(item => item.job_id == invoice?._id).map((log, idx) => (
+        // dailyLogs?.filter(item => item.job_id == invoice?._id).map((log, idx) => (
+        [...dailyLogs]?.filter(item => item.job_id == invoice?._id).reverse().map((log, idx) => (
 
           <Card key={log.id} className="mb-4 shadow-sm">
             <Card.Body>

@@ -26,11 +26,11 @@ const Editpurposal = () => {
   const [manager, setManager] = useState(null);
   const [lead, setLead] = useState(null);
   const [phaseName, setPhaseName] = useState("");
-  const [materialsBudget, setMaterialsBudget] = useState("");
-  const [laborBudget, setLaborBudget] = useState("");
-  const [subcontractorsBudget, setSubcontractorsBudget] = useState("");
-  const [equipmentBudget, setEquipmentBudget] = useState("");
-  const [miscBudget, setMiscBudget] = useState("");
+  const [materialsBudget, setMaterialsBudget] = useState(0.0);
+  const [laborBudget, setLaborBudget] = useState(0.0);
+  const [subcontractorsBudget, setSubcontractorsBudget] = useState(0.0);
+  const [equipmentBudget, setEquipmentBudget] = useState(0.0);
+  const [miscBudget, setMiscBudget] = useState(0.0);
   const [estimatedStart, setEstimatedStart] = useState("");
   const [estimatedEnd, setEstimatedEnd] = useState("");
   const [clientName, setClientName] = useState("");
