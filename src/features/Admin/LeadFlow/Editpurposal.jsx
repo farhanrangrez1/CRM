@@ -121,6 +121,7 @@ const Editpurposal = () => {
     }
   }, [invoice]);
 
+
   const navigate = useNavigate();
   const location = useLocation();
   const job = location.state.item;
@@ -463,10 +464,15 @@ const Editpurposal = () => {
                 <div className="col-md-2">Quantity</div>
                 <div className="col-md-2">Rate</div>
                 <div className="col-md-2">Amount</div>
-                <div className="col-md-1 text-end"></div>
+                <div className="col-md-1">Is Paid</div>
               </div>
+
               {items?.length > 0 && items.map((item, index) => (
-                <div className="row gx-2 gy-2 align-items-center mb-2 px-2 py-2" key={index} style={{ background: "#f9f9f9", borderRadius: "8px" }}>
+                <div
+                  className="row gx-2 gy-2 align-items-center mb-2 px-2 py-2"
+                  key={index}
+                  style={{ background: "#f9f9f9", borderRadius: "8px" }}
+                >
                   <div className="col-md-1">
                     <input readOnly type="text" className="form-control" value={index + 1} />
                   </div>
@@ -480,15 +486,36 @@ const Editpurposal = () => {
                     <input readOnly type="number" className="form-control" value={item.rate} />
                   </div>
                   <div className="col-md-2">
-                    <span>${item.amount.toFixed(2)}</span>
+                    <span>${parseFloat(item.amount).toFixed(2)}</span>
                   </div>
-                  <div className="col-md-1 text-end">
-                    <button type="button" className="btn btn-link text-danger p-0" onClick={() => removeItem(index)}>
-                      remove
-                    </button>
+                  <div className="col-md-1">
+                    <input
+                      type="checkbox"
+                      checked={item.is_paid === "true"}
+                      readOnly
+                      className="form-check-input"
+                    />
                   </div>
                 </div>
               ))}
+
+              {/* Total Summary */}
+              {items?.length > 0 && (() => {
+                const totalAmount = items.reduce((acc, curr) => acc + (parseFloat(curr.amount) || 0), 0);
+                const paidAmount = items
+                  .filter((i) => i.is_paid === "true")
+                  .reduce((acc, curr) => acc + (parseFloat(curr.amount) || 0), 0);
+                const dueAmount = totalAmount - paidAmount;
+
+                return (
+                  <div className="row fw-bold align-items-center px-2 py-3 mt-3 border-top">
+                    <div className="col-md-6 text-end">Total Amount:</div>
+                    <div className="col-md-2">${totalAmount.toFixed(2)}</div>
+                    <div className="col-md-2 text-success">Paid: ${paidAmount.toFixed(2)}</div>
+                    <div className="col-md-2 text-danger">Due: ${dueAmount.toFixed(2)}</div>
+                  </div>
+                );
+              })()}
             </div>
 
             {/* 📌 Notes Section */}

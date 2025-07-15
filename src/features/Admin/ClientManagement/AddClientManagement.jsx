@@ -272,8 +272,8 @@ function AddClientManagement() {
     //   else if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(contact.email)) newErrors[`email_${idx}`] = 'Invalid email';
     //   if (!contact.phone.trim()) newErrors[`phone_${idx}`] = 'Phone is required';
     //   else if (!/^\d{10}$/.test(contact.phone)) newErrors[`phone_${idx}`] = 'Phone must be 10 digits';
-      // if (!contact.department.trim()) newErrors[`department_${idx}`] = 'Department is required';
-      // if (!contact.salesRepresentative.trim()) newErrors[`salesRepresentative_${idx}`] = 'Sales Representative is required';
+    // if (!contact.department.trim()) newErrors[`department_${idx}`] = 'Department is required';
+    // if (!contact.salesRepresentative.trim()) newErrors[`salesRepresentative_${idx}`] = 'Sales Representative is required';
     // });
 
     // Billing Information (first item)

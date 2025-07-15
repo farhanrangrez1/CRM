@@ -880,8 +880,14 @@ const LeadFlow = ({ data }) => {
                               <div className="text-muted small mb-1">Client: {item?.clientId?.clientName}</div>
                               <div className="small text-secondary mb-1">Address: {item.billing || item.projectAddress}</div>
                               <div className="small text-secondary mb-1">Phases: {item.phases}</div>
-                              <div className="fw-semibold text-success" style={{ fontSize: 15 }}>
+                              {/* <div className="fw-semibold text-success" style={{ fontSize: 15 }}>
                                 Total: ${proposalTotalsMap[item._id] || 0}
+                              </div> */}
+                              <div className="fw-semibold text-success" style={{ fontSize: 15 }}>
+                                Total Paid: {item.paid || 0}
+                              </div>
+                              <div className="fw-semibold text-danger" style={{ fontSize: 15 }}>
+                                Total Due: {item.due || 0}
                               </div>
                               {item.status == "signature" || item.status == "Signature" || item.status == "open" || item.status == "Open" || item.status == 'Active Project' ?
                                 <div className="d-flex flex-wrap justify-content-between gap-2 align-items-center mb-1">

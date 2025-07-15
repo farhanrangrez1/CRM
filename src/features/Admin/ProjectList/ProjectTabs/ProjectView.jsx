@@ -1147,8 +1147,14 @@ const ProjectView = ({ data }) => {
                                                         <div className="text-muted small mb-1">Address: {item.address || "N/A"}</div>
                                                         <div className="small text-secondary mb-1">Phases: {item.phases}</div>
                                                         {/* <div className="d-flex flex-wrap gap-2 align-items-center mb-1"> */}
-                                                        <div className="fw-semibold text-success" style={{ fontSize: 15 }}>
+                                                        {/* <div className="fw-semibold text-success" style={{ fontSize: 15 }}>
                                                             Total: ${proposalTotalsMap[item._id] || 0}
+                                                        </div> */}
+                                                        <div className="fw-semibold text-success" style={{ fontSize: 15 }}>
+                                                            Total Paid: {item.paid || 0}
+                                                        </div>
+                                                        <div className="fw-semibold text-danger" style={{ fontSize: 15 }}>
+                                                            Total Due: {item.due || 0}
                                                         </div>
                                                         <div className="d-flex flex-wrap gap-2 align-items-center mb-1">
                                                             <Badge bg={getStatusBadgeColor(item.status)} className={`me-1 ${getTextColor(item.status)}`}>

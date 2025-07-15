@@ -25,6 +25,9 @@ function AddProjectList() {
     projectAddress: '',
     description: '',
     status: 'Lead',
+    paid: '',
+    due: '',
+    stage: '',
     // projectRequirements: {
     //   creativeDesign: false,
     //   artworkAdaptation: false,
@@ -40,22 +43,50 @@ function AddProjectList() {
   });
 
   const [items, setItems] = useState([
-    { description: "", quantity: 0, rate: 0, amount: 0 },
+    // { description: "", quantity: 0, rate: 0, amount: 0, is_paid: "false" },
   ]);
+
 
   const calculateAmount = (quantity, rate) => quantity * rate;
 
+  // const handleItemChange = (index, field, value) => {
+  //   const newItems = [...items];
+  //   newItems[index][field] = value;
+  //   newItems[index].amount = calculateAmount(
+  //     newItems[index].quantity,
+  //     newItems[index].rate
+  //   );
+  //   setItems(newItems);
+  // };
   const handleItemChange = (index, field, value) => {
     const newItems = [...items];
     newItems[index][field] = value;
-    newItems[index].amount = calculateAmount(
-      newItems[index].quantity,
-      newItems[index].rate
-    );
+
+    if (field === "quantity" || field === "rate") {
+      newItems[index].amount = calculateAmount(
+        newItems[index].quantity,
+        newItems[index].rate
+      );
+    }
+
     setItems(newItems);
+
+    // Calculate totals
+    const total = newItems.reduce((sum, i) => sum + (parseFloat(i.amount) || 0), 0);
+    const paid = newItems
+      .filter(i => i.is_paid === "true")
+      .reduce((sum, i) => sum + (parseFloat(i.amount) || 0), 0);
+    const due = total - paid;
+
+    setFormData(prev => ({
+      ...prev,
+      paid: paid.toFixed(2),
+      due: due.toFixed(2),
+    }));
   };
+
   const addItem = () => {
-    setItems([...items, { description: "", quantity: 0, rate: 0, amount: 0 }]);
+    setItems([...items, { description: "", quantity: 0, rate: 0, amount: 0, is_paid: "false" }]);
   };
   const removeItem = (index) => {
     const newItems = [...items];
@@ -308,11 +339,12 @@ function AddProjectList() {
 
           <h6 className="fw-semibold mb-3">Line Items</h6>
           <div className="row fw-semibold text-muted mb-2 px-2">
-            <div className="col-md-5">Description</div>
+            <div className="col-md-4">Description</div>
             <div className="col-md-2">Quantity</div>
             <div className="col-md-2">Rate</div>
             <div className="col-md-2">Amount</div>
-            <div className="col-md-1 text-end"></div>
+            <div className="col-md-1">Is Paid</div>
+            <div className="col-md-1 text-end">Action</div>
           </div>
 
           {items.map((item, index) => (
@@ -321,13 +353,12 @@ function AddProjectList() {
               key={index}
               style={{ background: "#f9f9f9", borderRadius: "8px" }}
             >
-              <div className="col-md-5">
+              <div className="col-md-4">
                 <input
                   type="text"
                   className="form-control"
                   placeholder="Item description"
                   value={item.description}
-                  required
                   onChange={(e) =>
                     handleItemChange(index, "description", e.target.value)
                   }
@@ -338,7 +369,6 @@ function AddProjectList() {
                   type="number"
                   className="form-control"
                   value={item.quantity}
-                  required
                   onChange={(e) =>
                     handleItemChange(index, "quantity", parseInt(e.target.value))
                   }
@@ -349,7 +379,6 @@ function AddProjectList() {
                   type="number"
                   className="form-control"
                   value={item.rate}
-                  required
                   onChange={(e) =>
                     handleItemChange(index, "rate", parseFloat(e.target.value))
                   }
@@ -359,6 +388,16 @@ function AddProjectList() {
                 <span>
                   {formData.currency} {item.amount.toFixed(2)}
                 </span>
+              </div>
+              <div className="col-md-1">
+                <input
+                  type="checkbox"
+                  className="form-check-input"
+                  checked={item.is_paid === "true"}
+                  onChange={(e) =>
+                    handleItemChange(index, "is_paid", e.target.checked ? "true" : "false")
+                  }
+                />
               </div>
               <div className="col-md-1 text-end">
                 <button
@@ -371,6 +410,14 @@ function AddProjectList() {
               </div>
             </div>
           ))}
+
+          <div className="row fw-bold align-items-center px-2 py-3 mt-3 border-top">
+            <div className="col-md-6 text-end">Total Amount:</div>
+            <div className="col-md-2">{formData.currency || "$"} {items.reduce((sum, i) => sum + i.amount, 0).toFixed(2)}</div>
+            <div className="col-md-2 text-success">Paid: {formData.currency || "$"} {formData.paid}</div>
+            <div className="col-md-2 text-danger">Due: {formData.currency || "$"} {formData.due}</div>
+          </div>
+
           <button
             className="btn border rounded px-3 py-1 mb-4 text-dark"
             onClick={addItem}
