@@ -203,23 +203,57 @@ const DailyLogs = () => {
 
   const getUserNameById = (id) => {
     const user = users.find((u) => u._id === id);
-    return user ? `${user.firstName || ""} ${user.lastName || ""}`.trim() : "Unknown";
+    return user ? `${user.firstName || ""} ${user.lastName || ""}`.trim() : "";
   };
 
 
+  // const handleAddComment = () => {
+  //   // console.log(id)
+  //   if (newComment.trim() === '') return;
+  //   const payload = {
+  //     user_id,
+  //     dailylog_id: blogId,
+  //     comment: newComment,
+
+  //   }
+  //   dispatch(createComment(payload))
+  //   setNewComment('');
+  //   setShowCommentModal(false);
+  // };
+
   const handleAddComment = () => {
-    // console.log(id)
     if (newComment.trim() === '') return;
+
     const payload = {
       user_id,
       dailylog_id: blogId,
       comment: newComment,
+    };
 
-    }
     dispatch(createComment(payload))
-    setNewComment('');
-    setShowCommentModal(false);
+      .unwrap()
+      .then((result) => {
+        // Assuming result contains the newly created comment
+        const newCommentData = {
+          ...result.data, // Adjust this based on your API response structure
+          user_id, // Add user_id if not included in the result
+        };
+
+        // Update the logCommentsMap with the new comment
+        setLogCommentsMap((prev) => ({
+          ...prev,
+          [blogId]: [...(prev[blogId] || []), newCommentData], // Append the new comment
+        }));
+
+        setNewComment('');
+        setShowCommentModal(false);
+      })
+      .catch((error) => {
+        Swal.fire('Error!', error.message || 'Something went wrong.', 'error');
+      });
   };
+
+
   // console.log("dss", logCommentsMap)
   return (
     <div className="p-4">
@@ -371,16 +405,15 @@ const DailyLogs = () => {
                     // Fetch comments if not already loaded
                     if (!logCommentsMap[log.id]) {
                       try {
+                        console.log(log.id);
+
                         const result = await dispatch(fetchCommentById(log.id)).unwrap();
                         console.log(result);
 
                         setLogCommentsMap(prev => ({
                           ...prev,
-                          [log.id]: result.data.comments // 👈 This stores comments under correct log.id
+                          [log.id]: result.data.comments // Ensure this is the correct path to comments
                         }));
-
-                        // console.log(result.data.comments)
-
                       } catch (err) {
                         console.error("Failed to fetch comments", err);
                       }
@@ -397,7 +430,7 @@ const DailyLogs = () => {
               </div>
 
               {/* Comments section - shows when expanded */}
-              {expandedLogs.has(log.id) && (
+              {/* {expandedLogs.has(log.id) && (
                 <div className="border-top pt-3">
                   {logCommentsMap[log.id]?.length > 0 ? (
                     <div
@@ -437,8 +470,49 @@ const DailyLogs = () => {
                     <i className="fas fa-plus me-1"></i> Add Comment
                   </Button>
                 </div>
-              )}
+              )} */}
+              {/* Comments section - shows when expanded */}
+              {expandedLogs.has(log.id) && (
+                <div className="border-top pt-3">
+                  {logCommentsMap[log.id]?.length > 0 ? (
+                    <div
+                      className="mb-3"
+                      style={{
+                        maxHeight: '200px',
+                        overflowY: 'auto',
+                        scrollbarWidth: 'thin',
+                        paddingRight: '8px'
+                      }}
+                    >
+                      {logCommentsMap[log.id].map((comment, i) => (
+                        <div key={i} className="mb-3 p-2 bg-light rounded">
+                          <div className="d-flex justify-content-between">
+                            <strong>{getUserNameById(comment.user_id)}</strong> {/* Display user name instead of user_id */}
+                            <span className="text-muted small">
+                              {new Date(comment.created_at).toLocaleDateString()}
+                            </span>
+                          </div>
+                          <div className="mt-1">{comment.comment}</div>
+                        </div>
+                      ))}
+                    </div>
+                  ) : (
+                    <div className="text-muted small mb-3">No comments yet</div>
+                  )}
 
+                  <Button
+                    variant="outline-primary"
+                    size="sm"
+                    className="mt-2"
+                    onClick={() => {
+                      setBlogId(log?.id);
+                      setShowCommentModal(true);
+                    }}
+                  >
+                    <i className="fas fa-plus me-1"></i> Add Comment
+                  </Button>
+                </div>
+              )}
 
             </Card.Body>
           </Card>

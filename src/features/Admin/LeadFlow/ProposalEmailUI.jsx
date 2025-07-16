@@ -626,6 +626,7 @@ const ProposalEmailUI = ({ setShowAddInvoice }) => {
                 We propose to furnish all materials, equipment, and labor, subject to any exclusions listed below,
                 required to complete the following:
               </p>
+
               {signatureData?.line_items?.length > 0 ? (
                 <table className="table table-bordered mt-3">
                   <tbody>
@@ -654,6 +655,7 @@ const ProposalEmailUI = ({ setShowAddInvoice }) => {
                 <p className="text-muted">No line items to show.</p>
               )}
 
+
               <p>
                 The above price is valid for 30 days. <b>COMPANY NAME</b> agrees that they will enter into a standard AIA
                 subcontract with General Contractor, and that basic provisions such as insurance and W-9 shall be in
@@ -681,11 +683,12 @@ const ProposalEmailUI = ({ setShowAddInvoice }) => {
               <p className="text-center small mt-5">
                 Address will come here
               </p>
+
             </div>
           </div>
         </div>
       </div>
-    </div>
+    </div >
   );
 };
 
