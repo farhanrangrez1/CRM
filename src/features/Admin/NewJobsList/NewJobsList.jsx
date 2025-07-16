@@ -20,6 +20,7 @@ import { createAssigns } from "../../../redux/slices/AssignSlice";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { BiCopy } from "react-icons/bi";
+import { fetchProject } from "../../../redux/slices/ProjectsSlice";
 
 function NewJobsList() {
   const [showRejectModal, setShowRejectModal] = useState(false);
@@ -46,6 +47,8 @@ function NewJobsList() {
   const location = useLocation();
   const params = useParams();
   const id = location.state?.id || params.id;
+
+  const project = useSelector((state) => state?.projects?.project?.data) || [];
 
   const jobs = [
     {
@@ -358,6 +361,20 @@ function NewJobsList() {
     currentPage * itemsPerPage
   );
 
+  const [showProjectModal, setShowProjectModal] = useState(false);
+  const [selectedProjectId, setSelectedProjectId] = useState('');
+  useEffect(() => {
+    // Fetch all projects when modal opens
+    if (showProjectModal) {
+      dispatch(fetchProject())
+    }
+  }, [dispatch, showProjectModal]);
+
+  const handleProjectSelect = (projectId) => {
+    setShowProjectModal(false);
+    navigate(`/admin/AddJobTracker/${projectId}`, { state: { id: projectId } });
+  };
+
   return (
     <div className="container bg-white p-3 mt-4 rounded shadow-sm">
       {/* Title */}
@@ -384,8 +401,42 @@ function NewJobsList() {
           >
             Assign
           </Button>
+          <Button onClick={() => setShowProjectModal(true)} id="All_btn" className="m-2" variant="primary">
+            <i className="bi bi-plus"></i> Add Job
+          </Button>
         </div>
       </div>
+      <Modal show={showProjectModal} onHide={() => setShowProjectModal(false)} size="lg">
+        <Modal.Body>
+          <div className="mb-3">
+            <label htmlFor="projectSelect" className="form-label fw-semibold">Select a Project:</label>
+            <select
+              id="projectSelect"
+              className="form-select"
+              value={selectedProjectId}
+              onChange={(e) => setSelectedProjectId(e.target.value)}
+              style={{ width: "450px" }}
+            >
+              <option value="">-- Select Project --</option>
+              {project.map((project) => (
+                <option key={project?._id} value={project?._id}>
+                  {project?.projectName}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          <div className="text-end">
+            <Button
+              variant="success"
+              disabled={!selectedProjectId}
+              onClick={() => handleProjectSelect(selectedProjectId)}
+            >
+              Proceed
+            </Button>
+          </div>
+        </Modal.Body>
+      </Modal>
 
       {/* Show Messages */}
       {errorMessage && (

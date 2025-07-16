@@ -385,7 +385,7 @@ function AddInvoice({ onInvoiceComplete }) {
       <div className="container-fluid p-4" style={{ backgroundColor: "white", borderRadius: "10px" }}>
         <div className="d-flex justify-content-end align-items-center mb-4">
           <Button variant="primary" onClick={handleShow}>
-            Invoice
+            Summary
           </Button>
         </div>
 

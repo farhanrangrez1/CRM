@@ -156,8 +156,7 @@ export const adminMenuItems = [
     icon: <FaIndustry className="menu-icon" />,
     permissionKey: "tasks",
     submenu: [
-      { title: "View all Tasks", path: "/admin/tasks", permissionKey: "tasks" },
-      { title: "Assign Task", path: "/admin/newJobsList", permissionKey: "assignJob" },
+      { title: "View all Task", path: "/admin/newJobsList", permissionKey: "assignJob" },
       { title: "In Progress", path: "/admin/inProgress", permissionKey: "inProgress" },
       { title: "Completed", path: "/admin/completedJobs", permissionKey: "completed" },
     ],
