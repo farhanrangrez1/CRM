@@ -14,6 +14,7 @@ import { createDocumentRecord, getDocumentsByProposalId, updateDocumentRecord } 
 import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
 import { Button, Modal } from "react-bootstrap";
+import { apiUrl } from "../../../redux/utils/config";
 
 const currencies = [
   { value: "", label: "Select Currency" },
@@ -54,6 +55,19 @@ function AddInvoice({ onInvoiceComplete }) {
   useEffect(() => {
     dispatch(fetchProject());
   }, [dispatch]);
+
+  useEffect(() => {
+    const fetchemailproposalbyid = (id) => {
+      const response = axios.get(`${apiUrl}/getEnvelopesByProjectId/${id}`);
+      console.log(response);
+
+    }
+    if (invoice?._id) {
+      fetchemailproposalbyid(invoice?._id);
+    }
+  }, [invoice?._id])
+
+
   const reversedProjectList = project?.data?.slice().reverse() || [];
 
   const { Clients } = useSelector((state) => state.client);
@@ -83,7 +97,6 @@ function AddInvoice({ onInvoiceComplete }) {
   });
 
   useEffect(() => {
-
     if (invoice?._id) {
       // console.log(invoice?.id);
       dispatch(getDocumentsByProposalId(invoice?._id))
@@ -139,23 +152,50 @@ function AddInvoice({ onInvoiceComplete }) {
   //   newItems[index].amount = calculateAmount(newItems[index].quantity, newItems[index].rate);
   //   setItems(newItems);
   // };
+  // const handleItemChange = (index, field, value) => {
+  //   const newItems = [...items];
+  //   // Special handling for is_paid checkbox
+  //   if (field === 'is_paid') {
+  //     newItems[index][field] = value === true ? "true" : "false";
+  //   } else {
+  //     newItems[index][field] = value;
+  //   }
+  //   // Recalculate amount if quantity or rate changes
+  //   if (field === 'quantity' || field === 'rate') {
+  //     const quantity = field === 'quantity' ? value : newItems[index].quantity;
+  //     const rate = field === 'rate' ? value : newItems[index].rate;
+  //     newItems[index].amount = calculateAmount(quantity, rate);
+  //   }
+  //   setItems(newItems);
+  // };
   const handleItemChange = (index, field, value) => {
     const newItems = [...items];
-    // Special handling for is_paid checkbox
+
+    // Update the field value
     if (field === 'is_paid') {
       newItems[index][field] = value === true ? "true" : "false";
     } else {
       newItems[index][field] = value;
     }
+
     // Recalculate amount if quantity or rate changes
     if (field === 'quantity' || field === 'rate') {
-      const quantity = field === 'quantity' ? value : newItems[index].quantity;
-      const rate = field === 'rate' ? value : newItems[index].rate;
+      const quantity = field === 'quantity' ? Number(value) : Number(newItems[index].quantity);
+      const rate = field === 'rate' ? Number(value) : Number(newItems[index].rate);
       newItems[index].amount = calculateAmount(quantity, rate);
     }
-    setItems(newItems);
-  };
 
+    setItems(newItems);
+
+    // 🟡 Only update the last row in localStorage
+    const existingItems = JSON.parse(localStorage.getItem("lineItems")) || [];
+
+    if (index === items.length - 1) {
+      // It's the last row — update it
+      existingItems[existingItems.length - 1] = newItems[index];
+      localStorage.setItem("lineItems", JSON.stringify(existingItems));
+    }
+  };
 
 
 
@@ -163,9 +203,20 @@ function AddInvoice({ onInvoiceComplete }) {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
+  // const addItem = () => {
+  //   setItems([...items, { description: "", quantity: 0, rate: 0, amount: 0, is_paid: "false" }]);
+  // };
   const addItem = () => {
-    setItems([...items, { description: "", quantity: 0, rate: 0, amount: 0, is_paid: "false" }]);
+    const newItem = { description: "", quantity: 0, rate: 0, amount: 0, is_paid: "false" };
+    const updatedItems = [...items, newItem];
+    setItems(updatedItems);
+
+    // Only store the newly added item (not entire array)
+    const existingItems = JSON.parse(localStorage.getItem("lineItems")) || [];
+    const newStorageItems = [...existingItems, newItem];
+    localStorage.setItem("lineItems", JSON.stringify(newStorageItems));
   };
+
 
   const removeItem = (index) => {
     const newItems = [...items];

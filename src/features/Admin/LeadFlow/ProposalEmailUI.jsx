@@ -423,6 +423,14 @@ const ProposalEmailUI = ({ setShowAddInvoice }) => {
     }
   }, [signatureData, Clients]);
 
+  const getUnmatchedLineItems = () => {
+    // Assuming original items are stored in localStorage as "lineItems"
+    const existingLineItems = JSON.parse(localStorage.getItem("lineItems") || "[]");
+
+    return existingLineItems;
+  };
+
+
   useEffect(() => {
     const generatePDF = async () => {
       const element = proposalRef.current;
@@ -627,7 +635,7 @@ const ProposalEmailUI = ({ setShowAddInvoice }) => {
                 required to complete the following:
               </p>
 
-              {signatureData?.line_items?.length > 0 ? (
+              {/* {signatureData?.line_items?.length > 0 ? (
                 <table className="table table-bordered mt-3">
                   <tbody>
                     {signatureData.line_items.map((item, index) => {
@@ -653,8 +661,35 @@ const ProposalEmailUI = ({ setShowAddInvoice }) => {
                 </table>
               ) : (
                 <p className="text-muted">No line items to show.</p>
-              )}
+              )} */}
 
+              {getUnmatchedLineItems()?.length > 0 ? (
+                <table className="table table-bordered mt-3">
+                  <tbody>
+                    {getUnmatchedLineItems().map((item, index) => {
+                      const lineAmount = item.quantity * item.rate;
+                      return (
+                        <tr key={index}>
+                          <td>{index + 1}.</td>
+                          <td>{item.description}</td>
+                          <td className="text-end">${lineAmount.toFixed(2)}</td>
+                        </tr>
+                      );
+                    })}
+                    <tr>
+                      <td colSpan="2" className="text-end"><strong>Total Proposal Value:</strong></td>
+                      <td className="text-end fw-bold">
+                        $
+                        {getUnmatchedLineItems()
+                          .reduce((total, item) => total + item.quantity * item.rate, 0)
+                          .toFixed(2)}
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              ) : (
+                <p className="text-muted">No line items to show.</p>
+              )}
 
               <p>
                 The above price is valid for 30 days. <b>COMPANY NAME</b> agrees that they will enter into a standard AIA
