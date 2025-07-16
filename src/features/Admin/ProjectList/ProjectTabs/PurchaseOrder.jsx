@@ -57,6 +57,15 @@ function PurchaseOrder() {
     }
   }, [Clients, project, selectedClientId]);
 
+  const [invoice, setInvoice] = useState(null);
+  useEffect(() => {
+    const storedInvoice = localStorage.getItem("invoice");
+    if (storedInvoice) {
+      setInvoice(JSON.parse(storedInvoice));
+    }
+  }, []);
+
+
   const handleFileUpload = (e) => {
     const file = e.target.files[0];
     if (file) {
@@ -633,7 +642,12 @@ function PurchaseOrder() {
             </tr>
           </thead>
           <tbody>
-            {paginatedEstimates?.map((po, index) => (
+            {paginatedEstimates?.filter((item) => {
+              console.log(item?.projects[0]?.projectId);
+              console.log(invoice?._id);
+
+              return item?.projects[0]?.projectId == invoice?._id;
+            })?.map((po, index) => (
               <tr style={{ whiteSpace: "nowrap" }} key={po.poNumber}>
                 <td><input type="checkbox" /></td>
                 <td onClick={() => CreatJobs(po.projectId)}>

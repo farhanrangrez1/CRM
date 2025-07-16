@@ -148,7 +148,7 @@ export const adminMenuItems = [
     submenu: [
       { title: "Project View", path: "/admin/projectView", permissionKey: "projectView" },
       { title: "Temp Poles", path: "/admin/TempPoles", permissionKey: "tempPoles" },
-      { title: "Projects Details", path: "/admin/projectList", permissionKey: "projectsDetails" },
+      // { title: "Projects Details", path: "/admin/projectList", permissionKey: "projectsDetails" },
     ],
   },
   {
@@ -156,45 +156,46 @@ export const adminMenuItems = [
     icon: <FaIndustry className="menu-icon" />,
     permissionKey: "tasks",
     submenu: [
-      { title: "Assign Job", path: "/admin/newJobsList", permissionKey: "assignJob" },
+      { title: "View all Tasks", path: "/admin/tasks", permissionKey: "tasks" },
+      { title: "Assign Task", path: "/admin/newJobsList", permissionKey: "assignJob" },
       { title: "In Progress", path: "/admin/inProgress", permissionKey: "inProgress" },
       { title: "Completed", path: "/admin/completedJobs", permissionKey: "completed" },
     ],
   },
-  {
-    title: "Cost Estimates",
-    icon: <FaFileInvoiceDollar className="menu-icon" />,
-    path: "/admin/CostEstimates",
-  },
-  {
-    title: "Invoicing & Billing",
-    icon: <FaFileAlt className="menu-icon" />,
-    path: "/admin/Invoicing_Billing",
-    permissionKey: "invoiceAndBilling",
-  },
+  // {
+  //   title: "Cost Estimates",
+  //   icon: <FaFileInvoiceDollar className="menu-icon" />,
+  //   path: "/admin/CostEstimates",
+  // },
+  // {
+  //   title: "Invoicing & Billing",
+  //   icon: <FaFileAlt className="menu-icon" />,
+  //   path: "/admin/Invoicing_Billing",
+  //   permissionKey: "invoiceAndBilling",
+  // },
   {
     title: "Client/Supplier",
     icon: <FaUsersCog className="menu-icon" />,
     path: "/admin/clientManagement",
     permissionKey: "client",
   },
-  {
-    title: "Reports & Analytics",
-    icon: <FaChartLine className="menu-icon" />,
-    path: "/admin/Reports",
-    permissionKey: "reports",
-  },
+  // {
+  //   title: "Reports & Analytics",
+  //   icon: <FaChartLine className="menu-icon" />,
+  //   path: "/admin/Reports",
+  //   permissionKey: "reports",
+  // },
   {
     title: "User Permissions",
     icon: <FaUsersCog className="menu-icon" />,
     path: "/admin/UserRoles",
     permissionKey: "user",
   },
-  {
-    title: "Notifications",
-    icon: <FaBell className="menu-icon" />,
-    path: "/admin/Notiifcations",
-  },
+  // {
+  //   title: "Notifications",
+  //   icon: <FaBell className="menu-icon" />,
+  //   path: "/admin/Notiifcations",
+  // },
   {
     title: "Profile",
     icon: <FaUserCircle className="menu-icon" />,

@@ -241,7 +241,8 @@ function AddCostEstimates() {
       <div className="container py-4">
         {/* <h4 className="fw-bold mb-4">Cost Estimates</h4> */}
         <div className="bg-white border rounded-3 p-4 shadow-sm">
-          <h4 className="fw-semibold mb-4">Create New Estimate</h4>
+          {/* <h4 className="fw-semibold mb-4">Create New Estimate</h4> */}
+          <h4 className="fw-semibold mb-4">Create New Proposal</h4>
 
           <form onSubmit={handleSubmit}>
             <div className="row mb-3">

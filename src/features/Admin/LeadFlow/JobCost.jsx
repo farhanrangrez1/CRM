@@ -181,7 +181,7 @@ const JobCost = ({ jobStatus, refreshTrigger }) => {
   );
 
   return (
-    <Container className="py-4 d-flex justify-content-between flex-wrap gap-3">
+    <Container className="py-4 d-flex justify-content-between flex-wrap gap-2">
       <Card className="shadow-sm flex-grow-1">
         <Card.Header className="bg-primary text-white">
           <h4 className="mb-0">Project Details</h4>

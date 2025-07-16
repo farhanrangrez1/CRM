@@ -560,7 +560,329 @@ const TempPoles = ({ data }) => {
     };
 
 
+    // const ProposalWorkflowBoard = ({ onNavigate, selectedStatus }) => {
+    //     const reduxProposals = (project.data || [])
+    //         .filter(item => item.tempPoles === true)
+    //         .map(item => ({
+    //             id: item.id,
+    //             _id: item._id,
+    //             title: item.projectName,
+    //             client: item.clientId?.clientName,
+    //             address: item.projectAddress || "N/A",
+    //             status: mapStatus(item.status),
+    //             projectPriority: item.projectPriority,
+    //             phases: item.phases || "N/A",
+    //             revenue: item.budgetAmount ? `AED ${item.budgetAmount}` : "N/A",
+    //             startDate: item.startDate,
+    //             endDate: item.endDate,
+    //             committedCost: "4220",
+    //             profitLoss: "N/A",
+    //             updated: item.updatedAt,
+    //             paid: item.paid,
+    //             due: item.due
+    //         }));
+
+
+    //     function mapStatus(status) {
+    //         const map = {
+    //             "need payment": "needPayment",
+    //             "need to pay dwp": "needToPayDWP",
+    //             "need to install": "needToInstall",
+    //             "inspection scheduled": "inspectionScheduled",
+    //             "passed inspection": "passedInspection",
+    //             "waiting on meter": "waitingOnMeter",
+    //             "remove breakers": "removeBreakers",
+    //             "meter installed": "meterInstalled",
+    //             "requested to remove": "requestedToRemove",
+    //             "temp pole removed": "tempPoleRemoved",
+    //             "temp pole only": "tempPoleOnly",
+    //             "lost": "lost"
+    //         };
+    //         const openStatuses = ["Active Project", "Open", "Signature"];
+
+    //         if (openStatuses.includes(status)) {
+    //             return "open";
+    //         }
+
+    //         const mappedStatus = map[status] ?? null;
+    //         return mappedStatus;
+    //     }
+
+
+    //     const dispatch = useDispatch();
+    //     const [isUpdating, setIsUpdating] = useState(false);
+
+    //     useEffect(() => {
+    //         dispatch(getAllDocumentsRecord());
+    //     }, [dispatch]);
+
+    //     const records = useSelector((state) => state?.documentRecord?.records?.data) || [];
+
+    //     const proposalTotalsMap = records.reduce((acc, record) => {
+    //         const proposalId = record.proposal_id;
+    //         const total = record.line_items?.reduce((sum, item) => sum + (item.amount || 0), 0);
+    //         acc[proposalId] = (acc[proposalId] || 0) + total;
+    //         return acc;
+    //     }, {});
+
+
+    //     const kanbanData = {
+    //         open: reduxProposals.filter(p => p.status === "open"),
+    //         needPayment: reduxProposals.filter(p => p.status === "needPayment"),
+    //         needToPayDWP: reduxProposals.filter(p => p.status === "needToPayDWP"),
+    //         needToInstall: reduxProposals.filter(p => p.status === "needToInstall"),
+    //         inspectionScheduled: reduxProposals.filter(p => p.status === "inspectionScheduled"),
+    //         passedInspection: reduxProposals.filter(p => p.status === "passedInspection"),
+    //         waitingOnMeter: reduxProposals.filter(p => p.status === "waitingOnMeter"),
+    //         removeBreakers: reduxProposals.filter(p => p.status === "removeBreakers"),
+    //         meterInstalled: reduxProposals.filter(p => p.status === "meterInstalled"),
+    //         requestedToRemove: reduxProposals.filter(p => p.status === "requestedToRemove"),
+    //         tempPoleRemoved: reduxProposals.filter(p => p.status === "tempPoleRemoved"),
+    //         tempPoleOnly: reduxProposals.filter(p => p.status === "tempPoleOnly"),
+    //         lost: reduxProposals.filter(p => p.status === "lost"),
+    //     };
+
+    //     const handleCardDrop = async (result) => {
+    //         const { source, destination, draggableId } = result;
+    //         if (!destination || (source.droppableId === destination.droppableId && source.index === destination.index)) return;
+
+    //         const reverseMap = {
+    //             open: "Open",
+    //             needPayment: "Need Payment",
+    //             needToPayDWP: "Need to Pay DWP",
+    //             needToInstall: "Need to Install",
+    //             inspectionScheduled: "Inspection Scheduled",
+    //             passedInspection: "Passed Inspection",
+    //             waitingOnMeter: "Waiting on Meter",
+    //             removeBreakers: "Remove Breakers",
+    //             meterInstalled: "Meter Installed",
+    //             requestedToRemove: "Requested to Remove",
+    //             tempPoleRemoved: "Temp Pole Removed",
+    //             tempPoleOnly: "Temp Pole Only",
+    //             lost: "Lost"
+    //         };
+
+    //         const newStatus = reverseMap[destination.droppableId];
+
+    //         dispatch(updateProjectStatusLocally({ id: draggableId, status: newStatus }));
+    //         setIsUpdating(true);
+    //         try {
+    //             await dispatch(updateProject({ id: draggableId, payload: { status: newStatus } }));
+    //             await dispatch(fetchProject());
+    //         } catch (error) {
+    //             console.error("Failed to update status", error);
+    //         }
+    //         setIsUpdating(false);
+    //     };
+
+    //     let columns = [
+    //         { id: 'open', title: 'Open' },
+    //         { id: 'needPayment', title: 'Need Payment' },
+    //         { id: 'needToPayDWP', title: 'Need to Pay DWP' },
+    //         { id: 'needToInstall', title: 'Need to Install' },
+    //         { id: 'inspectionScheduled', title: 'Inspection Scheduled' },
+    //         { id: 'passedInspection', title: 'Passed Inspection' },
+    //         { id: 'waitingOnMeter', title: 'Waiting on Meter' },
+    //         { id: 'removeBreakers', title: 'Remove Breakers' },
+    //         { id: 'meterInstalled', title: 'Meter Installed' },
+    //         { id: 'requestedToRemove', title: 'Requested to Remove' },
+    //         { id: 'tempPoleRemoved', title: 'Temp Pole Removed' },
+    //         { id: 'tempPoleOnly', title: 'Temp Pole Only' },
+    //         { id: 'lost', title: 'Lost' },
+    //     ];
+
+    //     if (selectedStatus && selectedStatus !== 'All') {
+    //         const statusMap = {
+    //             'Open': 'open',
+    //             'Need Payment': 'needPayment',
+    //             'Need to Pay DWP': 'needToPayDWP',
+    //             'Need to Install': 'needToInstall',
+    //             'Inspection Scheduled': 'inspectionScheduled',
+    //             'Passed Inspection': 'passedInspection',
+    //             'Waiting on Meter': 'waitingOnMeter',
+    //             'Remove Breakers': 'removeBreakers',
+    //             'Meter Installed': 'meterInstalled',
+    //             'Requested to Remove': 'requestedToRemove',
+    //             'Temp Pole Removed': 'tempPoleRemoved',
+    //             'Temp Pole Only': 'tempPoleOnly',
+    //             'Lost': 'lost',
+    //         };
+    //         const selectedId = statusMap[selectedStatus];
+    //         if (selectedId) {
+    //             columns = [columns.find(c => c.id === selectedId), ...columns.filter(c => c.id !== selectedId)];
+    //         }
+    //     }
+
+    //     const getTextColor = (status) => {
+    //         const bg = getStatusBadgeColor(status);
+    //         const darkBackgrounds = ["primary", "secondary", "dark", "info", "success"];
+    //         return darkBackgrounds.includes(bg) ? "text-white" : "text-dark";
+    //     };
+
+    //     const getStatusBadgeColor = (status) => {
+    //         switch (status) {
+    //             case "open":
+    //                 return "secondary";
+    //             case "needPayment":
+    //                 return "info";
+    //             case "needToPayDWP":
+    //                 return "primary";
+    //             case "needToInstall":
+    //                 return "dark";
+    //             case "inspectionScheduled":
+    //                 return "warning";
+    //             case "passedInspection":
+    //                 return "success";
+    //             case "waitingOnMeter":
+    //                 return "primary";
+    //             case "removeBreakers":
+    //                 return "success";
+    //             case "meterInstalled":
+    //                 return "warning";
+    //             case "requestedToRemove":
+    //                 return "primary";
+    //             case "tempPoleRemoved":
+    //                 return "success";
+    //             case "tempPoleOnly":
+    //                 return "dark";
+    //             case "lost":
+    //                 return "info";
+    //             default:
+    //                 return "secondary";
+    //         }
+    //     };
+
+    //     const handleUpdateProjectCard = (project) => {
+    //         navigate(`/admin/AddProjectList`, { state: { project } });
+    //     };
+
+
+    //     const handleDeleteProject = (projectId) => {
+    //         Swal.fire({
+    //             title: 'Are you sure?',
+    //             text: 'This will permanently delete the project!',
+    //             icon: 'warning',
+    //             showCancelButton: true,
+    //             confirmButtonText: 'Yes, delete it!',
+    //             cancelButtonText: 'Cancel',
+    //         }).then(async (result) => {
+    //             if (result.isConfirmed) {
+    //                 try {
+    //                     await dispatch(deleteproject(projectId));
+    //                     await Swal.fire('Deleted!', 'Project has been deleted.', 'success');
+    //                     window.location.reload();
+    //                 } catch (error) {
+    //                     Swal.fire('Error!', 'Something went wrong.', 'error');
+    //                 }
+    //             }
+    //         });
+    //     };
+
+
+    //     return (
+    //         <div style={{ position: 'relative' }}>
+    //             {isUpdating && (
+    //                 <div className="kanban-loading-overlay">
+    //                     Updating...
+    //                 </div>
+    //             )}
+    //             <DragDropContext onDragEnd={handleCardDrop}>
+    //                 <div
+    //                     className="kanban-board d-flex flex-nowrap gap-3 py-3"
+    //                     style={{ overflowX: "auto", minHeight: 350, marginLeft: "20px", WebkitOverflowScrolling: 'touch' }}
+    //                 >
+    //                     {columns.map(col => (
+    //                         <Droppable droppableId={col.id} key={col.id}>
+    //                             {(provided, snapshot) => (
+    //                                 <div
+    //                                     ref={provided.innerRef}
+    //                                     {...provided.droppableProps}
+    //                                     className="kanban-stage bg-light border rounded p-2 flex-shrink-0 d-flex flex-column"
+    //                                     style={{ minWidth: 220, maxWidth: 320, minHeight: 320, width: '100%', flex: '1 1 260px', background: snapshot.isDraggingOver ? '#e3f2fd' : undefined }}
+    //                                 >
+    //                                     <div className="fw-bold mb-2 d-flex align-items-center gap-2">
+    //                                         <span className="text-dark" style={{ fontSize: 14 }}>
+    //                                             <span className="me-1" style={{ fontSize: 10 }}>●</span>
+    //                                             {col.title}
+    //                                         </span>
+    //                                         <span className="badge bg-light text-dark border ms-auto">{kanbanData[col.id]?.length || 0}</span>
+    //                                     </div>
+    //                                     {kanbanData[col.id]?.map((item, idx) => (
+    //                                         <Draggable draggableId={String(item._id)} index={idx} key={item._id}>
+    //                                             {(provided, snapshot) => (
+    //                                                 <div
+    //                                                     ref={provided.innerRef}
+    //                                                     {...provided.draggableProps}
+    //                                                     {...provided.dragHandleProps}
+    //                                                     className="bg-white border rounded mb-2 p-2 shadow-sm"
+    //                                                     style={{
+    //                                                         minHeight: 110,
+    //                                                         wordBreak: 'break-word',
+    //                                                         maxWidth: '100%',
+    //                                                         background: snapshot.isDragging ? '#fffde7' : undefined,
+    //                                                         ...provided.draggableProps.style
+    //                                                     }}
+    //                                                     onClick={() => {
+    //                                                         localStorage.setItem("proposalId", item.id);
+    //                                                         localStorage.setItem("invoice", JSON.stringify(item));
+    //                                                         navigate("/admin/LeadFlow/Details", { state: { item: item } });
+    //                                                     }}
+    //                                                 >
+    //                                                     {/* <div className="fw-semibold text-primary" style={{ fontSize: 15 }}>
+    //                                                         {item.job_name || item.title}
+    //                                                     </div> */}
+    //                                                     <div className="d-flex justify-content-between align-items-start mb-1">
+    //                                                         <div className="fw-semibold text-primary" style={{ fontSize: 15, maxWidth: '80%', wordBreak: 'break-word' }}>
+    //                                                             {item.projectName || item.title || item.job_name}
+    //                                                         </div>
+    //                                                         <Dropdown align="end" onClick={(e) => e.stopPropagation()}>
+    //                                                             <Dropdown.Toggle as="div" style={{ cursor: "pointer" }}>
+    //                                                                 <BsThreeDotsVertical size={16} />
+    //                                                             </Dropdown.Toggle>
+    //                                                             <Dropdown.Menu>
+    //                                                                 <Dropdown.Item onClick={() => handleUpdateProjectCard(item)}>Edit</Dropdown.Item>
+    //                                                                 <Dropdown.Item onClick={() => handleDeleteProject(item._id)} className="text-danger">Delete</Dropdown.Item>
+    //                                                             </Dropdown.Menu>
+    //                                                         </Dropdown>
+    //                                                     </div>
+    //                                                     <div className="text-muted small mb-1">Client: {item.client || item.client_name}</div>
+    //                                                     <div className="text-muted small mb-1">Address: {item.address || "N/A"}</div>
+    //                                                     <div className="small text-secondary mb-1">Phases: {item.phases}</div>
+    //                                                     {/* <div className="fw-semibold text-success" style={{ fontSize: 15 }}>
+    //                                                         Total: ${proposalTotalsMap[item._id] || 0}
+    //                                                     </div> */}
+    //                                                     <div className="fw-semibold text-success" style={{ fontSize: 15 }}>
+    //                                                         Total Paid: {item.paid || 0}
+    //                                                     </div>
+    //                                                     <div className="fw-semibold text-danger" style={{ fontSize: 15 }}>
+    //                                                         Total Due: {item.due || 0}
+    //                                                     </div>
+    //                                                     <div className="d-flex flex-wrap gap-2 align-items-center mb-1">
+    //                                                         <Badge bg={getStatusBadgeColor(item.status)} className={`me-1 ${getTextColor(item.status)}`}>
+    //                                                             {item.status}
+    //                                                         </Badge>
+    //                                                     </div>
+    //                                                 </div>
+    //                                             )}
+    //                                         </Draggable>
+    //                                     ))}
+    //                                     {provided.placeholder}
+    //                                 </div>
+    //                             )}
+    //                         </Droppable>
+    //                     ))}
+    //                 </div>
+    //             </DragDropContext>
+    //         </div>
+    //     );
+    // };
+
+
     const ProposalWorkflowBoard = ({ onNavigate, selectedStatus }) => {
+        const navigate = useNavigate();
+        const dispatch = useDispatch();
+        const [isUpdating, setIsUpdating] = useState(false);
+
         const reduxProposals = (project.data || [])
             .filter(item => item.tempPoles === true)
             .map(item => ({
@@ -578,10 +900,13 @@ const TempPoles = ({ data }) => {
                 committedCost: "4220",
                 profitLoss: "N/A",
                 updated: item.updatedAt,
+                paid: item.paid,
+                due: item.due,
+                lineItems: item.lineItems
             }));
 
-
         function mapStatus(status) {
+            const normalized = (status || "").trim().toLowerCase();
             const map = {
                 "need payment": "needPayment",
                 "need to pay dwp": "needToPayDWP",
@@ -596,25 +921,16 @@ const TempPoles = ({ data }) => {
                 "temp pole only": "tempPoleOnly",
                 "lost": "lost"
             };
-            const openStatuses = ["Active Project", "Open", "Signature"];
-
-            if (openStatuses.includes(status)) {
-                return "open";
-            }
-
-            const mappedStatus = map[status] ?? null;
-            return mappedStatus;
+            const openStatuses = ["active project", "open", "signature"];
+            if (openStatuses.includes(normalized)) return "open";
+            return map[normalized] ?? null;
         }
-
-
-        const dispatch = useDispatch();
-        const [isUpdating, setIsUpdating] = useState(false);
 
         useEffect(() => {
             dispatch(getAllDocumentsRecord());
         }, [dispatch]);
 
-        const records = useSelector((state) => state?.documentRecord?.records?.data) || [];
+        const records = useSelector(state => state?.documentRecord?.records?.data) || [];
 
         const proposalTotalsMap = records.reduce((acc, record) => {
             const proposalId = record.proposal_id;
@@ -622,7 +938,6 @@ const TempPoles = ({ data }) => {
             acc[proposalId] = (acc[proposalId] || 0) + total;
             return acc;
         }, {});
-
 
         const kanbanData = {
             open: reduxProposals.filter(p => p.status === "open"),
@@ -637,7 +952,7 @@ const TempPoles = ({ data }) => {
             requestedToRemove: reduxProposals.filter(p => p.status === "requestedToRemove"),
             tempPoleRemoved: reduxProposals.filter(p => p.status === "tempPoleRemoved"),
             tempPoleOnly: reduxProposals.filter(p => p.status === "tempPoleOnly"),
-            lost: reduxProposals.filter(p => p.status === "lost"),
+            lost: reduxProposals.filter(p => p.status === "lost")
         };
 
         const handleCardDrop = async (result) => {
@@ -686,30 +1001,38 @@ const TempPoles = ({ data }) => {
             { id: 'requestedToRemove', title: 'Requested to Remove' },
             { id: 'tempPoleRemoved', title: 'Temp Pole Removed' },
             { id: 'tempPoleOnly', title: 'Temp Pole Only' },
-            { id: 'lost', title: 'Lost' },
+            { id: 'lost', title: 'Lost' }
         ];
 
         if (selectedStatus && selectedStatus !== 'All') {
-            const statusMap = {
-                'Open': 'open',
-                'Need Payment': 'needPayment',
-                'Need to Pay DWP': 'needToPayDWP',
-                'Need to Install': 'needToInstall',
-                'Inspection Scheduled': 'inspectionScheduled',
-                'Passed Inspection': 'passedInspection',
-                'Waiting on Meter': 'waitingOnMeter',
-                'Remove Breakers': 'removeBreakers',
-                'Meter Installed': 'meterInstalled',
-                'Requested to Remove': 'requestedToRemove',
-                'Temp Pole Removed': 'tempPoleRemoved',
-                'Temp Pole Only': 'tempPoleOnly',
-                'Lost': 'lost',
-            };
+            const statusMap = columns.reduce((acc, col) => {
+                acc[col.title] = col.id;
+                return acc;
+            }, {});
             const selectedId = statusMap[selectedStatus];
             if (selectedId) {
                 columns = [columns.find(c => c.id === selectedId), ...columns.filter(c => c.id !== selectedId)];
             }
         }
+
+        const getStatusBadgeColor = (status) => {
+            switch (status) {
+                case "open": return "secondary";
+                case "needPayment": return "info";
+                case "needToPayDWP": return "primary";
+                case "needToInstall": return "dark";
+                case "inspectionScheduled": return "warning";
+                case "passedInspection": return "success";
+                case "waitingOnMeter": return "primary";
+                case "removeBreakers": return "success";
+                case "meterInstalled": return "warning";
+                case "requestedToRemove": return "primary";
+                case "tempPoleRemoved": return "success";
+                case "tempPoleOnly": return "dark";
+                case "lost": return "info";
+                default: return "secondary";
+            }
+        };
 
         const getTextColor = (status) => {
             const bg = getStatusBadgeColor(status);
@@ -717,43 +1040,9 @@ const TempPoles = ({ data }) => {
             return darkBackgrounds.includes(bg) ? "text-white" : "text-dark";
         };
 
-        const getStatusBadgeColor = (status) => {
-            switch (status) {
-                case "open":
-                    return "secondary";
-                case "needPayment":
-                    return "info";
-                case "needToPayDWP":
-                    return "primary";
-                case "needToInstall":
-                    return "dark";
-                case "inspectionScheduled":
-                    return "warning";
-                case "passedInspection":
-                    return "success";
-                case "waitingOnMeter":
-                    return "primary";
-                case "removeBreakers":
-                    return "success";
-                case "meterInstalled":
-                    return "warning";
-                case "requestedToRemove":
-                    return "primary";
-                case "tempPoleRemoved":
-                    return "success";
-                case "tempPoleOnly":
-                    return "dark";
-                case "lost":
-                    return "info";
-                default:
-                    return "secondary";
-            }
-        };
-
         const handleUpdateProjectCard = (project) => {
             navigate(`/admin/AddProjectList`, { state: { project } });
         };
-
 
         const handleDeleteProject = (projectId) => {
             Swal.fire({
@@ -776,7 +1065,6 @@ const TempPoles = ({ data }) => {
             });
         };
 
-
         return (
             <div style={{ position: 'relative' }}>
                 {isUpdating && (
@@ -784,11 +1072,8 @@ const TempPoles = ({ data }) => {
                         Updating...
                     </div>
                 )}
-                <DragDropContext key={reduxProposals.map(p => p.id).join('-')} onDragEnd={handleCardDrop}>
-                    <div
-                        className="kanban-board d-flex flex-nowrap gap-3 py-3"
-                        style={{ overflowX: "auto", minHeight: 350, marginLeft: "20px", WebkitOverflowScrolling: 'touch' }}
-                    >
+                <DragDropContext onDragEnd={handleCardDrop}>
+                    <div className="kanban-board d-flex flex-nowrap gap-3 py-3" style={{ overflowX: "auto", minHeight: 350, marginLeft: "20px", WebkitOverflowScrolling: 'touch' }}>
                         {columns.map(col => (
                             <Droppable droppableId={col.id} key={col.id}>
                                 {(provided, snapshot) => (
@@ -806,7 +1091,7 @@ const TempPoles = ({ data }) => {
                                             <span className="badge bg-light text-dark border ms-auto">{kanbanData[col.id]?.length || 0}</span>
                                         </div>
                                         {kanbanData[col.id]?.map((item, idx) => (
-                                            <Draggable draggableId={String(item.id)} index={idx} key={item.id}>
+                                            <Draggable draggableId={String(item._id)} index={idx} key={item._id}>
                                                 {(provided, snapshot) => (
                                                     <div
                                                         ref={provided.innerRef}
@@ -823,12 +1108,9 @@ const TempPoles = ({ data }) => {
                                                         onClick={() => {
                                                             localStorage.setItem("proposalId", item.id);
                                                             localStorage.setItem("invoice", JSON.stringify(item));
-                                                            navigate("/admin/LeadFlow/Details", { state: { item: item } });
+                                                            navigate("/admin/LeadFlow/Details", { state: { item } });
                                                         }}
                                                     >
-                                                        {/* <div className="fw-semibold text-primary" style={{ fontSize: 15 }}>
-                                                            {item.job_name || item.title}
-                                                        </div> */}
                                                         <div className="d-flex justify-content-between align-items-start mb-1">
                                                             <div className="fw-semibold text-primary" style={{ fontSize: 15, maxWidth: '80%', wordBreak: 'break-word' }}>
                                                                 {item.projectName || item.title || item.job_name}
@@ -843,12 +1125,9 @@ const TempPoles = ({ data }) => {
                                                                 </Dropdown.Menu>
                                                             </Dropdown>
                                                         </div>
-                                                        <div className="text-muted small mb-1">Client: {item.client || item.client_name}</div>
-                                                        <div className="text-muted small mb-1">Address: {item.address || "N/A"}</div>
+                                                        <div className="text-muted small mb-1">Client: {item.client}</div>
+                                                        <div className="text-muted small mb-1">Address: {item.address}</div>
                                                         <div className="small text-secondary mb-1">Phases: {item.phases}</div>
-                                                        {/* <div className="fw-semibold text-success" style={{ fontSize: 15 }}>
-                                                            Total: ${proposalTotalsMap[item._id] || 0}
-                                                        </div> */}
                                                         <div className="fw-semibold text-success" style={{ fontSize: 15 }}>
                                                             Total Paid: {item.paid || 0}
                                                         </div>
@@ -874,6 +1153,8 @@ const TempPoles = ({ data }) => {
             </div>
         );
     };
+
+
 
     const [selectedStatus, setSelectedStatus] = useState('All');
     const [expandedJobIndex, setExpandedJobIndex] = useState(null);

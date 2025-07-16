@@ -527,19 +527,71 @@ function FinanceTabEditPage() {
         }
     };
     // ... existing code ...
+    const [invoice, setInvoice] = useState(null);
+    // const invoice = location.state?.invoice;
+    useEffect(() => {
+        const storedInvoice = localStorage.getItem("invoice");
+        if (storedInvoice) {
+            setInvoice(JSON.parse(storedInvoice));
+        }
+    }, []);
+
+    const [items, setItems] = useState([{ description: "", quantity: 0, rate: 0, amount: 0, is_paid: "false" }]);
+
+    useEffect(() => {
+        if (Array.isArray(invoice?.lineItems)) {
+            setItems(invoice?.lineItems.map(item => ({
+                ...item,
+                is_paid: item?.is_paid || "false"
+            })));
+        }
+    }, [invoice, invoice?._id])
+
+    const calculateAmount = (quantity, rate) => quantity * rate;
+
+    const handleItemChange = (index, field, value) => {
+        const newItems = [...items];
+        // Special handling for is_paid checkbox
+        if (field === 'is_paid') {
+            newItems[index][field] = value === true ? "true" : "false";
+        } else {
+            newItems[index][field] = value;
+        }
+        // Recalculate amount if quantity or rate changes
+        if (field === 'quantity' || field === 'rate') {
+            const quantity = field === 'quantity' ? value : newItems[index].quantity;
+            const rate = field === 'rate' ? value : newItems[index].rate;
+            newItems[index].amount = calculateAmount(quantity, rate);
+        }
+        setItems(newItems);
+    };
+
+    const addItem = () => {
+        setItems([...items, { description: "", quantity: 0, rate: 0, amount: 0, is_paid: "false" }]);
+    };
+
+    const removeItem = (index) => {
+        const newItems = [...items];
+        newItems.splice(index, 1);
+        setItems(newItems);
+    };
+    const viewItem = (index) => {
+        navigate()
+    };
+
     return (
         <div
             className="p-4 m-2"
             style={{ backgroundColor: "white", borderRadius: "10px" }} >
             <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-                <h2 className="fw-semibold mb-3">Cost Estimates</h2>
-                <Link to={"/admin/AddCostEstimates"}>
+                <h2 className="fw-semibold mb-3">All Invoices</h2>
+                {/* <Link to={"/admin/AddCostEstimates"}>
                     <button id="btn-All" className=" btn-dark" style={{ border: "none", borderRadius: "10px" }}>
                         <BsPlusLg className="me-2" /> New Estimate
                     </button>
-                </Link>
+                </Link> */}
             </div>
-            <div className="d-flex justify-content-between align-items-center mb-4">
+            {/* <div className="d-flex justify-content-between align-items-center mb-4">
                 <div className="filters d-flex flex-wrap gap-1 mb-4">
                     <div className="search-container flex-grow-1">
                         <Form.Control
@@ -612,10 +664,10 @@ function FinanceTabEditPage() {
 
 
                 </div>
-            </div>
+            </div> */}
 
-            <div className="table-responsive" style={{ maxHeight: "900px", overflowY: "auto" }}>
-                <Table hover className="align-middle sticky-header">
+            {/* <div className="table-responsive" style={{ maxHeight: "900px", overflowY: "auto" }}> */}
+            {/* <Table hover className="align-middle sticky-header">
                     <thead style={{ backgroundColor: "#f8f9fa", position: "sticky", top: 0, zIndex: 1 }}>
                         <tr>
                             <th><input type="checkbox" /></th>
@@ -624,10 +676,8 @@ function FinanceTabEditPage() {
                             <th style={{ whiteSpace: 'nowrap' }}>Client Name</th>
                             <th style={{ whiteSpace: 'nowrap' }}>Client Email</th>
                             <th>Date</th>
-                            {/* <th>ProjectNo</th> */}
                             <th>Amount</th>
                             <th>CotStatus</th>
-                            {/* <th>POStatus</th> */}
                             <th>Actions</th>
                         </tr>
                     </thead>
@@ -663,8 +713,8 @@ function FinanceTabEditPage() {
                                                 po.receivablePurchases[0]?.POStatus?.toLowerCase() !== "pending"
                                             }
                                             onClick={() => {
-                                                setCostEstimatesId(po._id); // Store the ID
-                                                setShowAddPOModal(true);   // Open Modal
+                                                setCostEstimatesId(po._id);
+                                                setShowAddPOModal(true);   
                                             }}
                                         >
                                             PO Add
@@ -678,11 +728,7 @@ function FinanceTabEditPage() {
 
 
                                         <button className="btn btn-sm btn-primary" onClick={() => Duplicate(po)}><FaRegCopy /></button>
-                                        {/* <button className="btn btn-sm btn-primary" onClick={() => handleConvertToInvoice(po)}>ConvertInvoice</button> */}
                                         <button className="btn btn-sm btn-outline-primary" onClick={() => UpdateEstimate(po)}><BsPencil /></button>
-                                        {/* <button className="btn btn-sm btn-outline-danger" onClick={() => handleDelete(po._id))}>
-                          <FaTrash />
-                        </button> */}
                                         <button
                                             className="btn btn-sm btn-outline-primary"
                                             onClick={() => handleDownloadPDF(po)}
@@ -695,8 +741,9 @@ function FinanceTabEditPage() {
                             </tr>
                         ))}
                     </tbody>
-                </Table>
-            </div>
+                </Table> */}
+
+            {/* </div> */}
 
             {/* Modal for converting to invoice */}
             <Modal
@@ -788,7 +835,7 @@ function FinanceTabEditPage() {
 
             {renderAddPOModal()}
             {/* Modal for converting to invoice */}
-            {!loading && !error && (
+            {/* {!loading && !error && (
                 <div className="d-flex justify-content-between align-items-center mt-3">
                     <div className="text-muted small">
                         Showing {(currentPage - 1) * itemsPerPage + 1} to {Math.min(currentPage * itemsPerPage, totalItems)} of {totalItems} entries
@@ -815,7 +862,108 @@ function FinanceTabEditPage() {
                         </li>
                     </ul>
                 </div>
-            )}
+            )} */}
+            <div className="row fw-semibold text-muted mb-2 px-2">
+                <div className="col-md-1">OrderNo.</div>
+                <div className="col-md-3">Description</div>
+                <div className="col-md-2">Quantity</div>
+                <div className="col-md-2">Rate</div>
+                <div className="col-md-2">Amount</div>
+                <div className="col-md-1">Is Paid</div>
+                <div className="col-md-1 text-end">Action</div>
+            </div>
+
+            {items.map((item, index) => (
+                <div
+                    className="row gx-2 gy-2 align-items-center mb-2 px-2 py-2"
+                    key={index}
+                    style={{ background: "#f9f9f9", borderRadius: "8px" }}
+                >
+                    <div className="col-md-1">
+                        <input
+                            type="text"
+                            className="form-control"
+                            value={index + 1}
+                            readOnly
+                        />
+                    </div>
+                    <div className="col-md-3">
+                        <input
+                            type="text"
+                            className="form-control"
+                            placeholder="Item description"
+                            value={item.description}
+                            onChange={(e) => handleItemChange(index, "description", e.target.value)}
+                        />
+                    </div>
+                    <div className="col-md-2">
+                        <input
+                            type="number"
+                            className="form-control"
+                            value={item.quantity}
+                            onChange={(e) => handleItemChange(index, "quantity", parseInt(e.target.value) || 0)}
+                        />
+                    </div>
+                    <div className="col-md-2">
+                        <input
+                            type="number"
+                            value={item.rate}
+                            onChange={(e) => handleItemChange(index, "rate", parseFloat(e.target.value) || 0)}
+                            className="form-control"
+                        />
+                    </div>
+                    <div className="col-md-2">
+                        <span>
+                            {item.amount.toFixed(2)}
+                        </span>
+                    </div>
+                    <div className="col-md-1">
+                        <input
+                            type="checkbox"
+                            checked={item.is_paid === "true" || item.is_paid === true}
+                            onChange={(e) => handleItemChange(index, "is_paid", e.target.checked)}
+                            className="form-check-input"
+                        />
+                    </div>
+                    <div className="col-md-1 text-end">
+                        <button
+                            type="button"
+                            className="btn btn-link text-danger p-0"
+                            // onClick={() => removeItem(index)}
+                            onClick={() => viewItem(index)}
+                        >
+                            view
+                        </button>
+                    </div>
+                </div>
+            ))}
+
+            {/* ✅ Summary Row */}
+            {items.length > 0 && (() => {
+                const total = items.reduce((sum, item) => sum + (parseFloat(item.amount) || 0), 0);
+                const paid = items
+                    .filter((item) => item.is_paid === "true" || item.is_paid === true)
+                    .reduce((sum, item) => sum + (parseFloat(item.amount) || 0), 0);
+                const due = total - paid;
+
+                return (
+                    <div className="row fw-bold align-items-center px-2 py-3 mt-3 border-top">
+                        <div className="col-md-6 text-end">Total Amount:</div>
+                        <div className="col-md-2">{total.toFixed(2)}</div>
+                        <div className="col-md-2 text-success">Paid: {paid.toFixed(2)}</div>
+                        <div className="col-md-2 text-danger">Due: {due.toFixed(2)}</div>
+                    </div>
+                );
+            })()}
+
+
+            <button type="button"
+                className="btn border rounded px-3 py-1 mb-4 text-dark"
+                onClick={addItem}
+            >
+                + Add Line Item
+            </button>
+
         </div>
     );
 }

@@ -327,9 +327,7 @@ function AddInvoice({ onInvoiceComplete }) {
 
 
   useEffect(() => {
-    const clientId = Array.isArray(signatureData?.clientId)
-      ? signatureData.clientId[0]
-      : signatureData?.clientId?._id;
+    const clientId = formData.client_id;
 
     if (clientId && Clients?.data?.length > 0) {
       const client = Clients.data.find((c) => c._id === clientId);
@@ -342,44 +340,43 @@ function AddInvoice({ onInvoiceComplete }) {
         }));
       }
     }
-  }, [signatureData, Clients]);
+  }, [formData?.client_id, Clients]);
 
-  useEffect(() => {
-    const generatePDF = async () => {
-      const element = proposalRef.current;
-      if (!element || !signatureData?.line_items?.length) return;
+  const generatePDF = async () => {
+    const element = proposalRef.current;
+    if (!element || !items?.length) return;
 
-      await new Promise((res) => setTimeout(res, 500));
+    await new Promise((res) => setTimeout(res, 500));
 
-      const canvas = await html2canvas(element, { scale: 2 });
-      const imgData = canvas.toDataURL("image/png");
+    const canvas = await html2canvas(element, { scale: 2 });
+    const imgData = canvas.toDataURL("image/png");
 
-      const pdf = new jsPDF("p", "mm", "a4");
-      const imgProps = pdf.getImageProperties(imgData);
-      const pdfWidth = pdf.internal.pageSize.getWidth();
-      const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
+    const pdf = new jsPDF("p", "mm", "a4");
+    const imgProps = pdf.getImageProperties(imgData);
+    const pdfWidth = pdf.internal.pageSize.getWidth();
+    const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
 
-      pdf.addImage(imgData, "PNG", 0, 0, pdfWidth, pdfHeight);
+    pdf.addImage(imgData, "PNG", 0, 0, pdfWidth, pdfHeight);
 
-      const blob = pdf.output("blob");
-      const file = new File([blob], "proposal.pdf", { type: "application/pdf" });
+    const blob = pdf.output("blob");
+    const file = new File([blob], "proposal.pdf", { type: "application/pdf" });
 
-      setSelectedFile({
-        name: file.name,
-        size: `${(file.size / 1024).toFixed(2)} KB`,
-        file: file,
-      });
+    setSelectedFile({
+      name: file.name,
+      size: `${(file.size / 1024).toFixed(2)} KB`,
+      file: file,
+    });
 
-      const pdfBlobUrl = URL.createObjectURL(blob);
-      setPdfUrl(pdfBlobUrl);
-    };
+    const pdfBlobUrl = URL.createObjectURL(blob);
+    setPdfUrl(pdfBlobUrl);
+  };
 
-    if (signatureData?.line_items?.length) {
-      generatePDF();
-    }
-  }, [signatureData]);
+
   const [showModal, setShowModal] = useState(false); // State to control modal visibility
-  const handleShow = () => setShowModal(true); // Function to show modal
+  const handleShow = () => {
+    setShowModal(true);
+    generatePDF();
+  }; // Function to show modal
   const handleClose = () => setShowModal(false); // Function to close modal
 
   return (
@@ -392,7 +389,7 @@ function AddInvoice({ onInvoiceComplete }) {
           </Button>
         </div>
 
-        <div className="d-flex gap-2">
+        <div className="">
           <form onSubmit={handleSubmit}>
             <div className="row mb-3">
               <div className="col-md-4 mb-3">
@@ -856,10 +853,10 @@ function AddInvoice({ onInvoiceComplete }) {
             We propose to furnish all materials, equipment, and labor, subject to any exclusions listed below,
             required to complete the following:
           </p>
-          {signatureData?.line_items?.length > 0 ? (
+          {items?.length > 0 ? (
             <table className="table table-bordered mt-3">
               <tbody>
-                {signatureData.line_items.map((item, index) => {
+                {items.map((item, index) => {
                   const lineAmount = item.quantity * item.rate;
                   return (
                     <tr key={index}>
@@ -873,7 +870,7 @@ function AddInvoice({ onInvoiceComplete }) {
                   <td colSpan="2" className="text-end"><strong>Total Proposal Value:</strong></td>
                   <td className="text-end fw-bold">
                     $
-                    {signatureData.line_items
+                    {items
                       .reduce((total, item) => total + item.quantity * item.rate, 0)
                       .toFixed(2)}
                   </td>

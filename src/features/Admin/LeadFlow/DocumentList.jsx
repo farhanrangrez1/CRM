@@ -182,6 +182,7 @@ const DocumentList = ({ documents, previewUrl, setPreviewUrl }) => {
   const handleDownload = (url) => {
     const a = document.createElement("a");
     a.href = url;
+    a.target = "_blank";
     a.download = url.split("/").pop();
     a.click();
   };
@@ -266,7 +267,7 @@ const DocumentList = ({ documents, previewUrl, setPreviewUrl }) => {
                     className="btn btn-sm btn-outline-success me-2"
                     onClick={() => handleDownload(doc.fileUrl)}
                   >
-                    Download
+                    Open
                   </button>
                   {doc.source === "Upload Tab" && (
                     <button

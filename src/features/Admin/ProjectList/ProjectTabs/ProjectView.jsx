@@ -839,8 +839,12 @@ const ProjectView = ({ data }) => {
                 id: item.id,
                 _id: item._id,
                 title: item.projectName,
+                description: item.description,
+                projectName: item.projectName,
                 address: item.projectAddress || "N/A",
+                projectAddress: item.projectAddress || "N/A",
                 client: item.clientId?.clientName,
+                clientId: item.clientId,
                 status: mapStatus(item.status),
                 projectPriority: item.projectPriority,
                 phases: item.phases || "N/A",
@@ -850,6 +854,9 @@ const ProjectView = ({ data }) => {
                 committedCost: "4220",
                 profitLoss: "N/A",
                 updated: item.updatedAt,
+                paid: item.paid,
+                due: item.due,
+                lineItems: item.lineItems
 
             })
         }
@@ -1151,10 +1158,10 @@ const ProjectView = ({ data }) => {
                                                             Total: ${proposalTotalsMap[item._id] || 0}
                                                         </div> */}
                                                         <div className="fw-semibold text-success" style={{ fontSize: 15 }}>
-                                                            Total Paid: {item.paid || 0}
+                                                            Total Paid: {item?.paid || 0}
                                                         </div>
                                                         <div className="fw-semibold text-danger" style={{ fontSize: 15 }}>
-                                                            Total Due: {item.due || 0}
+                                                            Total Due: {item?.due || 0}
                                                         </div>
                                                         <div className="d-flex flex-wrap gap-2 align-items-center mb-1">
                                                             <Badge bg={getStatusBadgeColor(item.status)} className={`me-1 ${getTextColor(item.status)}`}>

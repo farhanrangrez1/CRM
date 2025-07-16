@@ -39,7 +39,8 @@ const DailyLogs = () => {
 
   const permissiondata = JSON.parse(localStorage.getItem("permissions"));
 
-
+  const permissions = JSON.parse(localStorage.getItem('permissions'));
+  const user_id = permissions?.userId;
 
 
   // const proposalId = localStorage.getItem("proposalId");
@@ -67,7 +68,7 @@ const DailyLogs = () => {
 
   const navigate = useNavigate();
   const dispatch = useDispatch()
-  const user_id = localStorage.getItem('user_id')
+  // const user_id = localStorage.getItem('user_id')
   useEffect(() => {
     // dispatch(fetchAllProposals())
     dispatch(fetchAllDailyLogs())
@@ -122,8 +123,7 @@ const DailyLogs = () => {
   // };
 
   const handleSaveLog = () => {
-    const permissions = JSON.parse(localStorage.getItem('permissions'));
-    const user_id = permissions?.userId;
+
 
     const data = new FormData();
     data.append("job_id", formData.job_id);
@@ -205,6 +205,8 @@ const DailyLogs = () => {
     const user = users.find((u) => u._id === id);
     return user ? `${user.firstName || ""} ${user.lastName || ""}`.trim() : "Unknown";
   };
+
+
   const handleAddComment = () => {
     // console.log(id)
     if (newComment.trim() === '') return;
@@ -370,6 +372,8 @@ const DailyLogs = () => {
                     if (!logCommentsMap[log.id]) {
                       try {
                         const result = await dispatch(fetchCommentById(log.id)).unwrap();
+                        console.log(result);
+
                         setLogCommentsMap(prev => ({
                           ...prev,
                           [log.id]: result.data.comments // 👈 This stores comments under correct log.id

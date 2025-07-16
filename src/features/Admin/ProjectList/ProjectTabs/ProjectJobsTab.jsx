@@ -13,7 +13,16 @@ function ProjectJobsTab() {
   const location = useLocation();
   const params = useParams();
   // console.log("hello me project id", params);
-  const id = location.state?.id || params.id;
+  const [invoice, setInvoice] = useState(null);
+  useEffect(() => {
+    const storedInvoice = localStorage.getItem("invoice");
+    if (storedInvoice) {
+      setInvoice(JSON.parse(storedInvoice));
+    }
+  }, []);
+
+  // const id = location.state?.id || params.id;
+  const id = invoice?._id;
 
   const dispatch = useDispatch()
   const navigate = useNavigate()
@@ -290,7 +299,7 @@ function ProjectJobsTab() {
   return (
     <div className="card">
       <div className="card-header d-flex align-content-center justify-content-between mt-3">
-        <h5 className="card-title mb-0">Jobs List</h5>
+        <h5 className="card-title mb-0">Tasks List</h5>
         <div className="text-end">
           <Button
             id="All_btn"

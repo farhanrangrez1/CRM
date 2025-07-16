@@ -22,6 +22,9 @@ import { getDocumentsByProposalId } from "../../../redux/slices/documentSlice";
 import { fetchusers } from "../../../redux/slices/userSlice";
 import { Link } from "react-bootstrap-icons";
 import PurchaseOrder from "../ProjectList/ProjectTabs/PurchaseOrder";
+import FinanceTabEditPage from "./FinanceTabEditPage";
+import ProjectJobsTab from "../ProjectList/ProjectTabs/ProjectJobsTab";
+import { apiUrl } from "../../../redux/utils/config";
 
 const Editpurposal = () => {
   const [manager, setManager] = useState(null);
@@ -438,6 +441,16 @@ const Editpurposal = () => {
     navigate(`/admin/OvervieJobsTracker`, { state: { job } });
   };
 
+
+  useEffect(() => {
+    const fetchemaildata = async () => {
+      const response = await axios.get(`${apiUrl}/getEnvelopesByProjectId/${proposalId}`)
+      console.log(response);
+
+    }
+    fetchemaildata();
+  }, [])
+
   const renderTabContent = () => {
     switch (activeTab) {
       case "Summary":
@@ -633,229 +646,9 @@ const Editpurposal = () => {
 
           </div>
         );
-      // return (
-      //   <div className="tab-content-box row">
-      //     <div className="col-md-8">
-      //       <h5 className="mb-3 fw-bold">Details</h5>
-      //       <div className="row mb-3">
-      //         <div className="col-md-6">
-      //           <p className="mb-1 text-muted">Job Status</p>
-      //           {/* <p>Lead</p> */}
-      //           <p>{job?.status}</p>
-      //         </div>
-      //         <div className="col-md-6">
-      //           <p className="mb-1 text-muted">Job Address</p>
-      //           <p>{invoice?.projectAddress}</p>
-      //         </div>
-      //         {/* <div className="col-md-6">
-      //           <p className="mb-1 text-muted">Job Type</p>
-      //           <p>{job?.job_type}</p>
-      //         </div> */}
-      //         {/* <div className="col-md-6">
-      //           <p className="mb-1 text-muted">Sales Lead</p>
-      //           <p>{lead?.first_name} {lead?.last_name}</p>
-      //         </div> */}
-      //         {/* <div className="col-md-6">
-      //           <p className="mb-1 text-muted">Project Manager</p>
-      //           <p>{manager?.first_name} {manager?.last_name}</p>
-      //         </div> */}
-      //         {/* <div className="col-12 mt-4">
-      //           <p className="mb-1 text-muted">Location</p>
-      //           <p>{job?.job_address}</p>
-      //         </div> */}
-      //       </div>
-
-
-      //     </div>
-      //     <div>
-      //       <h6 className="fw-semibold mb-3">Line Items</h6>
-      //       {items?.length > 0 && items.map((item, index) => (
-      //         <div
-      //           className="row gx-2 gy-2 align-items-center mb-2 px-2 py-2"
-      //           key={index}
-      //           style={{ background: "#f9f9f9", borderRadius: "8px" }}
-      //         >
-      //           <div className="col-md-5">
-      //             <input
-      //               readOnly
-      //               type="text"
-      //               className="form-control"
-      //               placeholder="Item description"
-      //               required
-      //               value={item.description}
-      //               onChange={(e) => handleItemChange(index, "description", e.target.value)}
-      //             />
-      //           </div>
-      //           <div className="col-md-2">
-      //             <input
-      //               readOnly
-      //               type="number"
-      //               className="form-control"
-      //               required
-      //               value={item.quantity}
-      //               onChange={(e) =>
-      //                 handleItemChange(index, "quantity", parseInt(e.target.value))
-      //               }
-      //             />
-      //           </div>
-      //           <div className="col-md-2">
-      //             <input
-      //               readOnly
-      //               type="number"
-      //               required
-      //               value={item.rate}
-      //               onChange={(e) => handleItemChange(index, "rate", parseFloat(e.target.value))}
-      //               className="form-control"
-      //             />
-      //           </div>
-      //           <div className="col-md-2">
-      //             <span>
-      //               ${item.amount.toFixed(2)}
-      //             </span>
-      //           </div>
-      //           <div className="col-md-1 text-end">
-      //             <button type="button"
-      //               className="btn btn-link text-danger p-0"
-      //               onClick={() => removeItem(index)}
-      //             >
-      //               remove
-      //             </button>
-      //           </div>
-      //         </div>
-      //       ))}
-      //     </div>
-
-      //     {/* <div className="col-md-4">
-      //       <div className="bg-light p-3 rounded mb-3">
-      //         <h6 className="fw-bold">Tasks</h6>
-      //         <div className="d-flex justify-content-between mb-3">
-      //           <div>
-      //             <p className="mb-0 text-muted">Total</p>
-      //             <p className="mb-0">0</p>
-      //           </div>
-      //           <div>
-      //             <p className="mb-0 text-muted">Pending</p>
-      //             <p className="mb-0">0</p>
-      //           </div>
-      //         </div>
-
-      //         <h6 className="fw-bold">Analytics</h6>
-      //         <p className="text-muted small">Not enough data</p>
-      //         <a href="#!" className="small text-primary">Set costs/revenue previous to Knowify</a>
-      //       </div>
-
-      //       <div className="bg-light p-3 rounded">
-      //         <h6 className="fw-bold">Customer Portal</h6>
-      //         <button className="btn btn-outline-secondary btn-sm mt-2">
-      //           🔗 Click here to create a portal for this job
-      //         </button>
-      //       </div>
-      //     </div> */}
-      //   </div>
-      // );
 
       case "Job Costs":
         return (
-          // <div className="tab-content-box row">
-          //   <div className="col-md-8">
-          //     <h5 className="mb-3 fw-bold"></h5>
-          //     <div className="row">
-          //       <div className="col-md-6 mb-3">
-          //         <p className="mb-1 text-muted">Job Status</p>
-          //         {/* <p>Lead</p> */}
-          //         <p>{job?.status}</p>
-          //       </div>
-          //       {/* <div className="col-md-6 mb-3">
-          //         <p className="mb-1 text-muted">Job Type</p>
-          //         <p>{job?.job_type}</p>
-          //       </div> */}
-          //       <div className="col-md-6 mb-3">
-          //         <p className="mb-1 text-muted">Total Budget</p>
-          //         {/* <p>${totalBudgetedCost}</p> */}
-          //         <p>${totalBudgetedCost}</p>
-          //       </div>
-          //       <div className="col-md-6 mb-3">
-          //         <p className="mb-1 text-muted">Estimated Start</p>
-          //         <input
-          //           type="date"
-          //           className="form-control"
-          //           value={estimatedStart}
-          //           onChange={(e) => setEstimatedStart(e.target.value)}
-          //         />
-          //       </div>
-          //       <div className="col-md-6 mb-3">
-          //         <p className="mb-1 text-muted">Estimated Completion</p>
-          //         <input type="date" className="form-control" value={estimatedEnd} onChange={(e) => { setEstimatedEnd(e.target.value) }} />
-          //       </div>
-
-          //     </div>
-          //     <button className="btn btn-primary" onClick={saveJob}>Save</button>
-          //   </div>
-          //   <div className="col-md-4">
-          //     <div className="border p-3 rounded mb-4 bg-white">
-          //       <Form.Group className="mb-2">
-          //         <Form.Label>Phase Name</Form.Label>
-          //         <Form.Control
-          //           type="text"
-          //           value={phaseName}
-          //           onChange={(e) => setPhaseName(e.target.value)}
-          //         />
-          //       </Form.Group>
-          //       <div className="text-end fw-bold mb-3">
-          //         Budgeted Cost: ${totalBudgetedCost}
-          //       </div>
-          //       <Row className="mb-2">
-          //         <Col>
-          //           <Form.Label>Materials Budget</Form.Label>
-          //           <Form.Control
-          //             value={`$${materialsBudget}`}
-          //             onChange={(e) => setMaterialsBudget(e.target.value.replace("$", ""))}
-          //           />
-          //         </Col>
-          //         <Col>
-          //           <Form.Label>Labor Budget</Form.Label>
-          //           <Form.Control
-          //             placeholder="$"
-          //             value={laborBudget}
-          //             onChange={(e) => setLaborBudget(e.target.value.replace("$", ""))}
-          //           />
-          //         </Col>
-          //       </Row>
-          //       <Row className="mb-2">
-          //         <Col>
-          //           <Form.Label>Subcontractors Budget</Form.Label>
-          //           <Form.Control
-          //             value={`$${subcontractorsBudget}`}
-          //             onChange={(e) =>
-          //               setSubcontractorsBudget(e.target.value.replace("$", ""))
-          //             }
-          //           />
-          //         </Col>
-          //         <Col>
-          //           <Form.Label>Equipment Budget</Form.Label>
-          //           <Form.Control
-          //             value={`$${equipmentBudget}`}
-          //             onChange={(e) =>
-          //               setEquipmentBudget(e.target.value.replace("$", ""))
-          //             }
-          //           />
-          //         </Col>
-          //       </Row>
-          //       <Row className="mb-3">
-          //         <Col>
-          //           <Form.Label>Miscellanea Budget</Form.Label>
-          //           <Form.Control
-          //             value={`$${miscBudget}`}
-          //             onChange={(e) => setMiscBudget(e.target.value.replace("$", ""))}
-          //           />
-          //         </Col>
-          //       </Row>
-          //     </div>
-          //   </div>
-
-          //   <JobCost jobStatus={job?.status} refreshTrigger={refreshJobCost} />
-
-          // </div>
           <>
             {/* Top Right Button */}
             <div className="d-flex justify-content-end mb-3">
@@ -1299,9 +1092,14 @@ const Editpurposal = () => {
           </div>
         );
 
+      case "Tasks": return (
+        <ProjectJobsTab />
+      );
+
       case "Finance": return (
         <div className="col-12">
-          <PurchaseOrder />
+          {/* <PurchaseOrder /> */}
+          <FinanceTabEditPage />
         </div>
       );
 
@@ -1309,6 +1107,8 @@ const Editpurposal = () => {
         return <div>Select a tab</div>;
     }
   };
+
+
   try {
     return (
       <div className="wwd-container container">
@@ -1340,6 +1140,7 @@ const Editpurposal = () => {
             "Daily Logs",
             // "Activity",
             // "Reports",
+            "Tasks",
             "Finance"
           ].map((tab, i) => (
             <li className="nav-item" key={i}>

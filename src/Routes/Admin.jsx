@@ -70,6 +70,7 @@ import AddInvoice2 from "../features/Admin/Invoicing_Billing/AddInvoice2.jsx";
 import TempPoles from "../features/Admin/ProjectList/ProjectTabs/TempPoles.jsx";
 import DProjectInBidding from "../features/Admin/Dashbord/DProjectInBidding.jsx";
 import DProjectInSignature from "../features/Admin/Dashbord/DProjectInSignature.jsx";
+import ProjectJobsTab from "../features/Admin/ProjectList/ProjectTabs/ProjectJobsTab.jsx";
 
 function Admin() {
   const [isSidebarOpen, setSidebarOpen] = useState(window.innerWidth >= 768);
@@ -113,6 +114,7 @@ function Admin() {
             <Route path="/CostEstimates" element={<ProtectedRoute><CostEstimates /></ProtectedRoute>} />
             <Route path="/LeadFlow" element={<ProtectedRoute><LeadFlow /></ProtectedRoute>} />
             <Route path="/LeadFlow/Details" element={<ProtectedRoute><Editpurposal /></ProtectedRoute>} />
+            <Route path="/tasks" element={<ProtectedRoute><ProjectJobsTab /></ProtectedRoute>} />
             {/* <Route path="/Project/Details" element={<ProtectedRoute><EditProject/></ProtectedRoute>} /> */}
 
             <Route path="/AddCostEstimates" element={<ProtectedRoute><AddCostEstimates /></ProtectedRoute>} />

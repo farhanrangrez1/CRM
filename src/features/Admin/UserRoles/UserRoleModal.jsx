@@ -840,12 +840,12 @@ function UserRoleModal() {
     const modules = [
       'proposal',
       'tasks',
-      'reports',
+      // 'reports',
       'user',
       'client',
       'dailylogs',
       'projectsAndJobs',
-      'invoiceAndBilling'
+      // 'invoiceAndBilling'
     ];
 
     return modules.map((module) => (
