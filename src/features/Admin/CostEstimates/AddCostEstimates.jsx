@@ -196,7 +196,8 @@ function AddCostEstimates() {
         .unwrap()
         .then(() => {
           toast.success("Estimates created successfully!");
-          navigate('/admin/CostEstimates'); // Go back to previous page
+          // navigate('/admin/CostEstimates'); // Go back to previous page
+          navigate('/admin/LeadFlow'); // Go back to previous page
           // navigate(-1); // Go back to previous page
         })
         .catch(() => {

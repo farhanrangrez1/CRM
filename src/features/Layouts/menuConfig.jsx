@@ -173,7 +173,7 @@ export const adminMenuItems = [
   //   permissionKey: "invoiceAndBilling",
   // },
   {
-    title: "Client/Supplier",
+    title: "Client / Supplier",
     icon: <FaUsersCog className="menu-icon" />,
     path: "/admin/clientManagement",
     permissionKey: "client",
@@ -185,7 +185,7 @@ export const adminMenuItems = [
   //   permissionKey: "reports",
   // },
   {
-    title: "User Permissions",
+    title: "User / Employee",
     icon: <FaUsersCog className="menu-icon" />,
     path: "/admin/UserRoles",
     permissionKey: "user",

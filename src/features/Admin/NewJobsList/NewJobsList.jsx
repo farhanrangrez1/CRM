@@ -41,9 +41,17 @@ function NewJobsList() {
   const [selectedStatus, setSelectedStatus] = useState("All Status");
   const [selectedStage, setSelectedStage] = useState("All Stages");
   const [showModal, setShowModal] = useState(false);
-
   const navigate = useNavigate();
   const dispatch = useDispatch();
+
+  const { userAll } = useSelector((state) => state.user);
+
+  useEffect(() => {
+    dispatch(fetchusers());
+  }, [dispatch]);
+
+
+
   const location = useLocation();
   const params = useParams();
   const id = location.state?.id || params.id;
@@ -204,8 +212,86 @@ function NewJobsList() {
   };
 
 
+  // const filteredJobs = (job?.jobs || [])
+  //   .filter((j) => j.assignedTo === "Not Assigned")
+  //   .filter((j) => {
+  //     // Split searchQuery by spaces, ignore empty terms
+  //     const terms = searchQuery.trim().split(/\s+/).filter(Boolean);
+  //     if (terms.length === 0) {
+  //       const matchesProject =
+  //         selectedProject === "All Projects" ||
+  //         (j.projectId?.[0]?.projectName?.toLowerCase() === selectedProject.toLowerCase());
+  //       const matchesPriority =
+  //         selectedPriority === "All Priorities" ||
+  //         (j.priority?.toLowerCase() === selectedPriority.toLowerCase());
+  //       const matchesStatus =
+  //         selectedStatus === "All Status" ||
+  //         (j.Status?.toLowerCase() === selectedStatus.toLowerCase());
+  //       const matchesStage =
+  //         selectedStage === "All Stages" ||
+  //         (j.stage?.toLowerCase() === selectedStage.toLowerCase());
+  //       return (
+  //         matchesProject &&
+  //         matchesPriority &&
+  //         matchesStatus &&
+  //         matchesStage
+  //       );
+  //     }
+  //     // Prepare searchable fields as strings
+  //     const fields = [
+  //       j.JobNo,
+  //       j.projectId?.[0]?.projectName,
+  //       j.brandName,
+  //       j.subBrand,
+  //       j.flavour,
+  //       j.packType,
+  //       j.packSize,
+  //       j.packCode,
+  //       j.updatedAt ? new Date(j.updatedAt).toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit" }) : '',
+  //       j.createdAt ? new Date(j.createdAt).toLocaleDateString("en-GB") : '',
+  //       j.assignedTo,
+  //       j.priority,
+  //       j.Status
+  //     ].map(f => (f || '').toString().toLowerCase());
+  //     // Every term must be found in at least one field
+  //     const matchesSearch = terms.every(term =>
+  //       fields.some(field => field.includes(term.toLowerCase()))
+  //     );
+  //     const matchesProject =
+  //       selectedProject === "All Projects" ||
+  //       (j.projectId?.[0]?.projectName?.toLowerCase() === selectedProject.toLowerCase());
+  //     const matchesPriority =
+  //       selectedPriority === "All Priorities" ||
+  //       (j.priority?.toLowerCase() === selectedPriority.toLowerCase());
+  //     const matchesStatus =
+  //       selectedStatus === "All Status" ||
+  //       (j.Status?.toLowerCase() === selectedStatus.toLowerCase());
+  //     const matchesStage =
+  //       selectedStage === "All Stages" ||
+  //       (j.stage?.toLowerCase() === selectedStage.toLowerCase());
+  //     return (
+  //       matchesSearch &&
+  //       matchesProject &&
+  //       matchesPriority &&
+  //       matchesStatus &&
+  //       matchesStage
+  //     );
+  //   });
+
+  const userId = localStorage.getItem('userId'); // Get userId from local storage
+  const isAdmin = userAll?.data?.users?.find(user => user._id === userId)?.isAdmin; // Check if the user is an admin
+
   const filteredJobs = (job?.jobs || [])
     .filter((j) => j.assignedTo === "Not Assigned")
+    .filter((j) => {
+      // If the user is an admin, show all jobs
+      if (isAdmin) {
+        return true; // Show all jobs
+      }
+
+      // If the user is not an admin, check if the job is assigned to the user
+      return j.assign === userId;
+    })
     .filter((j) => {
       // Split searchQuery by spaces, ignore empty terms
       const terms = searchQuery.trim().split(/\s+/).filter(Boolean);
@@ -270,6 +356,7 @@ function NewJobsList() {
       );
     });
 
+
   const handleUpdate = (job) => {
     navigate(`/admin/AddJobTracker/${job._id}`, { state: { job } });
   };
@@ -286,11 +373,6 @@ function NewJobsList() {
   };
 
   const [selectedEmployee, setSelectedEmployee] = useState("");
-  const { userAll } = useSelector((state) => state.user);
-
-  useEffect(() => {
-    dispatch(fetchusers());
-  }, [dispatch]);
 
   const [currentAssignment, setCurrentAssignment] = useState(1);
   const itemsAssignment = 10;
@@ -311,7 +393,7 @@ function NewJobsList() {
   const handleSubmitAssignment = () => {
     const selectedJobIds = Object.keys(selectedJobs).filter((id) => selectedJobs[id]);
     const payload = {
-      employeeId: [selectedEmployee],
+      employeeId: selectedEmployee,
       jobId: selectedJobIds,
       selectDesigner: selectedDesigner,
       description: assignmentDescription,
@@ -499,17 +581,18 @@ function NewJobsList() {
               </th>
               <th>JobNo</th>
               <th style={{ whiteSpace: "nowrap" }}>Project Name</th>
-              <th>Brand</th>
+              {/* <th>Brand</th>
               <th style={{ whiteSpace: "nowrap" }}>Sub Brand</th>
               <th>Flavour</th>
               <th>PackType</th>
               <th>PackSize</th>
               <th>PackCode</th>
-              <th>TimeLogged</th>
-              <th>Due Date</th>
+              <th>TimeLogged</th> */}
+              {/* <th>Due Date</th> */}
               <th>assigned</th>
-              <th>Priority</th>
+              <th>Task</th>
               <th>Status</th>
+              <th>Priority</th>
               <th>Actions</th>
             </tr>
           </thead>
@@ -523,35 +606,46 @@ function NewJobsList() {
                     onChange={() => handleCheckboxChange(job._id)}
                   />
                 </td>
-                <td onClick={() => JobDetails(job)}>
-                  <Link style={{ textDecoration: "none" }}>{job.JobNo}</Link>
+                <td>
+                  <span>{job.JobNo}</span>
                 </td>
+                {/* <td onClick={() => JobDetails(job)}>
+                  <Link style={{ textDecoration: "none" }}>{job.JobNo}</Link>
+                </td> */}
                 <td style={{ whiteSpace: "nowrap" }}>
                   {job.projectId?.[0]?.projectName || "N/A"}
                 </td>
-                <td style={{ whiteSpace: "nowrap" }}>{job.brandName}</td>
+                {/* <td style={{ whiteSpace: "nowrap" }}>{job.brandName}</td>
                 <td style={{ whiteSpace: "nowrap" }}>{job.subBrand}</td>
                 <td style={{ whiteSpace: "nowrap" }}>{job.flavour}</td>
                 <td style={{ whiteSpace: "nowrap" }}>{job.packType}</td>
                 <td style={{ whiteSpace: "nowrap" }}>{job.packSize}</td>
-                <td style={{ whiteSpace: "nowrap" }}>{job?.packCode}</td>
-                <td style={{ whiteSpace: "nowrap" }}>
+                <td style={{ whiteSpace: "nowrap" }}>{job?.packCode}</td> */}
+                {/* <td style={{ whiteSpace: "nowrap" }}>
                   {new Date(job.updatedAt).toLocaleTimeString("en-US", {
                     hour: "2-digit",
                     minute: "2-digit",
                   })}
-                </td>
-                <td style={{ whiteSpace: "nowrap" }}>
+                </td> */}
+                {/* <td style={{ whiteSpace: "nowrap" }}>
                   {new Date(job.createdAt).toLocaleDateString("en-GB")}
+                </td> */}
+                <td style={{ whiteSpace: 'nowrap' }}>
+                  {
+                    userAll?.data?.users?.find(user => user._id === job?.assign)
+                      ? `${userAll.data.users.find(user => user._id === job.assign).firstName} ${userAll.data.users.find(user => user._id === job.assign).lastName}`
+                      : job?.assign
+                  }
                 </td>
-                <td style={{ whiteSpace: 'nowrap' }}>{job?.assignedTo}</td>
-                <td>
-                  <span className={getPriorityClass(job.priority)}>{job.priority}</span>
-                </td>
+
+                <td style={{ whiteSpace: 'nowrap' }}>{job?.task}</td>
                 <td>
                   <span className={`badge ${getStatusClass(job.Status)} px-2 py-1`}>
                     {job.Status}
                   </span>
+                </td>
+                <td>
+                  <span className={getPriorityClass(job.priority)}>{job.priority}</span>
                 </td>
                 <td>
                   <div className="d-flex gap-2">
@@ -585,7 +679,7 @@ function NewJobsList() {
         </Modal.Header>
         <Modal.Body>
           <Form>
-            <Form.Group className="mb-3">
+            {/* <Form.Group className="mb-3">
               <Form.Label>Select Designer</Form.Label>
               <Form.Select
                 value={selectedDesigner}
@@ -598,20 +692,21 @@ function NewJobsList() {
                 <option value="Designer">Designer</option>
                 <option value="Production">Production</option>
               </Form.Select>
-            </Form.Group>
+            </Form.Group> */}
             <Form.Group className="mb-3">
               <Form.Label>Select Employee</Form.Label>
               <Form.Select
                 value={selectedEmployee}
                 onChange={(e) => setSelectedEmployee(e.target.value)}
-                disabled={!selectedDesigner}
               >
                 <option value="">-- Select Employee --</option>
-                {paginatedAssignment
-                  .filter((emp) => emp.role === 'employee')
-                  .map((emp) => (
-                    <option key={emp._id} value={emp._id}>
-                      {emp.firstName || "Unnamed Employee"} {emp.lastName || "Unnamed Employee"}
+                {userAll?.data?.users
+                  ?.filter((item) => {
+                    return item?.isAdmin === false;
+                  })
+                  ?.map((user) => (
+                    <option key={user._id} value={user._id}>
+                      {user.firstName} {user.lastName}
                     </option>
                   ))}
               </Form.Select>

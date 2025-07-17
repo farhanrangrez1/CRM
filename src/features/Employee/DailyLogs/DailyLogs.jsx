@@ -84,47 +84,7 @@ const DailyLogs = () => {
     }));
   };
 
-
-
-  // const handleSaveLog = () => {
-  //   const data = new FormData();
-  //   data.append("job_id", formData.job_id);
-  //   data.append("date", formData.date);
-  //   data.append("title", formData.title);
-  //   data.append("notes", formData.notes);
-
-  //   // Append each selected image to the form data
-  //   if (formData.images) {
-  //     Array.from(formData.images).forEach((image) => {
-  //       data.append("images", image); // Append each image file
-  //     });
-  //   }
-
-  //   if (currentLogIndex !== null) {
-  //     // If editing an existing log
-  //     const logId = dailyLogs[currentLogIndex]?.id;
-  //     dispatch(updateDailyLog({ id: logId, data }));
-  //   } else {
-  //     // If creating a new log
-  //     dispatch(createDailyLog(data));
-  //   }
-
-  //   // Reset form and hide the modal
-  //   setFormData({
-  //     job_id: invoice?._id || '',
-  //     date: new Date().toISOString().split('T')[0],
-  //     title: '',
-  //     notes: '',
-  //     image: null
-  //   });
-
-  //   setShowEditModal(false);
-  //   setCurrentLogIndex(null);
-  // };
-
   const handleSaveLog = () => {
-
-
     const data = new FormData();
     data.append("job_id", formData.job_id);
     data.append("date", formData.date);
@@ -253,6 +213,24 @@ const DailyLogs = () => {
       });
   };
 
+  const handleDownloadImages = async (images) => {
+    for (let i = 0; i < images.length; i++) {
+      try {
+        const response = await fetch(images[i], { mode: 'cors' });
+        const blob = await response.blob();
+        const url = window.URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = `daily-log-image-${i + 1}.jpg`;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        window.URL.revokeObjectURL(url);
+      } catch (error) {
+        console.error("Download failed", error);
+      }
+    }
+  };
 
   // console.log("dss", logCommentsMap)
   return (
@@ -353,6 +331,7 @@ const DailyLogs = () => {
                   <Button
                     variant="outline-primary"
                     size="sm"
+                    className="me-2"
                     onClick={() => {
                       // handleAddComment(log.id);
                       setBlogId(log?.id);
@@ -362,6 +341,18 @@ const DailyLogs = () => {
                   >
                     Comment
                   </Button>
+                  {log.images?.length > 0 && (
+                    <Button
+                      variant="outline-success"
+                      size="sm"
+                      className="me-2"
+                      onClick={() => handleDownloadImages(log.images)}
+                    >
+                      Download
+                    </Button>
+
+                  )}
+
                 </div>
               </div>
 
@@ -430,48 +421,6 @@ const DailyLogs = () => {
               </div>
 
               {/* Comments section - shows when expanded */}
-              {/* {expandedLogs.has(log.id) && (
-                <div className="border-top pt-3">
-                  {logCommentsMap[log.id]?.length > 0 ? (
-                    <div
-                      className="mb-3"
-                      style={{
-                        maxHeight: '200px',
-                        overflowY: 'auto',
-                        scrollbarWidth: 'thin',
-                        paddingRight: '8px'
-                      }}
-                    >
-                      {logCommentsMap[log.id].map((comment, i) => (
-                        <div key={i} className="mb-3 p-2 bg-light rounded">
-                          <div className="d-flex justify-content-between">
-                            <strong>User ID: {comment.user_id}</strong>
-                            <span className="text-muted small">
-                              {new Date(comment.created_at).toLocaleDateString()}
-                            </span>
-                          </div>
-                          <div className="mt-1">{comment.comment}</div>
-                        </div>
-                      ))}
-                    </div>
-                  ) : (
-                    <div className="text-muted small mb-3">No comments yet</div>
-                  )}
-
-                  <Button
-                    variant="outline-primary"
-                    size="sm"
-                    className="mt-2"
-                    onClick={() => {
-                      setBlogId(log?.id);
-                      setShowCommentModal(true);
-                    }}
-                  >
-                    <i className="fas fa-plus me-1"></i> Add Comment
-                  </Button>
-                </div>
-              )} */}
-              {/* Comments section - shows when expanded */}
               {expandedLogs.has(log.id) && (
                 <div className="border-top pt-3">
                   {logCommentsMap[log.id]?.length > 0 ? (
@@ -533,38 +482,6 @@ const DailyLogs = () => {
         </Modal.Header>
         <Modal.Body>
           <Form>
-            {/* <Row> */}
-            {/* <Col md={6}> */}
-            {/* <Form.Group className="mb-3">
-                  <Form.Label>Project</Form.Label>
-                  <Form.Select name="job_id" value={formData.job_id} onChange={handleFormChange} required>
-                    <option value="">Select Project</option>
-                    {project?.map((proposal) => (
-                      <option key={proposal?._id} value={proposal?._id}>
-                        {proposal?.projectName}
-                      </option>
-                    ))}
-                  </Form.Select>
-                </Form.Group> */}
-            {/* <Form.Group className="mb-3">
-                  <Form.Label>Date *</Form.Label>
-                  <Form.Control
-                    type="date"
-                    name="date"
-                    value={formData.date}
-                    onChange={handleFormChange}
-                  />
-                </Form.Group> */}
-            {/* <Form.Group className="mb-3">
-                  <Form.Label>Title</Form.Label>
-                  <Form.Control
-                    type="text"
-                    name="title"
-                    value={formData.title}
-                    onChange={handleFormChange}
-                  />
-                </Form.Group> */}
-            {/* </Col> */}
             {/* </Row> */}
             <Col md={12}>
               <Form.Group className="mb-3">

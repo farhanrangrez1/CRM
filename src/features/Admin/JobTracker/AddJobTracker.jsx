@@ -8,6 +8,7 @@ import Select from 'react-select';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchProject } from '../../../redux/slices/ProjectsSlice';
 import { createjob, Project_job_Id, updatejob } from '../../../redux/slices/JobsSlice';
+import { fetchusers } from '../../../redux/slices/userSlice';
 
 function AddJobTracker() {
   const navigate = useNavigate();
@@ -20,6 +21,11 @@ function AddJobTracker() {
 
   const id = paramId || job?._id;
 
+  const { userAll } = useSelector((state) => state.user);
+
+  useEffect(() => {
+    dispatch(fetchusers());
+  }, [dispatch]);
 
 
   const { project, loading, error } = useSelector((state) => state.projects);
@@ -53,6 +59,7 @@ function AddJobTracker() {
     totalTime: '',
     assign: 'Not Assing',
     barcode: "",
+    task: '',
   });
 
   // Static options
@@ -265,8 +272,7 @@ function AddJobTracker() {
                 />
               </div>
 
-              {/* Brand Name */}
-              <div className="col-md-6">
+              {/* <div className="col-md-6">
                 <label className="form-label">Brand Name</label>
                 <Select
                   options={brandOptions}
@@ -280,7 +286,6 @@ function AddJobTracker() {
                 />
               </div>
 
-              {/* Sub Brand */}
               <div className="col-md-6">
                 <label className="form-label">Sub Brand</label>
                 <input
@@ -294,7 +299,6 @@ function AddJobTracker() {
                 />
               </div>
 
-              {/* Flavour */}
               <div className="col-md-6">
                 <label className="form-label">Flavour</label>
                 <Select
@@ -309,7 +313,6 @@ function AddJobTracker() {
                 />
               </div>
 
-              {/* Pack Type */}
               <div className="col-md-6">
                 <label className="form-label">Pack Type</label>
                 <select
@@ -336,7 +339,6 @@ function AddJobTracker() {
                 </select>
               </div>
 
-              {/* Pack Code */}
               <div className="col-md-6">
                 <label className="form-label">Pack Code</label>
                 <select
@@ -356,7 +358,6 @@ function AddJobTracker() {
                 </select>
               </div>
 
-              {/* Pack Size */}
               <div className="col-md-6">
                 <label className="form-label">Pack Size</label>
                 <Select
@@ -370,7 +371,6 @@ function AddJobTracker() {
                 />
               </div>
 
-              {/* Priority */}
               <div className="col-md-6">
                 <label className="form-label">Priority</label>
                 <select
@@ -386,7 +386,7 @@ function AddJobTracker() {
                   <option value="medium">Medium</option>
                   <option value="high">High</option>
                 </select>
-              </div>
+              </div> */}
 
               {/* Status */}
               <div className="col-md-6">
@@ -421,7 +421,7 @@ function AddJobTracker() {
               </div> */}
 
               {/* assign */}
-              {/* <div className="col-md-6">
+              <div className="col-md-6">
                 <label className="form-label">assign</label>
                 <select
                   className="form-select"
@@ -430,14 +430,49 @@ function AddJobTracker() {
                   onChange={handleChange}
                 >
                   <option value="">Select</option>
-                  <option value="Production">Production</option>
-                  <option value="Designer">Designer</option>
+                  {userAll?.data?.users
+                    ?.filter((item) => {
+                      return item?.isAdmin === false;
+                    })
+                    ?.map((user) => (
+                      <option key={user._id} value={user._id}>
+                        {user.firstName} {user.lastName}
+                      </option>
+                    ))}
                 </select>
-              </div> */}
+              </div>
+              <div className="col-md-6">
+                <label className="form-label">Task</label>
+                <input
+                  type="text"
+                  className="form-control"
+                  name="task"
+                  value={formData.task}
+                  onChange={(e) =>
+                    setFormData((prev) => ({ ...prev, task: e.target.value }))
+                  }
+                />
+              </div>
+              <div className="col-md-6">
+                <label className="form-label">Priority</label>
+                <select
+                  className="form-select"
+                  name="priority"
+                  value={formData.priority}
+                  onChange={handleChange}
+                  required
+
+                >
+                  <option value="">Select</option>
+                  <option value="low">Low</option>
+                  <option value="medium">Medium</option>
+                  <option value="high">High</option>
+                </select>
+              </div>
 
               {/* Barcode */}
               {/* Barcode Input */}
-              <div className="col-md-6">
+              {/* <div className="col-md-6">
                 <label className="form-label">Barcode</label>
                 <input
                   type="text"
@@ -448,14 +483,14 @@ function AddJobTracker() {
                   required
                   placeholder="Enter barcode"
                 />
-              </div>
+              </div> */}
 
               {/* Barcode Preview */}
-              {formData.barcode && (
+              {/* {formData.barcode && (
                 <div className="col-md-6 d-flex align-items-center">
                   <Barcode value={formData.barcode} />
                 </div>
-              )}
+              )} */}
 
 
               {/* Buttons */}

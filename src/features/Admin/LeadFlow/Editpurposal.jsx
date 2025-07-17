@@ -739,7 +739,7 @@ const Editpurposal = () => {
                           />
                         </Col>
                       </Row>
-                      <Row className="mb-2">
+                      {/* <Row className="mb-2">
                         <Col>
                           <Form.Label>Subcontractors Budget</Form.Label>
                           <Form.Control
@@ -769,7 +769,7 @@ const Editpurposal = () => {
                             }
                           />
                         </Col>
-                      </Row>
+                      </Row> */}
                     </div>
                   </div>
                 </div>
@@ -792,7 +792,10 @@ const Editpurposal = () => {
           <div className="container mt-4 mb-5">
             {/* Main Page: AddInvoice */}
             {showAddInvoice && (
-              <AddInvoice onInvoiceComplete={() => setShowAddInvoice(false)} />
+              <AddInvoice onInvoiceComplete={() => {
+                setShowAddInvoice(false);
+                setActiveTab("Finance");
+              }} />
             )}
 
             {/* Fullscreen Overlay Modal for ProposalEmailUI */}

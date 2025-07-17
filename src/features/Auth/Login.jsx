@@ -314,6 +314,8 @@ const Login = () => {
       localStorage.setItem("userRole", role);
       localStorage.setItem("userRole", "admin");
       localStorage.setItem("permissions", JSON.stringify(permissions));
+      localStorage.setItem("userId", permissions?.userId);
+
 
       toast.success("Logged in successfully!");
 

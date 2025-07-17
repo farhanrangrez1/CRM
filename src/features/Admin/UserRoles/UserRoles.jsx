@@ -189,7 +189,9 @@ function UserRoles() {
                 </tr>
               </thead>
               <tbody>
-                {currentUsers.map(user => (
+                {currentUsers?.filter((item) => {
+                  return item?.isAdmin === false;
+                }).map(user => (
                   <tr key={user._id}>
                     <td>
                       <div className="d-flex align-items-center">
