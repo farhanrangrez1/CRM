@@ -496,6 +496,7 @@ const ProposalEmailUI = ({ setShowAddInvoice }) => {
         })
       );
       toast.success("Email sent successfully!");
+      localStorage.removeItem("lineItems");
       if (location.pathname === "/admin/AddCostEstimates") {
         navigate(-1);
       } else {
