@@ -643,9 +643,6 @@ function PurchaseOrder() {
           </thead>
           <tbody>
             {paginatedEstimates?.filter((item) => {
-              console.log(item?.projects[0]?.projectId);
-              console.log(invoice?._id);
-
               return item?.projects[0]?.projectId == invoice?._id;
             })?.map((po, index) => (
               <tr style={{ whiteSpace: "nowrap" }} key={po.poNumber}>

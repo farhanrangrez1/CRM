@@ -208,7 +208,7 @@ const Editpurposal = () => {
       // console.log("✅ File Uploaded:", res.data);
       dispatch(fetchDocumentById(proposalId))
 
-      setUploadedFile(selectedFile?.name);
+      // setUploadedFile(selectedFile?.name);
       setShowFileModal(false);
       setFileTitle("");
       setSelectedFile(null);
@@ -223,6 +223,7 @@ const Editpurposal = () => {
     setUploadedFile(file?.name);
     setSelectedFile(file);
   };
+
   const handleUploadClick = () => {
     setShowFileModal(true);
   };
@@ -445,8 +446,6 @@ const Editpurposal = () => {
   useEffect(() => {
     const fetchemaildata = async () => {
       const response = await axios.get(`${apiUrl}/getEnvelopesByProjectId/${proposalId}`)
-      console.log(response);
-
     }
     fetchemaildata();
   }, [])
@@ -853,11 +852,11 @@ const Editpurposal = () => {
             </div>
 
             {/* Uploaded File Display */}
-            {uploadedFile && (
+            {/* {uploadedFile && (
               <div className="mt-3">
                 <p className="text-primary">Uploaded: {uploadedFile}</p>
               </div>
-            )}
+            )} */}
 
             {/* Folder Modal */}
             {showFolderModal && (
@@ -903,10 +902,16 @@ const Editpurposal = () => {
                         value={fileTitle}
                         onChange={(e) => setFileTitle(e.target.value)}
                       />
+                      {/* <input
+                        type="file"
+                        className="form-control"
+                        onChange={handleFileChange}
+                      /> */}
                       <input
                         type="file"
                         className="form-control"
                         onChange={handleFileChange}
+                        accept="image/*,application/pdf"
                       />
                     </div>
                     <div className="modal-footer">

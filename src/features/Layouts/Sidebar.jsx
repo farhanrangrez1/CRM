@@ -323,6 +323,9 @@ import { adminMenuItems, employeeMenuItems, clientMenuItems } from "../Layouts/m
 import "./Sidebar.css";
 import bonbonlogo from "../../assets/Supplyblack.png";
 import { hasPermission } from "../../redux/hasPermission";
+import { useSelector } from "react-redux";
+import { SingleUser } from "../../redux/slices/userSlice";
+import { useDispatch } from "react-redux";
 
 const Sidebar = ({ isOpen, toggleSidebar }) => {
   const [openMenuIndex, setOpenMenuIndex] = useState(null);
@@ -402,6 +405,14 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
       })
       .filter(item => item.visible); // Return only visible items
   };
+  const dispatch = useDispatch();
+
+  const { UserSingle } = useSelector((state) => state.user);
+  // console.log("admin profile console", UserSingle);
+  useEffect(() => {
+    dispatch(SingleUser());
+  }, [dispatch]);
+
 
 
   // const menuItems =
@@ -412,12 +423,32 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
   //       : roleData === "client"
   //         ? getFilteredMenuItems(clientMenuItems)
   //         : [];
+  // const menuItems = useMemo(() => {
+  //   if (roleData === "admin") return getFilteredMenuItems(adminMenuItems);
+  //   if (roleData === "employee") return getFilteredMenuItems(employeeMenuItems);
+  //   if (roleData === "client") return getFilteredMenuItems(clientMenuItems);
+  //   return [];
+  // }, [roleData]);
   const menuItems = useMemo(() => {
-    if (roleData === "admin") return getFilteredMenuItems(adminMenuItems);
+    if (!UserSingle || !roleData) return [];
+
+    if (roleData === "admin") {
+      // Clone adminMenuItems and conditionally filter Dashboard
+      const filteredAdminItems = adminMenuItems.filter(item => {
+        // Only include Dashboard if isAdmin is true
+        if (item.title === "Dashboard") {
+          return UserSingle?.isAdmin === true;
+        }
+        return true;
+      });
+      return getFilteredMenuItems(filteredAdminItems);
+    }
+
     if (roleData === "employee") return getFilteredMenuItems(employeeMenuItems);
     if (roleData === "client") return getFilteredMenuItems(clientMenuItems);
     return [];
-  }, [roleData]);
+  }, [roleData, UserSingle]);
+
 
   useEffect(() => {
     if (!location) return;

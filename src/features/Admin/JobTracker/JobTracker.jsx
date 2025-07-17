@@ -50,28 +50,28 @@ function JobTracker() {
   };
 
   const getStatusClass = (status) => {
-  switch (status.toLowerCase().trim()) {
-    case "in progress":
-    case "in_progress":
-      return "bg-warning text-dark";     // Yellow
-    case "completed":
-      return "bg-success text-white";    // Green
-    case "cancelled":
-      return "bg-danger text-white";     // Red
-    case "active":
-      return "bg-primary text-white";    // Blue
-    case "reject":
-      return "bg-danger text-white";
-    case "review":
-      return "bg-info text-dark";
-    case "not started":
-      return "bg-secondary text-white";
-    case "open":
-      return "bg-primary text-white";
-    default:
-      return "bg-light text-dark";
-  }
-};
+    switch (status.toLowerCase().trim()) {
+      case "in progress":
+      case "in_progress":
+        return "bg-warning text-dark";     // Yellow
+      case "completed":
+        return "bg-success text-white";    // Green
+      case "cancelled":
+        return "bg-danger text-white";     // Red
+      case "active":
+        return "bg-primary text-white";    // Blue
+      case "reject":
+        return "bg-danger text-white";
+      case "review":
+        return "bg-info text-dark";
+      case "not started":
+        return "bg-secondary text-white";
+      case "open":
+        return "bg-primary text-white";
+      default:
+        return "bg-light text-dark";
+    }
+  };
 
 
   const filteredJobs = (job?.jobs || []).filter((j) => {

@@ -839,7 +839,7 @@ function UserRoleModal() {
   const renderPermissionSection = () => {
     const modules = [
       'proposal',
-      'tasks',
+      // 'tasks',
       // 'reports',
       'user',
       'client',

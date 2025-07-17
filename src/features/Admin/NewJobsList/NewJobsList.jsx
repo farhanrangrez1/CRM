@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { MdEditSquare } from "react-icons/md";
-import { FaRegTrashCan } from "react-icons/fa6";
+import { FaBucket, FaRegTrashCan } from "react-icons/fa6";
 import { Button, Form, Table, Pagination, Modal } from "react-bootstrap";
 import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import { FaEye } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchjobs, updatejob, UpdateJobAssign } from "../../../redux/slices/JobsSlice";
+import { deletejob, fetchjobs, updatejob, UpdateJobAssign } from "../../../redux/slices/JobsSlice";
 import {
   FaFilePdf,
   FaUpload,
@@ -361,6 +361,31 @@ function NewJobsList() {
     navigate(`/admin/AddJobTracker/${job._id}`, { state: { job } });
   };
 
+  const handleDelete = (job) => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You want to Delete this Task?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, Task Deleted!",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        const id = job._id;
+        dispatch(deletejob(id))
+          .unwrap()
+          .then(() => {
+            Swal.fire("Deleted!", "The job has been Deleted.", "success");
+            dispatch(fetchjobs());
+          })
+          .catch(() => {
+            Swal.fire("Error!", "Something went wrong while deleting.", "error");
+          });
+      }
+    });
+  };
+
   const JobDetails = (job) => {
     navigate(`/admin/OvervieJobsTracker`, { state: { job } });
   };
@@ -461,7 +486,7 @@ function NewJobsList() {
     <div className="container bg-white p-3 mt-4 rounded shadow-sm">
       {/* Title */}
       <div className="d-flex justify-content-between align-items-center">
-        <h5 className="fw-bold m-0">Job Assign</h5>
+        <h5 className="fw-bold m-0">Tasks List</h5>
         <div className="d-flex gap-2 ">
           <Button onClick={handleRejectJobs} id="All_btn" className="m-2" variant="primary">
             Cancelled Job
@@ -638,7 +663,14 @@ function NewJobsList() {
                   }
                 </td>
 
-                <td style={{ whiteSpace: 'nowrap' }}>{job?.task}</td>
+                <td>
+                  <span
+                    className="px-2 py-1"
+                    style={{ whiteSpace: 'pre-wrap', wordBreak: 'break-word' }}
+                  >
+                    {job.task}
+                  </span>
+                </td>
                 <td>
                   <span className={`badge ${getStatusClass(job.Status)} px-2 py-1`}>
                     {job.Status}
@@ -663,6 +695,9 @@ function NewJobsList() {
                     </Button> */}
                     <Button id="icone_btn" size="sm" onClick={() => handleUpdate(job)}>
                       <FaEdit />
+                    </Button>
+                    <Button id="icone_btn" size="sm" onClick={() => handleDelete(job)}>
+                      <FaBucket />
                     </Button>
                   </div>
                 </td>

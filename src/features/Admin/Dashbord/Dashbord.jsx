@@ -1,311 +1,4 @@
-// import React from 'react';
-// import { Card, Row, Col, Container } from 'react-bootstrap';
-// import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
-// import { Doughnut } from 'react-chartjs-2';
-// import { FaTasks, FaProjectDiagram, FaFileInvoiceDollar, FaClipboardCheck, FaClock, FaExclamationTriangle } from 'react-icons/fa';
-// import { Link } from 'react-router-dom';
-// import { useDispatch, useSelector } from 'react-redux';
-// import { useEffect } from 'react';
-// import { fetchjobs } from '../../../redux/slices/JobsSlice';
-// import { Dropdown } from "react-bootstrap";
-// import { fetchProject } from '../../../redux/slices/ProjectsSlice';
-// import { fetchCostEstimates } from '../../../redux/slices/costEstimatesSlice';
-
-// ChartJS.register(ArcElement, Tooltip, Legend);
-
-// function Dashbord() {
-//   const dispatch = useDispatch()
-
-//   const chartOptions = {
-//     cutout: '70%',
-//     plugins: {
-//       legend: {
-//         position: 'right',
-//       },
-//     },
-//   };
-
-//   const recentActivities = [
-//     { type: 'new', title: 'New project created', description: 'Premium Packaging Design - Client XYZ', time: '2 hours ago' },
-//     { type: 'completed', title: 'Project completed', description: 'Eco-friendly Bag Design - Client ABC', time: '1 day ago' },
-//     { type: 'po', title: 'New PO received', description: 'Design Update - Client DEF', time: '1 day ago' },
-//   ];
-
-//   // Fetch jobs on component mount
-//   useEffect(() => {
-//     dispatch(fetchjobs());
-//   }, [dispatch]);
-
-//   // Job In Progress 
-//   const { job, loading, error } = useSelector((state) => state.jobs);
-//   const { project } = useSelector((state) => state.projects);
-//   const { estimates } = useSelector((state) => state.costEstimates);
-
-//   useEffect(() => {
-//     dispatch(fetchjobs());
-//     dispatch(fetchProject());
-//     dispatch(fetchCostEstimates());
-//   }, [dispatch]);
-
-
-//   const inProgressProjects = (project?.data || []).filter(
-//     (j) => j.status === "Lead"
-//   );
-
-//   const inProgressProjectsCount = inProgressProjects.length;
-//   // const inProgressProjects = (project?.data || []).filter(
-//   //   (j) => j.status?.toLowerCase() === "in progress"
-//   // );
-//   // const inProgressProjectsCount = inProgressProjects.length;
-
-
-
-//   const inProgressJobs = (project?.data || []).filter(
-//     (j) => j.status === "Bidding"
-//   );
-//   // const inProgressJobs = (job?.jobs || []).filter(
-//   //   (j) => j.Status?.toLowerCase() === "in progress"
-//   // );
-
-
-//   const ProjectCompleted = (project?.data || []).filter(
-//     (j) => j.status?.toLowerCase() === "completed"
-//   );
-//   const projectCompleted = ProjectCompleted.length;
-
-
-//   const inProgressCount = inProgressJobs.length;
-//   const Costestimates = (estimates?.costEstimates || []).filter(
-//     // (j) => (j.POStatus || "").toLowerCase().replace(/\s|_/g, "") === "pending"
-//     (j) => (j.Status || "").toLowerCase().replace(/\s|_/g, "") === "pending"
-//   );
-//   const CostestimatesCount = Costestimates.length;
-
-//   const today = new Date().toLocaleDateString("en-CA");
-//   // const todaysJobs = (job?.jobs || []).filter((j) => {
-//   //   const dueDate = new Date(j.dueDate || j.createdAt).toLocaleDateString("en-CA");
-//   //   return dueDate === today;
-//   // });
-//   const todaysJobs = (project?.data || []).filter((j) => j.status === "Signature" || j.status === "Active Project" || j.status === "Open");
-//   const todaysJobsCount = todaysJobs.length;
-
-//   // Sample filtered data
-//   const projects = project?.data || [];
-
-//   // Count for each status
-//   const activeProjectsCount = projects.filter(
-//     (j) => j.status?.toLowerCase() === "active project"
-//   ).length;
-
-//   const completedProjectsCount = projects.filter(
-//     (j) => j.status?.toLowerCase() === "completed"
-//   ).length;
-
-//   const cancelledProjectsCount = projects.filter(
-//     (j) => j.status?.toLowerCase() === "cancelled"
-//   ).length;
-
-
-//   const leadProjects = projects.filter((j) => j.status === "Lead");
-//   const biddingProjects = projects.filter((j) => j.status === "Bidding");
-//   const signatureProjects = projects.filter((j) =>
-//     ["Signature", "Open", "Active Project"].includes(j.status)
-//   );
-
-//   // Chart data
-//   // const projectStatusData = {
-//   //   labels: ['Active Project', 'Completed', 'Pending', 'Cancelled'],
-//   //   datasets: [{
-//   //     data: [
-//   //       activeProjectsCount,
-//   //       completedProjectsCount,
-//   //       inProgressProjectsCount,
-//   //       cancelledProjectsCount
-//   //     ],
-//   //     backgroundColor: ['#3B82F6', '#22C55E', '#F59E0B', '#EF4444'],
-//   //     borderWidth: 0,
-//   //   }],
-//   // };
-//   const projectStatusData = {
-//     labels: ['Lead', 'Bidding', 'Signature/Open/Active'],
-//     datasets: [{
-//       data: [
-//         leadProjects.length,
-//         biddingProjects.length,
-//         signatureProjects.length
-//       ],
-//       backgroundColor: ['#F59E0B', '#3B82F6', '#22C55E'],
-//       borderWidth: 0,
-//     }],
-//   };
-
-//   return (
-//     <Container fluid className="container p-3">
-//       <Row className="g-4 mb-4">
-//         {/* Projects in Progress */}
-//         {/* Jobs in Progress */}
-//         <Col md={4} lg={4}>
-//           <Link to="/admin/DProjectInProgress" className="text-decoration-none w-100 d-block">
-//             <Card className="h-100 shadow-sm">
-//               <Card.Body className="d-flex align-items-center">
-//                 <div
-//                   className="rounded-circle p-3 me-3 d-flex align-items-center justify-content-center"
-//                   style={{ backgroundColor: "#e6f4ec", width: "50px", height: "50px" }}
-//                 >
-//                   <FaTasks className="text-primary" size={20} />
-//                 </div>
-//                 <div>
-//                   <h3 className="mb-0">{inProgressProjectsCount}</h3>
-//                   {/* <p className="text-muted mb-0">Projects in Lead</p> */}
-//                   <small className="text-primary">Projects in Lead</small>
-//                 </div>
-//               </Card.Body>
-//             </Card>
-//           </Link>
-//         </Col>
-
-//         <Col md={4} lg={4}>
-//           {/* <Link to="/admin/DJobsInProgress" className="text-decoration-none w-100 d-block"> */}
-//           <Link to="/admin/DJobsInBidding" className="text-decoration-none w-100 d-block">
-//             <Card className="h-100 shadow-sm border-0">
-//               <Card.Body className="d-flex align-items-center">
-//                 <div className="rounded-circle p-3 bg-light-green me-3">
-//                   <FaProjectDiagram className="text-warning" size={24} />
-//                 </div>
-//                 <div>
-//                   <h3 className="mb-0">{inProgressCount}</h3>
-//                   {/* <p className="text-muted mb-0">Jobs in Progress</p> */}
-//                   <small className="text-warning">Projects in Bidding</small>
-//                 </div>
-//               </Card.Body>
-//             </Card>
-//           </Link>
-//         </Col>
-
-
-
-
-//         {/* Jobs Due Today */}
-//         <Col md={4} lg={4}>
-//           <Link to="/admin/DProjectInSignature" className="text-decoration-none w-100 d-block">
-//             <Card className="h-100 shadow-sm">
-//               <Card.Body className="d-flex align-items-center">
-//                 <div className="rounded-circle p-3 bg-light-yellow me-3">
-//                   <FaFileInvoiceDollar className="text-success" size={24} />
-//                 </div>
-//                 <div>
-//                   <h3 className="mb-0">{todaysJobsCount}</h3>
-//                   {/* <p className="text-muted mb-0">Jobs Due Today</p> */}
-//                   <small className="text-success">Projects Signature</small>
-//                 </div>
-//               </Card.Body>
-//             </Card>
-//           </Link>
-//         </Col>
-
-//         {/* Cost Estimates Awaiting POs */}
-//         {/* <Col md={4} lg={4}>
-//           <Link to="/admin/DCostEstimates" className="text-decoration-none w-100 d-block">
-//             <Card className="h-100 shadow-sm">
-//               <Card.Body className="d-flex align-items-center">
-//                 <div className="rounded-circle p-3 bg-light-purple me-3">
-//                   <FaClipboardCheck className="text-purple" size={24} />
-//                 </div>
-//                 <div>
-//                   <h3 className="mb-0">{CostestimatesCount}</h3>
-//                   <p className="text-muted mb-0">Cost Estimates</p>
-//                   <small className="text-danger">Waiting to receive POs</small>
-//                 </div>
-//               </Card.Body>
-//             </Card>
-//           </Link>
-//         </Col> */}
-
-//         {/* Completed Projects to be Invoiced */}
-//         {/* <Col md={4} lg={4}>
-//           <Link to="/admin/DCompletedProject" className="text-decoration-none w-100 d-block">
-//             <Card className="h-100 shadow-sm">
-//               <Card.Body className="d-flex align-items-center">
-//                 <div className="rounded-circle p-3 bg-light-red me-3">
-//                   <FaFileInvoiceDollar className="text-danger" size={24} />
-//                 </div>
-//                 <div>
-//                   <h3 className="mb-0">{projectCompleted}</h3>
-//                   <p className="text-muted mb-0">Completed Projects</p>
-//                   <small className="text-danger">To be Invoiced</small>
-//                 </div>
-//               </Card.Body>
-//             </Card>
-//           </Link>
-//         </Col> */}
-
-//         {/* Timesheet Discrepancies */}
-//         {/* <Col md={4} lg={4}>
-//           <Link to="/admin/TimesheetWorklog" className="text-decoration-none w-100 d-block">
-//             <Card className="h-100 shadow-sm">
-//               <Card.Body className="d-flex align-items-center">
-//                 <div className="rounded-circle p-3 bg-light-orange me-3">
-//                   <FaExclamationTriangle className="text-orange" size={24} />
-//                 </div>
-//                 <div>
-//                   <h3 className="mb-0">8</h3>
-//                   <p className="text-muted mb-0">Timesheet Discrepancies</p>
-//                   <small className="text-warning">Action needed</small>
-//                 </div>
-//               </Card.Body>
-//             </Card>
-//           </Link>
-//         </Col> */}
-//       </Row>
-
-//       <Row className="g-4">
-//         {/* Project Status Overview */}
-//         <Col md={6}>
-//           <Card className="h-100 shadow-sm">
-//             <Card.Body>
-//               <h5 className="card-title mb-4">Project Status Overview</h5>
-//               {/* <div style={{ height: '350px', marginLeft: "50px" }}>
-//                 <Doughnut data={projectStatusData} options={chartOptions} />
-//               </div> */}
-//               <div style={{ width: "500px", maxWidth: "500px", alignItems: "center" }}>
-//                 <Doughnut data={projectStatusData} options={chartOptions} />
-//               </div>
-//             </Card.Body>
-//           </Card>
-//         </Col>
-
-//         {/* Recent Activity */}
-//         <Col md={6}>
-//           <Card className="h-100 shadow-sm">
-//             <Card.Body>
-//               <h5 className="card-title mb-4">Recent Activity</h5>
-//               {recentActivities.map((activity, index) => (
-//                 <div key={index} className="d-flex align-items-start mb-3">
-//                   <div className={`rounded-circle p-2 bg-light-${activity.type === 'new' ? 'blue' : activity.type === 'completed' ? 'green' : 'yellow'} me-3`}>
-//                     {activity.type === 'new' && <FaProjectDiagram className="text-primary" />}
-//                     {activity.type === 'completed' && <FaClipboardCheck className="text-success" />}
-//                     {activity.type === 'po' && <FaFileInvoiceDollar className="text-warning" />}
-//                   </div>
-//                   <div>
-//                     <h6 className="mb-1">{activity.title}</h6>
-//                     <p className="text-muted mb-0">{activity.description}</p>
-//                     <small className="text-muted">{activity.time}</small>
-//                   </div>
-//                 </div>
-//               ))}
-//             </Card.Body>
-//           </Card>
-//         </Col>
-//       </Row>
-//     </Container>
-//   );
-// }
-
-// export default Dashbord;
-
-
-
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Card, Row, Col, Container } from 'react-bootstrap';
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
 import { Doughnut } from 'react-chartjs-2';
@@ -314,12 +7,16 @@ import {
   FaProjectDiagram,
   FaFileInvoiceDollar,
   FaClipboardCheck,
+  FaMoneyBill,
 } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchjobs } from '../../../redux/slices/JobsSlice';
 import { fetchProject } from '../../../redux/slices/ProjectsSlice';
 import { fetchCostEstimates } from '../../../redux/slices/costEstimatesSlice';
+import axios from 'axios';
+import { apiUrl } from '../../../redux/utils/config';
+import { fetchClient } from '../../../redux/slices/ClientSlice';
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
@@ -335,6 +32,36 @@ function Dashbord() {
   const { job } = useSelector((state) => state.jobs);
   const { project } = useSelector((state) => state.projects);
   const { estimates } = useSelector((state) => state.costEstimates);
+  const { Clients } = useSelector((state) => state.client);
+
+  const [netaDashboardData, setNetaDashboardData] = useState({
+    document_records: { total: 0, records: [] },
+    daily_logs: { total: 0, records: [] },
+    projects_document: { total: 0, records: [] },
+    comments: { total: 0, records: [] },
+    job_planning: { total: 0, records: [] },
+  });
+
+  useEffect(() => {
+    const fetchNetaData = async () => {
+      try {
+        const response = await axios.get(`https://netaai-crm-backend-production-c306.up.railway.app/api/getRecentEntriess`);
+        setNetaDashboardData(response.data.data); // Ensure you set the correct data
+      } catch (error) {
+        console.error("Error fetching data:", error);
+        // Optionally set an error state to display an error message in the UI
+      }
+    };
+
+    fetchNetaData();
+  }, []);
+
+  useEffect(() => {
+    dispatch(fetchClient());
+  }, [dispatch]);
+
+
+  const [dashboardData, setDashboardData] = useState({});
 
   const inProgressProjects = (project?.data || []).filter((j) => j.status === "Lead");
   const inProgressProjectsCount = inProgressProjects.length;
@@ -381,11 +108,32 @@ function Dashbord() {
     },
   };
 
-  const recentActivities = [
-    { type: 'new', title: 'New project created', description: 'Premium Packaging Design - Client XYZ', time: '2 hours ago' },
-    { type: 'completed', title: 'Project completed', description: 'Eco-friendly Bag Design - Client ABC', time: '1 day ago' },
-    { type: 'po', title: 'New PO received', description: 'Design Update - Client DEF', time: '1 day ago' },
-  ];
+  useEffect(() => {
+    const fetchData = async () => {
+      const response = await axios.get(`${apiUrl}/dashboard/getCombinedDashboard`);
+      console.log(response?.data);
+
+      setDashboardData(response?.data);
+    };
+    fetchData();
+  }, []);
+
+  // Create recent activities from projects and cost estimates
+  const recentActivities = [];
+
+  // Add recent project activities
+  projects?.map(project => {
+    recentActivities.push({
+      type: 'new',
+      title: 'New project created',
+      description: `${project.projectName} - Client ${project.clientId?.clientName || 'Unknown'}`,
+      time: new Date(project.createdAt).toLocaleDateString('en-GB')
+    });
+  });
+
+  // Split activities by type
+  const projectActivities = recentActivities.filter(act => act.type === 'new');
+  const proposalActivities = recentActivities.filter(act => act.type === 'po');
 
   return (
     <Container fluid className="p-3">
@@ -394,10 +142,7 @@ function Dashbord() {
           <Link to="/admin/DProjectInProgress" className="text-decoration-none w-100 d-block">
             <Card className="h-100 shadow-sm">
               <Card.Body className="d-flex align-items-center">
-                <div
-                  className="rounded-circle p-3 me-3 d-flex align-items-center justify-content-center"
-                  style={{ backgroundColor: "#e6f4ec", width: "3rem", height: "3rem" }}
-                >
+                <div className="rounded-circle p-3 me-3 d-flex align-items-center justify-content-center" style={{ backgroundColor: "#e6f4ec", width: "3rem", height: "3rem" }}>
                   <FaTasks className="text-primary" size={20} />
                 </div>
                 <div>
@@ -442,12 +187,42 @@ function Dashbord() {
         </Col>
       </Row>
 
+      <Row className="g-4 mb-4">
+        <Col xs={12} sm={12} md={6} lg={4}>
+          <Card className="h-100 shadow-sm">
+            <Card.Body className="d-flex align-items-center">
+              <div className="rounded-circle p-3 me-3 d-flex align-items-center justify-content-center" style={{ backgroundColor: "#e6f4ec", width: "3rem", height: "3rem" }}>
+                <FaMoneyBill style={{ color: "green" }} size={20} />
+              </div>
+              <div>
+                <h3 className="mb-0 fs-4">${dashboardData?.totalPaid}</h3>
+                <small style={{ color: "green" }}>Total Paid Amount For All Projects</small>
+              </div>
+            </Card.Body>
+          </Card>
+        </Col>
+
+        <Col xs={12} sm={12} md={6} lg={4}>
+          <Card className="h-100 shadow-sm">
+            <Card.Body className="d-flex align-items-center">
+              <div className="rounded-circle p-3 me-3 d-flex align-items-center justify-content-center bg-light" style={{ width: "3rem", height: "3rem" }}>
+                <FaProjectDiagram className="text-danger" size={24} />
+              </div>
+              <div>
+                <h3 className="mb-0 fs-4">${dashboardData?.totalDue}</h3>
+                <small className="text-danger">Total Due Amount For All Projects</small>
+              </div>
+            </Card.Body>
+          </Card>
+        </Col>
+      </Row>
+
       <Row className="g-4">
         <Col xs={12} md={6}>
           <Card className="h-100 shadow-sm">
             <Card.Body>
               <h5 className="card-title mb-4">Project Status Overview</h5>
-              <div style={{ position: 'relative', width: '100%', paddingBottom: '100%' }}>
+              <div style={{ position: 'relative', width: '100%', paddingBottom: '50%' }}>
                 <Doughnut
                   data={projectStatusData}
                   options={chartOptions}
@@ -462,24 +237,143 @@ function Dashbord() {
           <Card className="h-100 shadow-sm">
             <Card.Body>
               <h5 className="card-title mb-4">Recent Activity</h5>
-              {recentActivities.map((activity, index) => (
-                <div key={index} className="d-flex flex-wrap align-items-start mb-3">
-                  <div className={`rounded-circle p-2 me-3 bg-light`}>
-                    {activity.type === 'new' && <FaProjectDiagram className="text-primary" />}
-                    {activity.type === 'completed' && <FaClipboardCheck className="text-success" />}
-                    {activity.type === 'po' && <FaFileInvoiceDollar className="text-warning" />}
-                  </div>
-                  <div>
-                    <h6 className="mb-1">{activity.title}</h6>
-                    <p className="text-muted mb-0">{activity.description}</p>
-                    <small className="text-muted">{activity.time}</small>
-                  </div>
+              <Row>
+                <Col xs={12} md={6}>
+                  <h6 className="mb-3">Projects</h6>
+                  {projectActivities.reverse().slice(0, 4).map((activity, index) => (
+                    <div key={index} className="d-flex align-items-start mb-3">
+                      <div className="rounded-circle p-2 me-3 bg-light">
+                        <FaProjectDiagram className="text-primary" />
+                      </div>
+                      <div>
+                        <h6 className="mb-1">{activity.title}</h6>
+                        <p className="text-muted mb-0">{activity.description}</p>
+                        <small className="text-muted">{activity.time}</small>
+                      </div>
+                    </div>
+                  ))}
+                </Col>
+              </Row>
+            </Card.Body>
+          </Card>
+        </Col>
+      </Row>
+
+      {/* Document Records Section */}
+      {/* Document Records Section */}
+      {/* <Row className="g-4 mb-4 mt-4">
+        <Col xs={12}>
+          <Card className="h-100 shadow-sm">
+            <Card.Body>
+              <h5 className="card-title mb-4">Document Records</h5>
+              {netaDashboardData?.document_records?.records?.reverse().slice(0, 4).map((record) => (
+                <div key={record.id} className="mb-3">
+                  <h6>Record ID: {record.id}</h6>
+                  <p>Client ID: {record.client_id}</p>
+                  <p>Proposal ID: {record.proposal_id}</p>
+                  <p>Created At: {new Date(record.created_at).toLocaleString()}</p>
                 </div>
               ))}
             </Card.Body>
           </Card>
         </Col>
-      </Row>
+      </Row> */}
+      {/* Daily Logs Section */}
+      {/* Daily Logs Section */}
+      {/* <Row className="g-4 mb-4">
+        <Col xs={12}>
+          <Card className="h-100 shadow-sm">
+            <Card.Body>
+              <h5 className="card-title mb-4">Daily Logs</h5>
+              {netaDashboardData?.daily_logs?.records?.reverse().slice(0, 4).map((log) => (
+                <div key={log.id} className="mb-3">
+                  <h6>Log ID: {log.id}</h6>
+                  <p>Job ID: {log.job_id}</p>
+                  <p>Notes: {log.notes}</p>
+                  <h6>Images:</h6>
+                  <ul>
+                    {log.images.map((image, index) => (
+                      <li key={index}><a href={image} target="_blank" rel="noopener noreferrer">View Image</a></li>
+                    ))}
+                  </ul>
+                  <p>Created At: {new Date(log.created_at).toLocaleString()}</p>
+                </div>
+              ))}
+            </Card.Body>
+          </Card>
+        </Col>
+      </Row> */}
+
+      {/* Projects Document Section */}
+      {/* Projects Document Section */}
+      {/* <Row className="g-4 mb-4">
+        <Col xs={12}>
+          <Card className="h-100 shadow-sm">
+            <Card.Body>
+              <h5 className="card-title mb-4">Projects Document</h5>
+              {netaDashboardData?.projects_document?.records?.reverse().slice(0, 4).map((doc) => (
+                <div key={doc.id} className="mb-3">
+                  <h6>Document ID: {doc.id}</h6>
+                  <p>Proposal ID: {doc.proposal_id}</p>
+                  <p>Title: {doc.title}</p>
+                  <h6>File URLs:</h6>
+                  <ul>
+                    {doc.file_urls.map((url, index) => (
+                      <li key={index}><a href={url} target="_blank" rel="noopener noreferrer">View Document</a></li>
+                    ))}
+                  </ul>
+                  <p>Created At: {new Date(doc.created_at).toLocaleString()}</p>
+                </div>
+              ))}
+            </Card.Body>
+          </Card>
+        </Col>
+      </Row> */}
+
+      {/* Comments Section */}
+      {/* <Row className="g-4 mb-4">
+        <Col xs={12}>
+          <Card className="h-100 shadow-sm">
+            <Card.Body>
+              <h5 className="card-title mb-4">Comments</h5>
+              {netaDashboardData?.comments?.records?.reverse().slice(0, 4).map((comment) => (
+                <div key={comment.id} className="mb-3">
+                  <h6>Comment ID: {comment.id}</h6>
+                  <p>User ID: {comment.user_id}</p>
+                  <p>Daily Log ID: {comment.dailylog_id}</p>
+                  <p>Comment: {comment.comment}</p>
+                  <p>Created At: {new Date(comment.created_at).toLocaleString()}</p>
+                </div>
+              ))}
+            </Card.Body>
+          </Card>
+        </Col>
+      </Row> */}
+
+      {/* Job Planning Section */}
+      {/* Job Planning Section */}
+      {/* <Row className="g-4 mb-4">
+        <Col xs={12}>
+          <Card className="h-100 shadow-sm">
+            <Card.Body>
+              <h5 className="card-title mb-4">Job Planning</h5>
+              {netaDashboardData?.job_planning?.records?.reverse().slice(0, 4).map((plan) => (
+                <div key={plan.id} className="mb-3">
+                  <h6>Plan ID: {plan.id}</h6>
+                  <p>Proposal ID: {plan.proposal_id}</p>
+                  <p>Estimated Start: {plan.estimated_start}</p>
+                  <p>Estimated Completion: {plan.estimated_completion}</p>
+                  <p>Total Budget: {plan.total_budget}</p>
+                  <p>Phase Name: {plan.phase_name}</p>
+                  <p>Created At: {new Date(plan.created_at).toLocaleString()}</p>
+                </div>
+              ))}
+            </Card.Body>
+          </Card>
+        </Col>
+      </Row> */}
+
+
     </Container>
   );
 }

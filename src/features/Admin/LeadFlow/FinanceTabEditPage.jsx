@@ -1003,12 +1003,11 @@ function FinanceTabEditPage() {
 
 
     const [envelopdata, setenvolopeData] = useState(null);
-    console.log("envelopdate", envelopdata)
 
     const fetchfinance = async (id) => {
         try {
             const response = await axios.get(`${apiUrl}/getEnvelopesByProjectId/${id}`);
-            console.log(response.data);
+
             setenvolopeData(response?.data?.data)
 
         } catch (error) {
@@ -1024,7 +1023,6 @@ function FinanceTabEditPage() {
     }, [invoice, invoice?._id]);
 
     const getProject = project?.data.filter((proj) => proj._id === envelopdata?.project_id)
-    console.log(getProject, "!!");
     const projectName = getProject?._id;
 
 

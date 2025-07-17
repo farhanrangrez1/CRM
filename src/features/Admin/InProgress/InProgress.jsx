@@ -712,7 +712,14 @@ function InProgress() {
                       : job?.assign
                   }
                 </td>
-                <td style={{ whiteSpace: 'nowrap' }}>{job?.task}</td>
+                <td>
+                  <span
+                    className="px-2 py-1"
+                    style={{ whiteSpace: 'pre-wrap', wordBreak: 'break-word' }}
+                  >
+                    {job.task}
+                  </span>
+                </td>
                 <td>
                   <span className={`badge ${getStatusClass(job.Status)} px-2 py-1`}>
                     {job.Status}

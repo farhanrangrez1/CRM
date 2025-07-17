@@ -333,6 +333,7 @@ import {
 import { useEffect, useState } from "react";
 import { fetchAllDailyLogs } from "../../../redux/slices/dailyLogsSlice";
 import { fetchusers } from "../../../redux/slices/userSlice";
+import { FaFile } from "react-icons/fa";
 
 const DocumentList = ({ documents, previewUrl, setPreviewUrl }) => {
   const dispatch = useDispatch();
@@ -368,13 +369,34 @@ const DocumentList = ({ documents, previewUrl, setPreviewUrl }) => {
 
   const handlePreview = (url) => setPreviewUrl(url);
 
-  const handleDownload = (url) => {
-    const a = document.createElement("a");
-    a.href = url;
-    a.target = "_blank";
-    a.download = url.split("/").pop();
-    a.click();
+  // const handleDownload = (url) => {
+  //   const a = document.createElement("a");
+  //   a.href = url;
+  //   a.target = "_blank";
+  //   a.download = url.split("/").pop();
+  //   a.click();
+  // };
+
+  const handleDownload = async (url) => {
+    try {
+      const response = await fetch(url, {
+        mode: 'cors' // Ensure CORS is allowed from the server
+      });
+      const blob = await response.blob();
+      const downloadUrl = window.URL.createObjectURL(blob);
+
+      const a = document.createElement("a");
+      a.href = downloadUrl;
+      a.download = url.split("/").pop();
+      document.body.appendChild(a); // Required for Firefox
+      a.click();
+      document.body.removeChild(a);
+      window.URL.revokeObjectURL(downloadUrl);
+    } catch (error) {
+      console.error("Download failed:", error);
+    }
   };
+
 
   const handleDelete = async (id) => {
     const confirm = window.confirm("Are you sure you want to delete this document?");
@@ -507,13 +529,28 @@ const DocumentList = ({ documents, previewUrl, setPreviewUrl }) => {
                   </div>
                 </div>
 
+                {/* <div className="d-flex align-items-center gap-3">
+                  <button
+                    className="btn btn-outline-primary rounded-circle d-flex align-items-center justify-content-center"
+                    style={{ width: "40px", height: "40px" }}
+                    onClick={() => handlePreview(doc.fileUrl)}
+                    title="Preview"
+                  >
+                    <FaFile />
+                  </button>
+                  <div>
+                    <div className="fw-semibold text-primary">{doc.title}</div>
+                    <div className="small text-muted">Source: {doc.source}</div>
+                    <div className="small text-muted">Uploaded by: {doc.uploadedBy}</div>
+                  </div>
+                </div> */}
 
                 <div>
                   <button
                     className="btn btn-sm btn-outline-success me-2"
                     onClick={() => handleDownload(doc.fileUrl)}
                   >
-                    Open
+                    Download
                   </button>
                   {doc.source === "Upload Tab" && (
                     <button

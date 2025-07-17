@@ -234,6 +234,24 @@ function ProjectJobsTab() {
     navigate(`/admin/AddJobTracker/${job._id}`, { state: { job } });
   };
 
+  const handleComplete = (id) => {
+    const payload = {
+      Status: "Completed"
+    };
+
+    dispatch(updatejob({ id, data: payload }))
+      .unwrap()
+      .then(() => {
+        toast.success("Job marked as completed!");
+        dispatch(Project_job_Id(job.projectId));
+      })
+      .catch(() => {
+        toast.error("Failed to mark job as completed!");
+      });
+  };
+
+
+
   const JobDetails = (job) => {
     navigate(`/admin/OvervieJobsTracker`, { state: { job } });
   }
@@ -384,17 +402,10 @@ function ProjectJobsTab() {
                   </th>
                   <th>JobsNo</th>
                   <th style={{ whiteSpace: 'nowrap' }}>Project Name</th>
-                  <th>Brand</th>
-                  <th>SubBrand</th>
-                  <th>Flavour</th>
-                  <th>PackType</th>
-                  <th>PackSize</th>
-                  <th>PackCode</th>
-                  <th>Priority</th>
-                  <th style={{ whiteSpace: 'nowrap' }}>Due Date</th>
-                  <th>Assing</th>
-                  <th>TotalTime</th>
+                  <th>Assign</th>
+                  <th>Task</th>
                   <th>Status</th>
+                  <th>Priority</th>
                   <th>Actions</th>
                 </tr>
               </thead>
@@ -408,24 +419,27 @@ function ProjectJobsTab() {
                         onChange={() => handleCheckboxChange(job._id)}
                       />
                     </td>
-                    <td onClick={() => JobDetails(job)}>
-                      <Link style={{ textDecoration: 'none' }}>{job.JobNo}</Link>
+                    <td>
+                      <span>{job.JobNo}</span>
                     </td>
                     <td style={{ whiteSpace: 'nowrap' }}>{job.projectId?.[0]?.projectName || 'N/A'}</td>
-                    <td style={{ whiteSpace: 'nowrap' }}>{job.brandName}</td>
-                    <td style={{ whiteSpace: 'nowrap' }}>{job.subBrand}</td>
-                    <td style={{ whiteSpace: 'nowrap' }}>{job.flavour}</td>
-                    <td style={{ whiteSpace: 'nowrap' }}>{job.packType}</td>
-                    <td style={{ whiteSpace: 'nowrap' }}>{job.packSize}</td>
-                    <td style={{ whiteSpace: 'nowrap' }}>{job?.packCode}</td>
+
+                    <td style={{ whiteSpace: 'nowrap' }}>
+                      {
+                        userAll?.data?.users?.find(user => user._id === job?.assign)
+                          ? `${userAll.data.users.find(user => user._id === job.assign).firstName} ${userAll.data.users.find(user => user._id === job.assign).lastName}`
+                          : job?.assign
+                      }
+                    </td>
                     <td>
-                      <span className={getPriorityClass(job.priority)}>
-                        {job.priority}
+                      <span
+                        className="px-2 py-1"
+                        style={{ whiteSpace: 'pre-wrap', wordBreak: 'break-word' }}
+                      >
+                        {job.task}
                       </span>
                     </td>
-                    <td>{new Date(job?.createdAt).toLocaleDateString('en-GB').replace(/\/20/, '/')}</td>
-                    <td style={{ whiteSpace: 'nowrap' }}>{job.assignedTo}</td>
-                    <td>{new Date(job.updatedAt).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })}</td>
+
                     {/* <th>
                                         <Button id='All_btn' variant="success" style={{ width: "130px" }} size="sm" >
                                           {job.Status || "Active"}
@@ -437,9 +451,14 @@ function ProjectJobsTab() {
                         {job.Status}
                       </span>
                     </td>
+                    <td>
+                      <span className={getPriorityClass(job.priority)}>
+                        {job.priority}
+                      </span>
+                    </td>
                     <td className="d-flex">
-                      <button className="btn btn-sm btn-outline-primary me-1" onClick={() => JobDetails(job)}>
-                        <i className="bi bi-eye"></i> View
+                      <button className="btn btn-sm btn-outline-primary me-1" onClick={() => handleComplete(job?._id)}>
+                        <i className="bi bi-eye"></i> complete
                       </button>
                       <button className="btn btn-sm btn-outline-primary me-1" onClick={() => handleUpdate(job)}>
                         <i className="bi bi-pencil"></i> Edit

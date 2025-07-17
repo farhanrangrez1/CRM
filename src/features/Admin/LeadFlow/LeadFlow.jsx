@@ -18,6 +18,7 @@ import axios from 'axios';
 import { getAllDocumentsRecord } from '../../../redux/slices/documentSlice';
 import { BsThreeDotsVertical } from 'react-icons/bs';
 import Swal from 'sweetalert2';
+import { deletejob, fetchjobs } from '../../../redux/slices/JobsSlice';
 
 const initialProposals = [
   {
@@ -687,7 +688,7 @@ const LeadFlow = ({ data }) => {
             (p) => (p.status || "").toLowerCase() === "bidding"
           ),
           closed: updatedProjects.filter(
-            (p) => ["open", "active project", "signature", "Open", "Active Project", "Signature"].includes(
+            (p) => ["open", "active project", "signature", "Open", "Active Project", "Signature", "active"].includes(
               (p.status || "")
             )
           ),
@@ -786,11 +787,36 @@ const LeadFlow = ({ data }) => {
       navigate(`/admin/AddProjectList`, { state: { project } });
     };
 
+    const { job } = useSelector((state) => state.jobs);
+    useEffect(() => {
+      dispatch(fetchjobs());
+    }, [dispatch]);
 
-    const handleDeleteProject = (projectId) => {
+    // const handleDeleteProject = (projectId) => {
+    //   Swal.fire({
+    //     title: 'Are you sure?',
+    //     text: 'This will permanently delete the project!',
+    //     icon: 'warning',
+    //     showCancelButton: true,
+    //     confirmButtonText: 'Yes, delete it!',
+    //     cancelButtonText: 'Cancel',
+    //   }).then(async (result) => {
+    //     if (result.isConfirmed) {
+    //       try {
+    //         await dispatch(deleteproject(projectId));
+    //         await Swal.fire('Deleted!', 'Project has been deleted.', 'success');
+    //         window.location.reload();
+    //       } catch (error) {
+    //         Swal.fire('Error!', 'Something went wrong.', 'error');
+    //       }
+    //     }
+    //   });
+    // };
+
+    const handleDeleteProject = async (projectId) => {
       Swal.fire({
         title: 'Are you sure?',
-        text: 'This will permanently delete the project!',
+        text: 'This will permanently delete the project and all related jobs!',
         icon: 'warning',
         showCancelButton: true,
         confirmButtonText: 'Yes, delete it!',
@@ -798,9 +824,23 @@ const LeadFlow = ({ data }) => {
       }).then(async (result) => {
         if (result.isConfirmed) {
           try {
+
+
+            const relatedJobs = job?.jobs?.filter((jobItem) =>
+              jobItem.projectId?.some((p) => p._id === projectId)
+            );
+
+            // Step 2: Delete all related jobs
+            for (const job of relatedJobs) {
+              await dispatch(deletejob(job._id));
+            }
+
+            // Step 3: Delete the project
             await dispatch(deleteproject(projectId));
-            await Swal.fire('Deleted!', 'Project has been deleted.', 'success');
-            window.location.reload();
+
+            await Swal.fire('Deleted!', 'Project and related jobs deleted.', 'success');
+            dispatch(fetchjobs()); // refresh job list
+            dispatch(fetchProject()); // refresh project list
           } catch (error) {
             Swal.fire('Error!', 'Something went wrong.', 'error');
           }
@@ -903,7 +943,7 @@ const LeadFlow = ({ data }) => {
                                     bg={item.status === 'Open' || item.status === 'Active Project' ? 'success' : (item.status === 'Bidding' ? 'warning' : 'info')}
                                     className="me-1"
                                   >
-                                    {item.status === 'Open' || item.status === 'Active Project' ? 'Signature' : (item.status == "Bidding" ? "mail sent" : item.status)}
+                                    {item.status === 'Open' || item.status === 'Active Project' || item.status === 'active' ? 'Signature' : (item.status == "Bidding" ? "mail sent" : item.status)}
                                   </Badge>
                                 </div>}
                             </div>

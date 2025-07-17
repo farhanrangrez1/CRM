@@ -442,18 +442,6 @@ function AddJobTracker() {
                 </select>
               </div>
               <div className="col-md-6">
-                <label className="form-label">Task</label>
-                <input
-                  type="text"
-                  className="form-control"
-                  name="task"
-                  value={formData.task}
-                  onChange={(e) =>
-                    setFormData((prev) => ({ ...prev, task: e.target.value }))
-                  }
-                />
-              </div>
-              <div className="col-md-6">
                 <label className="form-label">Priority</label>
                 <select
                   className="form-select"
@@ -468,6 +456,19 @@ function AddJobTracker() {
                   <option value="medium">Medium</option>
                   <option value="high">High</option>
                 </select>
+              </div>
+              <div className="col-md-12">
+                <label className="form-label">Task</label>
+                <textarea
+                  type="text"
+                  className="form-control"
+                  name="task"
+                  rows={5}
+                  value={formData.task}
+                  onChange={(e) =>
+                    setFormData((prev) => ({ ...prev, task: e.target.value }))
+                  }
+                />
               </div>
 
               {/* Barcode */}

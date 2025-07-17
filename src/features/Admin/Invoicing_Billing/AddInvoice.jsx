@@ -59,8 +59,6 @@ function AddInvoice({ onInvoiceComplete }) {
   useEffect(() => {
     const fetchemailproposalbyid = (id) => {
       const response = axios.get(`${apiUrl}/getEnvelopesByProjectId/${id}`);
-      console.log(response);
-
     }
     if (invoice?._id) {
       fetchemailproposalbyid(invoice?._id);
