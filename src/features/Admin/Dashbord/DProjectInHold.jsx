@@ -6,7 +6,7 @@ import { FaEdit, FaTrash } from "react-icons/fa";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
 
-function DProjectInSignature() {
+function DProjectInBidding() {
   const dispatch = useDispatch();
   const { project, loading, error } = useSelector((state) => state.projects);
   const [searchQuery, setSearchQuery] = useState("");
@@ -43,7 +43,7 @@ function DProjectInSignature() {
   };
 
   const filteredProjects = (project?.data || [])
-    .filter((j) => j.status === "Signature" || j.status === "Open")
+    .filter((j) => j.status === "Hold")
     .filter((proj) => {
       const query = searchQuery.toLowerCase();
       return (
@@ -56,7 +56,7 @@ function DProjectInSignature() {
   return (
     <div className="container bg-white p-4 mt-4 rounded shadow-sm">
       <div className="d-flex justify-content-between align-items-center mb-3">
-        <h4 className="fw-bold m-0">Signature Projects</h4>
+        <h4 className="fw-bold m-0">Hold Projects</h4>
         <Form.Control
           type="text"
           placeholder="Search projects..."
@@ -93,7 +93,7 @@ function DProjectInSignature() {
                   <td>{proj.clientId?.clientName || "N/A"}</td>
                   <td>{proj.description}</td>
                   <td>
-                    <span className="badge bg-success">Signature</span>
+                    <span className="badge bg-warning">{proj.status}</span>
                   </td>
                   <td>
                     <Button
@@ -122,4 +122,4 @@ function DProjectInSignature() {
   );
 }
 
-export default DProjectInSignature;
+export default DProjectInBidding;

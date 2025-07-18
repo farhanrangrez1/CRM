@@ -425,6 +425,8 @@ const tabs = [
   { label: 'Bidding', value: 'Bidding' },
   { label: 'Signature', value: 'Signature' },
   { label: 'Expired', value: 'Expired' },
+  { label: 'Hold', value: 'Hold' },
+  { label: 'Approved', value: 'Approved' },
   { label: 'All', value: 'All' },
 ];
 
@@ -550,6 +552,309 @@ const LeadFlow = ({ data }) => {
   };
 
 
+  // const ProposalWorkflowBoard = ({ onNavigate, selectedStatus }) => {
+  //   const reduxProposals = useSelector((state) => state?.proposal?.proposals);
+  //   const dispatch = useDispatch();
+  //   const [isUpdating, setIsUpdating] = useState(false);
+  //   const [kanbanData, setKanbanData] = useState({
+  //     active: [],
+  //     pending: [],
+  //     closed: [],
+  //     rejected: []
+  //   });
+
+  //   const [loadingSpinner, setLoadingSpinner] = useState(false); // 👈 Add loading state
+
+  //   // Fetch document records
+  //   useEffect(() => {
+  //     dispatch(getAllDocumentsRecord());
+  //   }, [dispatch]);
+
+  //   const records = useSelector((state) => state?.documentRecord?.records?.data) || [];
+
+  //   const proposalTotalsMap = records.reduce((acc, record) => {
+  //     const proposalId = record.proposal_id;
+  //     const total = record.line_items?.reduce((sum, item) => sum + (item.amount || 0), 0);
+  //     acc[proposalId] = (acc[proposalId] || 0) + total;
+  //     return acc;
+  //   }, {});
+
+
+  //   useEffect(() => {
+  //     const processProjects = async () => {
+  //       if (!Array.isArray(project)) return;
+  //       setLoadingSpinner(true);
+
+  //       const updatedProjects = await Promise.all(
+  //         project.map(async (p) => {
+  //           const status = (p.status || "").toLowerCase();
+
+  //           if (status === "signature") {
+  //             const isTempPoles = p.tempPoles === "true";
+  //             const newStatus = isTempPoles ? "Open" : "Active Project";
+
+  //             await dispatch(
+  //               updateProject({
+  //                 id: p._id,
+  //                 payload: { status: newStatus },
+  //               })
+  //             );
+  //             return { ...p, status: "completed" };
+  //           }
+
+  //           return p;
+  //         })
+  //       );
+
+  //       // Step 2: Filter into Kanban columns
+  //       const result = {
+  //         active: updatedProjects.filter(
+  //           (p) => (p.status || "").toLowerCase() === "lead"
+  //         ),
+  //         pending: updatedProjects.filter(
+  //           (p) => (p.status || "").toLowerCase() === "bidding"
+  //         ),
+  //         closed: updatedProjects.filter(
+  //           (p) => ["open", "active project", "signature", "Open", "Active Project", "Signature", "active"].includes(
+  //             (p.status || "")
+  //           )
+  //         ),
+  //         rejected: updatedProjects.filter(
+  //           (p) => (p.status || "").toLowerCase() === "expired"
+  //         ),
+  //       };
+
+  //       setKanbanData(result);
+  //       setLoadingSpinner(false);
+  //     };
+
+  //     processProjects();
+  //   }, []);
+
+
+  //   const handleCardDrop = async (result) => {
+  //     const { source, destination, draggableId } = result;
+  //     if (!destination || (source.droppableId === destination.droppableId && source.index === destination.index)) return;
+
+  //     const statusMap = {
+  //       active: "Lead",
+  //       pending: "Bidding",
+  //       closed: "Signature",
+  //       rejected: "Expired"
+  //     };
+
+  //     const newStatus = statusMap[destination.droppableId];
+
+  //     setIsUpdating(true);
+
+  //     try {
+  //       // Update DB status
+  //       await dispatch(updateProject({ id: draggableId, payload: { status: newStatus } }));
+
+  //       // Fetch updated list
+  //       await dispatch(fetchProject());
+  //       // console.log("fetcing project...");
+
+  //       setKanbanData(prevData => {
+  //         const updatedData = { ...prevData };
+
+  //         // Remove from current column
+  //         const currentStage = Object.keys(prevData).find(key =>
+  //           prevData[key].some(item => item._id === draggableId)
+  //         );
+  //         updatedData[currentStage] = updatedData[currentStage].filter(item => item._id !== draggableId);
+
+  //         // Add to new column
+  //         const movedItem = prevData[currentStage].find(item => item._id === draggableId);
+  //         if (movedItem) {
+  //           const updatedItem = { ...movedItem, status: newStatus };
+  //           updatedData[destination.droppableId] = [...updatedData[destination.droppableId], updatedItem];
+  //         }
+
+  //         return updatedData;
+  //       });
+
+  //     } catch (error) {
+  //       console.error("Failed to update status", error);
+  //     }
+
+  //     setIsUpdating(false);
+  //   };
+
+
+  //   let columns = [
+  //     { id: 'active', title: 'Lead' },
+  //     { id: 'pending', title: 'Bidding' },
+  //     { id: 'closed', title: 'Signature' },
+  //     { id: 'rejected', title: 'Expired' },
+  //   ];
+
+  //   if (selectedStatus && selectedStatus !== 'All') {
+  //     const selectedColumn = columns.find(c => c.title.toLowerCase() === selectedStatus.toLowerCase());
+  //     if (selectedColumn) {
+  //       columns = [selectedColumn, ...columns.filter(c => c.id !== selectedColumn.id)];
+  //     }
+  //   }
+
+
+  //   const handleUpdateProjectCard = (project) => {
+  //     navigate(`/admin/AddProjectList`, { state: { project } });
+  //   };
+
+  //   const { job } = useSelector((state) => state.jobs);
+  //   useEffect(() => {
+  //     dispatch(fetchjobs());
+  //   }, [dispatch]);
+
+  //   const handleDeleteProject = async (projectId) => {
+  //     Swal.fire({
+  //       title: 'Are you sure?',
+  //       text: 'This will permanently delete the project and all related jobs!',
+  //       icon: 'warning',
+  //       showCancelButton: true,
+  //       confirmButtonText: 'Yes, delete it!',
+  //       cancelButtonText: 'Cancel',
+  //     }).then(async (result) => {
+  //       if (result.isConfirmed) {
+  //         try {
+
+
+  //           const relatedJobs = job?.jobs?.filter((jobItem) =>
+  //             jobItem.projectId?.some((p) => p._id === projectId)
+  //           );
+
+  //           // Step 2: Delete all related jobs
+  //           for (const job of relatedJobs) {
+  //             await dispatch(deletejob(job._id));
+  //           }
+
+  //           // Step 3: Delete the project
+  //           await dispatch(deleteproject(projectId));
+
+  //           await Swal.fire('Deleted!', 'Project and related jobs deleted.', 'success');
+  //           dispatch(fetchjobs()); // refresh job list
+  //           dispatch(fetchProject()); // refresh project list
+  //         } catch (error) {
+  //           Swal.fire('Error!', 'Something went wrong.', 'error');
+  //         }
+  //       }
+  //     });
+  //   };
+
+
+  //   return (
+  //     <div style={{ position: 'relative' }}>
+  //       {isUpdating && (
+  //         <div className="kanban-loading-overlay">
+  //           Updating...
+  //         </div>
+  //       )}
+  //       {loadingSpinner ? (
+  //         <div className="d-flex flex-column justify-content-center align-items-center" style={{ minHeight: "400px" }}>
+  //           <div className="spinner-border text-primary" role="status">
+  //             <span className="visually-hidden">Loading...</span>
+  //           </div>
+  //           <div className="mt-3">Loading...</div>
+  //         </div>
+  //       ) : (
+  //         <DragDropContext key={project.map(p => p.id).join('-')} onDragEnd={handleCardDrop}>
+  //           <div className="kanban-board d-flex flex-nowrap gap-3 py-3" style={{ overflowX: "auto", minHeight: 350, marginLeft: "20px", WebkitOverflowScrolling: 'touch' }}>
+  //             {columns.map(col => (
+  //               <Droppable droppableId={col.id} key={col.id}>
+  //                 {(provided, snapshot) => (
+  //                   <div
+  //                     ref={provided.innerRef}
+  //                     {...provided.droppableProps}
+  //                     className="kanban-stage bg-light border rounded p-2 flex-shrink-0 d-flex flex-column"
+  //                     style={{ minWidth: 220, maxWidth: 320, minHeight: 320, width: '100%', flex: '1 1 260px', background: snapshot.isDraggingOver ? '#e3f2fd' : undefined }}
+  //                   >
+  //                     <div className="fw-bold mb-2 d-flex align-items-center gap-2">
+  //                       <span className="text-dark" style={{ fontSize: 14 }}>
+  //                         <span className="me-1" style={{ fontSize: 10 }}>●</span>
+  //                         {col.title}
+  //                       </span>
+  //                       <span className="badge bg-light text-dark border ms-auto">{kanbanData[col.id]?.length || 0}</span>
+  //                     </div>
+  //                     {kanbanData[col.id]?.map((item, idx) => (
+  //                       <Draggable draggableId={String(item._id)} index={idx} key={item._id}>
+  //                         {(provided, snapshot) => (
+  //                           <div
+  //                             ref={provided.innerRef}
+  //                             {...provided.draggableProps}
+  //                             {...provided.dragHandleProps}
+  //                             className="bg-white border rounded mb-2 p-2 shadow-sm"
+  //                             style={{
+  //                               minHeight: 110,
+  //                               wordBreak: 'break-word',
+  //                               maxWidth: '100%',
+  //                               background: snapshot.isDragging ? '#fffde7' : undefined,
+  //                               ...provided.draggableProps.style
+  //                             }}
+  //                             onClick={() => {
+  //                               localStorage.setItem("proposalId", item?._id);
+  //                               localStorage.setItem("invoice", JSON.stringify(item));
+  //                               navigate("/admin/LeadFlow/Details", { state: { item: item } });
+  //                             }}
+  //                           >
+  //                             <div className="d-flex justify-content-between align-items-start mb-1">
+  //                               <div className="fw-semibold text-primary" style={{ fontSize: 15, maxWidth: '80%', wordBreak: 'break-word' }}>
+  //                                 {item.projectName || item.title}
+  //                               </div>
+  //                               <Dropdown align="end" onClick={(e) => e.stopPropagation()}>
+  //                                 <Dropdown.Toggle as="div" style={{ cursor: "pointer" }}>
+  //                                   <BsThreeDotsVertical size={16} />
+  //                                 </Dropdown.Toggle>
+  //                                 <Dropdown.Menu>
+  //                                   <Dropdown.Item onClick={() => handleUpdateProjectCard(item)}>Edit</Dropdown.Item>
+  //                                   <Dropdown.Item onClick={() => handleDeleteProject(item._id)} className="text-danger">Delete</Dropdown.Item>
+  //                                 </Dropdown.Menu>
+  //                               </Dropdown>
+  //                             </div>
+  //                             <div className="text-muted small mb-1">Client: {item?.clientId?.clientName}</div>
+  //                             <div className="small text-secondary mb-1">Address: {item.billing || item.projectAddress}</div>
+  //                             <div className="small text-secondary mb-1">Phases: {item.phases}</div>
+  //                             {/* <div className="fw-semibold text-success" style={{ fontSize: 15 }}>
+  //                               Total: ${proposalTotalsMap[item._id] || 0}
+  //                             </div> */}
+  //                             {/* <div className="fw-semibold text-success" style={{ fontSize: 15 }}>
+  //                               Total Paid: {item.paid || 0}
+  //                             </div>
+  //                             <div className="fw-semibold text-danger" style={{ fontSize: 15 }}>
+  //                               Total Due: {item.due || 0}
+  //                             </div> */}
+  //                             {item.status == "signature" || item.status == "Signature" || item.status == "open" || item.status == "Open" || item.status == 'Active Project' ?
+  //                               <div className="d-flex flex-wrap justify-content-between gap-2 align-items-center mb-1">
+  //                                 <Badge
+  //                                   bg={item.status === 'Open' || item.status === 'Active Project' ? 'success' : (item.status === 'Bidding' ? 'warning' : 'info')}
+  //                                   className="me-1"
+  //                                 >
+  //                                   {item.status === 'Open' || item.status === 'Active Project' ? 'Signature' : (item.status == "Bidding" ? "mail sent" : item.status)}
+  //                                 </Badge>
+  //                                 ✅
+  //                               </div> : <div className="d-flex flex-wrap gap-2 align-items-center mb-1">
+  //                                 <Badge
+  //                                   bg={item.status === 'Open' || item.status === 'Active Project' ? 'success' : (item.status === 'Bidding' ? 'warning' : 'info')}
+  //                                   className="me-1"
+  //                                 >
+  //                                   {item.status === 'Open' || item.status === 'Active Project' || item.status === 'active' ? 'Signature' : (item.status == "Bidding" ? "mail sent" : item.status)}
+  //                                 </Badge>
+  //                               </div>}
+  //                           </div>
+  //                         )}
+  //                       </Draggable>
+  //                     ))}
+  //                     {provided.placeholder}
+  //                   </div>
+  //                 )}
+  //               </Droppable>
+  //             ))}
+  //           </div>
+  //         </DragDropContext>
+  //       )}
+  //     </div>
+  //   );
+  // };
+
   const ProposalWorkflowBoard = ({ onNavigate, selectedStatus }) => {
     const reduxProposals = useSelector((state) => state?.proposal?.proposals);
     const dispatch = useDispatch();
@@ -558,7 +863,9 @@ const LeadFlow = ({ data }) => {
       active: [],
       pending: [],
       closed: [],
-      rejected: []
+      rejected: [],
+      hold: [],
+      approved: []
     });
 
     const [loadingSpinner, setLoadingSpinner] = useState(false); // 👈 Add loading state
@@ -578,71 +885,6 @@ const LeadFlow = ({ data }) => {
     }, {});
 
 
-    // useEffect(() => {
-    //   const processProjects = async () => {
-    //     if (!Array.isArray(project)) return;
-    //     setLoadingSpinner(true);
-
-    //     const updatedProjects = await Promise.all(
-    //       project.map(async (p) => {
-    //         const status = (p.status || "").toLowerCase();
-
-    //         if (status === "signature") {
-    //           try {
-    //             const res = await axios.get(
-    //               `${apiUrl}/getEnvelopesByProjectId/${p._id}`
-    //             );
-
-    //             if (res?.data?.data[0]?.current_status === "completed") {
-    //               const isTempPoles = p.tempPoles === "true"; // or === true if it's boolean
-    //               const newStatus = isTempPoles ? "Open" : "Active Project";
-
-    //               await dispatch(
-    //                 updateProject({
-    //                   id: p._id,
-    //                   payload: { status: newStatus },
-    //                 })
-    //               );
-    //               return { ...p, status: "completed" }; // Optional: update local copy
-    //             }
-    //           } catch (error) {
-    //             console.error(`Error checking project ${p._id}`, error.message);
-    //           }
-    //         }
-
-    //         return p;
-    //       })
-    //     );
-
-
-    //     // Step 2: Filter into Kanban columns
-    //     const result = {
-    //       active: updatedProjects.filter(
-    //         (p) => (p.status || "").toLowerCase() === "lead"
-    //       ),
-    //       pending: updatedProjects.filter(
-    //         (p) => (p.status || "").toLowerCase() === "bidding"
-    //       ),
-    //       closed: updatedProjects.filter(
-    //         (p) => (p.status || "").toLowerCase() === "open" || (p.status || "").toLowerCase() === "Active Project"
-    //       ),
-    //       rejected: updatedProjects.filter(
-    //         (p) => (p.status || "").toLowerCase() === "expired"
-    //       ),
-    //     };
-
-    //     setKanbanData(result);
-
-    //   };
-    //   setLoadingSpinner(false);
-
-    //   processProjects();
-    //   // }, [project, dispatch]);
-
-
-    // }, [reduxProposals, dispatch]);
-
-
     useEffect(() => {
       const processProjects = async () => {
         if (!Array.isArray(project)) return;
@@ -653,14 +895,8 @@ const LeadFlow = ({ data }) => {
             const status = (p.status || "").toLowerCase();
 
             if (status === "signature") {
-              // try {
-              //   const res = await axios.get(
-              //     `${apiUrl}/getEnvelopesByProjectId/${p._id}`
-              //   );
-
-              //   if (res?.data?.data[0]?.current_status === "completed") {
               const isTempPoles = p.tempPoles === "true";
-              const newStatus = isTempPoles ? "Open" : "Active Project";
+              const newStatus = isTempPoles ? "Open" : "Signature";
 
               await dispatch(
                 updateProject({
@@ -668,11 +904,7 @@ const LeadFlow = ({ data }) => {
                   payload: { status: newStatus },
                 })
               );
-              return { ...p, status: "completed" }; // Optional: update local copy
-              //   }
-              // } catch (error) {
-              //   console.error(`Error checking project ${p._id}`, error.message);
-              // }
+              return { ...p, status: status };
             }
 
             return p;
@@ -681,21 +913,18 @@ const LeadFlow = ({ data }) => {
 
         // Step 2: Filter into Kanban columns
         const result = {
-          active: updatedProjects.filter(
-            (p) => (p.status || "").toLowerCase() === "lead"
-          ),
-          pending: updatedProjects.filter(
-            (p) => (p.status || "").toLowerCase() === "bidding"
-          ),
-          closed: updatedProjects.filter(
-            (p) => ["open", "active project", "signature", "Open", "Active Project", "Signature", "active"].includes(
-              (p.status || "")
-            )
-          ),
-          rejected: updatedProjects.filter(
-            (p) => (p.status || "").toLowerCase() === "expired"
-          ),
+          active: updatedProjects.filter(p => (p.status || "").toLowerCase() === "lead"),
+          pending: updatedProjects.filter(p => (p.status || "").toLowerCase() === "bidding"),
+          closed: updatedProjects.filter(p => {
+            const status = (p.status || "").toLowerCase();
+            return status == "open" || status == "signature" || p.status == "Signature";
+          }),
+          rejected: updatedProjects.filter(p => (p.status || "").toLowerCase() === "expired"),
+          hold: updatedProjects.filter(p => (p.status || "").toLowerCase() === "hold"),
+          // approved: updatedProjects.filter(p => (p.status || "").toLowerCase() === "approved"),
+          approved: updatedProjects.filter(p => ["approved", "active project"].includes((p.status || "").toLowerCase())),
         };
+
 
         setKanbanData(result);
         setLoadingSpinner(false);
@@ -713,8 +942,11 @@ const LeadFlow = ({ data }) => {
         active: "Lead",
         pending: "Bidding",
         closed: "Signature",
-        rejected: "Expired"
+        rejected: "Expired",
+        hold: "Hold",
+        approved: "Approved"
       };
+
 
       const newStatus = statusMap[destination.droppableId];
 
@@ -759,22 +991,12 @@ const LeadFlow = ({ data }) => {
       { id: 'active', title: 'Lead' },
       { id: 'pending', title: 'Bidding' },
       { id: 'closed', title: 'Signature' },
+      { id: 'hold', title: 'Hold' },
+      { id: 'approved', title: 'Approved' },
       { id: 'rejected', title: 'Expired' },
     ];
 
-    // Reorder columns so selectedStatus is first
-    // if (selectedStatus && selectedStatus !== 'All') {
-    //   const statusMap = {
-    //     'Active': 'active',
-    //     'Pending': 'pending',
-    //     'Closed': 'closed',
-    //     'Rejected': 'rejected',
-    //   };
-    //   const selectedId = statusMap[selectedStatus];
-    //   if (selectedId) {
-    //     columns = [columns.find(c => c.id === selectedId), ...columns.filter(c => c.id !== selectedId)];
-    //   }
-    // }
+
     if (selectedStatus && selectedStatus !== 'All') {
       const selectedColumn = columns.find(c => c.title.toLowerCase() === selectedStatus.toLowerCase());
       if (selectedColumn) {
@@ -791,27 +1013,6 @@ const LeadFlow = ({ data }) => {
     useEffect(() => {
       dispatch(fetchjobs());
     }, [dispatch]);
-
-    // const handleDeleteProject = (projectId) => {
-    //   Swal.fire({
-    //     title: 'Are you sure?',
-    //     text: 'This will permanently delete the project!',
-    //     icon: 'warning',
-    //     showCancelButton: true,
-    //     confirmButtonText: 'Yes, delete it!',
-    //     cancelButtonText: 'Cancel',
-    //   }).then(async (result) => {
-    //     if (result.isConfirmed) {
-    //       try {
-    //         await dispatch(deleteproject(projectId));
-    //         await Swal.fire('Deleted!', 'Project has been deleted.', 'success');
-    //         window.location.reload();
-    //       } catch (error) {
-    //         Swal.fire('Error!', 'Something went wrong.', 'error');
-    //       }
-    //     }
-    //   });
-    // };
 
     const handleDeleteProject = async (projectId) => {
       Swal.fire({
@@ -923,27 +1124,57 @@ const LeadFlow = ({ data }) => {
                               {/* <div className="fw-semibold text-success" style={{ fontSize: 15 }}>
                                 Total: ${proposalTotalsMap[item._id] || 0}
                               </div> */}
-                              <div className="fw-semibold text-success" style={{ fontSize: 15 }}>
+                              {/* <div className="fw-semibold text-success" style={{ fontSize: 15 }}>
                                 Total Paid: {item.paid || 0}
                               </div>
                               <div className="fw-semibold text-danger" style={{ fontSize: 15 }}>
                                 Total Due: {item.due || 0}
-                              </div>
+                              </div> */}
                               {item.status == "signature" || item.status == "Signature" || item.status == "open" || item.status == "Open" || item.status == 'Active Project' ?
                                 <div className="d-flex flex-wrap justify-content-between gap-2 align-items-center mb-1">
-                                  <Badge
+                                  {/* <Badge
                                     bg={item.status === 'Open' || item.status === 'Active Project' ? 'success' : (item.status === 'Bidding' ? 'warning' : 'info')}
                                     className="me-1"
                                   >
                                     {item.status === 'Open' || item.status === 'Active Project' ? 'Signature' : (item.status == "Bidding" ? "mail sent" : item.status)}
+                                  </Badge> */}
+                                  <Badge
+                                    bg={
+                                      item.status === 'Approved' ? 'success' :
+                                        item.status === 'Hold' ? 'secondary' :
+                                          item.status === 'Open' || item.status === 'Active Project' ? 'success' :
+                                            item.status === 'Bidding' ? 'warning' : 'info'
+                                    }
+                                    className="me-1"
+                                  >
+                                    {
+                                      item.status === 'Open' || item.status === 'Active Project' ? 'Signature' :
+                                        item.status === 'Bidding' ? 'Mail Sent' :
+                                          item.status
+                                    }
                                   </Badge>
                                   ✅
                                 </div> : <div className="d-flex flex-wrap gap-2 align-items-center mb-1">
-                                  <Badge
+                                  {/* <Badge
                                     bg={item.status === 'Open' || item.status === 'Active Project' ? 'success' : (item.status === 'Bidding' ? 'warning' : 'info')}
                                     className="me-1"
                                   >
                                     {item.status === 'Open' || item.status === 'Active Project' || item.status === 'active' ? 'Signature' : (item.status == "Bidding" ? "mail sent" : item.status)}
+                                  </Badge> */}
+                                  <Badge
+                                    bg={
+                                      item.status === 'Approved' ? 'success' :
+                                        item.status === 'Hold' ? 'secondary' :
+                                          item.status === 'Open' || item.status === 'Active Project' ? 'success' :
+                                            item.status === 'Bidding' ? 'warning' : item.status === 'Expired' ? 'danger' : 'info'
+                                    }
+                                    className="me-1"
+                                  >
+                                    {
+                                      item.status === 'Open' || item.status === 'Active Project' ? 'Signature' :
+                                        item.status === 'Bidding' ? 'Mail Sent' :
+                                          item.status
+                                    }
                                   </Badge>
                                 </div>}
                             </div>
@@ -961,7 +1192,6 @@ const LeadFlow = ({ data }) => {
       </div>
     );
   };
-
 
 
   const [selectedStatus, setSelectedStatus] = useState('All');

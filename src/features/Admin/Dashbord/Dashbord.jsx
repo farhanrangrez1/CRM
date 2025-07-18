@@ -8,6 +8,8 @@ import {
   FaFileInvoiceDollar,
   FaClipboardCheck,
   FaMoneyBill,
+  FaCheckCircle,
+  FaPauseCircle,
 } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
@@ -69,13 +71,19 @@ function Dashbord() {
   const inProgressJobs = (project?.data || []).filter((j) => j.status === "Bidding");
   const inProgressCount = inProgressJobs.length;
 
+  const HoldJobs = (project?.data || []).filter((j) => j.status === "Hold");
+  const HoldJobsCount = HoldJobs.length;
+
+  const ApprovedJobs = (project?.data || []).filter((j) => j.status === "Approved" || j.status === "Active Project");
+  const ApprovedJobsCount = ApprovedJobs.length;
+
   const ProjectCompleted = (project?.data || []).filter((j) => j.status?.toLowerCase() === "completed");
   const projectCompleted = ProjectCompleted.length;
 
   const Costestimates = (estimates?.costEstimates || []).filter((j) => (j.Status || "").toLowerCase().replace(/\s|_/g, "") === "pending");
   const CostestimatesCount = Costestimates.length;
 
-  const todaysJobs = (project?.data || []).filter((j) => j.status === "Signature" || j.status === "Active Project" || j.status === "Open");
+  const todaysJobs = (project?.data || []).filter((j) => j.status === "Signature" || j.status === j.status === "Open");
   const todaysJobsCount = todaysJobs.length;
 
   const projects = project?.data || [];
@@ -185,7 +193,42 @@ function Dashbord() {
             </Card>
           </Link>
         </Col>
+
+
+        <Col xs={12} sm={12} md={6} lg={4}>
+          <Link to="/admin/DProjectsHold" className="text-decoration-none w-100 d-block">
+            <Card className="h-100 shadow-sm">
+              <Card.Body className="d-flex align-items-center">
+                <div className="rounded-circle p-3 me-3 d-flex align-items-center justify-content-center bg-light" style={{ width: "3rem", height: "3rem" }}>
+                  <FaPauseCircle className="text-danger" size={24} />
+                </div>
+                <div>
+                  <h3 className="mb-0 fs-4">{HoldJobsCount}</h3>
+                  <small className="text-danger">Projects on Hold</small>
+                </div>
+              </Card.Body>
+            </Card>
+          </Link>
+        </Col>
+
+        <Col xs={12} sm={12} md={6} lg={4}>
+          <Link to="/admin/DProjectsApproved" className="text-decoration-none w-100 d-block">
+            <Card className="h-100 shadow-sm">
+              <Card.Body className="d-flex align-items-center">
+                <div className="rounded-circle p-3 me-3 d-flex align-items-center justify-content-center bg-light" style={{ width: "3rem", height: "3rem" }}>
+                  <FaCheckCircle className="text-success" size={24} />
+                </div>
+                <div>
+                  <h3 className="mb-0 fs-4">{ApprovedJobsCount}</h3>
+                  <small className="text-success">Approved Projects</small>
+                </div>
+              </Card.Body>
+            </Card>
+          </Link>
+        </Col>
       </Row>
+
+
 
       <Row className="g-4 mb-4">
         <Col xs={12} sm={12} md={6} lg={4}>

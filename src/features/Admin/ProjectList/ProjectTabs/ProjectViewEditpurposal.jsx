@@ -1,35 +1,28 @@
 
 import React, { useEffect, useState } from "react";
-import "./Editpurposal.css";
+import "./ProjectViewEditpurposal.css";
 import { FaArrowLeft, FaEdit } from "react-icons/fa";
 import { useNavigate, useLocation } from "react-router-dom";
 import { Button, Form, Row, Col, Modal, Table } from "react-bootstrap";
-// import `DailyLogs` from "../LeadOpportunity/DailyLogs";
 import Swal from "sweetalert2";
-import AddCostEstimates from "../CostEstimates/AddCostEstimates";
-import AddTimesheetWorklog from "../TimesheetWorklog/AddTimesheetWorklog";
-import AddInvoice from "../Invoicing_Billing/AddInvoice";
-import ProposalEmailUI from "./ProposalEmailUI";
-// import DocumentList from "./DocumentList";
-import DailyLogs from "../../Employee/DailyLogs/DailyLogs";
 import axios from 'axios';
-import { fetchProject } from "../../../redux/slices/ProjectsSlice";
-import { createDocument, fetchDocumentById } from "../../../redux/slices/saveDocumentSlice";
 import { useDispatch, useSelector } from "react-redux";
-import DocumentList from "./DocumentList";
-import JobCost from "./JobCost";
-import { getDocumentsByProposalId } from "../../../redux/slices/documentSlice";
-import { fetchusers } from "../../../redux/slices/userSlice";
-import { Link } from "react-bootstrap-icons";
-import PurchaseOrder from "../ProjectList/ProjectTabs/PurchaseOrder";
-import FinanceTabEditPage from "./FinanceTabEditPage";
-import ProjectJobsTab from "../ProjectList/ProjectTabs/ProjectJobsTab";
-import { apiUrl } from "../../../redux/utils/config";
-import { fetchClientsById } from "../../../redux/slices/ClientSlice";
+import AddInvoice from "../../Invoicing_Billing/AddInvoice";
+import ProposalEmailUI from "../../LeadFlow/ProposalEmailUI";
+import DailyLogs from "../../../Employee/DailyLogs/DailyLogs";
+import { fetchProject } from "../../../../redux/slices/ProjectsSlice";
+import { createDocument, fetchDocumentById } from "../../../../redux/slices/saveDocumentSlice";
+import DocumentList from "../../LeadFlow/DocumentList";
+import { getDocumentsByProposalId } from "../../../../redux/slices/documentSlice";
+import JobCost from "../../LeadFlow/JobCost";
+import { fetchusers } from "../../../../redux/slices/userSlice";
+import FinanceTabEditPage from "../../LeadFlow/FinanceTabEditPage";
+import ProjectJobsTab from "./ProjectJobsTab";
+import { apiUrl } from "../../../../redux/utils/config";
+import { fetchClientsById } from "../../../../redux/slices/ClientSlice";
 
-const Editpurposal = () => {
-  const [manager, setManager] = useState(null);
-  const [lead, setLead] = useState(null);
+
+const ProjectViewEditpurposal = () => {
   const [phaseName, setPhaseName] = useState("");
   const [materialsBudget, setMaterialsBudget] = useState(0.0);
   const [laborBudget, setLaborBudget] = useState(0.0);
@@ -38,14 +31,6 @@ const Editpurposal = () => {
   const [miscBudget, setMiscBudget] = useState(0.0);
   const [estimatedStart, setEstimatedStart] = useState("");
   const [estimatedEnd, setEstimatedEnd] = useState("");
-  const [clientName, setClientName] = useState("");
-  const [poNumber, setPoNumber] = useState("");
-  const [contractNumber, setContractNumber] = useState("");
-  const [paymentTerms, setPaymentTerms] = useState("");
-  const [applicableTaxRate, setApplicableTaxRate] = useState("");
-  const [comments, setComments] = useState("");
-  const [startDate, setStartDate] = useState("");
-  const [endDate, setEndDate] = useState("");
   const [showFileModal, setShowFileModal] = useState(false);
   const [uploadedFile, setUploadedFile] = useState(null);
   const [showFolderModal, setShowFolderModal] = useState(false);
@@ -54,17 +39,7 @@ const Editpurposal = () => {
   const [fileTitle, setFileTitle] = useState("");
   const [selectedFile, setSelectedFile] = useState(null);
 
-  const [lineItems, setLineItems] = useState([
-    {
-      id: 1,
-      description: '',
-      quantity: '',
-      details: '',
-      breakdown: '',
-      amount: '',
-      taxable: true
-    }
-  ]);
+
   // const [activeTab, setActiveTab] = useState("Create Proposal");
   const [activeTab, setActiveTab] = useState("Summary");
   const totalBudgetedCost = (
@@ -75,33 +50,12 @@ const Editpurposal = () => {
     parseFloat(miscBudget || 0.0)
   ).toFixed(2);
 
-  const calculateTotalValue = () => {
-    return lineItems.reduce(
-      (total, item) => total + (parseFloat(item.amount) || 0) * (parseInt(item.quantity) || 0),
-      0
-    ).toFixed(2);
-  };
   const dispatch = useDispatch()
-  const handleAddLineItem = () => {
-    setLineItems([
-      ...lineItems,
-      { description: '', amount: 0, quantity: 1, taxable: false },
-    ]);
-  };
+
   useEffect(() => {
     dispatch(fetchProject())
   }, [])
-  const handleLineChange = (index, field, value) => {
-    const updatedItems = [...lineItems];
-    updatedItems[index][field] = value;
-    setLineItems(updatedItems);
-  };
-  // const projectId = 
-  const removeLineItem = (index) => {
-    const updated = [...lineItems];
-    updated.splice(index, 1);
-    setLineItems(updated);
-  };
+
   const [existingDocId, setExistingDocId] = useState(null);
 
   const [invoice, setInvoice] = useState(null);
@@ -240,7 +194,6 @@ const Editpurposal = () => {
 
 
   const [showAddInvoice, setShowAddInvoice] = useState(true);
-  const calculateAmount = (quantity, rate) => quantity * rate;
 
   // const [items, setItems] = useState([{ description: "", quantity: 0, rate: 0, amount: 0 }]);
   const [items, setItems] = useState([]);
@@ -264,17 +217,7 @@ const Editpurposal = () => {
   }, [invoice]);
 
 
-  const handleItemChange = (index, field, value) => {
-    const newItems = [...items];
-    newItems[index][field] = value;
-    newItems[index].amount = calculateAmount(newItems[index].quantity, newItems[index].rate);
-    setItems(newItems);
-  };
-  const removeItem = (index) => {
-    const newItems = [...items];
-    newItems.splice(index, 1);
-    setItems(newItems);
-  };
+
 
   useEffect(() => {
     if (invoice) {
@@ -460,31 +403,20 @@ const Editpurposal = () => {
     fetchemaildata();
   }, [])
 
+
+
   const renderTabContent = () => {
     switch (activeTab) {
       case "Summary":
         return (
           <div className="tab-content-box row">
-            {/* <div className="col-md-8">
-              <h5 className="mb-3 fw-bold">Details</h5>
-              <div className="row mb-3">
-                <div className="col-md-6">
-                  <p className="mb-1 text-muted">Job Status</p>
-                  <p>{job?.status}</p>
-                </div>
-                <div className="col-md-6">
-                  <p className="mb-1 text-muted">Job Address</p>
-                  <p>{invoice?.projectAddress}</p>
-                </div>
-              </div>
-            </div> */}
             <div className="d-flex justify-content-between align-items-center mb-3">
               <div className="col-md-8 text-start">
                 <h5 className="mb-3 fw-bold">Details</h5>
                 <div className="row mb-3">
                   <div className="col-md-6">
                     <p className="mb-1 text-muted">Job Status</p>
-                    <p>{job?.status}</p>
+                    <p>{job?.status == "pendingProposalApproval" ? "Active Project" : job?.status}</p>
                   </div>
                   <div className="col-md-6">
                     <p className="mb-1 text-muted">Job Address</p>
@@ -506,69 +438,6 @@ const Editpurposal = () => {
                   </div>
                 </div>
               </div>
-            </div>
-
-
-            <div>
-              {/* <h6 className="fw-semibold mb-3">Line Items</h6>
-              <div className="row fw-semibold text-muted mb-2 px-2">
-                <div className="col-md-1">OrderNo.</div>
-                <div className="col-md-4">Description</div>
-                <div className="col-md-2">Quantity</div>
-                <div className="col-md-2">Rate</div>
-                <div className="col-md-2">Amount</div>
-                <div className="col-md-1">Is Paid</div>
-              </div> */}
-
-              {/* {items?.length > 0 && items.map((item, index) => (
-                <div
-                  className="row gx-2 gy-2 align-items-center mb-2 px-2 py-2"
-                  key={index}
-                  style={{ background: "#f9f9f9", borderRadius: "8px" }}
-                >
-                  <div className="col-md-1">
-                    <input readOnly type="text" className="form-control" value={index + 1} />
-                  </div>
-                  <div className="col-md-4">
-                    <input readOnly type="text" className="form-control" value={item.description} />
-                  </div>
-                  <div className="col-md-2">
-                    <input readOnly type="number" className="form-control" value={item.quantity} />
-                  </div>
-                  <div className="col-md-2">
-                    <input readOnly type="number" className="form-control" value={item.rate} />
-                  </div>
-                  <div className="col-md-2">
-                    <span>${parseFloat(item.amount).toFixed(2)}</span>
-                  </div>
-                  <div className="col-md-1">
-                    <input
-                      type="checkbox"
-                      checked={item.is_paid === "true"}
-                      readOnly
-                      className="form-check-input"
-                    />
-                  </div>
-                </div>
-              ))} */}
-
-              {/* Total Summary */}
-              {/* {items?.length > 0 && (() => {
-                const totalAmount = items.reduce((acc, curr) => acc + (parseFloat(curr.amount) || 0), 0);
-                const paidAmount = items
-                  .filter((i) => i.is_paid === "true")
-                  .reduce((acc, curr) => acc + (parseFloat(curr.amount) || 0), 0);
-                const dueAmount = totalAmount - paidAmount;
-
-                return (
-                  <div className="row fw-bold align-items-center px-2 py-3 mt-3 border-top">
-                    <div className="col-md-6 text-end">Total Amount:</div>
-                    <div className="col-md-2">${totalAmount.toFixed(2)}</div>
-                    <div className="col-md-2 text-success">Paid: ${paidAmount.toFixed(2)}</div>
-                    <div className="col-md-2 text-danger">Due: ${dueAmount.toFixed(2)}</div>
-                  </div>
-                );
-              })()} */}
             </div>
 
             {/* 📌 Notes Section */}
@@ -789,7 +658,7 @@ const Editpurposal = () => {
           </>
         );
 
-      case "Create Proposal":
+      case "Proposals":
         return (
           <div className="container mt-4 mb-5">
             {/* Main Page: AddInvoice */}
@@ -854,12 +723,6 @@ const Editpurposal = () => {
               </button>
             </div>
 
-            {/* Uploaded File Display */}
-            {/* {uploadedFile && (
-              <div className="mt-3">
-                <p className="text-primary">Uploaded: {uploadedFile}</p>
-              </div>
-            )} */}
 
             {/* Folder Modal */}
             {showFolderModal && (
@@ -975,110 +838,10 @@ const Editpurposal = () => {
 
       case "Contract & Change Orders":
         return (
-          // <div className="tab-content-box container">
-          //   {/* Header */}
-          //   <div className="d-flex justify-content-between align-items-center mb-4">
-          //     <h5 className="fw-bold">Fixed price | AIA-style billing</h5>
-          //     <button className="btn btn-primary">Invoice now</button>
-          //   </div>
-
-          //   {/* Value summary */}
-          //   <div className="d-flex flex-wrap gap-4 mb-3">
-          //     <div><strong>Value:</strong> $264,000.00</div>
-          //     <div><strong>Invoiced:</strong> $45,000.00</div>
-          //     <div><strong>Retained:</strong> $5,000.00</div>
-          //   </div>
-
-          //   {/* Contract details */}
-          //   <div className="row mb-4">
-          //     <div className="col-md-6">
-          //       <p><strong>GC Contract#:</strong> 4235</p>
-          //       <p><strong>GC contract date:</strong> 11/1/22</p>
-          //     </div>
-          //     <div className="col-md-6">
-          //       <p><strong>Retainage for work:</strong> 10%</p>
-          //       <p><strong>Retainage for materials:</strong> 10%</p>
-          //       <p><strong>Payment terms:</strong> NET7</p>
-          //     </div>
-          //   </div>
-
-          //   <button className="btn btn-link p-0 mb-3">✏️ Edit this information</button>
-
-          //   {/* Schedule of Values */}
-          //   <div className="border-top pt-3 mb-4">
-          //     <h6 className="fw-bold">SCHEDULE OF VALUES</h6>
-
-          //     {/* Item 1 */}
-          //     <div className="border rounded p-3 mb-3 bg-light">
-          //       <h6 className="mb-1">1. Demolition / Clear Out</h6>
-          //       <p className="mb-1"><strong>Value:</strong> $108,000.00</p>
-          //       <p className="mb-1"><strong>Invoiced:</strong> 46.30%</p>
-          //       <p><strong>Balance:</strong> $58,000.00</p>
-          //     </div>
-
-          //     {/* Item 2 */}
-          //     <div className="border rounded p-3 mb-3 bg-light">
-          //       <h6 className="mb-1">2. Asphalt</h6>
-          //       <p className="mb-1"><strong>Value:</strong> $156,000.00</p>
-          //       <p className="mb-1"><strong>Invoiced:</strong> 0%</p>
-          //       <p><strong>Balance:</strong> $156,000.00</p>
-          //     </div>
-
-          //     <button className="btn btn-primary">Add change order</button>
-          //   </div>
-
-          //   {/* Financial Summary */}
-          //   <div className="bg-primary bg-opacity-10 p-3 rounded mb-4">
-          //     <div className="row mb-2">
-          //       <div className="col-md-6"><strong>A1. Original bid Sum:</strong></div>
-          //       <div className="col-md-6 text-md-end">$264,000.00</div>
-          //     </div>
-          //     <div className="row mb-2">
-          //       <div className="col-md-6"><strong>A2. Original contract sum:</strong></div>
-          //       <div className="col-md-6 text-md-end">$264,000.00</div>
-          //     </div>
-          //     <div className="row mb-2">
-          //       <div className="col-md-6"><strong>B1. Pending change orders:</strong></div>
-          //       <div className="col-md-6 text-md-end">$0.00</div>
-          //     </div>
-          //     <div className="row mb-2">
-          //       <div className="col-md-6"><strong>B2. Net change by approved change orders:</strong></div>
-          //       <div className="col-md-6 text-md-end">$0.00</div>
-          //     </div>
-          //     <div className="row mb-2 fw-bold">
-          //       <div className="col-md-6"><strong>C. Contract sum to date (A+B1+B2):</strong></div>
-          //       <div className="col-md-6 text-md-end">$264,000.00</div>
-          //     </div>
-          //     <div className="row fw-bold">
-          //       <div className="col-md-6"><strong>D. Approved contract sum to date (A+B2):</strong></div>
-          //       <div className="col-md-6 text-md-end">$264,000.00</div>
-          //     </div>
-          //   </div>
-
-          //   {/* Additional Options */}
-          //   <div className="mb-4">
-          //     <h6 className="fw-bold">ADDITIONAL OPTIONS</h6>
-          //     <select className="form-select w-auto">
-          //       <option>Display line item subtotals</option>
-          //     </select>
-          //   </div>
-
-          //   {/* Terms and Conditions */}
-          //   <div className="mb-4">
-          //     <h6 className="fw-bold">TERMS AND CONDITIONS</h6>
-          //     <p className="text-muted mb-0">
-          //       The above price is valid for 30 days. Test Data agrees that they will enter into a standard AIA subcontract with General Contractor,
-          //       and that basic provisions such as insurance and W-9 shall be in place prior to start.
-          //     </p>
-          //   </div>
-          // </div>
           <div className="container mt-4 mb-5">
-            {/* Main Page: AddInvoice */}
             {showAddInvoice && (
               <AddInvoice onInvoiceComplete={() => setShowAddInvoice(false)} />
             )}
-
-            {/* Fullscreen Overlay Modal for ProposalEmailUI */}
             {!showAddInvoice && (
               <div
                 className="position-fixed top-0 start-0 w-100 h-100 bg-white shadow-lg"
@@ -1143,16 +906,17 @@ const Editpurposal = () => {
         <ul className="nav nav-tabs wwd-tabs mb-4">
           {[
             "Summary",
-            "Job Costs",
+            // "Job Costs",
             // stage === "lead" ? "Client Proposal" : "Draft Proposal",
             // "Contract & Change Orders",
-            !existingDocId ? "Create Proposal" : "Contract & Change Orders",
-            "Documents",
+            // !existingDocId ? "Create Proposal" : "Contract & Change Orders",
+            "Proposals",
+            // "Documents",
             "Daily Logs",
             // "Activity",
             // "Reports",
-            "Tasks",
-            "Finance"
+            // "Tasks",
+            // "Finance"
           ].map((tab, i) => (
             <li className="nav-item" key={i}>
               <button
@@ -1175,4 +939,4 @@ const Editpurposal = () => {
   }
 };
 
-export default Editpurposal;
+export default ProjectViewEditpurposal;

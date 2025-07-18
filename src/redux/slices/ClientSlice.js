@@ -48,7 +48,7 @@ export const deleteClients = createAsyncThunk(
 );
 
 export const fetchClientsById = createAsyncThunk('Client/fetchById', async (id) => {
-  const response = await fetch(`/api/Client/${id}`);
+  const response = await fetch(`${apiUrl}/Client/${id}`);
   if (!response.ok) throw new Error("Failed to fetch Clients");
   return await response.json();
 });
@@ -85,6 +85,7 @@ const ClientSlice = createSlice({
   name: 'client',
   initialState: {
     Clients: [],
+    selectedClient: null,
     status: 'idle',
     error: null,
   },
@@ -116,6 +117,18 @@ const ClientSlice = createSlice({
         state.status = 'failed';
         state.error = action.payload;
       })
+      .addCase(fetchClientsById.pending, (state) => {
+        state.status = 'loading';
+      })
+      .addCase(fetchClientsById.fulfilled, (state, action) => {
+        state.status = 'succeeded';
+        state.selectedClient = action.payload;
+      })
+      .addCase(fetchClientsById.rejected, (state, action) => {
+        state.status = 'failed';
+        state.error = action.payload || action.error.message;
+      })
+
     //   .addCase(createClients.fulfilled, (state, action) => {
     //     state.Clients.push(action.payload);
     //   })

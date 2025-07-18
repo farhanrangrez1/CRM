@@ -193,11 +193,12 @@ const JobCost = ({ jobStatus, refreshTrigger }) => {
                 <thead>
                   <tr>
                     <th>#</th>
-                    <th>Phase Name</th>
+                    <th>Phase Type</th>
                     <th>Job Status</th>
                     <th>Total Budget</th>
-                    <th>Estimated Start</th>
-                    <th>Estimated Completion</th>
+                    <th>Date Of Expense</th>
+                    {/* <th>Estimated Start</th>
+                    <th>Estimated Completion</th> */}
                   </tr>
                 </thead>
                 <tbody>
@@ -208,8 +209,12 @@ const JobCost = ({ jobStatus, refreshTrigger }) => {
                       <td>{item.phase_name}</td>
                       <td>{jobStatus}</td>
                       <td>${parseFloat(item.total_budget).toFixed(2)}</td>
-                      <td>{item.estimated_start}</td>
-                      <td>{item.estimated_completion}</td>
+                      <td>
+                        {item.estimated_start &&
+                          new Date(item.estimated_start).toLocaleDateString("en-GB")}
+                      </td>
+
+                      {/* <td>{item.estimated_completion}</td> */}
                     </tr>
                   ))}
                 </tbody>

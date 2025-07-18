@@ -15,13 +15,7 @@ import Swal from 'sweetalert2';
 import { BsThreeDotsVertical } from 'react-icons/bs';
 
 
-// --- Kanban Workflow Data ---
-const initialStages = [
-    { id: 'create-proposal', title: 'Create Proposal' },
-    { id: 'client-review', title: 'Client Review' }, // Changed from 'automatic-delivery'
-    { id: 'client-signing', title: 'Contract Signing' },
-    { id: 'auto-activation', title: 'Auto-Activation' }
-];
+
 
 const initialProposals = [
     {
@@ -60,116 +54,6 @@ const initialProposals = [
         ]
     }
 ];
-
-const projects = [
-    {
-        name: "Sunrise Apartments (Plus)",
-        client: "Ramesh Kumar",
-        billing: "Fixed Price",
-        phases: "2 phases",
-        status: "lead",
-        revenue: "$120,000.00",
-        committedCost: "$80,000.00",
-        profitLoss: "$40,000.00",
-        percent: "33%",
-        color: "primary"
-    },
-    {
-        name: "Metro Mall Renovation",
-        client: "Sunita Singh",
-        billing: "AIA-style",
-        phases: "1 phase",
-        status: "Active",
-        revenue: "$15,000.00",
-        committedCost: "$7,500.00",
-        profitLoss: "$7,500.00",
-        percent: "50%",
-        color: "info"
-    },
-    {
-        name: "Greenfield School",
-        client: "Ajay Mehra",
-        billing: "Cost Plus",
-        phases: "3 phases",
-        status: "Active",
-        revenue: "$290,000.00",
-        committedCost: "$193,400.00",
-        profitLoss: "$96,600.00",
-        percent: "33%",
-        color: "danger"
-    },
-    {
-        name: "Greenfield School",
-        client: "Ajay Mehra",
-        billing: "Cost Plus",
-        phases: "3 phases",
-        status: "Biding",
-        revenue: "$290,000.00",
-        committedCost: "$193,400.00",
-        profitLoss: "$96,600.00",
-        percent: "33%",
-        color: "danger"
-    }
-];
-
-// --- Proposal Creation Modal ---
-const ProposalCreationModal = ({ show, onHide, onSave }) => {
-    const [title, setTitle] = useState('');
-    const [client, setClient] = useState('');
-    const [details, setDetails] = useState('');
-    return (
-        <Modal show={show} onHide={onHide} centered>
-            <Modal.Header closeButton>
-                <Modal.Title>Create/Edit Proposal</Modal.Title>
-            </Modal.Header>
-            <Modal.Body>
-                <Form>
-                    <Form.Group className="mb-2">
-                        <Form.Label>Proposal Title</Form.Label>
-                        <Form.Control value={title} onChange={e => setTitle(e.target.value)} />
-                    </Form.Group>
-                    <Form.Group className="mb-2">
-                        <Form.Label>Client Name</Form.Label>
-                        <Form.Control value={client} onChange={e => setClient(e.target.value)} />
-                    </Form.Group>
-                    <Form.Group className="mb-2">
-                        <Form.Label>Bid/Proposal Details</Form.Label>
-                        <Form.Control as="textarea" rows={3} value={details} onChange={e => setDetails(e.target.value)} />
-                    </Form.Group>
-                    <div className="d-flex gap-2 mt-3">
-                        <Button variant="outline-primary" onClick={() => alert('Text Bid sent!')}>Text Bid</Button>
-                        <Button variant="primary" onClick={() => alert('Email Bid sent!')}>Email Bid</Button>
-                    </div>
-                </Form>
-                <div className="mt-4">
-                    <h6>Preview</h6>
-                    <div className="border rounded p-2 bg-light">
-                        <strong>{title || 'Proposal Title'}</strong>
-                        <div>{client || 'Client Name'}</div>
-                        <div className="text-muted small">{details || 'Proposal details preview...'}</div>
-                    </div>
-                </div>
-            </Modal.Body>
-            <Modal.Footer>
-                <Button variant="secondary" onClick={onHide}>Cancel</Button>
-                <Button variant="primary" onClick={() => { onSave({ title, client, details }); onHide(); }}>Save</Button>
-            </Modal.Footer>
-        </Modal>
-    );
-};
-
-// --- Proposal Card ---
-const ProposalCard = ({ proposal, onShowLogs }) => (
-    <div className="bg-white border rounded mb-2 p-2 shadow-sm" style={{ minHeight: 110, wordBreak: 'break-word', maxWidth: '100%' }}>
-        <div className="fw-semibold">{proposal.title}</div>
-        <div className="text-muted small">{proposal.client}</div>
-        <div className="small">Status: <span className="fw-bold">{proposal.status}</span></div>
-        <div className="small text-muted">Last updated: {proposal.updated}</div>
-        <Button size="sm" variant="link" className="p-0 mt-1" onClick={() => onShowLogs(proposal.logs)}>
-            Stage logs
-        </Button>
-    </div>
-);
 
 const ReportsDashboard = () => {
     const reports = [
@@ -532,146 +416,8 @@ const NewContractJobPage = ({ onClose, onSave }) => {
     );
 };
 
-const ChangeOrdersUI = () => {
-    const [activeTab, setActiveTab] = useState('change-orders');
-    const [searchTerm, setSearchTerm] = useState('');
-
-    return (
-        <div className="bg-white min-vh-100">
-            {/* Navigation Tabs */}
-            <div className="bg-white">
-                <div className="container-fluid px-3 pt-3">
-                    <div className="d-flex gap-1">
-                        <button
-                            className={`btn btn-sm px-3 py-2 rounded-1 border-0 fw-medium ${activeTab === 'change-orders'
-                                ? 'bg-dark text-white'
-                                : 'bg-light text-secondary'
-                                }`}
-                            onClick={() => setActiveTab('change-orders')}
-                        >
-                            Change orders
-                        </button>
-                        <button
-                            className={`btn btn-sm px-3 py-2 rounded-1 border-0 fw-medium ${activeTab === 'daily-logs'
-                                ? 'bg-dark text-white'
-                                : 'bg-light text-secondary'
-                                }`}
-                            onClick={() => setActiveTab('daily-logs')}
-                        >
-                            Daily logs
-                        </button>
-                        <button
-                            className={`btn btn-sm px-3 py-2 rounded-1 border-0 fw-medium ${activeTab === 'phases'
-                                ? 'bg-dark text-white'
-                                : 'bg-light text-secondary'
-                                }`}
-                            onClick={() => setActiveTab('phases')}
-                        >
-                            Phases
-                        </button>
-                    </div>
-                </div>
-            </div>
-
-            {/* Search and Filter Bar */}
-            <div className="bg-white border-top border-bottom">
-                <div className="container-fluid px-3 py-3">
-                    <div className="row align-items-center">
-                        <div className="col-md-4">
-                            <div className="position-relative">
-                                <input
-                                    type="text"
-                                    className="form-control border border-secondary rounded-1 ps-2"
-                                    placeholder="Search"
-                                    value={searchTerm}
-                                    onChange={(e) => setSearchTerm(e.target.value)}
-                                    style={{ fontSize: '14px' }}
-                                />
-                            </div>
-                        </div>
-                        <div className="col-md-8">
-                            <div className="d-flex justify-content-start gap-2 ms-2">
-                                <button className="btn btn-outline-secondary btn-sm border border-secondary rounded-1 px-2 py-1">
-                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                                        <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
-                                        <line x1="16" y1="2" x2="16" y2="6"></line>
-                                        <line x1="8" y1="2" x2="8" y2="6"></line>
-                                        <line x1="3" y1="10" x2="21" y2="10"></line>
-                                    </svg>
-                                </button>
-                                <button className="btn btn-outline-secondary btn-sm border border-secondary rounded-1 px-2 py-1">
-                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                                        <polygon points="22,3 2,3 10,12.46 10,19 14,21 14,12.46"></polygon>
-                                    </svg>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            {/* Results Counter */}
-            <div className="bg-white border-bottom">
-                <div className="container-fluid px-3 py-2">
-                    <div className="d-flex justify-content-between align-items-center">
-                        <span className="text-muted" style={{ fontSize: '13px' }}>0 of 0</span>
-                        <div className="d-flex gap-1">
-                            <button className="btn btn-link btn-sm text-muted p-1 border-0">
-                                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                                    <polyline points="15,18 9,12 15,6"></polyline>
-                                </svg>
-                            </button>
-                            <button className="btn btn-link btn-sm text-muted p-1 border-0">
-                                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                                    <polyline points="9,18 15,12 9,6"></polyline>
-                                </svg>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            {/* Main Content Area - Empty State */}
-            <div className="container-fluid px-3">
-                <div className="row justify-content-center">
-                    <div className="col-12">
-                        <div className="d-flex flex-column align-items-center justify-content-center" style={{ minHeight: '400px' }}>
-                            {/* Search Icon */}
-                            <div className="mb-4">
-                                <div
-                                    className="rounded-circle border border-2 border-dark d-flex align-items-center justify-content-center bg-white"
-                                    style={{ width: '80px', height: '80px' }}
-                                >
-                                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                                        <circle cx="11" cy="11" r="8"></circle>
-                                        <path d="m21 21-4.35-4.35"></path>
-                                    </svg>
-                                </div>
-                            </div>
-
-                            {/* No Results Message */}
-                            <h4 className="fw-bold text-dark mb-3" style={{ fontSize: '24px' }}>No results</h4>
-                            <p className="text-muted mb-0" style={{ fontSize: '14px' }}>
-                                There are no change orders to be displayed
-                            </p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    );
-};
-
-// const tabs = [
-//     { label: 'Active Project', value: 'Active' },
-//     { label: 'Pending', value: 'Pending ' },
-//     { label: 'Closed', value: 'Closed' },
-//     { label: 'Rejected', value: 'Rejected' },
-//     { label: 'All', value: 'All' },
-// ];
-
 const tabs = [
-    { label: 'Pending Proposal Approval', value: 'Pending Proposal Approval' },
+    { label: 'Active Project', value: 'Pending Proposal Approval' },
     { label: 'Service Calls', value: 'Service Calls' },
     { label: 'Pending Rough', value: 'Pending Rough' },
     { label: 'UG Pipes', value: 'UG Pipes' },
@@ -878,7 +624,8 @@ const ProjectView = ({ data }) => {
                 "Photos of Job": "photosOfJob"
             };
 
-            const pendingProposalStatuses = ["Active Project", "Open", "Signature"];
+            // const pendingProposalStatuses = ["Active Project", "Open", "Signature"];
+            const pendingProposalStatuses = ["Approved", "Active Project"];
 
             if (pendingProposalStatuses.includes(status)) {
                 return "pendingProposalApproval";
@@ -1108,7 +855,7 @@ const ProjectView = ({ data }) => {
                                         <div className="fw-bold mb-2 d-flex align-items-center gap-2">
                                             <span className="text-dark" style={{ fontSize: 14 }}>
                                                 <span className="me-1" style={{ fontSize: 10 }}>●</span>
-                                                {col.title}
+                                                {col.title == "Pending Proposal Approval" ? "Active Project" : col.title}
                                             </span>
                                             <span className="badge bg-light text-dark border ms-auto">{kanbanData[col.id]?.length || 0}</span>
                                         </div>
@@ -1130,7 +877,7 @@ const ProjectView = ({ data }) => {
                                                         onClick={() => {
                                                             localStorage.setItem("proposalId", item?._id);
                                                             localStorage.setItem("invoice", JSON.stringify(item));
-                                                            navigate("/admin/LeadFlow/Details", { state: { item: item } });
+                                                            navigate("/admin/Project/Details", { state: { item: item } });
                                                         }}
                                                     >
                                                         {/* <div className="fw-semibold text-primary" style={{ fontSize: 15 }}>
@@ -1165,7 +912,7 @@ const ProjectView = ({ data }) => {
                                                         </div>
                                                         <div className="d-flex flex-wrap gap-2 align-items-center mb-1">
                                                             <Badge bg={getStatusBadgeColor(item.status)} className={`me-1 ${getTextColor(item.status)}`}>
-                                                                {item.status === 'Open' || item.status === 'Active Project' ? 'pendingProposalApproval' : item.status}
+                                                                {item.status === 'Open' || item.status === 'Active Project' ? 'pendingProposalApproval' : item.status == "pendingProposalApproval" ? 'Active Project' : item.status}
                                                             </Badge>
                                                         </div>
                                                         {/* </div> */}

@@ -428,6 +428,13 @@ function AddInvoice({ onInvoiceComplete }) {
   }; // Function to show modal
   const handleClose = () => setShowModal(false); // Function to close modal
 
+  const formatCurrency = (amount) =>
+    new Intl.NumberFormat("en-US", {
+      style: "currency",
+      currency: "USD",
+    }).format(amount);
+
+
   return (
     <>
       <ToastContainer />
@@ -759,7 +766,7 @@ function AddInvoice({ onInvoiceComplete }) {
                 </div>
                 <div className="col-md-2">
                   <span>
-                    {formData.currency} {item.amount.toFixed(2)}
+                    {formData.currency} {formatCurrency(item.amount.toFixed(2))}
                   </span>
                 </div>
                 <div className="col-md-1">
@@ -793,9 +800,9 @@ function AddInvoice({ onInvoiceComplete }) {
               return (
                 <div className="row fw-bold align-items-center px-2 py-3 mt-3 border-top">
                   <div className="col-md-6 text-end">Total Amount:</div>
-                  <div className="col-md-2">{formData.currency} {total.toFixed(2)}</div>
-                  <div className="col-md-2 text-success">Paid: {formData.currency} {paid.toFixed(2)}</div>
-                  <div className="col-md-2 text-danger">Due: {formData.currency} {due.toFixed(2)}</div>
+                  <div className="col-md-2">{formData.currency} {formatCurrency(total.toFixed(2))}</div>
+                  <div className="col-md-2 text-success">Paid: {formData.currency} {formatCurrency(paid.toFixed(2))}</div>
+                  <div className="col-md-2 text-danger">Due: {formData.currency} {formatCurrency(due.toFixed(2))}</div>
                 </div>
               );
             })()}
