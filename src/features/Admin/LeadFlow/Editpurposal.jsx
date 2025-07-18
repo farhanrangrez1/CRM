@@ -623,14 +623,14 @@ const Editpurposal = () => {
                       <tr>
                         <th>JobNo</th>
                         <th>Project Name</th>
-                        <th>Brand</th>
+                        {/*<th>Brand</th>
                         <th>Sub Brand</th>
                         <th>Flavour</th>
                         <th>PackType</th>
                         <th>PackSize</th>
                         <th>PackCode</th>
                         <th>TimeLogged</th>
-                        <th>Due Date</th>
+                        <th>Due Date</th>*/}
                         <th>Assigned</th>
                         <th>Priority</th>
                         <th>Status</th>
@@ -640,11 +640,11 @@ const Editpurposal = () => {
                     <tbody>
                       {jobs?.slice().reverse().map((job) => (
                         <tr key={job?._id}>
-                          <td onClick={() => JobDetails(job)} style={{ cursor: "pointer", color: "#0d6efd" }}>
+                          <td>
                             <span style={{ textDecoration: "underline" }}>{job?.JobNo || "N/A"}</span>
                           </td>
                           <td>{job.projectId?.[0]?.projectName || "N/A"}</td>
-                          <td>{job.brandName}</td>
+                          {/* <td>{job.brandName}</td>
                           <td>{job.subBrand}</td>
                           <td>{job.flavour}</td>
                           <td>{job.packType}</td>
@@ -658,8 +658,14 @@ const Editpurposal = () => {
                           </td>
                           <td>
                             {new Date(job.createdAt).toLocaleDateString("en-GB")}
+                          </td> */}
+                          <td style={{ whiteSpace: 'nowrap' }}>
+                            {
+                              userAll?.data?.users?.find(user => user._id === job?.assign)
+                                ? `${userAll.data.users.find(user => user._id === job.assign).firstName} ${userAll.data.users.find(user => user._id === job.assign).lastName}`
+                                : job?.assign
+                            }
                           </td>
-                          <td>{job.assignedTo}</td>
                           <td>
                             <span className={getPriorityClass(job.priority)}>{job.priority}</span>
                           </td>
@@ -736,7 +742,7 @@ const Editpurposal = () => {
                   <div className="col-md-4">
                     <div className="border p-3 rounded bg-light">
                       <Form.Group className="mb-3">
-                        <Form.Label>Select Phase</Form.Label>
+                        <Form.Label>Select Type</Form.Label>
                         <Form.Select
                           value={phaseName}
                           onChange={(e) => setPhaseName(e.target.value)}

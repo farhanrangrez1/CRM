@@ -193,7 +193,7 @@ const JobCost = ({ jobStatus, refreshTrigger }) => {
                 <thead>
                   <tr>
                     <th>#</th>
-                    <th>Phase Type</th>
+                    <th>Type</th>
                     <th>Job Status</th>
                     <th>Total Budget</th>
                     <th>Date Of Expense</th>

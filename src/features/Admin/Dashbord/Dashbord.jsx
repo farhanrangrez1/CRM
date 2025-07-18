@@ -91,20 +91,34 @@ function Dashbord() {
   const biddingProjects = projects.filter((j) => j.status === "Bidding");
   const signatureProjects = projects.filter((j) => ["Signature", "Open", "Active Project"].includes(j.status));
 
+  const holdProjects = projects.filter((j) => j.status === "Hold");
+  const approvedProjects = projects.filter((j) =>
+    ["Approved", "Active Project"].includes(j.status)
+  );
+
   const projectStatusData = {
-    labels: ['Lead', 'Bidding', 'Signature/Open/Active'],
+    labels: ['Lead', 'Bidding', 'Signature/Open/Active', 'Hold', 'Approved'],
     datasets: [
       {
         data: [
           leadProjects.length,
           biddingProjects.length,
-          signatureProjects.length
+          signatureProjects.length,
+          holdProjects.length,
+          approvedProjects.length
         ],
-        backgroundColor: ['#F59E0B', '#3B82F6', '#22C55E'],
+        backgroundColor: [
+          '#F59E0B', // Lead - Amber
+          '#3B82F6', // Bidding - Blue
+          '#22C55E', // Signature/Open/Active - Green
+          '#EF4444', // Hold - Red
+          '#10B981'  // Approved - Emerald
+        ],
         borderWidth: 0,
       },
     ],
   };
+
 
   const chartOptions = {
     cutout: '70%',

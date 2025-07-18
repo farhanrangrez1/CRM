@@ -5,7 +5,7 @@ import { Button, Form, Table, Pagination, Modal } from "react-bootstrap";
 import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import { FaEye } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
-import { deletejob, fetchjobs, updatejob, UpdateJobAssign } from "../../../redux/slices/JobsSlice";
+import { deletejob, fetchjobs, Project_job_Id, updatejob, UpdateJobAssign } from "../../../redux/slices/JobsSlice";
 import {
   FaFilePdf,
   FaUpload,
@@ -109,6 +109,22 @@ function NewJobsList() {
     }
     setSelectedJob(job);
     setShowAssignModal(true);
+  };
+
+  const handleComplete = (id) => {
+    const payload = {
+      Status: "Completed"
+    };
+
+    dispatch(updatejob({ id, data: payload }))
+      .unwrap()
+      .then(() => {
+        toast.success("Job marked as completed!");
+        dispatch(Project_job_Id(job.projectId));
+      })
+      .catch(() => {
+        toast.error("Failed to mark job as completed!");
+      });
   };
 
   const handleRejectJobs = () => {
@@ -693,6 +709,9 @@ function NewJobsList() {
                     <Button id="icone_btn" size="sm">
                       <FaClock />
                     </Button> */}
+                    <button className="btn btn-sm btn-outline-primary me-1" onClick={() => handleComplete(job?._id)}>
+                      <i className="bi bi-eye"></i> complete
+                    </button>
                     <Button id="icone_btn" size="sm" onClick={() => handleUpdate(job)}>
                       <FaEdit />
                     </Button>
