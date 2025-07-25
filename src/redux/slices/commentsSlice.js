@@ -1,8 +1,8 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 // import api from "../utils/api";
 import axios from "axios";
-import { apiUrl } from "../utils/config";
-const BASE_URL = "https://netaai-crm-backend-production-c306.up.railway.app/api/comments"; // adjust this according to your backend route
+import { apiNetaUrl, apiUrl } from "../utils/config";
+const BASE_URL = `${apiNetaUrl}/comments`; // adjust this according to your backend route
 const NETA_BASE_URL = "https://netaai-crm-backend-production-c306.up.railway.app/api"; // adjust this according to your backend route
 
 // ✅ Create Comment
@@ -36,7 +36,7 @@ export const fetchCommentById = createAsyncThunk(
   "comments/fetchById",
   async (id, { rejectWithValue }) => {
     try {
-      const res = await axios.get(`${NETA_BASE_URL}/getCommentsByDailyLog/${id}`);
+      const res = await axios.get(`${apiNetaUrl}/getCommentsByDailyLog/${id}`);
       return res.data;
     } catch (err) {
       return rejectWithValue(err.response?.data || err.message);

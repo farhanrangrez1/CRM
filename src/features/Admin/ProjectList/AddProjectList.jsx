@@ -39,7 +39,8 @@ function AddProjectList() {
     // budgetAmount: '',
     // currency: 'USD',
     // totalTime: '',
-    tempPoles: false
+    tempPoles: false,
+    electrical: false,
   });
 
   const [items, setItems] = useState([
@@ -198,7 +199,8 @@ function AddProjectList() {
   return (
     <Container className="py-4">
       <div className="form-container p-4 rounded shadow-sm" style={{ backgroundColor: "white", margin: "0 auto" }}>
-        <h2 className="mb-4">{id ? "Edit Project" : "New Project"}</h2>
+        {/* <h2 className="mb-4">{id ? "Edit Project" : "New Project"}</h2> */}
+        <h2 className="mb-4">{id ? "Edit Project" : "Create New Project"}</h2>
 
         <Form onSubmit={handleSubmit}>
           <Row className="mb-3">
@@ -262,21 +264,8 @@ function AddProjectList() {
           </Row> */}
 
           <Row className="mb-3">
-            <Col md={6}>
-              {/* <Form.Group>
-                <Form.Label className="text-muted mb-1">Project Priority</Form.Label>
-                <Form.Select
-                  name="projectPriority"
-                  value={formData.projectPriority}
-                  onChange={handleInputChange}
-                  required
-                >
-                  <option value="">Select Priority</option>
-                  <option value="high">High</option>
-                  <option value="medium">Medium</option>
-                  <option value="low">Low</option>
-                </Form.Select>
-              </Form.Group> */}
+            <Col md={6} className='d-flex flex-row gap-3'>
+
               <Form.Group className="mb-3 mt-6">
                 <Form.Check
                   type="checkbox"
@@ -288,10 +277,52 @@ function AddProjectList() {
               </Form.Group>
 
               <Form.Group className="mb-3">
-
+                <Form.Check
+                  type="checkbox"
+                  label="Electrical"
+                  name="electrical"
+                  checked={formData.electrical}
+                  onChange={(e) => setFormData({ ...formData, electrical: e.target.checked })}
+                />
               </Form.Group>
 
             </Col>
+            {/* <Col md={6} className='d-flex flex-row gap-3'>
+              <Form.Group className="mb-3 mt-2">
+                <Form.Check
+                  type="radio"
+                  label="Temp Poles"
+                  name="projectOption"
+                  checked={formData.tempPoles === true}
+                  onChange={() =>
+                    setFormData({
+                      tempPoles: true,
+                      electrical: false,
+                    })
+                  }
+                />
+              </Form.Group>
+
+              <Form.Group className="mb-3 mt-2">
+                <Form.Check
+                  type="radio"
+                  label="Electrical"
+                  name="projectOption"
+                  checked={formData.electrical === true}
+                  onChange={() =>
+                    setFormData({
+                      tempPoles: false,
+                      electrical: true,
+                    })
+                  }
+                />
+              </Form.Group>
+            </Col> */}
+
+
+
+
+
             {/* <Col md={6}>
               <Form.Group>
                 <Form.Label className="text-muted mb-1">Project Status</Form.Label>
@@ -485,7 +516,8 @@ function AddProjectList() {
           <div className="d-flex justify-content-end gap-2 mt-4">
             <Button variant="secondary" className="px-4" onClick={handleCancel}>Cancel</Button>
             <Button id='All_btn' type="submit" className="px-4">
-              {id ? "Update Project" : "Create Project"}
+              {/* {id ? "Update Project" : "Create Project"} */}
+              {id ? "Update Proposal" : "Create Proposal"}
             </Button>
           </div>
         </Form>

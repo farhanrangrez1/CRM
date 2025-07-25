@@ -85,7 +85,19 @@ function AddInvoice({ onInvoiceComplete }) {
     dispatch(fetchClient());
   }, [dispatch]);
 
-  const [items, setItems] = useState([{ description: "", quantity: 0, rate: 0, amount: 0, is_paid: "false" }]);
+  // const [items, setItems] = useState([{ description: "", quantity: 0, rate: 0, amount: 0, is_paid: "false" }]);
+  const [items, setItems] = useState([
+    { description: "", quantity: 0, rate: 0, amount: 0, is_paid: "false", subClientId: "", amount_paid: 0, amount_due: 0, status: 'pending', isNew: true }
+  ]);
+
+  const [subClients, setSubClients] = useState([]);
+
+  useEffect(() => {
+    axios.get(`${apiUrl}/subClient`) // 🔁 Update this URL if needed
+      .then(res => setSubClients(res.data.data))
+      .catch(err => toast.error("Failed to fetch subclients"));
+  }, []);
+
 
   const [formData, setFormData] = useState({
     client_id: "",
@@ -146,66 +158,136 @@ function AddInvoice({ onInvoiceComplete }) {
 
   // const handleItemChange = (index, field, value) => {
   //   const newItems = [...items];
-  //   newItems[index][field] = value;
-  //   newItems[index].amount = calculateAmount(newItems[index].quantity, newItems[index].rate);
-  //   setItems(newItems);
-  // };
-  // const handleItemChange = (index, field, value) => {
-  //   const newItems = [...items];
-  //   // Special handling for is_paid checkbox
+
+  //   // Update the field value
   //   if (field === 'is_paid') {
   //     newItems[index][field] = value === true ? "true" : "false";
   //   } else {
   //     newItems[index][field] = value;
   //   }
+
   //   // Recalculate amount if quantity or rate changes
   //   if (field === 'quantity' || field === 'rate') {
-  //     const quantity = field === 'quantity' ? value : newItems[index].quantity;
-  //     const rate = field === 'rate' ? value : newItems[index].rate;
+  //     const quantity = field === 'quantity' ? Number(value) : Number(newItems[index].quantity);
+  //     const rate = field === 'rate' ? Number(value) : Number(newItems[index].rate);
   //     newItems[index].amount = calculateAmount(quantity, rate);
   //   }
+
   //   setItems(newItems);
+
+  //   // 🟡 Only update the last row in localStorage
+  //   const existingItems = JSON.parse(localStorage.getItem("lineItems")) || [];
+
+  //   if (index === items.length - 1) {
+  //     // It's the last row — update it
+  //     existingItems[existingItems.length - 1] = newItems[index];
+  //     localStorage.setItem("lineItems", JSON.stringify(existingItems));
+  //   }
   // };
+
+  // const handleItemChange = (index, field, value) => {
+  //   const newItems = [...items];
+  //   if (field === 'is_paid') {
+  //     newItems[index][field] = value === true ? "true" : "false";
+  //   } else if (field === 'amount_paid') {
+  //     newItems[index][field] = parseFloat(value) || 0;
+  //   } else {
+  //     newItems[index][field] = value;
+  //   }
+
+  //   // Update amount when quantity or rate changes
+  //   if (field === 'quantity' || field === 'rate') {
+  //     const quantity = field === 'quantity' ? Number(value) : Number(newItems[index].quantity);
+  //     const rate = field === 'rate' ? Number(value) : Number(newItems[index].rate);
+  //     newItems[index].amount = calculateAmount(quantity, rate);
+  //   }
+
+  //   setItems(newItems);
+
+  //   if (index === items.length - 1) {
+  //     const existingItems = JSON.parse(localStorage.getItem("lineItems")) || [];
+  //     existingItems[existingItems.length - 1] = newItems[index];
+  //     localStorage.setItem("lineItems", JSON.stringify(existingItems));
+  //   }
+  // };
+
+
+  // const handleItemChange = (index, field, value) => {
+  //   const newItems = [...items];
+  //   if (field === 'is_paid') {
+  //     newItems[index][field] = value === true ? "true" : "false";
+  //   } else if (field === 'amount_paid') {
+  //     newItems[index][field] = parseFloat(value) || 0;
+  //   } else {
+  //     newItems[index][field] = value;
+  //   }
+
+  //   // Update amount and amount_due when quantity, rate, or amount_paid changes
+  //   if (field === 'quantity' || field === 'rate') {
+  //     const quantity = field === 'quantity' ? Number(value) : Number(newItems[index].quantity);
+  //     const rate = field === 'rate' ? Number(value) : Number(newItems[index].rate);
+  //     newItems[index].amount = calculateAmount(quantity, rate);
+  //   }
+
+  //   // Calculate amount_due
+  //   newItems[index].amount_due = newItems[index].amount - newItems[index].amount_paid;
+
+  //   setItems(newItems);
+
+  //   if (index === items.length - 1) {
+  //     const existingItems = JSON.parse(localStorage.getItem("lineItems")) || [];
+  //     existingItems[existingItems.length - 1] = newItems[index];
+  //     localStorage.setItem("lineItems", JSON.stringify(existingItems));
+  //   }
+  // };
+
+
+
+
   const handleItemChange = (index, field, value) => {
     const newItems = [...items];
-
-    // Update the field value
     if (field === 'is_paid') {
       newItems[index][field] = value === true ? "true" : "false";
+    } else if (field === 'amount_paid') {
+      newItems[index][field] = parseFloat(value) || 0;
     } else {
       newItems[index][field] = value;
     }
 
-    // Recalculate amount if quantity or rate changes
-    if (field === 'quantity' || field === 'rate') {
-      const quantity = field === 'quantity' ? Number(value) : Number(newItems[index].quantity);
-      const rate = field === 'rate' ? Number(value) : Number(newItems[index].rate);
-      newItems[index].amount = calculateAmount(quantity, rate);
+    // Auto-calculate amount_due if quantity or rate changes
+    if (field === "quantity" || field === "rate") {
+      const quantity = parseFloat(newItems[index].quantity) || 0;
+      const rate = parseFloat(newItems[index].rate) || 0;
+      newItems[index].amount = quantity * rate;
+      newItems[index].amount_due = newItems[index].amount - (parseFloat(newItems[index].amount_paid) || 0);
+    }
+
+    // Auto-update is_paid based on amount_paid
+    if (field === "amount_paid") {
+      const paid = parseFloat(value) || 0;
+      newItems[index].amount_paid = paid;
+      const totalAmount = parseFloat(newItems[index].amount) || 0;
+      newItems[index].amount_due = totalAmount - paid;
+      newItems[index].is_paid = paid > 0;
     }
 
     setItems(newItems);
 
-    // 🟡 Only update the last row in localStorage
-    const existingItems = JSON.parse(localStorage.getItem("lineItems")) || [];
-
     if (index === items.length - 1) {
-      // It's the last row — update it
+      const existingItems = JSON.parse(localStorage.getItem("lineItems")) || [];
       existingItems[existingItems.length - 1] = newItems[index];
       localStorage.setItem("lineItems", JSON.stringify(existingItems));
     }
   };
 
 
-
   const handleFormChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  // const addItem = () => {
-  //   setItems([...items, { description: "", quantity: 0, rate: 0, amount: 0, is_paid: "false" }]);
-  // };
+
   const addItem = () => {
-    const newItem = { description: "", quantity: 0, rate: 0, amount: 0, is_paid: "false" };
+    const newItem = { description: "", quantity: 0, rate: 0, amount: 0, is_paid: "false", amount_paid: 0, amount_due: 0, status: 'pending', isNew: true };
     const updatedItems = [...items, newItem];
     setItems(updatedItems);
 
@@ -220,66 +302,20 @@ function AddInvoice({ onInvoiceComplete }) {
     const newItems = [...items];
     newItems.splice(index, 1);
     setItems(newItems);
+
+    // Update localStorage as well
+    const existingItems = JSON.parse(localStorage.getItem("lineItems")) || [];
+    if (index >= 0 && index < existingItems.length) {
+      existingItems.splice(index, 1);
+    }
+    localStorage.setItem("lineItems", JSON.stringify(existingItems));
   };
+
 
   const subtotal = items.reduce((acc, item) => acc + item.amount, 0);
   const tax = subtotal * taxRate;
   const total = subtotal + tax;
 
-
-
-  // const handleSubmit = async (e, isSignatureFlow = false) => {
-  //   if (e) e.preventDefault();
-
-  //   const payload = {
-  //     ...formData,
-  //     line_items: items,
-  //   };
-
-  //   try {
-  //     if (existingDocId) {
-  //       // Update document
-  //       await dispatch(updateDocumentRecord({ id: existingDocId, data: payload })).unwrap();
-  //       await toast.success("Change Order successfully");
-  //       window.location.reload();
-  //     } else {
-  //       // Create document
-  //       await dispatch(createDocumentRecord(payload)).unwrap();
-
-  //       // Set project to bidding
-  //       // await dispatch(updateProject({ id, payload: { status: "Bidding" } })).unwrap();
-  //       await toast.success("Document created successfully");
-  //       window.location.reload();
-  //     }
-
-  //     // ✅ If this was triggered from "Send Out For Signature"
-  //     if (isSignatureFlow) {
-  //       const fullPayload = {
-  //         ...invoice,
-  //         ...formData,
-  //         line_items: items,
-  //       };
-  //       localStorage.setItem("SignatureData", JSON.stringify(fullPayload));
-  //       onInvoiceComplete(); // Proceed to signature
-  //     }
-  //   } catch (error) {
-  //     toast.error("Something went wrong while saving the document.");
-  //   }
-  // };
-
-
-
-  // const handleSignature = () => {
-  //   // then call the callback
-  //   const payload = {
-  //     ...invoice,
-  //     ...formData,
-  //     line_items: items,
-  //   };
-
-  //   localStorage.setItem("SignatureData", JSON.stringify(payload));
-  //   onInvoiceComplete();
-  // };
 
   const handleSubmit = async (e, isSignatureFlow = false) => {
     if (e) e.preventDefault();
@@ -289,14 +325,17 @@ function AddInvoice({ onInvoiceComplete }) {
       const fullPayload = {
         ...invoice,
         ...formData,
-        line_items: items,
+        // line_items: items,
+        line_items: items.map(({ isNew, ...rest }) => rest),
       };
       localStorage.setItem("SignatureData", JSON.stringify(fullPayload));
       onInvoiceComplete(); // Proceed to signature
     } else {
       const payload = {
         ...formData,
-        line_items: items,
+        // line_items: items,
+        client_id: invoice?.clientId?._id,
+        line_items: items.map(({ isNew, ...rest }) => rest),
       };
 
       try {
@@ -309,36 +348,59 @@ function AddInvoice({ onInvoiceComplete }) {
         }
 
         // 🔁 Calculate total paid and due from updated line_items
-        const totalAmount = items.reduce((acc, curr) => acc + (Number(curr.amount) || 0), 0);
-        const totalPaid = items
-          .filter((item) => item.is_paid === "true" || item.is_paid === true)
-          .reduce((acc, curr) => acc + (Number(curr.amount) || 0), 0);
-        const totalDue = totalAmount - totalPaid;
+        // const totalAmount = items.reduce((acc, curr) => acc + (Number(curr.amount) || 0), 0);
+        // const totalPaid = items
+        //   .filter((item) => item.is_paid === "true" || item.is_paid === true)
+        //   .reduce((acc, curr) => acc + (Number(curr.amount) || 0), 0);
+        // const totalDue = totalAmount - totalPaid;
+
+        const totalAmount = items.reduce((sum, item) => sum + (parseFloat(item.amount) || 0), 0);
+        const totalPaid = items.reduce((sum, item) => sum + (parseFloat(item.amount_paid) || 0), 0);
+        const totalDue = items.reduce((sum, item) => sum + (parseFloat(item.amount_due) || 0), 0);
+
 
         // 🔄 Update the project after document is created/updated
-        const projectUpdatePayload = {
-          lineItems: items, // camelCase to match your earlier invoice data
-          paid: totalPaid.toFixed(2),
-          due: totalDue.toFixed(2),
-        };
 
-        await dispatch(updateProject({ id: invoice._id, payload: projectUpdatePayload }))
-          .unwrap()
-          .then(() => {
-            toast.success("Project updated successfully!");
-            // navigate("/admin/LeadFlow"); // or your required route
-          })
-          .catch(() => {
-            toast.error("Failed to update project!");
-          });
+        if (invoice?.status == "Lead") {
+          const projectUpdatePayload = {
+            lineItems: items, // camelCase to match your earlier invoice data
+            paid: totalPaid.toFixed(2),
+            due: totalDue.toFixed(2),
+            status: 'Bidding'
+          };
 
+          await dispatch(updateProject({ id: invoice._id, payload: projectUpdatePayload }))
+            .unwrap()
+            .then(() => {
+              toast.success("Project updated successfully!");
+              // navigate("/admin/LeadFlow"); // or your required route
+            })
+            .catch(() => {
+              toast.error("Failed to update project!");
+            });
 
+        } else {
+          const projectUpdatePayload = {
+            lineItems: items, // camelCase to match your earlier invoice data
+            paid: totalPaid.toFixed(2),
+            due: totalDue.toFixed(2)
+          };
+
+          await dispatch(updateProject({ id: invoice._id, payload: projectUpdatePayload }))
+            .unwrap()
+            .then(() => {
+              toast.success("Project updated successfully!");
+              // navigate("/admin/LeadFlow"); // or your required route
+            })
+            .catch(() => {
+              toast.error("Failed to update project!");
+            });
+        }
 
       } catch (error) {
         toast.error("Something went wrong while saving the document.");
       }
     }
-
 
   };
 
@@ -483,57 +545,6 @@ function AddInvoice({ onInvoiceComplete }) {
                 </select>
               </div>
 
-              {/* Selectore dropdow opne ho raha hai  */}
-              {/* <div className="col-md-4 mb-3">
-              <label className="form-label">Client</label>
-              <select
-                className="form-select"
-                name="clientId"
-                value={formData.clientId[0] || ""}
-                onChange={(e) =>
-                  setFormData({
-                    ...formData,
-                    clientId: [e.target.value],
-                  })
-                }
-                required
-              >
-                <option value="">Select Client</option>
-                {Clients?.data?.map((client) => (
-                  <option key={client._id} value={client._id}>
-                    {client.clientName}
-                  </option>
-                ))}
-              </select>
-            </div>
-
-            <div className="col-md-4 mb-3">
-              <label className="form-label">Project</label>
-              <select
-                className="form-select"
-                name="projectsId"
-                value={formData.projectsId[0] || ""}
-                onChange={(e) => {
-                  const selectedId = e.target.value;
-                  const selectedProject = project?.data?.find((p) => p._id === selectedId);
-                  setFormData({
-                    ...formData,
-                    projectsId: [selectedId],
-                    projectName: selectedProject?.projectName || "",
-                  });
-                }}
-                required
-              >
-                <option value="">Select a project</option>
-                {reversedProjectList.map((proj) => (
-                  <option key={proj._id} value={proj._id}>
-                    {proj.projectName}
-                  </option>
-                ))}
-              </select>
-            </div> */}
-
-
               <div className="col-md-4 mb-3">
                 <label className="form-label">Start Date</label>
                 <input
@@ -556,171 +567,21 @@ function AddInvoice({ onInvoiceComplete }) {
                 />
               </div>
 
-              {/* <div className="col-md-4 mb-3">
-              <label className="form-label">Currency</label>
-              <select
-                className="form-select"
-                name="currency"
-                value={formData.currency}
-                onChange={handleFormChange}
-                required
-              >
-                {currencies.map((curr) => (
-                  <option
-                    key={curr.value}
-                    value={curr.value}
-                    disabled={curr.value === ""}
-                  >
-                    {curr.label}
-                  </option>
-                ))}
-              </select>
 
-            </div> */}
 
-              {/* <div className="col-md-4 mb-3">
-              <label className="form-label">Document Type</label>
-              <select
-                className="form-select"
-                name="document"
-                value={formData.document}
-                onChange={handleFormChange}
-                required
-              >
-                <option value="" disabled>
-                  Select Document
-                </option>
-                {document.slice(1).map((doc) => (
-                  <option key={doc} value={doc}>
-                    {doc}
-                  </option>
-                ))}
-              </select>
-
-            </div> */}
-
-              {/* <div className="col-md-4 mb-3">
-              <label className="form-label">Output Format</label>
-              <select
-                className="form-select"
-                name="output"
-                value={formData.output}
-                onChange={handleFormChange}
-                required
-              >
-                <option value="" disabled>
-                  Select Output Format
-                </option>
-                {OutputFormat.slice(1).map((format) => (
-                  <option key={format} value={format}>
-                    {format}
-                  </option>
-                ))}
-              </select>
-
-            </div> */}
-
-              {/* <div className="col-md-4 mb-3">
-              <label className="form-label">Status</label>
-              <select
-                className="form-select"
-                name="status"
-                value={formData.status}
-                onChange={handleFormChange}
-                required
-              >
-                <option value="" disabled>
-                  Status Select
-                </option>
-                {statuses.slice(1).map((status) => (
-                  <option key={status} value={status}>
-                    {status}
-                  </option>
-                ))}
-              </select>
-
-            </div> */}
             </div>
 
-            {/* <h6 className="fw-semibold mb-3">Line Items</h6>
-            <div className="row fw-semibold text-muted mb-2 px-2">
-              <div className="col-md-1">OrderNo.</div>
-              <div className="col-md-3">Description</div>
-              <div className="col-md-2">Quantity</div>
-              <div className="col-md-2">Rate</div>
-              <div className="col-md-2">Amount</div>
-              <div className="col-md-1">Is Paid</div>
-              <div className="col-md-1 text-end">Action</div>
-            </div>
-            {items.map((item, index) => (
-              <div
-                className="row gx-2 gy-2 align-items-center mb-2 px-2 py-2"
-                key={index}
-                style={{ background: "#f9f9f9", borderRadius: "8px" }}
-              >
-                <div className="col-md-1">
-                  <input
-                    type="text"
-                    className="form-control"
-                    value={index + 1}
-                    readOnly
-                  />
-                </div>
-                <div className="col-md-3">
-                  <input
-                    type="text"
-                    className="form-control"
-                    placeholder="Item description"
-                    value={item.description}
-                    onChange={(e) => handleItemChange(index, "description", e.target.value)}
-                  />
-                </div>
-                <div className="col-md-2">
-                  <input
-                    type="number"
-                    className="form-control"
-                    value={item.quantity}
-                    onChange={(e) => handleItemChange(index, "quantity", parseInt(e.target.value) || 0)}
-                  />
-                </div>
-                <div className="col-md-2">
-                  <input
-                    type="number"
-                    value={item.rate}
-                    onChange={(e) => handleItemChange(index, "rate", parseFloat(e.target.value) || 0)}
-                    className="form-control"
-                  />
-                </div>
-                <div className="col-md-2">
-                  <span>
-                    {formData.currency} {item.amount.toFixed(2)}
-                  </span>
-                </div>
-                <div className="col-md-1">
-                  <input
-                    type="checkbox"
-                    checked={item.is_paid === "true"} // Check if is_paid is "true"
-                    onChange={(e) => handleItemChange(index, "is_paid", e.target.checked)} // Update is_paid based on checkbox state
-                    className="form-check-input"
-                  />
-                </div>
-                <div className="col-md-1 text-end">
-                  <button type="button"
-                    className="btn btn-link text-danger p-0"
-                    onClick={() => removeItem(index)}
-                  >
-                    remove
-                  </button>
-                </div>
-              </div>
-            ))} */}
             <h6 className="fw-semibold mb-3">Line Items</h6>
             <div className="row fw-semibold text-muted mb-2 px-2">
               <div className="col-md-1">OrderNo.</div>
-              <div className="col-md-3">Description</div>
-              <div className="col-md-2">Quantity</div>
-              <div className="col-md-2">Rate</div>
+              {/* <div className="col-md-2">SubClients</div> */}
+              <div className="col-md-2">Description</div>
+              <div className="col-md-1">Quantity</div>
+              <div className="col-md-1">Rate</div>
               <div className="col-md-2">Amount</div>
+              <div className="col-md-1">Amount Paid</div>
+              <div className="col-md-1">Amount Due</div>
+              <div className="col-md-1">Status</div>
               <div className="col-md-1">Is Paid</div>
               <div className="col-md-1 text-end">Action</div>
             </div>
@@ -729,7 +590,11 @@ function AddInvoice({ onInvoiceComplete }) {
               <div
                 className="row gx-2 gy-2 align-items-center mb-2 px-2 py-2"
                 key={index}
-                style={{ background: "#f9f9f9", borderRadius: "8px" }}
+                // style={{ background: "#f9f9f9", borderRadius: "8px" }}
+                style={{
+                  background: `${(item.status || "pending") === "approved" ? "#7EEE86FF" : "#f9f9f9"}`,
+                  borderRadius: "8px"
+                }}
               >
                 <div className="col-md-1">
                   <input
@@ -739,29 +604,47 @@ function AddInvoice({ onInvoiceComplete }) {
                     readOnly
                   />
                 </div>
-                <div className="col-md-3">
+                {/* <div className="col-md-2">
+                  <select
+                    className="form-select"
+                    value={item.subClientId}
+                    onChange={(e) => handleItemChange(index, "subClientId", e.target.value)}
+                    disabled={!item.isNew}
+                  >
+                    <option value="">Select Subclient</option>
+                    {subClients.filter((item) => item?.clientId?._id === formData.client_id).map((sc) => (
+                      <option key={sc._id} value={sc._id}>
+                        {sc.subClientName}
+                      </option>
+                    ))}
+                  </select>
+                </div> */}
+                <div className="col-md-2">
                   <input
                     type="text"
                     className="form-control"
                     placeholder="Item description"
                     value={item.description}
                     onChange={(e) => handleItemChange(index, "description", e.target.value)}
+                    readOnly={!item.isNew}
                   />
                 </div>
-                <div className="col-md-2">
+                <div className="col-md-1">
                   <input
                     type="number"
                     className="form-control"
                     value={item.quantity}
                     onChange={(e) => handleItemChange(index, "quantity", parseInt(e.target.value) || 0)}
+                    readOnly={!item.isNew}
                   />
                 </div>
-                <div className="col-md-2">
+                <div className="col-md-1">
                   <input
                     type="number"
                     value={item.rate}
                     onChange={(e) => handleItemChange(index, "rate", parseFloat(e.target.value) || 0)}
                     className="form-control"
+                    readOnly={!item.isNew}
                   />
                 </div>
                 <div className="col-md-2">
@@ -771,13 +654,33 @@ function AddInvoice({ onInvoiceComplete }) {
                 </div>
                 <div className="col-md-1">
                   <input
+                    type="number"
+                    className="form-control"
+                    value={item.amount_paid}
+                    onChange={(e) => handleItemChange(index, "amount_paid", e.target.value)}
+                    readOnly={!item.isNew}
+                  />
+                </div>
+                <div className="col-md-1">
+                  <span>
+                    {formData.currency} {formatCurrency(item?.amount_due?.toFixed(2) || 0)}
+                  </span>
+                </div>
+                <div className="col-md-1">
+                  <span>
+                    {(item?.status || 'pending')}
+                  </span>
+                </div>
+                <div className="col-md-1">
+                  <input
                     type="checkbox"
                     checked={item.is_paid === "true" || item.is_paid === true}
                     onChange={(e) => handleItemChange(index, "is_paid", e.target.checked)}
                     className="form-check-input"
+                    disabled={!item.isNew}
                   />
                 </div>
-                <div className="col-md-1 text-end">
+                {item.isNew && <div className="col-md-1 text-end">
                   <button
                     type="button"
                     className="btn btn-link text-danger p-0"
@@ -785,17 +688,15 @@ function AddInvoice({ onInvoiceComplete }) {
                   >
                     remove
                   </button>
-                </div>
+                </div>}
               </div>
             ))}
 
             {/* ✅ Summary Row */}
             {items.length > 0 && (() => {
               const total = items.reduce((sum, item) => sum + (parseFloat(item.amount) || 0), 0);
-              const paid = items
-                .filter((item) => item.is_paid === "true" || item.is_paid === true)
-                .reduce((sum, item) => sum + (parseFloat(item.amount) || 0), 0);
-              const due = total - paid;
+              const paid = items.reduce((sum, item) => sum + (parseFloat(item.amount_paid) || 0), 0);
+              const due = items.reduce((sum, item) => sum + (parseFloat(item.amount_due) || 0), 0);
 
               return (
                 <div className="row fw-bold align-items-center px-2 py-3 mt-3 border-top">
@@ -816,16 +717,10 @@ function AddInvoice({ onInvoiceComplete }) {
             </button>
 
             <div className="text-end mt-4">
-              {/* <button type="button" className="btn btn-light me-2" onClick={() => navigate(-1)}>  Cancel</button>
-            <button type="submit" className="btn btn-dark">
-              Generate Invoice
-            </button> */}
+
               <button type="submit" className="btn btn-success me-2">
                 {existingDocId ? "Change Order" : "Save"}
               </button>
-              {/* <button type="button" className="btn btn-dark" onClick={handleSignature}>
-              Send Out For Signature
-            </button> */}
               <button
                 type="button"
                 className="btn btn-dark"
@@ -863,22 +758,6 @@ function AddInvoice({ onInvoiceComplete }) {
       </Modal>
       {/* <div className="col-md-5"> */}
       <div className="card shadow-sm p-3">
-        {/* <div className="d-flex justify-content-between align-items-center">
-            <h6 className="fw-bold">PDF Preview</h6>
-            <span className="text-muted">Page 1/1</span>
-          </div> */}
-
-        {/* {pdfUrl ? (
-            <iframe
-              title="PDF Preview"
-              src={pdfUrl}
-              style={{ height: "600px", width: "100%", border: "none", marginTop: "1rem" }}
-            />
-          ) : (
-            <p className="text-center text-muted mt-4">Generating PDF preview...</p>
-          )} */}
-
-        {/* Hidden HTML content used for PDF generation */}
         <div
           ref={proposalRef}
           style={{
@@ -913,12 +792,19 @@ function AddInvoice({ onInvoiceComplete }) {
             <table className="table table-bordered mt-3">
               <tbody>
                 {items.map((item, index) => {
+                  const matchedSubClient = subClients?.find(
+                    (sc) => sc?._id?.toString() == item?.subClientId?.toString()
+                  );
                   const lineAmount = item.quantity * item.rate;
                   return (
                     <tr key={index}>
                       <td>{index + 1}.</td>
+                      <td>
+                        {matchedSubClient?.subClientName || '-'}
+                      </td>
                       <td>{item.description}</td>
-                      <td className="text-end">${lineAmount.toFixed(2)}</td>
+                      <td className="text-end">${item?.amount_paid?.toFixed(2) || 0}</td>
+                      <td className="text-end">${item?.amount_due?.toFixed(2)}</td>
                     </tr>
                   );
                 })}

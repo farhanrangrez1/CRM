@@ -18,8 +18,9 @@ import JobCost from "../../LeadFlow/JobCost";
 import { fetchusers } from "../../../../redux/slices/userSlice";
 import FinanceTabEditPage from "../../LeadFlow/FinanceTabEditPage";
 import ProjectJobsTab from "./ProjectJobsTab";
-import { apiUrl } from "../../../../redux/utils/config";
+import { apiNetaUrl, apiUrl } from "../../../../redux/utils/config";
 import { fetchClientsById } from "../../../../redux/slices/ClientSlice";
+import { toast } from "react-toastify";
 
 
 const ProjectViewEditpurposal = () => {
@@ -29,6 +30,7 @@ const ProjectViewEditpurposal = () => {
   const [subcontractorsBudget, setSubcontractorsBudget] = useState(0.0);
   const [equipmentBudget, setEquipmentBudget] = useState(0.0);
   const [miscBudget, setMiscBudget] = useState(0.0);
+  const [jobCostNotes, setJobCostNotes] = useState("");
   const [estimatedStart, setEstimatedStart] = useState("");
   const [estimatedEnd, setEstimatedEnd] = useState("");
   const [showFileModal, setShowFileModal] = useState(false);
@@ -120,11 +122,12 @@ const ProjectViewEditpurposal = () => {
       subcontractors_budget: subcontractorsBudget,
       equipment_budget: equipmentBudget,
       miscellanea_budget: miscBudget,
+      notes: jobCostNotes,
     };
 
     try {
       const response = await axios.post(
-        'https://netaai-crm-backend-production-c306.up.railway.app/api/job_planning',
+        `${apiNetaUrl}/job_planning`,
         payload
       );
 
@@ -233,6 +236,7 @@ const ProjectViewEditpurposal = () => {
   };
 
   const handleCancel = () => {
+    setSelectedJobCost(null);
     setShowModal(false);
   };
 
@@ -243,7 +247,7 @@ const ProjectViewEditpurposal = () => {
   const fetchNotes = async () => {
     setLoadingNotes(true);
     try {
-      const res = await fetch("https://netaai-crm-backend-production-c306.up.railway.app/api/notes");
+      const res = await fetch(`${apiNetaUrl}/notes`);
       const data = await res.json();
       const allNotes = data?.data || [];
       const filteredNotes = allNotes.filter(note => note.project_id === proposalId);
@@ -260,7 +264,7 @@ const ProjectViewEditpurposal = () => {
     if (!newNote.trim()) return;
 
     try {
-      const res = await fetch("https://netaai-crm-backend-production-c306.up.railway.app/api/notes", {
+      const res = await fetch(`${apiNetaUrl}/notes`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -313,7 +317,7 @@ const ProjectViewEditpurposal = () => {
 
     if (result.isConfirmed) {
       try {
-        const res = await fetch(`https://netaai-crm-backend-production-c306.up.railway.app/api/notes/${noteId}`, {
+        const res = await fetch(`${apiNetaUrl}/notes/${noteId}`, {
           method: "DELETE",
         });
 
@@ -335,7 +339,7 @@ const ProjectViewEditpurposal = () => {
   useEffect(() => {
     const fetchJobs = async () => {
       try {
-        const res = await fetch(`https://neta-crmmongo-backend-production.up.railway.app/api/jobs/${invoice?._id}`);
+        const res = await fetch(`${apiUrl}/jobs/${invoice?._id}`);
         const data = await res.json();
         setJobs(data?.jobs || []);
       } catch (error) {
@@ -394,6 +398,14 @@ const ProjectViewEditpurposal = () => {
   const JobDetails = (job) => {
     navigate(`/admin/OvervieJobsTracker`, { state: { job } });
   };
+  const [subClients, setSubClients] = useState([]);
+
+  useEffect(() => {
+    axios.get(`${apiUrl}/subClient`) // 🔁 Update this URL if needed
+      .then(res => setSubClients(res.data.data))
+      .catch(err => toast.error("Failed to fetch subclients"));
+  }, []);
+
 
 
   useEffect(() => {
@@ -403,6 +415,10 @@ const ProjectViewEditpurposal = () => {
     fetchemaildata();
   }, [])
 
+  const [selectedJobCost, setSelectedJobCost] = useState(null);
+
+  console.log(selectedJobCost);
+
 
 
   const renderTabContent = () => {
@@ -410,6 +426,19 @@ const ProjectViewEditpurposal = () => {
       case "Summary":
         return (
           <div className="tab-content-box row">
+            {/* <div className="col-md-8">
+              <h5 className="mb-3 fw-bold">Details</h5>
+              <div className="row mb-3">
+                <div className="col-md-6">
+                  <p className="mb-1 text-muted">Job Status</p>
+                  <p>{job?.status}</p>
+                </div>
+                <div className="col-md-6">
+                  <p className="mb-1 text-muted">Job Address</p>
+                  <p>{invoice?.projectAddress}</p>
+                </div>
+              </div>
+            </div> */}
             <div className="d-flex justify-content-between align-items-center mb-3">
               <div className="col-md-8 text-start">
                 <h5 className="mb-3 fw-bold">Details</h5>
@@ -440,8 +469,109 @@ const ProjectViewEditpurposal = () => {
               </div>
             </div>
 
+            {/* <div className="align-items-center mb-3">
+              <h5 className="mb-3 fw-bold">Sub Client Details</h5>
+              <div>
+                {subClients && subClients?.length > 0 ? (
+                  subClients
+                    ?.filter((item) => item?.clientId?._id === selectedClient?._id)
+                    ?.map((subClient) => {
+                      // Total amount_paid for this subClient
+                      const relatedItems = items?.filter((item) => item?.subClientId === subClient?._id) || [];
+
+                      // Calculate totals
+                      const totalPaid = relatedItems.reduce((acc, item) => acc + (item.amount_paid || 0), 0);
+                      const totalDue = relatedItems.reduce((acc, item) => acc + (item.amount_due || 0), 0);
+
+                      return (
+                        <div key={subClient._id} className="mb-2">
+                          <div className="row">
+                            <div className="col-md-4">
+                              <p className="mb-1 text-muted">Sub Client Name</p>
+                              <p>{subClient?.subClientName}</p>
+                            </div>
+                            <div className="col-md-4">
+                              <p className="mb-1 text-muted">Total Paid</p>
+                              <p>{totalPaid}</p>
+                            </div>
+                            <div className="col-md-4">
+                              <p className="mb-1 text-muted">Total Due</p>
+                              <p>{totalDue}</p>
+                            </div>
+                          </div>
+                        </div>
+                      );
+                    })
+                ) : (
+                  <p className="mb-1 text-muted">No Sub Client Name</p>
+                )}
+              </div>
+            </div> */}
+
+            <div>
+              {/* <h6 className="fw-semibold mb-3">Line Items</h6>
+              <div className="row fw-semibold text-muted mb-2 px-2">
+                <div className="col-md-1">OrderNo.</div>
+                <div className="col-md-4">Description</div>
+                <div className="col-md-2">Quantity</div>
+                <div className="col-md-2">Rate</div>
+                <div className="col-md-2">Amount</div>
+                <div className="col-md-1">Is Paid</div>
+              </div> */}
+
+              {/* {items?.length > 0 && items.map((item, index) => (
+                <div
+                  className="row gx-2 gy-2 align-items-center mb-2 px-2 py-2"
+                  key={index}
+                  style={{ background: "#f9f9f9", borderRadius: "8px" }}
+                >
+                  <div className="col-md-1">
+                    <input readOnly type="text" className="form-control" value={index + 1} />
+                  </div>
+                  <div className="col-md-4">
+                    <input readOnly type="text" className="form-control" value={item.description} />
+                  </div>
+                  <div className="col-md-2">
+                    <input readOnly type="number" className="form-control" value={item.quantity} />
+                  </div>
+                  <div className="col-md-2">
+                    <input readOnly type="number" className="form-control" value={item.rate} />
+                  </div>
+                  <div className="col-md-2">
+                    <span>${parseFloat(item.amount).toFixed(2)}</span>
+                  </div>
+                  <div className="col-md-1">
+                    <input
+                      type="checkbox"
+                      checked={item.is_paid === "true"}
+                      readOnly
+                      className="form-check-input"
+                    />
+                  </div>
+                </div>
+              ))} */}
+
+              {/* Total Summary */}
+              {/* {items?.length > 0 && (() => {
+                const totalAmount = items.reduce((acc, curr) => acc + (parseFloat(curr.amount) || 0), 0);
+                const paidAmount = items
+                  .filter((i) => i.is_paid === "true")
+                  .reduce((acc, curr) => acc + (parseFloat(curr.amount) || 0), 0);
+                const dueAmount = totalAmount - paidAmount;
+
+                return (
+                  <div className="row fw-bold align-items-center px-2 py-3 mt-3 border-top">
+                    <div className="col-md-6 text-end">Total Amount:</div>
+                    <div className="col-md-2">${totalAmount.toFixed(2)}</div>
+                    <div className="col-md-2 text-success">Paid: ${paidAmount.toFixed(2)}</div>
+                    <div className="col-md-2 text-danger">Due: ${dueAmount.toFixed(2)}</div>
+                  </div>
+                );
+              })()} */}
+            </div>
+
             {/* 📌 Notes Section */}
-            <div className="col-12 mt-4">
+            {/* <div div className="col-12 mt-4" >
               <div className="d-flex justify-content-between pb-2 align-item-center">
                 <h6 className="fw-bold mb-3">Notes</h6>
                 <button className="btn btn-primary mt-2" onClick={handleAddNote}>
@@ -459,26 +589,76 @@ const ProjectViewEditpurposal = () => {
                 />
               </div>
 
+              {
+                loadingNotes ? (
+                  <p> Loading notes...</p>
+                ) : notes?.length === 0 ? (
+                  <p className="text-muted">No notes available.</p>
+                ) : (
+                  <ul className="list-group">
+                    {notes?.map((note, index) => (
+                      <li key={index} className="list-group-item d-flex justify-content-between">
+                        <strong>{getUserNameById(note.name)}:</strong>
+                        {note.note}
+                        <div className="col-md-1 text-end">
+                          <button type="button" className="btn btn-link text-danger p-0" onClick={() => handleDeleteNote(note?.id)}>
+                            remove
+                          </button>
+                        </div>
+                      </li>
+                    ))}
+                  </ul>
+                )}
+            </div> */}
+            <div className="col-12 mt-4">
+              <div className="d-flex justify-content-between pb-2 align-items-center">
+                <h6 className="fw-bold mb-3">Notes</h6>
+                <button className="btn btn-primary mt-2" onClick={handleAddNote}>
+                  Add Note
+                </button>
+              </div>
+
+              <div className="mb-3">
+                <textarea
+                  rows="7"
+                  className="form-control"
+                  placeholder="Add a new note..."
+                  value={newNote}
+                  onChange={(e) => setNewNote(e.target.value)}
+                />
+              </div>
+
               {loadingNotes ? (
                 <p>Loading notes...</p>
               ) : notes?.length === 0 ? (
                 <p className="text-muted">No notes available.</p>
               ) : (
                 <ul className="list-group">
-                  {notes?.map((note, index) => (
-                    <li key={index} className="list-group-item d-flex justify-content-between">
-                      <strong>{getUserNameById(note.name)}:</strong>
-                      {note.note}
-                      <div className="col-md-1 text-end">
-                        <button type="button" className="btn btn-link text-danger p-0" onClick={() => handleDeleteNote(note?.id)}>
+                  {notes.map((note, index) => (
+                    <li key={index} className="list-group-item">
+                      <div className="d-flex justify-content-between">
+                        <strong>{getUserNameById(note.name)}:</strong>
+                        <button
+                          type="button"
+                          className="btn btn-link text-danger p-0"
+                          onClick={() => handleDeleteNote(note?.id)}
+                        >
                           remove
                         </button>
                       </div>
+                      <textarea
+                        className="form-control mt-2"
+                        rows="7"
+                        value={note.note}
+                        readOnly
+                      />
                     </li>
                   ))}
                 </ul>
               )}
             </div>
+
+
 
             {/* 📌 Tasks Section */}
             <div className="col-12 mt-4">
@@ -490,16 +670,16 @@ const ProjectViewEditpurposal = () => {
                   <Table className="align-middle sticky-header">
                     <thead className="bg-light">
                       <tr>
-                        <th>JobNo</th>
+                        <th>TaskNo</th>
                         <th>Project Name</th>
                         {/*<th>Brand</th>
-                                    <th>Sub Brand</th>
-                                    <th>Flavour</th>
-                                    <th>PackType</th>
-                                    <th>PackSize</th>
-                                    <th>PackCode</th>
-                                    <th>TimeLogged</th>
-                                    <th>Due Date</th>*/}
+                        <th>Sub Brand</th>
+                        <th>Flavour</th>
+                        <th>PackType</th>
+                        <th>PackSize</th>
+                        <th>PackCode</th>
+                        <th>TimeLogged</th>
+                        <th>Due Date</th>*/}
                         <th>Assigned</th>
                         <th>Priority</th>
                         <th>Status</th>
@@ -514,20 +694,20 @@ const ProjectViewEditpurposal = () => {
                           </td>
                           <td>{job.projectId?.[0]?.projectName || "N/A"}</td>
                           {/* <td>{job.brandName}</td>
-                                      <td>{job.subBrand}</td>
-                                      <td>{job.flavour}</td>
-                                      <td>{job.packType}</td>
-                                      <td>{job.packSize}</td>
-                                      <td>{job.packCode}</td>
-                                      <td>
-                                        {new Date(job.updatedAt).toLocaleTimeString("en-US", {
-                                          hour: "2-digit",
-                                          minute: "2-digit",
-                                        })}
-                                      </td>
-                                      <td>
-                                        {new Date(job.createdAt).toLocaleDateString("en-GB")}
-                                      </td> */}
+                          <td>{job.subBrand}</td>
+                          <td>{job.flavour}</td>
+                          <td>{job.packType}</td>
+                          <td>{job.packSize}</td>
+                          <td>{job.packCode}</td>
+                          <td>
+                            {new Date(job.updatedAt).toLocaleTimeString("en-US", {
+                              hour: "2-digit",
+                              minute: "2-digit",
+                            })}
+                          </td>
+                          <td>
+                            {new Date(job.createdAt).toLocaleDateString("en-GB")}
+                          </td> */}
                           <td style={{ whiteSpace: 'nowrap' }}>
                             {
                               userAll?.data?.users?.find(user => user._id === job?.assign)
@@ -572,7 +752,14 @@ const ProjectViewEditpurposal = () => {
             </div>
 
             {/* JobCost Component (Always Visible) */}
-            <JobCost jobStatus={job?.status} refreshTrigger={refreshJobCost} />
+            <JobCost
+              jobStatus={job?.status}
+              refreshTrigger={refreshJobCost}
+              show={(jobItem) => {
+                setSelectedJobCost(jobItem); // store selected job
+                setShowModal(true); // show modal
+              }}
+            />
             <Modal
               show={showModal}
               onHide={handleCancel}
@@ -594,15 +781,25 @@ const ProjectViewEditpurposal = () => {
                       </div>
                       <div className="col-md-6 mb-3">
                         <p className="mb-1 text-muted">Total Budget</p>
-                        <p>${totalBudgetedCost}</p>
+                        <p>${selectedJobCost ? selectedJobCost?.total_budget : totalBudgetedCost}</p>
                       </div>
                       <div className="col-md-6 mb-3">
                         <p className="mb-1 text-muted">Date of Expense</p>
                         <input
                           type="date"
                           className="form-control"
-                          value={estimatedStart}
+                          value={selectedJobCost ? selectedJobCost?.estimated_start : estimatedStart}
                           onChange={(e) => setEstimatedStart(e.target.value)}
+                        />
+                      </div>
+                      <div className="col-md-12 mb-3">
+                        <p className="mb-1 text-muted">Notes</p>
+                        <textarea
+                          rows="5"
+                          type="text"
+                          className="form-control"
+                          value={selectedJobCost ? selectedJobCost?.notes : jobCostNotes}
+                          onChange={(e) => setJobCostNotes(e.target.value)}
                         />
                       </div>
                     </div>
@@ -613,7 +810,7 @@ const ProjectViewEditpurposal = () => {
                       <Form.Group className="mb-3">
                         <Form.Label>Select Phase</Form.Label>
                         <Form.Select
-                          value={phaseName}
+                          value={selectedJobCost ? selectedJobCost?.phase_name : phaseName}
                           onChange={(e) => setPhaseName(e.target.value)}
                         >
                           <option value="">Select</option>
@@ -622,24 +819,23 @@ const ProjectViewEditpurposal = () => {
                         </Form.Select>
                       </Form.Group>
 
-                      {phaseName === "material" && (
+                      {(selectedJobCost?.phase_name === "material" || phaseName === "material") && (
                         <Form.Group className="mb-3">
                           <Form.Label>Material Cost</Form.Label>
                           <Form.Control
-                            value={`$${materialsBudget}`}
+                            value={`$${selectedJobCost ? selectedJobCost?.materials_budget : materialsBudget}`}
                             onChange={(e) =>
                               setMaterialsBudget(e.target.value.replace("$", ""))
                             }
                           />
-
                         </Form.Group>
                       )}
 
-                      {phaseName === "labour" && (
+                      {(selectedJobCost?.phase_name === "labour" || phaseName === "labour") && (
                         <Form.Group className="mb-3">
                           <Form.Label>Labour Cost</Form.Label>
                           <Form.Control
-                            value={`$${laborBudget}`}
+                            value={`$${selectedJobCost ? selectedJobCost?.labor_budget : laborBudget}`}
                             onChange={(e) =>
                               setLaborBudget(e.target.value.replace("$", ""))
                             }
@@ -655,16 +851,16 @@ const ProjectViewEditpurposal = () => {
                 <Button variant="secondary" onClick={handleCancel}>
                   Cancel
                 </Button>
-                <Button variant="primary" onClick={handleSave}>
+                {!selectedJobCost && <Button variant="primary" onClick={handleSave}>
                   Save
-                </Button>
+                </Button>}
               </Modal.Footer>
             </Modal>
 
           </>
         );
 
-      case "Proposals":
+      case "Create Proposal":
         return (
           <div className="container mt-4 mb-5">
             {/* Main Page: AddInvoice */}
@@ -912,17 +1108,16 @@ const ProjectViewEditpurposal = () => {
         <ul className="nav nav-tabs wwd-tabs mb-4">
           {[
             "Summary",
-            // "Job Costs",
+            "Job Costs",
             // stage === "lead" ? "Client Proposal" : "Draft Proposal",
             // "Contract & Change Orders",
-            // !existingDocId ? "Create Proposal" : "Contract & Change Orders",
-            "Proposals",
-            // "Documents",
+            !existingDocId ? "Create Proposal" : "Contract & Change Orders",
+            "Documents",
             "Daily Logs",
             // "Activity",
             // "Reports",
-            // "Tasks",
-            // "Finance"
+            "Tasks",
+            "Finance"
           ].map((tab, i) => (
             <li className="nav-item" key={i}>
               <button

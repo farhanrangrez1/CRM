@@ -114,8 +114,9 @@ import { useEffect, useState } from "react";
 import { Table, Card, Container } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import axios from 'axios';
+import { apiNetaUrl } from "../../../redux/utils/config";
 
-const JobCost = ({ jobStatus, refreshTrigger }) => {
+const JobCost = ({ jobStatus, refreshTrigger, show }) => {
   const [invoice, setInvoice] = useState(null);
   const [data, setData] = useState([]);
   const [summary, setSummary] = useState({
@@ -136,7 +137,7 @@ const JobCost = ({ jobStatus, refreshTrigger }) => {
   const getData = async () => {
     try {
       const response = await axios.get(
-        `https://netaai-crm-backend-production-c306.up.railway.app/api/job_planning`
+        `${apiNetaUrl}/job_planning`
       );
       if (response.status === 200) {
         setData(response.data?.data);
@@ -180,6 +181,13 @@ const JobCost = ({ jobStatus, refreshTrigger }) => {
     item => String(item.proposal_id) === String(invoice?._id)
   );
 
+  const formatCurrency = (amount) =>
+    new Intl.NumberFormat("en-US", {
+      style: "currency",
+      currency: "USD",
+    }).format(amount);
+
+
   return (
     <Container className="py-4 d-flex justify-content-between flex-wrap gap-2">
       <Card className="shadow-sm flex-grow-1">
@@ -194,9 +202,11 @@ const JobCost = ({ jobStatus, refreshTrigger }) => {
                   <tr>
                     <th>#</th>
                     <th>Type</th>
-                    <th>Job Status</th>
+                    {/* <th>Job Status</th> */}
                     <th>Total Budget</th>
                     <th>Date Of Expense</th>
+                    <th>Notes</th>
+                    <th>Action</th>
                     {/* <th>Estimated Start</th>
                     <th>Estimated Completion</th> */}
                   </tr>
@@ -207,13 +217,21 @@ const JobCost = ({ jobStatus, refreshTrigger }) => {
                       {/* <td>{item.id}</td> */}
                       <td>{index + 1}</td>
                       <td>{item.phase_name}</td>
-                      <td>{jobStatus}</td>
-                      <td>${parseFloat(item.total_budget).toFixed(2)}</td>
+                      {/* <td>{jobStatus}</td> */}
+                      <td>{formatCurrency(parseFloat(item.total_budget).toFixed(2))}</td>
                       <td>
                         {item.estimated_start &&
                           new Date(item.estimated_start).toLocaleDateString("en-GB")}
                       </td>
-
+                      <td>{item.notes}</td>
+                      <td>
+                        <button
+                          className="btn btn-sm btn-primary"
+                          onClick={() => show(item)}
+                        >
+                          View
+                        </button>
+                      </td>
                       {/* <td>{item.estimated_completion}</td> */}
                     </tr>
                   ))}
@@ -233,16 +251,16 @@ const JobCost = ({ jobStatus, refreshTrigger }) => {
         <Card.Body>
           <div className="d-flex justify-content-between">
             <div>Total Material</div>
-            <div>${summary.totalMaterial.toFixed(2)}</div>
+            <div>{formatCurrency(summary.totalMaterial.toFixed(2))}</div>
           </div>
           <div className="d-flex justify-content-between">
             <div>Total Labour</div>
-            <div>${summary.totalLabor.toFixed(2)}</div>
+            <div>{formatCurrency(summary.totalLabor.toFixed(2))}</div>
           </div>
           <hr />
           <div className="d-flex justify-content-between fw-bold">
             <div>Grand Total</div>
-            <div>${summary.grandTotal.toFixed(2)}</div>
+            <div>{formatCurrency(summary.grandTotal.toFixed(2))}</div>
           </div>
         </Card.Body>
       </Card>

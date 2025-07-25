@@ -890,44 +890,89 @@ const LeadFlow = ({ data }) => {
         if (!Array.isArray(project)) return;
         setLoadingSpinner(true);
 
-        const updatedProjects = await Promise.all(
-          project.map(async (p) => {
-            const status = (p.status || "").toLowerCase();
+        const loginType = localStorage.getItem("login_type");
+        const clientId = localStorage.getItem('clientId');
 
-            if (status === "signature") {
-              const isTempPoles = p.tempPoles === "true";
-              const newStatus = isTempPoles ? "Open" : "Signature";
+        if (loginType == "client") {
+          const updatedProjects = await Promise.all(
+            project.filter((item) => item?.clientId?._id == clientId).map(async (p) => {
+              const status = (p.status || "").toLowerCase();
 
-              await dispatch(
-                updateProject({
-                  id: p._id,
-                  payload: { status: newStatus },
-                })
-              );
-              return { ...p, status: status };
-            }
+              if (status === "signature") {
+                const isTempPoles = p.tempPoles === "true";
+                const newStatus = isTempPoles ? "Open" : "Signature";
 
-            return p;
-          })
-        );
+                await dispatch(
+                  updateProject({
+                    id: p._id,
+                    payload: { status: newStatus },
+                  })
+                );
+                return { ...p, status: status };
+              }
 
-        // Step 2: Filter into Kanban columns
-        const result = {
-          active: updatedProjects.filter(p => (p.status || "").toLowerCase() === "lead"),
-          pending: updatedProjects.filter(p => (p.status || "").toLowerCase() === "bidding"),
-          closed: updatedProjects.filter(p => {
-            const status = (p.status || "").toLowerCase();
-            return status == "open" || status == "signature" || p.status == "Signature";
-          }),
-          rejected: updatedProjects.filter(p => (p.status || "").toLowerCase() === "expired"),
-          hold: updatedProjects.filter(p => (p.status || "").toLowerCase() === "hold"),
-          // approved: updatedProjects.filter(p => (p.status || "").toLowerCase() === "approved"),
-          approved: updatedProjects.filter(p => ["approved", "active project"].includes((p.status || "").toLowerCase())),
-        };
+              return p;
+            })
+          );
+
+          // Step 2: Filter into Kanban columns
+          const result = {
+            active: updatedProjects.filter(p => (p.status || "").toLowerCase() === "lead"),
+            pending: updatedProjects.filter(p => (p.status || "").toLowerCase() === "bidding"),
+            closed: updatedProjects.filter(p => {
+              const status = (p.status || "").toLowerCase();
+              return status == "signature" || p.status == "Signature";
+            }),
+            rejected: updatedProjects.filter(p => (p.status || "").toLowerCase() === "expired"),
+            hold: updatedProjects.filter(p => (p.status || "").toLowerCase() === "hold"),
+            // approved: updatedProjects.filter(p => (p.status || "").toLowerCase() === "approved"),
+            approved: updatedProjects.filter(p => ["approved", "active project", "open"].includes((p.status || "").toLowerCase())),
+          };
 
 
-        setKanbanData(result);
-        setLoadingSpinner(false);
+          setKanbanData(result);
+          setLoadingSpinner(false);
+        } else {
+          const updatedProjects = await Promise.all(
+            project.map(async (p) => {
+              const status = (p.status || "").toLowerCase();
+
+              if (status === "signature") {
+                const isTempPoles = p.tempPoles === "true";
+                const newStatus = isTempPoles ? "Open" : "Signature";
+
+                await dispatch(
+                  updateProject({
+                    id: p._id,
+                    payload: { status: newStatus },
+                  })
+                );
+                return { ...p, status: status };
+              }
+
+              return p;
+            })
+          );
+
+          // Step 2: Filter into Kanban columns
+          const result = {
+            active: updatedProjects.filter(p => (p.status || "").toLowerCase() === "lead"),
+            pending: updatedProjects.filter(p => (p.status || "").toLowerCase() === "bidding"),
+            closed: updatedProjects.filter(p => {
+              const status = (p.status || "").toLowerCase();
+              return status == "signature" || p.status == "Signature";
+            }),
+            rejected: updatedProjects.filter(p => (p.status || "").toLowerCase() === "expired"),
+            hold: updatedProjects.filter(p => (p.status || "").toLowerCase() === "hold"),
+            // approved: updatedProjects.filter(p => (p.status || "").toLowerCase() === "approved"),
+            approved: updatedProjects.filter(p => ["approved", "active project", "open"].includes((p.status || "").toLowerCase())),
+          };
+
+
+          setKanbanData(result);
+          setLoadingSpinner(false);
+        }
+
       };
 
       processProjects();
@@ -1109,7 +1154,7 @@ const LeadFlow = ({ data }) => {
                                   {item.projectName || item.title}
                                 </div>
                                 <Dropdown align="end" onClick={(e) => e.stopPropagation()}>
-                                  <Dropdown.Toggle as="div" style={{ cursor: "pointer" }}>
+                                  <Dropdown.Toggle as="div" style={{ cursor: "pointer", border: '1px solid black', padding: '2px 4px', borderRadius: '4px' }}>
                                     <BsThreeDotsVertical size={16} />
                                   </Dropdown.Toggle>
                                   <Dropdown.Menu>
@@ -1138,7 +1183,7 @@ const LeadFlow = ({ data }) => {
                                   >
                                     {item.status === 'Open' || item.status === 'Active Project' ? 'Signature' : (item.status == "Bidding" ? "mail sent" : item.status)}
                                   </Badge> */}
-                                  <Badge
+                                  {/* <Badge
                                     bg={
                                       item.status === 'Approved' ? 'success' :
                                         item.status === 'Hold' ? 'secondary' :
@@ -1152,7 +1197,7 @@ const LeadFlow = ({ data }) => {
                                         item.status === 'Bidding' ? 'Mail Sent' :
                                           item.status
                                     }
-                                  </Badge>
+                                  </Badge> */}
                                   ✅
                                 </div> : <div className="d-flex flex-wrap gap-2 align-items-center mb-1">
                                   {/* <Badge
@@ -1161,7 +1206,7 @@ const LeadFlow = ({ data }) => {
                                   >
                                     {item.status === 'Open' || item.status === 'Active Project' || item.status === 'active' ? 'Signature' : (item.status == "Bidding" ? "mail sent" : item.status)}
                                   </Badge> */}
-                                  <Badge
+                                  {/* <Badge
                                     bg={
                                       item.status === 'Approved' ? 'success' :
                                         item.status === 'Hold' ? 'secondary' :
@@ -1175,7 +1220,7 @@ const LeadFlow = ({ data }) => {
                                         item.status === 'Bidding' ? 'Mail Sent' :
                                           item.status
                                     }
-                                  </Badge>
+                                  </Badge> */}
                                 </div>}
                             </div>
                           )}
@@ -1329,7 +1374,7 @@ const LeadFlow = ({ data }) => {
                     >
                       <HiOutlineDocumentReport className="me-2" size={18} /> Lead Reports
                     </Button> */}
-                  <Button
+                  {/* <Button
                     variant='primary'
                     // active={activeTab === 'reports'}
                     // onClick={() => navigate("/admin/AddProjectList")}
@@ -1337,7 +1382,7 @@ const LeadFlow = ({ data }) => {
                     className="d-flex align-items-center"
                   >
                     Create Proposal
-                  </Button>
+                  </Button> */}
                   <Button
                     variant='primary'
                     // active={activeTab === 'reports'}
@@ -1345,6 +1390,8 @@ const LeadFlow = ({ data }) => {
                     onClick={() => navigate("/admin/AddProjectList")}
                     className="d-flex align-items-center"
                   >
+                    {/* Create Project */}
+                    {/* Create Proposal */}
                     Create Project
                   </Button>
                   {/* </ButtonGroup> */}
@@ -1355,7 +1402,7 @@ const LeadFlow = ({ data }) => {
 
             {/* Project Status Tabs */}
             <div className="project-tabs mb-4">
-              <ul className="nav nav-tabs d-none d-md-flex">
+              {/* <ul className="nav nav-tabs d-none d-md-flex">
                 {tabs.map((tab) => (
                   <li className="nav-item" key={tab.value}>
                     <button
@@ -1367,7 +1414,7 @@ const LeadFlow = ({ data }) => {
                     </button>
                   </li>
                 ))}
-              </ul>
+              </ul> */}
 
 
 

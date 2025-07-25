@@ -19,9 +19,10 @@ import {
   FaHistory,
   FaUsers,
   FaUserCircle,
-  FaSitemap
+  FaSitemap,
+  FaBox
 } from "react-icons/fa";
-import { FaUsersLine } from "react-icons/fa6";
+import { FaPerson, FaPersonCirclePlus, FaUsersLine } from "react-icons/fa6";
 import { FaDiagramProject } from "react-icons/fa6";
 import { FaRegBell } from "react-icons/fa";
 
@@ -123,7 +124,8 @@ export const adminMenuItems = [
   {
     title: "Dashboard",
     icon: <FaHome className="menu-icon" />,
-    path: "/admin/dashboard"
+    path: "/admin/dashboard",
+    permissionKey: "dashboard",
   },
   {
     title: "Proposal",
@@ -154,13 +156,18 @@ export const adminMenuItems = [
   {
     title: "Tasks",
     icon: <FaIndustry className="menu-icon" />,
-    // permissionKey: "tasks",
+    permissionKey: "tasks",
     submenu: [
       { title: "View all Task", path: "/admin/newJobsList", permissionKey: "assignJob" },
       { title: "In Progress", path: "/admin/inProgress", permissionKey: "inProgress" },
       { title: "Completed", path: "/admin/completedJobs", permissionKey: "completed" },
     ],
   },
+  // {
+  //   title: "Time Logs",
+  //   icon: <FaClock className="menu-icon" />,
+  //   path: "/admin/TimeLogs",
+  // },
   // {
   //   title: "Cost Estimates",
   //   icon: <FaFileInvoiceDollar className="menu-icon" />,
@@ -172,12 +179,27 @@ export const adminMenuItems = [
   //   path: "/admin/Invoicing_Billing",
   //   permissionKey: "invoiceAndBilling",
   // },
+  // {
+  //   title: "Products",
+  //   icon: <FaBox className="menu-icon" />,
+  //   path: "/admin/products",
+  // },
+  // {
+  //   title: "MyOrders",
+  //   icon: <FaShoppingCart className="menu-icon" />,
+  //   path: "/admin/myorders",
+  // },
   {
     title: "Client / Supplier",
     icon: <FaUsersCog className="menu-icon" />,
     path: "/admin/clientManagement",
     permissionKey: "client",
   },
+  // {
+  //   title: "SubClient",
+  //   icon: <FaPersonCirclePlus className="menu-icon" />,
+  //   path: "/admin/subClientManagement"
+  // },
   // {
   //   title: "Reports & Analytics",
   //   icon: <FaChartLine className="menu-icon" />,

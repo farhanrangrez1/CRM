@@ -62,26 +62,66 @@ const ProtectedRoute = ({ children }) => {
   const [isAuthorized, setIsAuthorized] = useState(null); // NEW: for role-based access
 
   useEffect(() => {
-    const checkAuth = async () => {
-      const myToken = localStorage.getItem('encode');
-      const iv = localStorage.getItem('iv');
+    // const checkAuth = async () => {
+    //   const myToken = localStorage.getItem('encode');
+    //   const iv = localStorage.getItem('iv');
 
-      if (myToken && iv) {
-        const decryptTokens = await decryptToken(myToken, iv);
-        const parsedToken = JSON.parse(decryptTokens);
+    //   if (myToken || iv) {
+    //     const decryptTokens = await decryptToken(myToken, iv);
+    //     const parsedToken = JSON.parse(decryptTokens);
+
+    //     if (parsedToken && parsedToken.startsWith("ey")) {
+    //       setIsAuthenticated(true);
+
+    //       // Role-based route check
+    //       if (
+    //         (userRole === "admin" && pathname.startsWith("/admin")) ||
+    //         (userRole === "employee" && pathname.startsWith("/employee"))||
+    //         (userRole === "client" && pathname.startsWith("/client"))
+    //       ) {
+    //         setIsAuthorized(true);
+    //       } else {
+    //         setIsAuthorized(false); // Role is not allowed to access this route
+    //       }
+    //     } else {
+    //       setIsAuthenticated(false);
+    //     }
+    //   } else {
+    //     setIsAuthenticated(false);
+    //   }
+    // };
+    
+    
+    const checkAuth = async () => {
+      const myToken = localStorage.getItem("encode");
+
+      if (myToken) {
+        let parsedToken = myToken;
+
+        // If token is encrypted, decrypt it (optional)
+        if (!myToken.startsWith("ey")) {
+          try {
+            const decryptTokens = await decryptToken(myToken);
+            parsedToken = JSON.parse(decryptTokens);
+          } catch (e) {
+            console.error("Decryption failed:", e);
+            setIsAuthenticated(false);
+            return;
+          }
+        }
 
         if (parsedToken && parsedToken.startsWith("ey")) {
           setIsAuthenticated(true);
 
-          // Role-based route check
+          // Role-based access logic
           if (
             (userRole === "admin" && pathname.startsWith("/admin")) ||
-            (userRole === "employee" && pathname.startsWith("/employee"))||
-            (userRole === "client" && pathname.startsWith("/client"))
+            (userRole === "employee" && pathname.startsWith("/employee")) ||
+            (userRole === "client" && pathname.startsWith("/client") || pathname.startsWith("/admin"))
           ) {
             setIsAuthorized(true);
           } else {
-            setIsAuthorized(false); // Role is not allowed to access this route
+            setIsAuthorized(false);
           }
         } else {
           setIsAuthenticated(false);
@@ -90,6 +130,8 @@ const ProtectedRoute = ({ children }) => {
         setIsAuthenticated(false);
       }
     };
+
+
 
     checkAuth();
   }, [pathname, userRole]);

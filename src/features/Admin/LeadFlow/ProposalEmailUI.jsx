@@ -368,6 +368,7 @@ import { updateProject } from "../../../redux/slices/ProjectsSlice";
 import { ThreeDots } from 'react-loader-spinner';
 import './proposalEmail.css';
 import { useLocation, useNavigate } from "react-router-dom";
+import { updateDocumentRecord, updateDocumentRecordByProposal } from "../../../redux/slices/documentSlice";
 
 const ProposalEmailUI = ({ setShowAddInvoice }) => {
   const proposalRef = useRef();
@@ -384,8 +385,18 @@ const ProposalEmailUI = ({ setShowAddInvoice }) => {
   useEffect(() => {
     dispatch(fetchClient());
   }, [dispatch]);
+  const [items, setItems] = useState([]);
 
   const projectId = localStorage.getItem("proposalId");
+
+  const [invoice, setInvoice] = useState(null);
+  // const invoice = location.state?.invoice;
+  useEffect(() => {
+    const storedInvoice = localStorage.getItem("invoice");
+    if (storedInvoice) {
+      setInvoice(JSON.parse(storedInvoice));
+    }
+  }, []);
 
   useEffect(() => {
     const storedSignature = localStorage.getItem("SignatureData");
@@ -423,12 +434,30 @@ const ProposalEmailUI = ({ setShowAddInvoice }) => {
     }
   }, [signatureData, Clients]);
 
-  const getUnmatchedLineItems = () => {
-    // Assuming original items are stored in localStorage as "lineItems"
-    const existingLineItems = JSON.parse(localStorage.getItem("lineItems") || "[]");
+  // const getUnmatchedLineItems = () => {
+  //   // Assuming original items are stored in localStorage as "lineItems"
+  //   const existingLineItems = JSON.parse(localStorage.getItem("lineItems") || "[]");
 
-    return existingLineItems;
+  //   return existingLineItems;
+  // };
+
+
+
+  const getUnmatchedLineItems = () => {
+    const existingLineItems = JSON.parse(localStorage.getItem("lineItems") || "[]");
+    return existingLineItems.map(item => ({
+      ...item,
+      status: "approved"
+    }));
   };
+
+  const [subClients, setSubClients] = useState([]);
+
+  useEffect(() => {
+    axios.get(`${apiUrl}/subClient`) // 🔁 Update this URL if needed
+      .then(res => setSubClients(res.data.data))
+      .catch(err => toast.error("Failed to fetch subclients"));
+  }, []);
 
 
   useEffect(() => {
@@ -449,7 +478,7 @@ const ProposalEmailUI = ({ setShowAddInvoice }) => {
       pdf.addImage(imgData, "PNG", 0, 0, pdfWidth, pdfHeight);
 
       const blob = pdf.output("blob");
-      const file = new File([blob], "proposal.pdf", { type: "application/pdf" });
+      const file = new File([blob], "changeOrder.pdf", { type: "application/pdf" });
 
       setSelectedFile({
         name: file.name,
@@ -489,12 +518,79 @@ const ProposalEmailUI = ({ setShowAddInvoice }) => {
           headers: { "Content-Type": "multipart/form-data" },
         }
       );
+
+
+      if (signatureData?.status == "Lead") {
+        await dispatch(
+          updateProject({
+            id: localStorage.getItem("proposalId"),
+            payload: {
+              // status: "Bidding",
+              status: "Signature",
+              lineItems: getUnmatchedLineItems()
+            },
+          })
+        );
+      }
+
+      const deduplicateByDescription = (items) => {
+        const map = new Map();
+
+        for (const item of items) {
+          const key = item.description?.toLowerCase();
+
+          if (!map.has(key)) {
+            map.set(key, item);
+          } else {
+            const existing = map.get(key);
+
+            // Keep the one with "approved" status
+            if (existing.status !== "approved" && item.status === "approved") {
+              map.set(key, item);
+            }
+          }
+        }
+
+        return Array.from(map.values());
+      };
+
+
+
+      const existingLineItems = (signatureData?.line_items || []).map(item => ({
+        ...item,
+        quantity: item.quantity || item.qty || 0,
+        amount_paid: item.amount_paid || 0,
+        amount_due: item.amount_due || item.amount || 0,
+        status: item.status || "pending",
+        is_paid: item.is_paid || "false",
+        isNew: false
+      }));
+
+      const newLineItems = getUnmatchedLineItems().map(item => ({
+        ...item,
+        amount_paid: item.amount_paid || 0,
+        amount_due: item.amount_due || item.amount || 0,
+        status: "approved",
+        isNew: false
+      }));
+
+      const allLineItems = deduplicateByDescription([
+        ...existingLineItems,
+        ...newLineItems
+      ]);
+
       await dispatch(
-        updateProject({
+        updateDocumentRecordByProposal({
           id: localStorage.getItem("proposalId"),
-          payload: { status: "Bidding" },
+          data: {
+            line_items: allLineItems,
+            start_date: signatureData?.start_date,
+            end_date: signatureData?.end_date,
+            client_id: invoice?.clientId?._id
+          },
         })
       );
+
       toast.success("Email sent successfully!");
       localStorage.removeItem("lineItems");
       if (location.pathname === "/admin/AddCostEstimates") {
@@ -565,7 +661,7 @@ const ProposalEmailUI = ({ setShowAddInvoice }) => {
                 <label className="form-label">Attachments</label>
                 {selectedFile && (
                   <div className="d-flex justify-content-between align-items-center border p-2 rounded">
-                    <span className="text-primary">📎 <a href={pdfUrl} download="proposal.pdf" className=" mb-3">
+                    <span className="text-primary">📎 <a href={pdfUrl} download="changeOrder.pdf" className=" mb-3">
                       {selectedFile.name}
                     </a></span>
                     <small className="text-muted">{selectedFile.size}</small>
@@ -616,7 +712,7 @@ const ProposalEmailUI = ({ setShowAddInvoice }) => {
                 backgroundColor: "#fff",
               }}
             >
-              <h5 className="text-center fw-bold border-bottom pb-2">PROPOSAL</h5>
+              <h5 className="text-center fw-bold border-bottom pb-2">Change Order</h5>
               <div className="row mb-3">
                 <div className="col-6"><strong>PROJECT: </strong>
                   {client?.contactPersons?.[0]?.jobTitle}
@@ -668,12 +764,19 @@ const ProposalEmailUI = ({ setShowAddInvoice }) => {
                 <table className="table table-bordered mt-3">
                   <tbody>
                     {getUnmatchedLineItems().map((item, index) => {
+                      const matchedSubClient = subClients?.find(
+                        (sc) => sc?._id?.toString() == item?.subClientId?.toString()
+                      );
                       const lineAmount = item.quantity * item.rate;
                       return (
                         <tr key={index}>
                           <td>{index + 1}.</td>
+                          {/* <td>
+                            {matchedSubClient?.subClientName || '-'}
+                          </td> */}
                           <td>{item.description}</td>
-                          <td className="text-end">${lineAmount.toFixed(2)}</td>
+                          <td className="text-end">${item?.amount_paid?.toFixed(2) || 0}</td>
+                          <td className="text-end">${item?.amount_due?.toFixed(2)}</td>
                         </tr>
                       );
                     })}

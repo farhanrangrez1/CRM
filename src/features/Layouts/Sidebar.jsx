@@ -336,38 +336,6 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
   const navigate = useNavigate();
   const location = useLocation();
 
-
-  // const getFilteredMenuItems = (menuList) => {
-  //   return menuList
-  //     .map((item) => {
-  //       // Check if the item has a permissionKey
-  //       const hasPermissionKey = item.permissionKey ? hasPermission(item.permissionKey, "view") : true;
-  //       console.log(`Checking item: ${item.title}, has permission: ${hasPermissionKey}`);
-
-  //       let filteredSubmenu = null;
-  //       if (item.submenu) {
-  //         // Ensure submenu items have permission keys if required
-  //         const submenuItems = item.submenu.filter(sub => {
-  //           const hasSubPermission = sub.permissionKey ? hasPermission(sub.permissionKey, "view") : true;
-  //           console.log(`Checking submenu item: ${sub.title}, has permission: ${hasSubPermission}`);
-  //           return hasSubPermission; // Only include submenu items with permission
-  //         });
-  //         filteredSubmenu = submenuItems.length > 0 ? submenuItems : null; // Show submenu if there are visible items
-  //       }
-
-  //       // Determine if the item should be visible based on permissions
-  //       const isVisible = hasPermissionKey || (filteredSubmenu && filteredSubmenu.length > 0);
-  //       console.log(`Item: ${item.title}, visible: ${isVisible}`);
-
-  //       return {
-  //         ...item,
-  //         submenu: filteredSubmenu,
-  //         visible: isVisible,
-  //       };
-  //     })
-  //     .filter(item => item.visible); // Only return items that are visible
-  // };
-
   const getFilteredMenuItems = (menuList) => {
     return menuList
       .map((item) => {
@@ -415,37 +383,18 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
 
 
 
-  // const menuItems =
-  //   roleData === "admin"
-  //     ? getFilteredMenuItems(adminMenuItems)
-  //     : roleData === "employee"
-  //       ? getFilteredMenuItems(employeeMenuItems)
-  //       : roleData === "client"
-  //         ? getFilteredMenuItems(clientMenuItems)
-  //         : [];
-  // const menuItems = useMemo(() => {
-  //   if (roleData === "admin") return getFilteredMenuItems(adminMenuItems);
-  //   if (roleData === "employee") return getFilteredMenuItems(employeeMenuItems);
-  //   if (roleData === "client") return getFilteredMenuItems(clientMenuItems);
-  //   return [];
-  // }, [roleData]);
   const menuItems = useMemo(() => {
     if (!UserSingle || !roleData) return [];
 
     if (roleData === "admin") {
-      // Clone adminMenuItems and conditionally filter Dashboard
       const filteredAdminItems = adminMenuItems.filter(item => {
-        // Only include Dashboard if isAdmin is true
-        if (item.title === "Dashboard") {
-          return UserSingle?.isAdmin === true;
-        }
         return true;
       });
       return getFilteredMenuItems(filteredAdminItems);
     }
 
-    if (roleData === "employee") return getFilteredMenuItems(employeeMenuItems);
-    if (roleData === "client") return getFilteredMenuItems(clientMenuItems);
+    // if (roleData === "employee") return getFilteredMenuItems(employeeMenuItems);
+    // if (roleData === "client") return getFilteredMenuItems(clientMenuItems);
     return [];
   }, [roleData, UserSingle]);
 

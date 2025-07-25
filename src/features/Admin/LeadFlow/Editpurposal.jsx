@@ -24,8 +24,9 @@ import { Link } from "react-bootstrap-icons";
 import PurchaseOrder from "../ProjectList/ProjectTabs/PurchaseOrder";
 import FinanceTabEditPage from "./FinanceTabEditPage";
 import ProjectJobsTab from "../ProjectList/ProjectTabs/ProjectJobsTab";
-import { apiUrl } from "../../../redux/utils/config";
+import { apiNetaUrl, apiUrl } from "../../../redux/utils/config";
 import { fetchClientsById } from "../../../redux/slices/ClientSlice";
+import { toast } from "react-toastify";
 
 const Editpurposal = () => {
   const [manager, setManager] = useState(null);
@@ -170,7 +171,7 @@ const Editpurposal = () => {
 
     try {
       const response = await axios.post(
-        'https://netaai-crm-backend-production-c306.up.railway.app/api/job_planning',
+        `${apiNetaUrl}/job_planning`,
         payload
       );
 
@@ -300,7 +301,7 @@ const Editpurposal = () => {
   const fetchNotes = async () => {
     setLoadingNotes(true);
     try {
-      const res = await fetch("https://netaai-crm-backend-production-c306.up.railway.app/api/notes");
+      const res = await fetch(`${apiNetaUrl}/notes`);
       const data = await res.json();
       const allNotes = data?.data || [];
       const filteredNotes = allNotes.filter(note => note.project_id === proposalId);
@@ -317,7 +318,7 @@ const Editpurposal = () => {
     if (!newNote.trim()) return;
 
     try {
-      const res = await fetch("https://netaai-crm-backend-production-c306.up.railway.app/api/notes", {
+      const res = await fetch(`${apiNetaUrl}/notes`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -370,7 +371,7 @@ const Editpurposal = () => {
 
     if (result.isConfirmed) {
       try {
-        const res = await fetch(`https://netaai-crm-backend-production-c306.up.railway.app/api/notes/${noteId}`, {
+        const res = await fetch(`${apiNetaUrl}/notes/${noteId}`, {
           method: "DELETE",
         });
 
@@ -392,7 +393,7 @@ const Editpurposal = () => {
   useEffect(() => {
     const fetchJobs = async () => {
       try {
-        const res = await fetch(`https://neta-crmmongo-backend-production.up.railway.app/api/jobs/${invoice?._id}`);
+        const res = await fetch(`${apiUrl}/jobs/${invoice?._id}`);
         const data = await res.json();
         setJobs(data?.jobs || []);
       } catch (error) {
@@ -448,6 +449,10 @@ const Editpurposal = () => {
     navigate(`/admin/AddJobTracker/${job._id}`, { state: { job } });
   };
 
+  const handleViewTask = (job) => {
+    navigate(`/admin/ViewJobTracker/${job._id}`, { state: { job } });
+  };
+
   const JobDetails = (job) => {
     navigate(`/admin/OvervieJobsTracker`, { state: { job } });
   };
@@ -459,6 +464,15 @@ const Editpurposal = () => {
     }
     fetchemaildata();
   }, [])
+
+  const [subClients, setSubClients] = useState([]);
+
+  useEffect(() => {
+    axios.get(`${apiUrl}/subClient`) // 🔁 Update this URL if needed
+      .then(res => setSubClients(res.data.data))
+      .catch(err => toast.error("Failed to fetch subclients"));
+  }, []);
+
 
   const renderTabContent = () => {
     switch (activeTab) {
@@ -508,6 +522,44 @@ const Editpurposal = () => {
               </div>
             </div>
 
+            {/* <div className="align-items-center mb-3">
+              <h5 className="mb-3 fw-bold">Sub Client Details</h5>
+              <div>
+                {subClients && subClients?.length > 0 ? (
+                  subClients
+                    ?.filter((item) => item?.clientId?._id === selectedClient?._id)
+                    ?.map((subClient) => {
+                      // Total amount_paid for this subClient
+                      const relatedItems = items?.filter((item) => item?.subClientId === subClient?._id) || [];
+
+                      // Calculate totals
+                      const totalPaid = relatedItems.reduce((acc, item) => acc + (item.amount_paid || 0), 0);
+                      const totalDue = relatedItems.reduce((acc, item) => acc + (item.amount_due || 0), 0);
+
+                      return (
+                        <div key={subClient._id} className="mb-2">
+                          <div className="row">
+                            <div className="col-md-4">
+                              <p className="mb-1 text-muted">Sub Client Name</p>
+                              <p>{subClient?.subClientName}</p>
+                            </div>
+                            <div className="col-md-4">
+                              <p className="mb-1 text-muted">Total Paid</p>
+                              <p>{totalPaid}</p>
+                            </div>
+                            <div className="col-md-4">
+                              <p className="mb-1 text-muted">Total Due</p>
+                              <p>{totalDue}</p>
+                            </div>
+                          </div>
+                        </div>
+                      );
+                    })
+                ) : (
+                  <p className="mb-1 text-muted">No Sub Client Name</p>
+                )}
+              </div>
+            </div> */}
 
             <div>
               {/* <h6 className="fw-semibold mb-3">Line Items</h6>
@@ -572,7 +624,7 @@ const Editpurposal = () => {
             </div>
 
             {/* 📌 Notes Section */}
-            <div className="col-12 mt-4">
+            {/* <div div className="col-12 mt-4" >
               <div className="d-flex justify-content-between pb-2 align-item-center">
                 <h6 className="fw-bold mb-3">Notes</h6>
                 <button className="btn btn-primary mt-2" onClick={handleAddNote}>
@@ -582,7 +634,46 @@ const Editpurposal = () => {
 
               <div className="mb-3">
                 <textarea
-                  rows="3"
+                  rows="7"
+                  className="form-control"
+                  placeholder="Add a new note..."
+                  value={newNote}
+                  onChange={(e) => setNewNote(e.target.value)}
+                />
+              </div>
+
+              {
+                loadingNotes ? (
+                  <p> Loading notes...</p>
+                ) : notes?.length === 0 ? (
+                  <p className="text-muted">No notes available.</p>
+                ) : (
+                  <ul className="list-group">
+                    {notes?.map((note, index) => (
+                      <li key={index} className="list-group-item d-flex justify-content-between">
+                        <strong>{getUserNameById(note.name)}:</strong>
+                        {note.note}
+                        <div className="col-md-1 text-end">
+                          <button type="button" className="btn btn-link text-danger p-0" onClick={() => handleDeleteNote(note?.id)}>
+                            remove
+                          </button>
+                        </div>
+                      </li>
+                    ))}
+                  </ul>
+                )}
+            </div> */}
+            <div className="col-12 mt-4">
+              <div className="d-flex justify-content-between pb-2 align-items-center">
+                <h6 className="fw-bold mb-3">Notes</h6>
+                <button className="btn btn-primary mt-2" onClick={handleAddNote}>
+                  Add Note
+                </button>
+              </div>
+
+              <div className="mb-3">
+                <textarea
+                  rows="7"
                   className="form-control"
                   placeholder="Add a new note..."
                   value={newNote}
@@ -596,20 +687,31 @@ const Editpurposal = () => {
                 <p className="text-muted">No notes available.</p>
               ) : (
                 <ul className="list-group">
-                  {notes?.map((note, index) => (
-                    <li key={index} className="list-group-item d-flex justify-content-between">
-                      <strong>{getUserNameById(note.name)}:</strong>
-                      {note.note}
-                      <div className="col-md-1 text-end">
-                        <button type="button" className="btn btn-link text-danger p-0" onClick={() => handleDeleteNote(note?.id)}>
+                  {notes.map((note, index) => (
+                    <li key={index} className="list-group-item">
+                      <div className="d-flex justify-content-between">
+                        <strong>{getUserNameById(note.name)}:</strong>
+                        <button
+                          type="button"
+                          className="btn btn-link text-danger p-0"
+                          onClick={() => handleDeleteNote(note?.id)}
+                        >
                           remove
                         </button>
                       </div>
+                      <textarea
+                        className="form-control mt-2"
+                        rows="7"
+                        value={note.note}
+                        readOnly
+                      />
                     </li>
                   ))}
                 </ul>
               )}
             </div>
+
+
 
             {/* 📌 Tasks Section */}
             <div className="col-12 mt-4">
@@ -640,7 +742,7 @@ const Editpurposal = () => {
                     <tbody>
                       {jobs?.slice().reverse().map((job) => (
                         <tr key={job?._id}>
-                          <td>
+                          <td onClick={() => handleViewTask(job)} style={{ cursor: 'pointer' }}>
                             <span style={{ textDecoration: "underline" }}>{job?.JobNo || "N/A"}</span>
                           </td>
                           <td>{job.projectId?.[0]?.projectName || "N/A"}</td>
@@ -795,14 +897,14 @@ const Editpurposal = () => {
           </>
         );
 
-      case "Create Proposal":
+      case "Proposals":
         return (
           <div className="container mt-4 mb-5">
             {/* Main Page: AddInvoice */}
             {showAddInvoice && (
               <AddInvoice onInvoiceComplete={() => {
                 setShowAddInvoice(false);
-                setActiveTab("Finance");
+                // setActiveTab("Finance");
               }} />
             )}
 
@@ -1149,16 +1251,17 @@ const Editpurposal = () => {
         <ul className="nav nav-tabs wwd-tabs mb-4">
           {[
             "Summary",
-            "Job Costs",
+            // "Job Costs",
             // stage === "lead" ? "Client Proposal" : "Draft Proposal",
             // "Contract & Change Orders",
-            !existingDocId ? "Create Proposal" : "Contract & Change Orders",
-            "Documents",
+            // !existingDocId ? "Create Proposal" : "Contract & Change Orders",
+            "Proposals",
+            // "Documents",
             "Daily Logs",
             // "Activity",
             // "Reports",
-            "Tasks",
-            "Finance"
+            // "Tasks",
+            // "Finance"
           ].map((tab, i) => (
             <li className="nav-item" key={i}>
               <button

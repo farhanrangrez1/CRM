@@ -249,6 +249,7 @@ const Login = () => {
   const [formData, setFormData] = useState({
     email: "",
     password: "",
+    userType: ""
   });
 
   const [loading, setLoading] = useState(false);
@@ -260,78 +261,155 @@ const Login = () => {
     });
   };
 
-  // const handleLogin = async (e) => {
-  //   e.preventDefault();
-  //   const { email, password } = formData;
-
-  //   try {
-  //     setLoading(true);
-  //     const res = await axios.post("https://xt2cpwt7-8000.inc1.devtunnels.ms/api/user/login", { email, password });
-  //     console.log("API Response:", res.data);
-
-  //     const { role, token,user } = res.data.user;
-  //     // if (!role) {
-  //     //   alert("Role is undefined in the response.");
-  //     //   return;
-  //     // }
-  //     localStorage.setItem("authToken", token);
-  //     localStorage.setItem("userRole", role);
-  //        localStorage.setItem("user", JSON.stringify(user));
-  //     toast.success("Project created successfully!");
-  //     if (role === "admin") {
-  //       navigate("/admin/dashboard");
-  //     } else if (role === "productionManager") {
-  //       navigate("/production/dashboard");
-  //     } else if (role === "employee") {
-  //       navigate("/employee/tasks");
-  //     } else if (role === "client") {
-  //       navigate("/client/overview");
-  //     } else {
-  //       navigate("/dashboard");
-  //     }
-  //   } catch (error) {
-  //     toast.error(res.data.message || "Error Login");
-  //   } finally {
-  //     setLoading(false);
-  //   }
-  // };
-
 
   const handleLogin = async (e) => {
     e.preventDefault();
-    const { email, password } = formData;
+    // const { email, password } = formData;
+    const { email, password, userType } = formData;
 
     try {
       setLoading(true);
-      const res = await axios.post(`${apiUrl}/user/login`, { email, password });
+      // const res = await axios.post(`${apiUrl}/user/login`, { email, password });
       // console.log("API Response:", res.data);
 
       // localStorage.setItem("authResponse", JSON.stringify(res.data));
 
-      const { role, token, permissions } = res.data.user;
-      localStorage.setItem("encode", res.data.token.token);
-      localStorage.setItem("iv", res.data.token.iv);
-      localStorage.setItem("userRole", role);
-      localStorage.setItem("userRole", "admin");
-      localStorage.setItem("permissions", JSON.stringify(permissions));
-      localStorage.setItem("userId", permissions?.userId);
+      let res;
+      if (userType == "client") {
+        res = await axios.post(`${apiUrl}/client/clientLogin`, { email, password });
+
+        console.log(res);
 
 
-      toast.success("Logged in successfully!");
+        const { clientData, token } = res.data;
+        const permissions = {
+          "proposal": {
+            "view": "true",
+            "edit": "true",
+            "create": "true",
+            "delete": "true"
+          },
+          "projectsAndJobs": {
+            "view": "true",
+            "edit": "true",
+            "create": "true",
+            "delete": "true"
+          },
+          "tasks": {
+            "view": "false",
+            "edit": "false",
+            "create": "false",
+            "delete": "false"
+          },
+          "reports": {
+            "view": "true",
+            "edit": "true",
+            "create": "true",
+            "delete": "true"
+          },
+          "user": {
+            "view": "false",
+            "edit": "false",
+            "create": "false",
+            "delete": "false"
+          },
+          "client": {
+            "view": "false",
+            "edit": "false",
+            "create": "false",
+            "delete": "false"
+          },
+          "invoiceAndBilling": {
+            "view": "true",
+            "edit": "true",
+            "create": "true",
+            "delete": "true"
+          },
+          "dailylogs": {
+            "view": "true",
+            "edit": "true",
+            "create": "true",
+            "delete": "true"
+          },
+          "dashboard": {
+            "view": "true",
+            "edit": "true",
+            "create": "true",
+            "delete": "true"
+          },
+          "myorders": {
+            "view": "false",
+            "edit": "false",
+            "create": "false",
+            "delete": "false"
+          },
+          "products": {
+            "view": "false",
+            "edit": "false",
+            "create": "false",
+            "delete": "false"
+          },
+          "subclients": {
+            "view": "false",
+            "edit": "false",
+            "create": "false",
+            "delete": "false"
+          },
+          "timelogs": {
+            "view": "false",
+            "edit": "false",
+            "create": "false",
+            "delete": "false"
+          }
+        }
 
+        localStorage.setItem("encode", res?.data?.token);
+        localStorage.setItem("iv", res?.data?.token?.iv);
+        localStorage.setItem("userRole", "admin");
+        localStorage.setItem("userId", clientData?._id);
+        localStorage.setItem("clientId", clientData?._id);
+        localStorage.setItem("clientData", JSON.stringify(clientData));
+        localStorage.setItem("isAdmin", true);
+        localStorage.setItem("client", true);
+        localStorage.setItem("login_type", userType);
+        localStorage.setItem("permissions", JSON.stringify(permissions));
 
-      // Redirect based on role
-      if (role === "admin") {
+        toast.success("Logged in successfully!");
         navigate("/admin/dashboard");
-      } else if (role === "productionManager") {
-        navigate("/production/dashboard");
-      } else if (role === "employee") {
-        navigate("/employee/dashboard");
-      } else if (role === "client") {
-        navigate("/client/dashboard");
+
       } else {
-        navigate("/dashboard");
+        res = await axios.post(`${apiUrl}/user/login`, { email, password });
+
+        const { role, token, permissions } = res.data.user;
+        localStorage.setItem("encode", res.data.token.token);
+        localStorage.setItem("iv", res.data.token.iv);
+        // localStorage.setItem("userRole", role);
+        localStorage.setItem("login_type", userType);
+        localStorage.setItem("userRole", "admin");
+        localStorage.setItem("permissions", JSON.stringify(permissions));
+        localStorage.setItem("userId", permissions?.userId);
+        localStorage.setItem("isAdmin", res?.data?.user?.isAdmin);
+
+
+        toast.success("Logged in successfully!");
+
+
+        // Redirect based on role
+        if (role === "admin") {
+          navigate("/admin/dashboard");
+        } else if (role === "productionManager") {
+          navigate("/production/dashboard");
+        } else if (role === "employee") {
+          navigate("/employee/dashboard");
+        } else if (role === "client") {
+          navigate("/client/dashboard");
+        } else {
+          navigate("/dashboard");
+        }
+
       }
+
+
     } catch (error) {
       toast.error("Error logging in. Please try again.");
     } finally {
@@ -372,6 +450,21 @@ const Login = () => {
 
             {/* Form */}
             <form onSubmit={handleLogin} style={{ width: "100%", maxWidth: "400px" }}>
+              <div className="form-floating mb-3">
+                <select
+                  name="userType"
+                  className="form-select"
+                  id="userType"
+                  value={formData.userType}
+                  onChange={handleChange}
+                  required
+                >
+                  <option value="user">User</option>
+                  <option value="client">Client</option>
+                </select>
+                <label htmlFor="userType">Login as</label>
+              </div>
+
               <div className="form-floating mb-3">
                 <input
                   type="email"
@@ -445,9 +538,6 @@ const Login = () => {
         </div>
       </div>
     </div>
-
-
-
   );
 };
 

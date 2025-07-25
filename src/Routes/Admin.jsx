@@ -72,6 +72,14 @@ import DProjectInBidding from "../features/Admin/Dashbord/DProjectInBidding.jsx"
 import DProjectInSignature from "../features/Admin/Dashbord/DProjectInSignature.jsx";
 import ProjectJobsTab from "../features/Admin/ProjectList/ProjectTabs/ProjectJobsTab.jsx";
 import ProjectViewEditpurposal from "../features/Admin/ProjectList/ProjectTabs/ProjectViewEditpurposal.jsx";
+import SubClientManagement from "../features/Admin/SubClientManagement/SubClientManagement.jsx";
+import AddSubClientManagement from "../features/Admin/SubClientManagement/AddSubClientManagement.jsx";
+import ViewdetailsSubClientManagement from "../features/Admin/SubClientManagement/ViewdetailsSubClientManagement.jsx";
+import ElectricalProducts from "../features/Admin/ElectricalProducts/ElectricalProducts.jsx";
+import ProductPage from "../features/Admin/ElectricalProducts/ProductPage.jsx";
+import MyOrders from "../features/Admin/MyOrders/MyOrders.jsx";
+import JobTrackerView from "../features/Admin/JobTracker/JobTrackerView.jsx";
+import ClientDashbord from "../features/Client/Dashbord/Dashbord.jsx";
 
 function Admin() {
   const [isSidebarOpen, setSidebarOpen] = useState(window.innerWidth >= 768);
@@ -83,6 +91,8 @@ function Admin() {
   const hideLayout =
     location.pathname === "/" || location.pathname.toLowerCase() === "/signup";
 
+  const isClient = localStorage.getItem("client") == "true";
+
   return (
     <div className="Main-App">
 
@@ -93,14 +103,21 @@ function Admin() {
         )}
         <div className="Main-App-Content">
           <Routes>
-            <Route
+            {isClient ? <Route
+              path="dashboard"
+              element={
+                <ProtectedRoute>
+                  <ClientDashbord />
+                </ProtectedRoute>
+              }
+            /> : <Route
               path="dashboard"
               element={
                 <ProtectedRoute>
                   <Dashbord />
                 </ProtectedRoute>
               }
-            />
+            />}
             <Route path="/DJobsInBidding" element={<ProtectedRoute><DProjectInBidding /></ProtectedRoute>} />
             <Route path="/DProjectInSignature" element={<ProtectedRoute><DProjectInSignature /></ProtectedRoute>} />
             {/* <Route path="/DJobsInProgress" element={<ProtectedRoute><DJobsInProgress /></ProtectedRoute>} /> */}
@@ -112,11 +129,23 @@ function Admin() {
             <Route path="/clientManagement" element={<ProtectedRoute><ClientManagement /></ProtectedRoute>} />
             <Route path="/AddClientManagement" element={<ProtectedRoute><AddClientManagement /></ProtectedRoute>} />
             <Route path="/ViewdetailsClientManagement" element={<ProtectedRoute><ViewdetailsClientManagement /></ProtectedRoute>} />
+
+
+            <Route path="/subClientManagement" element={<ProtectedRoute><SubClientManagement /></ProtectedRoute>} />
+            <Route path="/addSubClientManagement" element={<ProtectedRoute><AddSubClientManagement /></ProtectedRoute>} />
+            <Route path="/ViewdetailsSubClientManagement" element={<ProtectedRoute><ViewdetailsSubClientManagement /></ProtectedRoute>} />
+
+
+
             <Route path="/CostEstimates" element={<ProtectedRoute><CostEstimates /></ProtectedRoute>} />
             <Route path="/LeadFlow" element={<ProtectedRoute><LeadFlow /></ProtectedRoute>} />
+            <Route path="/products" element={<ProtectedRoute><ElectricalProducts /></ProtectedRoute>} />
+            <Route path="/productpage/:id" element={<ProtectedRoute><ProductPage /></ProtectedRoute>} />
+
             <Route path="/LeadFlow/Details" element={<ProtectedRoute><Editpurposal /></ProtectedRoute>} />
             <Route path="/Project/Details" element={<ProtectedRoute><ProjectViewEditpurposal /></ProtectedRoute>} />
             <Route path="/tasks" element={<ProtectedRoute><ProjectJobsTab /></ProtectedRoute>} />
+            <Route path="/myorders" element={<ProtectedRoute><MyOrders /></ProtectedRoute>} />
             {/* <Route path="/Project/Details" element={<ProtectedRoute><EditProject/></ProtectedRoute>} /> */}
 
             <Route path="/AddCostEstimates" element={<ProtectedRoute><AddCostEstimates /></ProtectedRoute>} />
@@ -133,6 +162,7 @@ function Admin() {
             <Route path="/UpdateProjectLis" element={<ProtectedRoute><UpdateProjectLis /></ProtectedRoute>} />
             <Route path="/jobTracker" element={<ProtectedRoute><JobTracker /></ProtectedRoute>} />
             <Route path="/AddJobTracker/:id" element={<ProtectedRoute><AddJobTracker /></ProtectedRoute>} />
+            <Route path="/ViewJobTracker/:id" element={<ProtectedRoute><JobTrackerView /></ProtectedRoute>} />
             <Route path="/OvervieJobsTracker" element={<ProtectedRoute><OvervieJobsTracker /></ProtectedRoute>} />
             <Route path="/updateJobTracker" element={<ProtectedRoute><UpdateJobTracker /></ProtectedRoute>} />
             <Route path="/AddJobAssignment" element={<ProtectedRoute><AddJobAssignment /></ProtectedRoute>} />
@@ -161,7 +191,34 @@ function Admin() {
             <Route path="/DesignerPanel" element={<ProtectedRoute><DesignerPanel /></ProtectedRoute>} />
             <Route path="/AddDesignerPanel" element={<ProtectedRoute><AddDesignerPanel /></ProtectedRoute>} />
             <Route path="/Settings" element={<ProtectedRoute><Settings /></ProtectedRoute>} />
-            <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
+
+
+            {/* 
+            {isClient ? <Route path="/profile" element={<ProtectedRoute><AddClientManagement /></ProtectedRoute>} />
+              : <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
+            } */}
+
+            {isClient ? (
+              <Route
+                path="/profile"
+                element={
+                  // <ProtectedRoute>
+                  <AddClientManagement />
+                  // </ProtectedRoute>
+                }
+              />
+            ) : (
+              <Route
+                path="/profile"
+                element={
+                  // <ProtectedRoute>
+                  <Profile />
+                  // </ProtectedRoute>
+                }
+              />
+            )}
+
+
             <Route path="/Extrahr" element={<ProtectedRoute><Extrahr /></ProtectedRoute>} />
             <Route path="/ChangePassword" element={<ProtectedRoute><ChangePassword /></ProtectedRoute>} />
             <Route path="/UpdateProfile" element={<ProtectedRoute><UpdateProfile /></ProtectedRoute>} />

@@ -1,8 +1,9 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import api from '../utils/axiosInstance.jsx';
+import { apiNetaUrl } from "../utils/config.js";
 
 
-const BASE_URL = "https://netaai-crm-backend-production-c306.up.railway.app/api/proposals";
+const BASE_URL = `${apiNetaUrl}/proposals`;
 
 // ✅ Create Proposal
 export const createProposal = createAsyncThunk(
@@ -47,7 +48,7 @@ export const updateProposalStatus = createAsyncThunk(
   "proposal/updateStatus",
   async ({ id, status }, { rejectWithValue }) => {
     try {
-      const response = await api.put(`${"https://netaai-crm-backend-production-c306.up.railway.app/api"}/status/${id}`, { status });
+      const response = await api.put(`${apiNetaUrl}/status/${id}`, { status });
       return response.data;
     } catch (err) {
       console.error("Failed to update proposal status:", err.response?.data || err.message);
@@ -61,7 +62,7 @@ export const fetchProposalById = createAsyncThunk(
   "proposal/fetchById",
   async (id, { rejectWithValue }) => {
     try {
-      const res = await api.get(`${"https://netaai-crm-backend-production-c306.up.railway.app/api"}/${id}`);
+      const res = await api.get(`${apiNetaUrl}/${id}`);
       return res.data;
     } catch (err) {
       return rejectWithValue(err.response?.data || err.message);
@@ -74,7 +75,7 @@ export const updateProposal = createAsyncThunk(
   "proposal/update",
   async ({ id, data }, { rejectWithValue }) => {
     try {
-      const res = await api.patch(`${"https://netaai-crm-backend-production-c306.up.railway.app/api"}/${id}`, data);
+      const res = await api.patch(`${apiNetaUrl}/${id}`, data);
       return res.data.data;
     } catch (err) {
       return rejectWithValue(err.response?.data || err.message);
@@ -87,7 +88,7 @@ export const deleteProposal = createAsyncThunk(
   "proposal/delete",
   async (id, { rejectWithValue }) => {
     try {
-      await api.delete(`${"https://netaai-crm-backend-production-c306.up.railway.app/api"}/${id}`);
+      await api.delete(`${apiNetaUrl}/${id}`);
       return id;
     } catch (err) {
       return rejectWithValue(err.response?.data || err.message);

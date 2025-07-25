@@ -17,7 +17,7 @@ import { fetchjobs } from '../../../redux/slices/JobsSlice';
 import { fetchProject } from '../../../redux/slices/ProjectsSlice';
 import { fetchCostEstimates } from '../../../redux/slices/costEstimatesSlice';
 import axios from 'axios';
-import { apiUrl } from '../../../redux/utils/config';
+import { apiNetaUrl, apiUrl } from '../../../redux/utils/config';
 import { fetchClient } from '../../../redux/slices/ClientSlice';
 
 ChartJS.register(ArcElement, Tooltip, Legend);
@@ -47,7 +47,7 @@ function Dashbord() {
   useEffect(() => {
     const fetchNetaData = async () => {
       try {
-        const response = await axios.get(`https://netaai-crm-backend-production-c306.up.railway.app/api/getRecentEntriess`);
+        const response = await axios.get(`${apiNetaUrl}/getRecentEntriess`);
         setNetaDashboardData(response.data.data); // Ensure you set the correct data
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -61,6 +61,13 @@ function Dashbord() {
   useEffect(() => {
     dispatch(fetchClient());
   }, [dispatch]);
+
+
+  const formatCurrency = (amount) =>
+    new Intl.NumberFormat("en-US", {
+      style: "currency",
+      currency: "USD",
+    }).format(amount);
 
 
   const [dashboardData, setDashboardData] = useState({});
@@ -252,7 +259,7 @@ function Dashbord() {
                 <FaMoneyBill style={{ color: "green" }} size={20} />
               </div>
               <div>
-                <h3 className="mb-0 fs-4">${dashboardData?.totalPaid}</h3>
+                <h3 className="mb-0 fs-4">{formatCurrency(dashboardData?.totalPaid)}</h3>
                 <small style={{ color: "green" }}>Total Paid Amount For All Projects</small>
               </div>
             </Card.Body>
@@ -266,7 +273,7 @@ function Dashbord() {
                 <FaProjectDiagram className="text-danger" size={24} />
               </div>
               <div>
-                <h3 className="mb-0 fs-4">${dashboardData?.totalDue}</h3>
+                <h3 className="mb-0 fs-4">{formatCurrency(dashboardData?.totalDue)}</h3>
                 <small className="text-danger">Total Due Amount For All Projects</small>
               </div>
             </Card.Body>

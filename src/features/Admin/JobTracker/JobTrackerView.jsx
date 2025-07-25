@@ -10,7 +10,7 @@ import { fetchProject } from '../../../redux/slices/ProjectsSlice';
 import { createjob, Project_job_Id, updatejob } from '../../../redux/slices/JobsSlice';
 import { fetchusers } from '../../../redux/slices/userSlice';
 
-function AddJobTracker() {
+function JobTrackerView() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   // Project name sho
@@ -175,7 +175,7 @@ function AddJobTracker() {
       <div className="container mt-5">
         <div className="card shadow-sm">
           <div className="card-body">
-            <h2 className="mb-4">{job?._id ? "Edit Task" : "Add Task"}</h2>
+            <h2 className="mb-4">{job?._id ? `View Task(${job?.JobNo})` : "Add Task"}</h2>
 
             <form className="row g-3" onSubmit={handleSubmit}>
               {/* Project Name */}
@@ -395,8 +395,9 @@ function AddJobTracker() {
                   className="form-select"
                   name="Status"
                   value={formData.Status}
-                  onChange={handleChange}
+                  // onChange={handleChange}
                   required
+                  readOnly
                 >
                   <option value="">Select</option>
                   <option value="Cancelled">Cancelled</option>
@@ -427,7 +428,8 @@ function AddJobTracker() {
                   className="form-select"
                   name="assign"
                   value={formData.assign}
-                  onChange={handleChange}
+                  // onChange={handleChange}
+                  readOnly
                 >
                   <option value="">Select</option>
                   {userAll?.data?.users
@@ -447,9 +449,9 @@ function AddJobTracker() {
                   className="form-select"
                   name="priority"
                   value={formData.priority}
-                  onChange={handleChange}
+                  // onChange={handleChange}
                   required
-
+                  readOnly
                 >
                   <option value="">Select</option>
                   <option value="low">Low</option>
@@ -465,6 +467,7 @@ function AddJobTracker() {
                   name="task"
                   rows={5}
                   value={formData.task}
+                  readOnly
                   onChange={(e) =>
                     setFormData((prev) => ({ ...prev, task: e.target.value }))
                   }
@@ -497,9 +500,9 @@ function AddJobTracker() {
               {/* Buttons */}
               <div className="col-12 d-flex justify-content-end gap-2 mt-4">
                 <button type="button" className="btn btn-outline-secondary" onClick={() => Cancel()}>Cancel</button>
-                <button type="submit" className="btn btn-dark">
+                {/* <button type="submit" className="btn btn-dark">
                   {id || job?._id ? "Save" : "Create Jobs"}
-                </button>
+                </button> */}
               </div>
 
             </form>
@@ -510,4 +513,4 @@ function AddJobTracker() {
   );
 }
 
-export default AddJobTracker;
+export default JobTrackerView;

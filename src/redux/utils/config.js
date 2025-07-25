@@ -10,6 +10,11 @@
 
 
 const BASE_URL = "https://neta-crmmongo-backend-production.up.railway.app/api";
+// const BASE_URL = "http://crm.bonbonteamapp.com/api";
 
 
 export const apiUrl = BASE_URL;
+export const apiInventoryUrl = 'https://inventory-backend-production-6cb7.up.railway.app/api';
+// export const apiInventoryUrl = 'http://bonbonteamapp.com/api';
+// export const apiNetaUrl = 'https://askneta.com/api';
+export const apiNetaUrl = 'https://netaai-crm-backend-production-c306.up.railway.app/api';

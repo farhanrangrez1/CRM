@@ -580,33 +580,68 @@ const ProjectView = ({ data }) => {
     };
 
     const ProposalWorkflowBoard = ({ onNavigate, selectedStatus }) => {
-        const reduxProposals = (project || []).map(item => {
-            return ({
-                id: item.id,
-                _id: item._id,
-                title: item.projectName,
-                description: item.description,
-                projectName: item.projectName,
-                address: item.projectAddress || "N/A",
-                projectAddress: item.projectAddress || "N/A",
-                client: item.clientId?.clientName,
-                clientId: item.clientId,
-                status: mapStatus(item.status),
-                projectPriority: item.projectPriority,
-                phases: item.phases || "N/A",
-                revenue: item.budgetAmount ? `AED ${item.budgetAmount}` : "N/A",
-                startDate: item.startDate,
-                endDate: item.endDate,
-                committedCost: "4220",
-                profitLoss: "N/A",
-                updated: item.updatedAt,
-                paid: item.paid,
-                due: item.due,
-                lineItems: item.lineItems
 
-            })
+
+        const loginType = localStorage.getItem("login_type");
+        const clientId = localStorage.getItem('clientId');
+        let reduxProposals;
+
+        if (loginType == "client") {
+            reduxProposals = (project || []).filter(item => item.electrical == "true" && item?.clientId?._id == clientId).map(item => {
+                return ({
+                    id: item.id,
+                    _id: item._id,
+                    title: item.projectName,
+                    description: item.description,
+                    projectName: item.projectName,
+                    address: item.projectAddress || "N/A",
+                    projectAddress: item.projectAddress || "N/A",
+                    client: item.clientId?.clientName,
+                    clientId: item.clientId,
+                    status: mapStatus(item.status),
+                    projectPriority: item.projectPriority,
+                    phases: item.phases || "N/A",
+                    revenue: item.budgetAmount ? `AED ${item.budgetAmount}` : "N/A",
+                    startDate: item.startDate,
+                    endDate: item.endDate,
+                    committedCost: "4220",
+                    profitLoss: "N/A",
+                    updated: item.updatedAt,
+                    paid: item.paid,
+                    due: item.due,
+                    lineItems: item.lineItems
+                })
+            }
+            );
+
+        } else {
+            reduxProposals = (project || []).filter(item => item.electrical == "true").map(item => {
+                return ({
+                    id: item.id,
+                    _id: item._id,
+                    title: item.projectName,
+                    description: item.description,
+                    projectName: item.projectName,
+                    address: item.projectAddress || "N/A",
+                    projectAddress: item.projectAddress || "N/A",
+                    client: item.clientId?.clientName,
+                    clientId: item.clientId,
+                    status: mapStatus(item.status),
+                    projectPriority: item.projectPriority,
+                    phases: item.phases || "N/A",
+                    revenue: item.budgetAmount ? `AED ${item.budgetAmount}` : "N/A",
+                    startDate: item.startDate,
+                    endDate: item.endDate,
+                    committedCost: "4220",
+                    profitLoss: "N/A",
+                    updated: item.updatedAt,
+                    paid: item.paid,
+                    due: item.due,
+                    lineItems: item.lineItems
+                })
+            }
+            );
         }
-        );
 
         function mapStatus(status) {
             const defaultMap = {
@@ -651,6 +686,12 @@ const ProjectView = ({ data }) => {
             acc[proposalId] = (acc[proposalId] || 0) + total;
             return acc;
         }, {});
+
+        const formatCurrency = (amount) =>
+            new Intl.NumberFormat("en-US", {
+                style: "currency",
+                currency: "USD",
+            }).format(amount);
 
 
 
@@ -720,27 +761,6 @@ const ProjectView = ({ data }) => {
             { id: 'photosOfJob', title: 'Photos of Job' },
         ];
 
-        // if (selectedStatus && selectedStatus !== 'All') {
-        //     const statusMap = {
-        //         'Pending Proposal Approval': 'pendingProposalApproval',
-        //         'Service Calls': 'serviceCalls',
-        //         'Pending Rough': 'pendingRough',
-        //         'UG Pipes': 'ugPipes',
-        //         'Meter Spot Requested': 'meterSpotRequested',
-        //         'Ready for Rough': 'readyForRough',
-        //         'Rough Started': 'roughStarted',
-        //         'Rough Finish': 'roughFinish',
-        //         'Pending Finish': 'pendingFinish',
-        //         'Finish Started': 'finishStarted',
-        //         'Finish Final Work': 'finishFinalWork',
-        //         'Done Final Payment': 'doneFinalPayment',
-        //         'Photos of Job': 'photosOfJob'
-        //     };
-        //     const selectedId = statusMap[selectedStatus];
-        //     if (selectedId) {
-        //         columns = [columns.find(c => c.id === selectedId), ...columns.filter(c => c.id !== selectedId)];
-        //     }
-        // }
         if (selectedStatus && selectedStatus !== 'All') {
             const statusMap = {
                 'Pending Proposal Approval': 'pendingProposalApproval',
@@ -905,15 +925,15 @@ const ProjectView = ({ data }) => {
                                                             Total: ${proposalTotalsMap[item._id] || 0}
                                                         </div> */}
                                                         <div className="fw-semibold text-success" style={{ fontSize: 15 }}>
-                                                            Total Paid: {item?.paid || 0}
+                                                            Total Paid: {formatCurrency(item?.paid) || 0}
                                                         </div>
                                                         <div className="fw-semibold text-danger" style={{ fontSize: 15 }}>
-                                                            Total Due: {item?.due || 0}
+                                                            Total Due: {formatCurrency(item?.due) || 0}
                                                         </div>
                                                         <div className="d-flex flex-wrap gap-2 align-items-center mb-1">
-                                                            <Badge bg={getStatusBadgeColor(item.status)} className={`me-1 ${getTextColor(item.status)}`}>
+                                                            {/* <Badge bg={getStatusBadgeColor(item.status)} className={`me-1 ${getTextColor(item.status)}`}>
                                                                 {item.status === 'Open' || item.status === 'Active Project' ? 'pendingProposalApproval' : item.status == "pendingProposalApproval" ? 'Active Project' : item.status}
-                                                            </Badge>
+                                                            </Badge> */}
                                                         </div>
                                                         {/* </div> */}
                                                     </div>

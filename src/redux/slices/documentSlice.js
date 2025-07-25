@@ -1,7 +1,8 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import api from "../utils/axiosInstance";
+import { apiNetaUrl } from "../utils/config";
 
-const BASE_URL = "https://netaai-crm-backend-production-c306.up.railway.app/api/documentsRecord";
+const BASE_URL = `${apiNetaUrl}/documentsRecord`;
 
 // ✅ Create Document Record
 export const createDocumentRecord = createAsyncThunk(
@@ -54,6 +55,34 @@ export const updateDocumentRecord = createAsyncThunk(
         }
     }
 );
+
+// ✅ Update Document Record
+export const updateDocumentRecordByProposal = createAsyncThunk(
+    "documentRecord/update",
+    async ({ id, data }, { rejectWithValue }) => {
+        try {
+            const res = await api.patch(`${BASE_URL}/updateDocumentByProposalId/${id}`, data);
+            return res.data;
+        } catch (err) {
+            return rejectWithValue(err.response?.data || err.message);
+        }
+    }
+);
+
+
+
+// // ✅ Update Document Record
+// export const updateDocumentRecord = createAsyncThunk(
+//     "documentRecord/update",
+//     async ({ id, data }, { rejectWithValue }) => {
+//         try {
+//             const res = await api.patch(`${BASE_URL}/${id}`, data);
+//             return res.data;
+//         } catch (err) {
+//             return rejectWithValue(err.response?.data || err.message);
+//         }
+//     }
+// );
 
 // ✅ Delete Document Record
 export const deleteDocumentRecord = createAsyncThunk(

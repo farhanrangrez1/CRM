@@ -3,10 +3,10 @@ import { FaSearch, FaCalendarAlt, FaPencilAlt, FaTrashAlt, FaPlus, FaFilter } fr
 import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { deleteTimeLogs, fetchTimeLogss, updateExtraHours } from '../../../redux/slices/TimeLogsSlice';
-import { Button, Form, Modal,Dropdown } from "react-bootstrap";
+import { Button, Form, Modal, Dropdown } from "react-bootstrap";
 import Swal from 'sweetalert2';
 import TimesheetWorklog from '../TimesheetWorklog/TimesheetWorklog';
-import { fetchTimesheetWorklogs } from '../../../redux/slices/TimesheetWorklogSlice';
+import { deleteTimesheetWorklog, fetchTimesheetWorklogs } from '../../../redux/slices/TimesheetWorklogSlice';
 
 function TimeLogs() {
   const [showAddModal, setShowAddModal] = useState(false);
@@ -96,7 +96,7 @@ function TimeLogs() {
   const filteredTimeLogs = (timesheetWorklog.TimesheetWorklogss || []).filter((log) => {
     // Split searchQuery by spaces, ignore empty terms
     const terms = searchQuery.trim().split(/\s+/).filter(Boolean);
-    const employeeName = log.employeeId?.[0] 
+    const employeeName = log.employeeId?.[0]
       ? `${log.employeeId[0].firstName} ${log.employeeId[0].lastName}`.toLowerCase()
       : '';
     const projectName = (log.projectId?.[0]?.projectName || '').toLowerCase();
@@ -129,8 +129,9 @@ function TimeLogs() {
     currentPage * itemsPerPage
   );
 
-  const handleEdit = (log) => {
-    navigate(`/admin/AddTimelog`, { state: { log } });
+  const handleEdit = (entry) => {
+    // navigate(`/admin/AddTimelog`, { state: { log } });
+    navigate(`/admin/AddTimesheetWorklog`, { state: { entry } });
   };
 
   const handleDelete = (_id) => {
@@ -144,10 +145,11 @@ function TimeLogs() {
       confirmButtonText: "Yes, delete it!",
     }).then((result) => {
       if (result.isConfirmed) {
-        dispatch(deleteTimeLogs(_id))
+        dispatch(deleteTimesheetWorklog(_id))
           .then(() => {
             Swal.fire("Deleted!", "The document has been deleted.", "success");
             dispatch(fetchTimeLogss());
+            dispatch(fetchTimesheetWorklogs())
           })
           .catch(() => {
             Swal.fire("Error!", "Something went wrong.", "error");
@@ -263,7 +265,7 @@ function TimeLogs() {
             />
           </div>
         </div>
-        <div className="col-md-4">
+        {/* <div className="col-md-4">
           <Dropdown>
             <Dropdown.Toggle variant="light" id="project-dropdown" className="w-100">
               {selectedProject}
@@ -272,7 +274,7 @@ function TimeLogs() {
               <Dropdown.Item onClick={() => setSelectedProject("All Projects")}>
                 All Projects
               </Dropdown.Item>
-              {[...new Set((timesheetWorklog.TimesheetWorklogss || []).map((log) => 
+              {[...new Set((timesheetWorklog.TimesheetWorklogss || []).map((log) =>
                 log.projectId?.[0]?.projectName || "N/A"
               ))].filter(name => name !== "N/A").map((projectName, index) => (
                 <Dropdown.Item key={index} onClick={() => setSelectedProject(projectName)}>
@@ -281,16 +283,16 @@ function TimeLogs() {
               ))}
             </Dropdown.Menu>
           </Dropdown>
-        </div>
+        </div> */}
       </div>
-      
+
       <div className="card shadow-sm">
         <div className="card-body p-0">
           <div className="table-responsive">
             <table className="table table-hover mb-0">
               <thead className="bg-light">
                 <tr>
-                  <th>
+                  {/* <th>
                     <input
                       type="checkbox"
                       onChange={(e) => {
@@ -306,7 +308,7 @@ function TimeLogs() {
                         paginatedTimeLogss?.every((log) => selectedJobs[log._id])
                       }
                     />
-                  </th>
+                  </th> */}
                   <th>JobID</th>
                   <th style={{ whiteSpace: 'nowrap' }}>Project Name</th>
                   <th style={{ whiteSpace: 'nowrap' }}>Employee Name</th>
@@ -316,7 +318,7 @@ function TimeLogs() {
                   <th>Hours</th>
                   <th style={{ whiteSpace: 'nowrap' }}>Task Description</th>
                   <th>Status</th>
-                  {/* <th className="text-end">Actions</th> */}
+                  <th className="text-end">Actions</th>
                 </tr>
               </thead>
               <tbody>
@@ -328,13 +330,13 @@ function TimeLogs() {
                   const isExtraHoursDiscrepant = extraHoursDecimal < 8;
                   return (
                     <tr key={index}>
-                      <td>
+                      {/* <td>
                         <input
                           type="checkbox"
                           checked={selectedJobs[log._id] || false}
                           onChange={() => handleCheckboxChange(log._id)}
                         />
-                      </td>
+                      </td> */}
                       <td className="no-border-bottom">
                         #JOB{log.jobId?.[0]?.JobNo || '----'}
                       </td>
@@ -374,7 +376,7 @@ function TimeLogs() {
                           {log.status}
                         </span>
                       </td>
-                      {/* <td className="text-end" style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                      <td className="text-end" style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
                         <button
                           className="btn btn-link text-dark p-0 me-3"
                           onClick={() => handleEdit(log)}
@@ -387,7 +389,7 @@ function TimeLogs() {
                         >
                           <FaTrashAlt />
                         </button>
-                      </td> */}
+                      </td>
                     </tr>
                   );
                 })}

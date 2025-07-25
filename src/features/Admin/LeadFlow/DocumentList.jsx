@@ -498,7 +498,7 @@ const DocumentList = ({ documents, previewUrl, setPreviewUrl }) => {
                     <div className="small text-muted">Uploaded by: {doc.uploadedBy}</div>
                   </div>
                 </div> */}
-
+                {/* 
                 <div
                   className="d-flex align-items-center gap-3"
                   style={{ cursor: "pointer" }}
@@ -527,7 +527,50 @@ const DocumentList = ({ documents, previewUrl, setPreviewUrl }) => {
                     <div className="small text-muted">Source: {doc.source}</div>
                     <div className="small text-muted">Uploaded by: {doc.uploadedBy}</div>
                   </div>
+                </div> */}
+
+                <div className="d-flex align-items-center gap-3 w-100">
+                  {getFileIcon(doc.fileUrl) === "image" ? (
+                    <img
+                      src={doc.fileUrl}
+                      alt="Preview"
+                      style={{
+                        width: "60px",
+                        height: "auto",
+                        objectFit: "cover",
+                        borderRadius: "4px",
+                        cursor: "pointer"
+                      }}
+                      onClick={() => handlePreview(doc.fileUrl)}
+                    />
+                  ) : doc.fileUrl.endsWith(".pdf") ? (
+                    <iframe
+                      src={doc.fileUrl}
+                      title="PDF Preview"
+                      style={{
+                        width: "120px",
+                        height: "100px",
+                        border: "1px solid #ccc",
+                        borderRadius: "4px"
+                      }}
+                    />
+                  ) : (
+                    <img
+                      src={getFileIcon(doc.fileUrl)}
+                      alt="File Icon"
+                      style={{ width: "40px", height: "auto", cursor: "pointer" }}
+                      onClick={() => handlePreview(doc.fileUrl)}
+                    />
+                  )}
+
+                  <div className="flex-grow-1" onClick={() => handlePreview(doc.fileUrl)} style={{ cursor: "pointer" }}>
+                    <div className="fw-semibold text-primary">{doc.title}</div>
+                    <div className="small text-muted">Source: {doc.source}</div>
+                    <div className="small text-muted">Uploaded by: {doc.uploadedBy}</div>
+                  </div>
                 </div>
+
+
 
                 {/* <div className="d-flex align-items-center gap-3">
                   <button
@@ -545,7 +588,7 @@ const DocumentList = ({ documents, previewUrl, setPreviewUrl }) => {
                   </div>
                 </div> */}
 
-                <div>
+                <div className="d-flex align-items-center gap-1">
                   <button
                     className="btn btn-sm btn-outline-success me-2"
                     onClick={() => handleDownload(doc.fileUrl)}

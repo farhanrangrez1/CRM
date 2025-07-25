@@ -180,7 +180,7 @@ function ClientManagement() {
                 <th style={{ whiteSpace: "nowrap" }}>Contact Person</th>
                 <th>Email</th>
                 <th>Phone</th>
-                <th>Industry</th>
+                <th>Notes</th>
                 {/* <th>Status</th> */}
                 <th>Actions</th>
               </tr>
@@ -194,7 +194,8 @@ function ClientManagement() {
                     <td style={{ whiteSpace: "nowrap" }}>{client.contactPersons?.[0]?.contactName || 'N/A'}</td>
                     <td style={{ whiteSpace: "nowrap" }}>{client.contactPersons?.[0]?.email || 'N/A'}</td>
                     <td style={{ whiteSpace: "nowrap" }}>{client.contactPersons?.[0]?.phone || 'N/A'}</td>
-                    <td style={{ whiteSpace: "nowrap" }}>{client.industry || 'N/A'}</td>
+                    <td style={{ whiteSpace: "nowrap" }}>{client.additionalInformation.notes || 'N/A'}</td>
+                    {/* <td style={{ whiteSpace: "nowrap" }}>{client.industry || 'N/A'}</td> */}
                     {/* <td> */}
                     {/* <span className={getStatusBadgeClass(client.Status)}>
                         {client.Status || 'Unknown'}

@@ -434,8 +434,6 @@ const tabs = [
     { label: 'Lost', value: 'lost' }
 ];
 
-
-
 const TempPoles = ({ data }) => {
     const [stageFilter, setStageFilter] = useState(stageOptions.map(opt => opt.id)); // all checked by default
     const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -883,27 +881,56 @@ const TempPoles = ({ data }) => {
         const dispatch = useDispatch();
         const [isUpdating, setIsUpdating] = useState(false);
 
-        const reduxProposals = (project.data || [])
-            .filter(item => item.tempPoles === true)
-            .map(item => ({
-                id: item.id,
-                _id: item._id,
-                title: item.projectName,
-                client: item.clientId?.clientName,
-                address: item.projectAddress || "N/A",
-                status: mapStatus(item.status),
-                projectPriority: item.projectPriority,
-                phases: item.phases || "N/A",
-                revenue: item.budgetAmount ? `AED ${item.budgetAmount}` : "N/A",
-                startDate: item.startDate,
-                endDate: item.endDate,
-                committedCost: "4220",
-                profitLoss: "N/A",
-                updated: item.updatedAt,
-                paid: item.paid,
-                due: item.due,
-                lineItems: item.lineItems
-            }));
+        const loginType = localStorage.getItem("login_type");
+        const clientId = localStorage.getItem('clientId');
+        let reduxProposals;
+
+        if (loginType == "client") {
+            reduxProposals = (project.data || [])
+                .filter(item => item.tempPoles === true && item?.clientId?._id == clientId)
+                .map(item => ({
+                    id: item.id,
+                    _id: item._id,
+                    title: item.projectName,
+                    client: item.clientId?.clientName,
+                    address: item.projectAddress || "N/A",
+                    status: mapStatus(item.status),
+                    projectPriority: item.projectPriority,
+                    phases: item.phases || "N/A",
+                    revenue: item.budgetAmount ? `AED ${item.budgetAmount}` : "N/A",
+                    startDate: item.startDate,
+                    endDate: item.endDate,
+                    committedCost: "4220",
+                    profitLoss: "N/A",
+                    updated: item.updatedAt,
+                    paid: item.paid,
+                    due: item.due,
+                    lineItems: item.lineItems
+                }));
+        } else {
+            reduxProposals = (project.data || [])
+                .filter(item => item.tempPoles === true)
+                .map(item => ({
+                    id: item.id,
+                    _id: item._id,
+                    title: item.projectName,
+                    client: item.clientId?.clientName,
+                    address: item.projectAddress || "N/A",
+                    status: mapStatus(item.status),
+                    projectPriority: item.projectPriority,
+                    phases: item.phases || "N/A",
+                    revenue: item.budgetAmount ? `AED ${item.budgetAmount}` : "N/A",
+                    startDate: item.startDate,
+                    endDate: item.endDate,
+                    committedCost: "4220",
+                    profitLoss: "N/A",
+                    updated: item.updatedAt,
+                    paid: item.paid,
+                    due: item.due,
+                    lineItems: item.lineItems
+                }));
+        }
+
 
         function mapStatus(status) {
             const normalized = (status || "").trim().toLowerCase();
@@ -921,23 +948,10 @@ const TempPoles = ({ data }) => {
                 "temp pole only": "tempPoleOnly",
                 "lost": "lost"
             };
-            const openStatuses = ["active project", "open", "signature"];
+            const openStatuses = ["approved", "open", "signature"];
             if (openStatuses.includes(normalized)) return "open";
             return map[normalized] ?? null;
         }
-
-        useEffect(() => {
-            dispatch(getAllDocumentsRecord());
-        }, [dispatch]);
-
-        const records = useSelector(state => state?.documentRecord?.records?.data) || [];
-
-        const proposalTotalsMap = records.reduce((acc, record) => {
-            const proposalId = record.proposal_id;
-            const total = record.line_items?.reduce((sum, item) => sum + (item.amount || 0), 0);
-            acc[proposalId] = (acc[proposalId] || 0) + total;
-            return acc;
-        }, {});
 
         const kanbanData = {
             open: reduxProposals.filter(p => p.status === "open"),
@@ -1009,9 +1023,9 @@ const TempPoles = ({ data }) => {
                 acc[col.title] = col.id;
                 return acc;
             }, {});
-            const selectedId = statusMap[selectedStatus];
-            if (selectedId) {
-                columns = [columns.find(c => c.id === selectedId), ...columns.filter(c => c.id !== selectedId)];
+            const selectedColumn = columns.find(col => col.id === selectedStatus);
+            if (selectedColumn) {
+                columns = [selectedColumn, ...columns.filter(c => c.id !== selectedStatus)];
             }
         }
 
@@ -1065,6 +1079,13 @@ const TempPoles = ({ data }) => {
             });
         };
 
+        const formatCurrency = (amount) =>
+            new Intl.NumberFormat("en-US", {
+                style: "currency",
+                currency: "USD",
+            }).format(amount);
+
+
         return (
             <div style={{ position: 'relative' }}>
                 {isUpdating && (
@@ -1108,7 +1129,8 @@ const TempPoles = ({ data }) => {
                                                         onClick={() => {
                                                             localStorage.setItem("proposalId", item.id);
                                                             localStorage.setItem("invoice", JSON.stringify(item));
-                                                            navigate("/admin/LeadFlow/Details", { state: { item } });
+                                                            // navigate("/admin/LeadFlow/Details", { state: { item } });
+                                                            navigate("/admin/Project/Details", { state: { item } });
                                                         }}
                                                     >
                                                         <div className="d-flex justify-content-between align-items-start mb-1">
@@ -1129,15 +1151,15 @@ const TempPoles = ({ data }) => {
                                                         <div className="text-muted small mb-1">Address: {item.address}</div>
                                                         <div className="small text-secondary mb-1">Phases: {item.phases}</div>
                                                         <div className="fw-semibold text-success" style={{ fontSize: 15 }}>
-                                                            Total Paid: {item.paid || 0}
+                                                            Total Paid: {formatCurrency(item.paid) || 0}
                                                         </div>
                                                         <div className="fw-semibold text-danger" style={{ fontSize: 15 }}>
-                                                            Total Due: {item.due || 0}
+                                                            Total Due: {formatCurrency(item.due) || 0}
                                                         </div>
                                                         <div className="d-flex flex-wrap gap-2 align-items-center mb-1">
-                                                            <Badge bg={getStatusBadgeColor(item.status)} className={`me-1 ${getTextColor(item.status)}`}>
+                                                            {/* <Badge bg={getStatusBadgeColor(item.status)} className={`me-1 ${getTextColor(item.status)}`}>
                                                                 {item.status}
-                                                            </Badge>
+                                                            </Badge> */}
                                                         </div>
                                                     </div>
                                                 )}

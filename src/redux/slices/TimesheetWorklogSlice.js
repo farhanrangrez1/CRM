@@ -16,7 +16,7 @@ export const fetchTimesheetWorklogs = createAsyncThunk(
 );
 
 export const createTimesheetWorklog = createAsyncThunk(
- 'TimesheetWorklogs/createTimesheetWorklog',
+  'TimesheetWorklogs/createTimesheetWorklog',
   async (submissionData, { rejectWithValue }) => {
     try {
       const response = await axiosInstance.post(
@@ -57,12 +57,12 @@ export const fetchTimesheetWorklogById = createAsyncThunk('TimesheetWorklogs/fet
 export const updateTimesheetWorklog = createAsyncThunk(
   'TimesheetWorklogs/updateTimesheetWorklog',
   async ({ _id, data }, { rejectWithValue }) => {
-  try {
-    const response = await fetch(`${apiUrl}/TimesheetWorklog/${_id}`, {
-      method: "PATCH",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(data),
-    });
+    try {
+      const response = await fetch(`${apiUrl}/TimesheetWorklog/${_id}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+      });
       if (!response.ok) {
         const errorData = await response.json().catch(() => ({}));
         return rejectWithValue(errorData.message || "Failed to update time logs");

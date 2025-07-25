@@ -36,6 +36,18 @@ function AddTimesheetWorklog() {
     jobName: ''
   });
 
+  const convertTo24HourFormat = (time12h) => {
+    if (!time12h) return "";
+    const [time, modifier] = time12h.split(" ");
+    let [hours, minutes] = time.split(":").map(Number);
+
+    if (modifier === "PM" && hours < 12) hours += 12;
+    if (modifier === "AM" && hours === 12) hours = 0;
+
+    return `${hours.toString().padStart(2, "0")}:${minutes.toString().padStart(2, "0")}`;
+  };
+
+
   useEffect(() => {
     if (entry) {
       const parsedDate = entry.date
@@ -48,8 +60,8 @@ function AddTimesheetWorklog() {
         jobId: Array.isArray(entry.jobId) ? entry.jobId[0]._id : '',
         employeeId: Array.isArray(entry.employeeId) ? entry.employeeId[0]._id : '',
         status: entry.status || '',
-        startTime: entry.startTime || '',
-        endTime: entry.endTime || '',
+        startTime: convertTo24HourFormat(entry.startTime) || '',
+        endTime: convertTo24HourFormat(entry.endTime) || '',
         taskDescription: entry.taskDescription || '',
         projectName: Array.isArray(entry.projectId) ? entry.projectId[0].projectName : '',
         jobName: Array.isArray(entry.jobId) ? entry.jobId[0].jobName || '' : ''
@@ -101,6 +113,8 @@ function AddTimesheetWorklog() {
     hour = hour % 12 || 12;
     return `${hour.toString().padStart(2, '0')}:${minute} ${ampm}`;
   };
+
+
   const handleSubmit = (e) => {
     e.preventDefault();
 
@@ -109,15 +123,16 @@ function AddTimesheetWorklog() {
       jobId: [formData.jobId],
       employeeId: [formData.employeeId],
       date: formData.date,
-      startTime: convertTo12HourFormat(formData.startTime),
-      endTime: convertTo12HourFormat(formData.endTime),
+      startTime: formData.startTime ? convertTo12HourFormat(formData.startTime) : '',
+      endTime: formData.endTime ? convertTo12HourFormat(formData.endTime) : '',
       taskDescription: formData.taskDescription,
       status: formData.status,
       projectName: formData.projectName,
       jobName: formData.jobName
     };
 
-    const successNavigate = () => navigate("/admin/TimesheetWorklog");
+    // const successNavigate = () => navigate("/admin/TimesheetWorklog");
+    const successNavigate = () => navigate("/admin/TimeLogs");
 
     if (_id) {
       dispatch(updateTimesheetWorklog({ _id, data: payload }))
@@ -148,7 +163,7 @@ function AddTimesheetWorklog() {
 
   const reversedProjectList = project?.data?.slice().reverse() || [];
   const reversedJobList = job?.jobs?.slice().reverse() || [];
-  const reversedEmployeeList = (userAll?.data?.users || []).filter(user => user.role === "employee").reverse();
+  const reversedEmployeeList = (userAll?.data?.users || []).filter(user => user.isAdmin === false).reverse();
 
   return (
     <div className="container py-4">
@@ -175,7 +190,6 @@ function AddTimesheetWorklog() {
                           projectName: selectedProject?.projectName || ""
                         }));
                       }}
-                      required
                     >
                       <option value="">Select a project</option>
                       {reversedProjectList.map((proj) => (
@@ -185,6 +199,31 @@ function AddTimesheetWorklog() {
                       ))}
                     </select>
                   </div>
+
+                  {/* <div className="col-md-6">
+                    <label className="form-label">Job</label>
+                    <select
+                      className="form-select"
+                      name="jobId"
+                      value={formData.jobId}
+                      onChange={(e) => {
+                        const selectedId = e.target.value;
+                        const selectedJob = reversedJobList.find(j => j._id === selectedId);
+                        setFormData(prev => ({
+                          ...prev,
+                          jobId: selectedId,
+                          jobName: selectedJob?.jobName || `${selectedJob?.brandName} ${selectedJob?.subBrand}`
+                        }));
+                      }}
+                    >
+                      <option value="">Select a job</option>
+                      {reversedJobList.map((j) => (
+                        <option key={j._id} value={j._id}>
+                          {j?.jobName || `${j.JobNo} `}
+                        </option>
+                      ))}
+                    </select>
+                  </div> */}
 
                   <div className="col-md-6">
                     <label className="form-label">Job</label>
@@ -201,16 +240,24 @@ function AddTimesheetWorklog() {
                           jobName: selectedJob?.jobName || `${selectedJob?.brandName} ${selectedJob?.subBrand}`
                         }));
                       }}
-                      required
                     >
                       <option value="">Select a job</option>
-                      {reversedJobList.map((j) => (
-                        <option key={j._id} value={j._id}>
-                          {j?.jobName || `${j.JobNo} `}
-                        </option>
-                      ))}
+                      {reversedJobList
+                        .filter(j => {
+                          // support both old and new structure
+                          const match1 = j.projectId?.some(p => p._id === formData.projectId);
+                          const match2 = j.projects?.some(p => p.projectId === formData.projectId);
+                          return match1 || match2;
+                        })
+                        .map(j => (
+                          <option key={j._id} value={j._id}>
+                            {j?.jobName || `${j.JobNo} `}
+                          </option>
+                        ))}
                     </select>
                   </div>
+
+
                   <div className="col-md-6">
                     <label className="form-label">Employee</label>
                     <select
@@ -233,7 +280,6 @@ function AddTimesheetWorklog() {
                           // employeeName: selectedEmployee?.name || ""
                         }));
                       }}
-                      required
                     >
                       <option value="">Select an employee</option>
 
@@ -252,7 +298,6 @@ function AddTimesheetWorklog() {
                       name="status"
                       value={formData.status}
                       onChange={handleInputChange}
-                      required
                     >
                       <option value="">Select Status</option>
                       <option value="Approved">Approved</option>
@@ -270,7 +315,6 @@ function AddTimesheetWorklog() {
                       name="startTime"
                       value={formData.startTime}
                       onChange={handleInputChange}
-                      required
                     />
                   </div>
 
@@ -282,7 +326,6 @@ function AddTimesheetWorklog() {
                       name="endTime"
                       value={formData.endTime}
                       onChange={handleInputChange}
-                      required
                     />
                   </div>
 
@@ -295,7 +338,6 @@ function AddTimesheetWorklog() {
                       name="date"
                       value={formData.date}
                       onChange={handleInputChange}
-                      required
                     />
                   </div>
 
@@ -307,13 +349,13 @@ function AddTimesheetWorklog() {
                       name="taskDescription"
                       value={formData.taskDescription}
                       onChange={handleInputChange}
-                      required
                     ></textarea>
                   </div>
                 </div>
 
                 <div className="d-flex justify-content-end gap-2 mt-4">
-                  <Link to="/admin/TimesheetWorklog" className="btn btn-light">Cancel</Link>
+                  {/* <Link to="/admin/TimesheetWorklog" className="btn btn-light">Cancel</Link> */}
+                  <Link to="/admin/TimeLogs" className="btn btn-light">Cancel</Link>
                   <button id='All_btn' type="submit" className="btn btn-dark">
                     {id ? "Update Time Entry" : "Submit Time Entry"}
                   </button>

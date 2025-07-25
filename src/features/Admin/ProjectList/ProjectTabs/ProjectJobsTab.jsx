@@ -105,7 +105,7 @@ function ProjectJobsTab() {
   const handleSubmitAssignment = () => {
     const selectedJobIds = Object.keys(selectedJobs).filter((id) => selectedJobs[id]);
     const payload = {
-      employeeId: [selectedEmployee],
+      employeeId: selectedEmployee,
       jobId: selectedJobIds,
       selectDesigner: selectedDesigner,
       description: assignmentDescription,
@@ -319,7 +319,7 @@ function ProjectJobsTab() {
       <div className="card-header d-flex align-content-center justify-content-between mt-3">
         <h5 className="card-title mb-0">Tasks List</h5>
         <div className="text-end">
-          <Button
+          {/* <Button
             id="All_btn"
             className="m-2"
             variant="primary"
@@ -335,7 +335,7 @@ function ProjectJobsTab() {
             }}
           >
             Assign
-          </Button>
+          </Button> */}
           {/* <Button className="btn btn-secondary m-2" onClick={handleDownloadFileNamesCSV}>
             📄 Copy File Name
           </Button> */}
@@ -352,7 +352,7 @@ function ProjectJobsTab() {
 
 
           <button onClick={() => AddJob()} id="All_btn" className="btn btn-primary">
-            <i className="bi bi-plus"></i> Add Job
+            <i className="bi bi-plus"></i> Add Task
           </button>
 
         </div>
@@ -377,13 +377,13 @@ function ProjectJobsTab() {
         <div className="table-responsive">
           {paginatedProjects.length === 0 ? (
             <div className="text-danger text-center my-5">
-              No jobs found.
+              No Tasks found.
             </div>
           ) : (
             <table className="table table-hover">
               <thead>
                 <tr>
-                  <th>
+                  {/* <th>
                     <input
                       type="checkbox"
                       onChange={(e) => {
@@ -399,8 +399,8 @@ function ProjectJobsTab() {
                         job?.jobs?.every((j) => selectedJobs[j._id])
                       }
                     />
-                  </th>
-                  <th>JobsNo</th>
+                  </th> */}
+                  <th>TaskNo</th>
                   <th style={{ whiteSpace: 'nowrap' }}>Project Name</th>
                   <th>Assign</th>
                   <th>Task</th>
@@ -412,13 +412,13 @@ function ProjectJobsTab() {
               <tbody>
                 {paginatedProjects?.map((job, index) => (
                   <tr key={job._id}>
-                    <td>
+                    {/* <td>
                       <input
                         type="checkbox"
                         checked={selectedJobs[job._id] || false}
                         onChange={() => handleCheckboxChange(job._id)}
                       />
-                    </td>
+                    </td> */}
                     <td>
                       <span>{job.JobNo}</span>
                     </td>
@@ -476,9 +476,9 @@ function ProjectJobsTab() {
       </div>
 
 
-      <Modal show={showAssignModal} onHide={() => setShowAssignModal(false)}>
+      {/* <Modal show={showAssignModal} onHide={() => setShowAssignModal(false)}>
         <Modal.Header closeButton>
-          <Modal.Title>Assign Job</Modal.Title>
+          <Modal.Title>Assign Task</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Form>
@@ -535,7 +535,70 @@ function ProjectJobsTab() {
             Assign
           </Button>
         </Modal.Footer>
+      </Modal> */}
+
+      <Modal show={showAssignModal} onHide={() => setShowAssignModal(false)}>
+        <Modal.Header closeButton>
+          <Modal.Title>Assign Job</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Form>
+            {/* <Form.Group className="mb-3">
+              <Form.Label>Select Designer</Form.Label>
+              <Form.Select
+                value={selectedDesigner}
+                onChange={(e) => {
+                  setSelectedDesigner(e.target.value);
+                  setSelectedEmployee("");
+                }}
+              >
+                <option value="">-- Select --</option>
+                <option value="Designer">Designer</option>
+                <option value="Production">Production</option>
+              </Form.Select>
+            </Form.Group> */}
+            <Form.Group className="mb-3">
+              <Form.Label>Select Employee</Form.Label>
+              <Form.Select
+                value={selectedEmployee}
+                onChange={(e) => setSelectedEmployee([e.target.value])}
+              >
+                <option value="">-- Select Employee --</option>
+                {userAll?.data?.users
+                  ?.filter((item) => {
+                    return item?.isAdmin === false;
+                  })
+                  ?.map((user) => (
+                    <option key={user._id} value={user._id}>
+                      {user.firstName} {user.lastName}
+                    </option>
+                  ))}
+              </Form.Select>
+            </Form.Group>
+
+            <Form.Group className="mb-3">
+              <Form.Label>Description</Form.Label>
+              <Form.Control
+                as="textarea"
+                rows={3}
+                value={assignmentDescription}
+                onChange={(e) => setAssignmentDescription(e.target.value)}
+                placeholder="Enter assignment details or instructions..."
+              />
+            </Form.Group>
+          </Form>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={() => setShowAssignModal(false)}>
+            Cancel
+          </Button>
+          <Button variant="primary" onClick={handleSubmitAssignment}>
+            Assign
+          </Button>
+        </Modal.Footer>
       </Modal>
+
+
 
       {!loading && !error && (
         <div className="d-flex justify-content-between align-items-center mb-4">

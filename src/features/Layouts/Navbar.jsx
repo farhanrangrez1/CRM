@@ -57,6 +57,9 @@ const Navbar = ({ toggleSidebar }) => {
     dispatch(SingleUser());
   }, [dispatch]);
 
+  const isClient = localStorage.getItem("client") == "true";
+
+
   return (
     <>
       <nav className="navbar me-5 d-flex justify-content-end">
@@ -91,19 +94,24 @@ const Navbar = ({ toggleSidebar }) => {
                 </Link>
               </li>
 
-              <li>
-                <Link to={UpdateProfile()} className="dropdown-item" style={{ textDecoration: 'none', color: 'inherit' }}>
-                  <i className="fas fa-edit"></i>
-                  <span>Update Profile</span>
-                </Link>
-              </li>
+              {!isClient && (
+                <>
+                  <li>
+                    <Link to={UpdateProfile()} className="dropdown-item" style={{ textDecoration: 'none', color: 'inherit' }}>
+                      <i className="fas fa-edit"></i>
+                      <span>Update Profile</span>
+                    </Link>
+                  </li>
 
-              <li>
-                <Link to={ChangePassword()} className="dropdown-item" style={{ textDecoration: 'none', color: 'inherit' }}>
-                  <i className="fas fa-lock"></i>
-                  <span>Change Password</span>
-                </Link>
-              </li>
+                  <li>
+                    <Link to={ChangePassword()} className="dropdown-item" style={{ textDecoration: 'none', color: 'inherit' }}>
+                      <i className="fas fa-lock"></i>
+                      <span>Change Password</span>
+                    </Link>
+                  </li>
+                </>
+              )}
+
               <li><hr className="dropdown-divider" /></li>
               <li onClick={handleLogout}>
                 <Link to="/" className="dropdown-item text-danger">

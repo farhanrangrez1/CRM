@@ -725,7 +725,10 @@ function UserRoleModal() {
     client: defaultPermission(),
     dailylogs: defaultPermission(),
     projectsAndJobs: defaultPermission(),
-    invoiceAndBilling: defaultPermission()
+    invoiceAndBilling: defaultPermission(),
+    dashboard: defaultPermission(),
+    // subclients: defaultPermission(),
+    // timelogs: defaultPermission(),
   });
 
   const [showPasswordMismatch, setShowPasswordMismatch] = useState(false);
@@ -787,7 +790,10 @@ function UserRoleModal() {
         client: loadPermissions('client'),
         dailylogs: loadPermissions('dailylogs'),
         projectsAndJobs: loadPermissions('projectsAndJobs'),
-        invoiceAndBilling: loadPermissions('invoiceAndBilling')
+        invoiceAndBilling: loadPermissions('invoiceAndBilling'),
+        dashboard: loadPermissions('dashboard'),
+        // subclients: loadPermissions('subclients'),
+        // timelogs: loadPermissions('timelogs'),
       });
     }
   }, [user]);
@@ -838,13 +844,16 @@ function UserRoleModal() {
 
   const renderPermissionSection = () => {
     const modules = [
+      'dashboard',
       'proposal',
-      // 'tasks',
+      'projectsAndJobs',
+      // 'subclients',
+      // 'timelogs',
+      'tasks',
       // 'reports',
       'user',
       'client',
       'dailylogs',
-      'projectsAndJobs',
       // 'invoiceAndBilling'
     ];
 

@@ -645,7 +645,8 @@ import {
   Card,
   Modal,
   Form,
-  Col
+  Col,
+  Row
 } from 'react-bootstrap';
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from 'react-redux';
@@ -776,15 +777,39 @@ const DailyLogs = () => {
     return user ? `${user.firstName || ""} ${user.lastName || ""}`.trim() : "";
   };
 
-  const handleDownloadImages = async (images) => {
-    for (let i = 0; i < images.length; i++) {
+  // const handleDownloadImages = async (images) => {
+  //   for (let i = 0; i < images.length; i++) {
+  //     try {
+  //       const response = await fetch(images[i], { mode: 'cors' });
+  //       const blob = await response.blob();
+  //       const url = window.URL.createObjectURL(blob);
+  //       const link = document.createElement('a');
+  //       link.href = url;
+  //       link.download = `daily-log-image-${i + 1}.jpg`;
+  //       document.body.appendChild(link);
+  //       link.click();
+  //       document.body.removeChild(link);
+  //       window.URL.revokeObjectURL(url);
+  //     } catch (error) {
+  //       console.error("Download failed", error);
+  //     }
+  //   }
+  // };
+
+  const handleDownloadImages = async (files) => {
+    for (let i = 0; i < files.length; i++) {
       try {
-        const response = await fetch(images[i], { mode: 'cors' });
+        const fileUrl = files[i];
+        const response = await fetch(fileUrl, { mode: 'cors' });
         const blob = await response.blob();
+
+        const fileExtension = fileUrl.split('.').pop().split('?')[0]; // Extract extension from URL
+        const filename = `daily-log-file-${i + 1}.${fileExtension}`;
+
         const url = window.URL.createObjectURL(blob);
         const link = document.createElement('a');
         link.href = url;
-        link.download = `daily-log-image-${i + 1}.jpg`;
+        link.download = filename;
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
@@ -794,6 +819,7 @@ const DailyLogs = () => {
       }
     }
   };
+
 
   const handleAddComment = () => {
     if (newComment.trim() === '') return;
@@ -847,6 +873,45 @@ const DailyLogs = () => {
       fetchVisibleLogComments();
     }
   }, [filteredLogs]);
+
+  const [selectedImage, setSelectedImage] = useState(null);
+  const [showDownloadModal, setShowDownloadModal] = useState(false);
+  const [downloadImages, setDownloadImages] = useState([]);
+  const [selectedImages, setSelectedImages] = useState([]);
+  const [selectAll, setSelectAll] = useState(false);
+
+  // Open modal with images
+  const handleShowDownloadModal = (images) => {
+    setDownloadImages(images);
+    setSelectedImages(new Array(images.length).fill(false));
+    setSelectAll(false);
+    setShowDownloadModal(true);
+  };
+
+  // Handle individual checkbox change
+  const handleImageSelect = (index) => {
+    const updated = [...selectedImages];
+    updated[index] = !updated[index];
+    setSelectedImages(updated);
+
+    // Update "Select All" state
+    const allSelected = updated.every(val => val);
+    setSelectAll(allSelected);
+  };
+
+  // Toggle Select All
+  const toggleSelectAll = () => {
+    const newValue = !selectAll;
+    setSelectedImages(new Array(downloadImages.length).fill(newValue));
+    setSelectAll(newValue);
+  };
+
+
+  const handleDownloadSelectedImages = async () => {
+    const filesToDownload = downloadImages.filter((_, index) => selectedImages[index]);
+    await handleDownloadImages(filesToDownload);
+    setShowDownloadModal(false);
+  };
 
   return (
     <div className="p-4">
@@ -941,7 +1006,7 @@ const DailyLogs = () => {
                       variant="outline-success"
                       size="sm"
                       className="me-2"
-                      onClick={() => handleDownloadImages(log.images)}
+                      onClick={() => handleShowDownloadModal(log.images)}
                     >
                       Download
                     </Button>
@@ -950,7 +1015,7 @@ const DailyLogs = () => {
                 </div>
               </div>
 
-              <div className="d-flex flex-wrap gap-2 mb-3">
+              {/* <div className="d-flex flex-wrap gap-2 mb-3">
                 {log.images && log.images.map((img, i) => (
                   <img
                     key={i}
@@ -961,11 +1026,45 @@ const DailyLogs = () => {
                       width: 90,
                       height: 70,
                       objectFit: "cover",
-                      marginRight: "10px"
+                      marginRight: "10px",
+                      cursor: "pointer"
                     }}
+                    onClick={() => setSelectedImage(img)}
                   />
                 ))}
+              </div> */}
+              <div className="d-flex flex-wrap gap-2 mb-3">
+                {log.images && log.images.map((fileUrl, i) => {
+                  const isPdf = fileUrl.toLowerCase().endsWith('.pdf');
+                  return (
+                    <div
+                      key={i}
+                      className="border rounded p-1 d-flex flex-column align-items-center justify-content-center"
+                      style={{ width: 170, height: 170, marginRight: '10px', cursor: 'pointer' }}
+                      onClick={() => setSelectedImage(fileUrl)}
+                    >
+                      {isPdf ? (
+                        <>
+                          <h5>Preview👈</h5>
+                          <iframe
+                            src={fileUrl}
+                            title={`pdf-preview-${i}`}
+                            style={{ width: "150px", height: "100px", border: "none" }}
+                            onClick={() => setSelectedImage(fileUrl)}
+                          ></iframe>
+                        </>
+                      ) : (
+                        <img
+                          src={fileUrl}
+                          alt={`log-${i}`}
+                          style={{ width: "100%", height: "100%", objectFit: "cover" }}
+                        />
+                      )}
+                    </div>
+                  );
+                })}
               </div>
+
 
               <div className="mb-3" style={{ whiteSpace: "pre-line" }}>
                 {log.notes}
@@ -1029,6 +1128,98 @@ const DailyLogs = () => {
         ))
       )}
 
+      <Modal show={showDownloadModal} onHide={() => setShowDownloadModal(false)} centered size="lg">
+        <Modal.Header closeButton>
+          <Modal.Title>
+            Select Images to Download
+            <Button
+              variant={selectAll ? "outline-danger" : "outline-success"}
+              size="sm"
+              className="ms-3"
+              onClick={toggleSelectAll}
+            >
+              {selectAll ? "Deselect All" : "Select All"}
+            </Button>
+          </Modal.Title>
+        </Modal.Header>
+
+        <Modal.Body>
+          {/* <Row className="g-3">
+            {downloadImages.map((img, index) => (
+              <Col xs={6} md={4} lg={3} key={index}>
+                <div className="position-relative border rounded p-2">
+                  <Form.Check
+                    type="checkbox"
+                    id={`image-checkbox-${index}`}
+                    checked={selectedImages[index]}
+                    onChange={() => handleImageSelect(index)}
+                    className="position-absolute top-0 end-0 m-1"
+                  />
+                  <img
+                    src={img}
+                    alt={`img-${index}`}
+                    className="img-fluid rounded"
+                    style={{ maxHeight: "140px", objectFit: "cover", width: "100%" }}
+                  />
+                </div>
+              </Col>
+            ))}
+          </Row> */}
+          <Row className="g-3">
+            {downloadImages.map((fileUrl, index) => {
+              const isPdf = fileUrl.toLowerCase().endsWith('.pdf');
+              return (
+                <Col xs={6} md={4} lg={3} key={index}>
+                  <div className="position-relative border rounded p-2">
+                    <Form.Check
+                      type="checkbox"
+                      id={`image-checkbox-${index}`}
+                      checked={selectedImages[index]}
+                      onChange={() => handleImageSelect(index)}
+                      className="position-absolute top-0 end-0 m-1"
+                    />
+                    {isPdf ? (
+                      <div
+                        className="d-flex flex-column align-items-center justify-content-center"
+                        style={{ height: "140px", width: "100%" }}
+                        onClick={() => setSelectedImage(fileUrl)}
+                      >
+                        <iframe
+                          src={fileUrl}
+                          title={`pdf-preview-${index}`}
+                          style={{ width: "100%", height: "140px", border: "none" }}
+                        ></iframe>
+                      </div>
+                    ) : (
+                      <img
+                        src={fileUrl}
+                        alt={`img-${index}`}
+                        className="img-fluid rounded"
+                        style={{ maxHeight: "140px", objectFit: "cover", width: "100%", cursor: "pointer" }}
+                        onClick={() => setSelectedImage(fileUrl)}
+                      />
+                    )}
+
+                  </div>
+                </Col>
+              );
+            })}
+          </Row>
+        </Modal.Body>
+
+        <Modal.Footer>
+          <Button variant="secondary" onClick={() => setShowDownloadModal(false)}>
+            Cancel
+          </Button>
+          <Button
+            variant="primary"
+            onClick={handleDownloadSelectedImages}
+            disabled={!selectedImages.some(Boolean)}
+          >
+            Download Selected
+          </Button>
+        </Modal.Footer>
+      </Modal>
       <Modal
         show={showEditModal}
         onHide={() => setShowEditModal(false)}
@@ -1058,7 +1249,7 @@ const DailyLogs = () => {
                 <Form.Control
                   type="file"
                   name="images"
-                  accept="image/*"
+                  accept="image/*,application/pdf"
                   multiple
                   onChange={(e) => {
                     handleFormChange(e);
@@ -1115,6 +1306,55 @@ const DailyLogs = () => {
           </Form>
         </Modal.Body>
       </Modal>
+
+      {/* Modal for Image Preview */}
+      {/* <Modal
+        show={!!selectedImage}
+        onHide={() => setSelectedImage(null)}
+        centered
+        size="lg"
+      >
+        <Modal.Header closeButton>
+          <Modal.Title>Image Preview</Modal.Title>
+        </Modal.Header>
+        <Modal.Body className="text-center">
+          {selectedImage && (
+            <img
+              src={selectedImage}
+              alt="Full Size"
+              style={{ width: '100%', height: 'auto' }}
+            />
+          )}
+        </Modal.Body>
+      </Modal> */}
+      <Modal
+        show={!!selectedImage}
+        onHide={() => setSelectedImage(null)}
+        centered
+        size="lg"
+      >
+        <Modal.Header closeButton>
+          <Modal.Title>Preview</Modal.Title>
+        </Modal.Header>
+        <Modal.Body className="text-center">
+          {selectedImage && selectedImage.toLowerCase().endsWith('.pdf') ? (
+            <iframe
+              src={selectedImage}
+              title="PDF Preview"
+              width="100%"
+              height="600px"
+              style={{ border: "none" }}
+            />
+          ) : (
+            <img
+              src={selectedImage}
+              alt="Preview"
+              style={{ width: '100%', height: 'auto' }}
+            />
+          )}
+        </Modal.Body>
+      </Modal>
+
     </div>
   );
 }

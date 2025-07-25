@@ -1,7 +1,8 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 // import api from "../utils/api";
 import axios from "axios";
-const BASE_URL = "https://netaai-crm-backend-production-c306.up.railway.app/api/daily_logs";
+import { apiNetaUrl } from "../utils/config";
+const BASE_URL = `${apiNetaUrl}/daily_logs`;
 // ✅ Create Daily Log
 export const createDailyLog = createAsyncThunk(
   "dailylog/create",

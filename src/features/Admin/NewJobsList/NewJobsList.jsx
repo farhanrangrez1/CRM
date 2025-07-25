@@ -115,7 +115,6 @@ function NewJobsList() {
     const payload = {
       Status: "Completed"
     };
-
     dispatch(updatejob({ id, data: payload }))
       .unwrap()
       .then(() => {
@@ -507,7 +506,7 @@ function NewJobsList() {
           <Button onClick={handleRejectJobs} id="All_btn" className="m-2" variant="primary">
             Cancelled Job
           </Button>
-          <Button
+          {/* <Button
             id="All_btn"
             className="m-2"
             variant="primary"
@@ -523,9 +522,9 @@ function NewJobsList() {
             }}
           >
             Assign
-          </Button>
+          </Button> */}
           <Button onClick={() => setShowProjectModal(true)} id="All_btn" className="m-2" variant="primary">
-            <i className="bi bi-plus"></i> Add Job
+            <i className="bi bi-plus"></i> Add Task
           </Button>
         </div>
       </div>
@@ -620,7 +619,7 @@ function NewJobsList() {
                   checked={job?.jobs?.length > 0 && job?.jobs?.every((j) => selectedJobs[j._id])}
                 />
               </th>
-              <th>JobNo</th>
+              <th>TaskNo</th>
               <th style={{ whiteSpace: "nowrap" }}>Project Name</th>
               {/* <th>Brand</th>
               <th style={{ whiteSpace: "nowrap" }}>Sub Brand</th>
