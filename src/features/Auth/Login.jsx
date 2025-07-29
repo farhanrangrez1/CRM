@@ -233,7 +233,7 @@ import { usersLogin } from "../../redux/slices/userSlice";
 import axios from "axios";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { apiUrl } from '../../redux/utils/config';
+import { apiInventoryUrl, apiUrl } from '../../redux/utils/config';
 
 
 
@@ -277,9 +277,6 @@ const Login = () => {
       let res;
       if (userType == "client") {
         res = await axios.post(`${apiUrl}/client/clientLogin`, { email, password });
-
-        console.log(res);
-
 
         const { clientData, token } = res.data;
         const permissions = {
@@ -378,6 +375,24 @@ const Login = () => {
         navigate("/admin/dashboard");
 
       } else {
+        // const inventoryres = await axios.post(`${apiInventoryUrl}/user/login`, {
+        //   email: formData.email,
+        //   password: formData.password,
+        // });
+        // localStorage.setItem('InventoryUser', JSON.stringify(inventoryres.data.data));
+
+        try {
+          // Inventory login is optional
+          const inventoryres = await axios.post(`${apiInventoryUrl}/user/login`, {
+            email: formData.email,
+            password: formData.password,
+          });
+          localStorage.setItem('InventoryUser', JSON.stringify(inventoryres.data.data));
+        } catch (error) {
+          // Ignore inventory login error silently
+          console.warn("Inventory login failed, proceeding without it.");
+        }
+
         res = await axios.post(`${apiUrl}/user/login`, { email, password });
 
         const { role, token, permissions } = res.data.user;

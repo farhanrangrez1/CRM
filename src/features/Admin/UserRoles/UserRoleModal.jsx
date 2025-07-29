@@ -689,6 +689,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { fetchusers, SignUp, UpdateUsers } from '../../../redux/slices/userSlice';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import axios from 'axios';
+import { apiInventoryUrl } from '../../../redux/utils/config';
 
 function UserRoleModal() {
   const navigate = useNavigate();
@@ -727,6 +729,8 @@ function UserRoleModal() {
     projectsAndJobs: defaultPermission(),
     invoiceAndBilling: defaultPermission(),
     dashboard: defaultPermission(),
+    myorders: defaultPermission(),
+    products: defaultPermission(),
     // subclients: defaultPermission(),
     // timelogs: defaultPermission(),
   });
@@ -792,6 +796,8 @@ function UserRoleModal() {
         projectsAndJobs: loadPermissions('projectsAndJobs'),
         invoiceAndBilling: loadPermissions('invoiceAndBilling'),
         dashboard: loadPermissions('dashboard'),
+        products: loadPermissions('products'),
+        myorders: loadPermissions('myorders'),
         // subclients: loadPermissions('subclients'),
         // timelogs: loadPermissions('timelogs'),
       });
@@ -799,7 +805,7 @@ function UserRoleModal() {
   }, [user]);
 
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (!_id && formData.password !== formData.passwordConfirm) {
       toast.error('Passwords do not match!');
@@ -827,16 +833,28 @@ function UserRoleModal() {
           toast.error(err?.message || 'Failed to update user!');
         });
     } else {
-      dispatch(SignUp(data))
-        .unwrap()
-        .then(() => {
-          toast.success('User created successfully!');
-          navigate('/admin/UserRoles', { state: { openTab: 'users' } });
-          dispatch(fetchusers());
-        })
-        .catch((err) => {
-          toast.error(err?.message || 'Error creating user');
-        });
+
+      try {
+
+        const payload = {
+          firstName: formData.firstName,
+          lastName: formData.lastName,
+          email: formData.email,
+          password: formData.password,
+        };
+
+        await axios.post(`${apiInventoryUrl}/user/signUp`, payload);
+
+        await dispatch(SignUp(data)).unwrap();
+
+        toast.success('User created successfully!');
+        navigate('/admin/UserRoles', { state: { openTab: 'users' } });
+        dispatch(fetchusers());
+
+      } catch (error) {
+        toast.error(error?.message || 'Error creating user');
+      }
+
     }
   };
 
@@ -851,6 +869,8 @@ function UserRoleModal() {
       // 'timelogs',
       'tasks',
       // 'reports',
+      'products',
+      'myorders',
       'user',
       'client',
       'dailylogs',

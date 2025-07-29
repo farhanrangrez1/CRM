@@ -80,6 +80,7 @@ import ProductPage from "../features/Admin/ElectricalProducts/ProductPage.jsx";
 import MyOrders from "../features/Admin/MyOrders/MyOrders.jsx";
 import JobTrackerView from "../features/Admin/JobTracker/JobTrackerView.jsx";
 import ClientDashbord from "../features/Client/Dashbord/Dashbord.jsx";
+import OrderDetails from "../features/Admin/MyOrders/OrderDetails.jsx";
 
 function Admin() {
   const [isSidebarOpen, setSidebarOpen] = useState(window.innerWidth >= 768);
@@ -146,6 +147,7 @@ function Admin() {
             <Route path="/Project/Details" element={<ProtectedRoute><ProjectViewEditpurposal /></ProtectedRoute>} />
             <Route path="/tasks" element={<ProtectedRoute><ProjectJobsTab /></ProtectedRoute>} />
             <Route path="/myorders" element={<ProtectedRoute><MyOrders /></ProtectedRoute>} />
+            <Route path="/order/:productId" element={<ProtectedRoute><OrderDetails /></ProtectedRoute>} />
             {/* <Route path="/Project/Details" element={<ProtectedRoute><EditProject/></ProtectedRoute>} /> */}
 
             <Route path="/AddCostEstimates" element={<ProtectedRoute><AddCostEstimates /></ProtectedRoute>} />

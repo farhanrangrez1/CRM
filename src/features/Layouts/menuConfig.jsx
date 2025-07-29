@@ -179,16 +179,18 @@ export const adminMenuItems = [
   //   path: "/admin/Invoicing_Billing",
   //   permissionKey: "invoiceAndBilling",
   // },
-  // {
-  //   title: "Products",
-  //   icon: <FaBox className="menu-icon" />,
-  //   path: "/admin/products",
-  // },
-  // {
-  //   title: "MyOrders",
-  //   icon: <FaShoppingCart className="menu-icon" />,
-  //   path: "/admin/myorders",
-  // },
+  {
+    title: "Products",
+    icon: <FaBox className="menu-icon" />,
+    path: "/admin/products",
+    permissionKey: "products",
+  },
+  {
+    title: "MyOrders",
+    icon: <FaShoppingCart className="menu-icon" />,
+    path: "/admin/myorders",
+    permissionKey: "myorders",
+  },
   {
     title: "Client / Supplier",
     icon: <FaUsersCog className="menu-icon" />,

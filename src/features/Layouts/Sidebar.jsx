@@ -386,8 +386,13 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
   const menuItems = useMemo(() => {
     if (!UserSingle || !roleData) return [];
 
+    const hasInventoryAccess = !!localStorage.getItem("InventoryUser");
+
     if (roleData === "admin") {
       const filteredAdminItems = adminMenuItems.filter(item => {
+        if (["/admin/products", "/admin/myorders"].includes(item.path)) {
+          return hasInventoryAccess;
+        }
         return true;
       });
       return getFilteredMenuItems(filteredAdminItems);

@@ -514,6 +514,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Dropdown } from "react-bootstrap";
 import { fetchjobs } from "../../../redux/slices/JobsSlice";
 import { fetchusers } from "../../../redux/slices/userSlice";
+import { can } from "../../../redux/helper";
 
 function InProgress() {
   const navigate = useNavigate();
@@ -667,7 +668,7 @@ function InProgress() {
         <Table hover className="align-middle sticky-header">
           <thead className="bg-light">
             <tr>
-              <th>
+              {/* <th>
                 <input
                   type="checkbox"
                   onChange={(e) => {
@@ -680,7 +681,7 @@ function InProgress() {
                   }}
                   checked={job?.jobs?.length > 0 && job?.jobs?.every((j) => selectedJobs[j._id])}
                 />
-              </th>
+              </th> */}
               <th>JobNo</th>
               <th style={{ whiteSpace: "nowrap" }}>Project Name</th>
               <th>Assigned</th>
@@ -692,13 +693,13 @@ function InProgress() {
           <tbody>
             {paginatedProjects.slice().reverse().map((job, index) => (
               <tr key={job._id}>
-                <td>
+                {/* <td>
                   <input
                     type="checkbox"
                     checked={selectedJobs[job._id] || false}
                     onChange={() => handleCheckboxChange(job._id)}
                   />
-                </td>
+                </td> */}
                 <td>
                   <span>{job.JobNo}</span>
                 </td>

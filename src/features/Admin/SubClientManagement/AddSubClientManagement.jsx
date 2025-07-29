@@ -77,9 +77,6 @@ const AddSubClientManagement = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    console.log('Sending data:', formData);
-
-
     try {
       if (isEditMode) {
         await axios.patch(

@@ -1,59 +1,14 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Button, Form, Dropdown, ButtonGroup, Badge, Container, Row, Col, ProgressBar, Modal, Popover, Overlay, Accordion, Spinner } from 'react-bootstrap';
-import { FunnelFill, Link, List, ChevronDown, ChevronUp } from 'react-bootstrap-icons';
-import { Kanban, Plus } from 'react-bootstrap-icons';
-import { FaArrowLeft, FaUpload, FaPlus } from "react-icons/fa"; // Add this import
+import { Button, Form, Dropdown, Badge, Accordion } from 'react-bootstrap';
+import { ChevronDown, ChevronUp } from 'react-bootstrap-icons';
 import { useNavigate } from "react-router-dom";
 import { DragDropContext, Droppable, Draggable } from '@hello-pangea/dnd';
-import { fetchAllProposals, updateProposalStatus, updateProposalStatusLocally } from '../../../../redux/slices/proposalSlice';
 import { useDispatch, useSelector } from 'react-redux';
-import { MdManageAccounts } from 'react-icons/md';
-import { HiOutlineDocumentReport } from 'react-icons/hi';
 import { deleteproject, fetchProject, updateProject, updateProjectStatusLocally } from '../../../../redux/slices/ProjectsSlice';
 import { getAllDocumentsRecord } from '../../../../redux/slices/documentSlice';
 import Swal from 'sweetalert2';
 import { BsThreeDotsVertical } from 'react-icons/bs';
-
-
-
-
-const initialProposals = [
-    {
-        id: 'p1',
-        title: 'Proposal for Sunrise Apartments',
-        client: 'Ramesh Kumar',
-        status: 'Draft',
-        stage: 'lead',
-        // stage: 'create-proposal',
-        updated: '2025-06-07 10:30',
-        logs: [
-            { by: 'Admin', at: '2025-06-07 10:30', note: 'Created proposal' }
-        ]
-    },
-    {
-        id: 'p2',
-        title: 'Proposal for Metro Mall',
-        client: 'Sunita Singh',
-        status: 'Sent',
-        stage: 'lead', // was 'automatic-delivery'
-        // stage: 'client-review', // was 'automatic-delivery'
-        updated: '2025-06-07 11:00',
-        logs: [
-            { by: 'Admin', at: '2025-06-07 10:45', note: 'Proposal sent via email' }
-        ]
-    },
-    {
-        id: 'p3',
-        title: 'Proposal for Greenfield School',
-        client: 'Ajay Mehra',
-        status: 'Awaiting Signature',
-        stage: 'client-signing',
-        updated: '2025-06-07 11:30',
-        logs: [
-            { by: 'Client', at: '2025-06-07 11:25', note: 'Opened email' }
-        ]
-    }
-];
+import { can } from '../../../../redux/helper';
 
 const ReportsDashboard = () => {
     const reports = [
@@ -434,7 +389,6 @@ const tabs = [
 ];
 
 
-
 const ProjectView = ({ data }) => {
     const [stageFilter, setStageFilter] = useState(stageOptions.map(opt => opt.id)); // all checked by default
     const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -456,28 +410,9 @@ const ProjectView = ({ data }) => {
     }, []);
 
     useEffect(() => {
-        dispatch(fetchAllProposals())
         dispatch(fetchProject())
     }, [])
     const project = useSelector((state) => state?.projects?.project?.data) || [];
-    // Remove the incorrect destructuring and useSelector for reduxProposals
-    // const { reduxProposals,  } = useSelector((state) => state?.proposal?.proposals);
-    // Instead, get proposals from project.data or fallback to initialProposals
-    const proposals = project && project.data && project.data.length > 0 ? project.data : initialProposals;
-    // console.log(proposals, "proposals");
-
-    const [filterRows, setFilterRows] = useState([
-        { field: '', value: '' }
-    ]);
-
-    const handleAddFilterRow = () => {
-        setFilterRows(prev => [...prev, { field: '', value: '' }]);
-    };
-
-    const handleClearFilters = () => {
-        setFilterRows([{ field: '', value: '' }]); // Reset filter fields
-        setFilteredData(data);                    // Reset table/list view
-    };
 
 
     useEffect(() => {
@@ -569,8 +504,7 @@ const ProjectView = ({ data }) => {
             },
             ...prev
         ]);
-        // 2. Refresh proposals from Redux (temporary workaround)
-        dispatch(fetchAllProposals());
+
         setShowNewContractPage(false);
         setWorkflowView('workflow'); // Switch to workflow view
     };
@@ -642,6 +576,11 @@ const ProjectView = ({ data }) => {
             }
             );
         }
+
+        const canEdit = can("projectsAndJobs", "edit");
+        const canDelete = can("projectsAndJobs", "delete");
+
+
 
         function mapStatus(status) {
             const defaultMap = {
@@ -911,9 +850,33 @@ const ProjectView = ({ data }) => {
                                                                 <Dropdown.Toggle as="div" style={{ cursor: "pointer" }}>
                                                                     <BsThreeDotsVertical size={16} />
                                                                 </Dropdown.Toggle>
-                                                                <Dropdown.Menu>
+                                                                {/* <Dropdown.Menu>
                                                                     <Dropdown.Item onClick={() => handleUpdateProjectCard(item)}>Edit</Dropdown.Item>
                                                                     <Dropdown.Item onClick={() => handleDeleteProject(item._id)} className="text-danger">Delete</Dropdown.Item>
+                                                                </Dropdown.Menu> */}
+                                                                <Dropdown.Menu>
+                                                                    <Dropdown.Item
+                                                                        onClick={() => canEdit && handleUpdateProjectCard(item)}
+                                                                        disabled={!canEdit}
+                                                                        style={{
+                                                                            cursor: canEdit ? "pointer" : "not-allowed",
+                                                                            opacity: canEdit ? 1 : 0.6,
+                                                                        }}
+                                                                    >
+                                                                        Edit
+                                                                    </Dropdown.Item>
+
+                                                                    <Dropdown.Item
+                                                                        onClick={() => canDelete && handleDeleteProject(item._id)}
+                                                                        className="text-danger"
+                                                                        disabled={!canDelete}
+                                                                        style={{
+                                                                            cursor: canDelete ? "pointer" : "not-allowed",
+                                                                            opacity: canDelete ? 1 : 0.6,
+                                                                        }}
+                                                                    >
+                                                                        Delete
+                                                                    </Dropdown.Item>
                                                                 </Dropdown.Menu>
                                                             </Dropdown>
                                                         </div>

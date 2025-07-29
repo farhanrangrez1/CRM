@@ -8,6 +8,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { deleteClients, fetchClient } from '../../../redux/slices/ClientSlice';
 import Swal from 'sweetalert2';
 import './ClientManagement.css';
+import { can } from '../../../redux/helper';
 
 function ClientManagement() {
   const navigate = useNavigate();
@@ -105,6 +106,11 @@ function ClientManagement() {
     navigate(`/admin/AddClientManagement`, { state: { client } });
   };
 
+  const canAdd = can("client", "create");
+  const canEdit = can("client", "edit");
+  const canDelete = can("client", "delete");
+
+
   return (
     <Container fluid className="p-4">
       <Row className="align-items-center p-3" style={{ backgroundColor: 'white', borderRadius: '10px' }}>
@@ -164,7 +170,7 @@ function ClientManagement() {
 
             <Col md className="mb-2 d-flex justify-content-md-end">
               <Link to="/admin/AddClientManagement">
-                <Button id="All_btn" variant="primary">+ Add Company</Button>
+                <Button id="All_btn" variant="primary" disabled={!canAdd}>+ Add Company</Button>
               </Link>
             </Col>
           </Row>
@@ -203,10 +209,10 @@ function ClientManagement() {
                     {/* </td> */}
                     <td>
                       <div className="action-buttons d-flex">
-                        <Button onClick={() => UpdateData(client)} id="icone_btn" size="sm">
+                        <Button onClick={() => UpdateData(client)} id="icone_btn" size="sm" disabled={!canEdit}>
                           <FaEdit />
                         </Button>
-                        <Button onClick={() => handleDelete(client.id)} id="icone_btn" size="sm">
+                        <Button onClick={() => handleDelete(client.id)} id="icone_btn" size="sm" disabled={!canDelete}>
                           <FaTrash />
                         </Button>
                       </div>

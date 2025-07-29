@@ -707,7 +707,7 @@ function Completed_Jobs() {
           <Table hover className="align-middle sticky-header">
             <thead className="bg-light">
               <tr>
-                <th>
+                {/* <th>
                   <input
                     type="checkbox"
                     onChange={(e) => {
@@ -720,7 +720,7 @@ function Completed_Jobs() {
                     }}
                     checked={job?.jobs?.length > 0 && job?.jobs?.every((j) => selectedJobs[j._id])}
                   />
-                </th>
+                </th> */}
                 <th>JobNo</th>
                 <th style={{ whiteSpace: "nowrap" }}>Project Name</th>
                 <th>Assigned</th>
@@ -732,13 +732,13 @@ function Completed_Jobs() {
             <tbody>
               {paginatedProjects.slice().reverse().map((job, index) => (
                 <tr key={job._id}>
-                  <td>
+                  {/* <td>
                     <input
                       type="checkbox"
                       checked={selectedJobs[job._id] || false}
                       onChange={() => handleCheckboxChange(job._id)}
                     />
-                  </td>
+                  </td> */}
                   <td>
                     <span>{job.JobNo}</span>
                   </td>

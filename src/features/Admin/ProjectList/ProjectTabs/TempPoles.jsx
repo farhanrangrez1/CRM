@@ -14,6 +14,7 @@ import { deleteproject, fetchProject, updateProject, updateProjectStatusLocally 
 import { getAllDocumentsRecord } from '../../../../redux/slices/documentSlice';
 import { BsThreeDotsVertical } from 'react-icons/bs';
 import Swal from 'sweetalert2';
+import { can } from '../../../../redux/helper';
 
 
 
@@ -885,6 +886,10 @@ const TempPoles = ({ data }) => {
         const clientId = localStorage.getItem('clientId');
         let reduxProposals;
 
+        const canEdit = can("projectsAndJobs", "edit");
+        const canDelete = can("projectsAndJobs", "delete");
+
+
         if (loginType == "client") {
             reduxProposals = (project.data || [])
                 .filter(item => item.tempPoles === true && item?.clientId?._id == clientId)
@@ -1141,9 +1146,33 @@ const TempPoles = ({ data }) => {
                                                                 <Dropdown.Toggle as="div" style={{ cursor: "pointer" }}>
                                                                     <BsThreeDotsVertical size={16} />
                                                                 </Dropdown.Toggle>
-                                                                <Dropdown.Menu>
+                                                                {/* <Dropdown.Menu>
                                                                     <Dropdown.Item onClick={() => handleUpdateProjectCard(item)}>Edit</Dropdown.Item>
                                                                     <Dropdown.Item onClick={() => handleDeleteProject(item._id)} className="text-danger">Delete</Dropdown.Item>
+                                                                </Dropdown.Menu> */}
+                                                                <Dropdown.Menu>
+                                                                    <Dropdown.Item
+                                                                        onClick={() => canEdit && handleUpdateProjectCard(item)}
+                                                                        disabled={!canEdit}
+                                                                        style={{
+                                                                            cursor: canEdit ? "pointer" : "not-allowed",
+                                                                            opacity: canEdit ? 1 : 0.6,
+                                                                        }}
+                                                                    >
+                                                                        Edit
+                                                                    </Dropdown.Item>
+
+                                                                    <Dropdown.Item
+                                                                        onClick={() => canDelete && handleDeleteProject(item._id)}
+                                                                        className="text-danger"
+                                                                        disabled={!canDelete}
+                                                                        style={{
+                                                                            cursor: canDelete ? "pointer" : "not-allowed",
+                                                                            opacity: canDelete ? 1 : 0.6,
+                                                                        }}
+                                                                    >
+                                                                        Delete
+                                                                    </Dropdown.Item>
                                                                 </Dropdown.Menu>
                                                             </Dropdown>
                                                         </div>

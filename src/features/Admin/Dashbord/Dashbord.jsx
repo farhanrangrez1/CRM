@@ -140,8 +140,6 @@ function Dashbord() {
   useEffect(() => {
     const fetchData = async () => {
       const response = await axios.get(`${apiUrl}/dashboard/getCombinedDashboard`);
-      console.log(response?.data);
-
       setDashboardData(response?.data);
     };
     fetchData();

@@ -21,6 +21,7 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { BiCopy } from "react-icons/bi";
 import { fetchProject } from "../../../redux/slices/ProjectsSlice";
+import { can } from "../../../redux/helper";
 
 function NewJobsList() {
   const [showRejectModal, setShowRejectModal] = useState(false);
@@ -497,13 +498,17 @@ function NewJobsList() {
     navigate(`/admin/AddJobTracker/${projectId}`, { state: { id: projectId } });
   };
 
+  const canCreate = can("tasks", "create");
+  const canEdit = can("tasks", "edit");
+  const canDelete = can("tasks", "delete");
+
   return (
     <div className="container bg-white p-3 mt-4 rounded shadow-sm">
       {/* Title */}
       <div className="d-flex justify-content-between align-items-center">
         <h5 className="fw-bold m-0">Tasks List</h5>
         <div className="d-flex gap-2 ">
-          <Button onClick={handleRejectJobs} id="All_btn" className="m-2" variant="primary">
+          <Button onClick={handleRejectJobs} id="All_btn" className="m-2" variant="primary" disabled={!canEdit}>
             Cancelled Job
           </Button>
           {/* <Button
@@ -523,7 +528,7 @@ function NewJobsList() {
           >
             Assign
           </Button> */}
-          <Button onClick={() => setShowProjectModal(true)} id="All_btn" className="m-2" variant="primary">
+          <Button onClick={() => setShowProjectModal(true)} id="All_btn" className="m-2" variant="primary" disabled={!canCreate}>
             <i className="bi bi-plus"></i> Add Task
           </Button>
         </div>
@@ -708,13 +713,13 @@ function NewJobsList() {
                     <Button id="icone_btn" size="sm">
                       <FaClock />
                     </Button> */}
-                    <button className="btn btn-sm btn-outline-primary me-1" onClick={() => handleComplete(job?._id)}>
+                    <button className="btn btn-sm btn-outline-primary me-1" onClick={() => handleComplete(job?._id)} disabled={!canEdit}>
                       <i className="bi bi-eye"></i> complete
                     </button>
-                    <Button id="icone_btn" size="sm" onClick={() => handleUpdate(job)}>
+                    <Button id="icone_btn" size="sm" onClick={() => handleUpdate(job)} disabled={!canEdit}>
                       <FaEdit />
                     </Button>
-                    <Button id="icone_btn" size="sm" onClick={() => handleDelete(job)}>
+                    <Button id="icone_btn" size="sm" onClick={() => handleDelete(job)} disabled={!canDelete}>
                       <FaBucket />
                     </Button>
                   </div>

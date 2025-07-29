@@ -1,119 +1,20 @@
 
 
 import React, { useState, useEffect, useRef } from 'react';
-import { Button, Form, Dropdown, ButtonGroup, Badge, Container, Row, Col, ProgressBar, Modal, Popover, Overlay, Accordion } from 'react-bootstrap';
-import { FunnelFill, Link, List, ChevronDown, ChevronUp } from 'react-bootstrap-icons';
-import { Kanban, Plus } from 'react-bootstrap-icons';
-import { FaArrowLeft, FaUpload, FaPlus } from "react-icons/fa"; // Add this import
+import { Button, Dropdown, Badge, Accordion } from 'react-bootstrap';
+import { ChevronDown, ChevronUp } from 'react-bootstrap-icons';
 import { useNavigate } from "react-router-dom";
 import { DragDropContext, Droppable, Draggable } from '@hello-pangea/dnd';
-import { fetchAllProposals, updateProposalStatus, updateProposalStatusLocally } from '../../../redux/slices/proposalSlice';
 import './Project.css';
 import { useDispatch, useSelector } from 'react-redux';
-import { MdManageAccounts } from 'react-icons/md';
-import { HiOutlineDocumentReport } from 'react-icons/hi';
 import { deleteproject, fetchProject, updateProject } from '../../../redux/slices/ProjectsSlice';
-import { apiUrl } from '../../../redux/utils/config';
-import axios from 'axios';
 import { getAllDocumentsRecord } from '../../../redux/slices/documentSlice';
 import { BsThreeDotsVertical } from 'react-icons/bs';
 import Swal from 'sweetalert2';
 import { deletejob, fetchjobs } from '../../../redux/slices/JobsSlice';
-
-const initialProposals = [
-  {
-    id: 'p1',
-    title: 'Proposal for Sunrise Apartments',
-    client: 'Ramesh Kumar',
-    status: 'Draft',
-    stage: 'lead',
-    // stage: 'create-proposal',
-    updated: '2025-06-07 10:30',
-    logs: [
-      { by: 'Admin', at: '2025-06-07 10:30', note: 'Created proposal' }
-    ]
-  },
-  {
-    id: 'p2',
-    title: 'Proposal for Metro Mall',
-    client: 'Sunita Singh',
-    status: 'Sent',
-    stage: 'lead', // was 'automatic-delivery'
-    // stage: 'client-review', // was 'automatic-delivery'
-    updated: '2025-06-07 11:00',
-    logs: [
-      { by: 'Admin', at: '2025-06-07 10:45', note: 'Proposal sent via email' }
-    ]
-  },
-  {
-    id: 'p3',
-    title: 'Proposal for Greenfield School',
-    client: 'Ajay Mehra',
-    status: 'Awaiting Signature',
-    stage: 'client-signing',
-    updated: '2025-06-07 11:30',
-    logs: [
-      { by: 'Client', at: '2025-06-07 11:25', note: 'Opened email' }
-    ]
-  }
-];
+import { can } from '../../../redux/helper';
 
 
-const ReportsDashboard = () => {
-  const reports = [
-    {
-      title: "Backlog Report",
-      description: "Report with backlog information, including contract value and labor"
-    },
-    {
-      title: "Basic Jobs Report",
-      description: "Output with all the company jobs, with contract information when applicable"
-    },
-    {
-      title: "Advanced Jobs Report",
-      description: "Report with all the company jobs, including P&L information"
-    },
-    {
-      title: "Contract Progress Report",
-      description: "Report with all contract items in active Fixed Price jobs"
-    },
-    {
-      title: "Job Purchases Report",
-      description: "Report with all materials estimated and ordered across all the company jobs"
-    },
-    {
-      title: "GC Report",
-      description: "Report with all the Fixed Price (AIA-style billing) proposals"
-    },
-    {
-      title: "Owner Report",
-      description: "Report with all the Fixed Price (regular billing) proposals"
-    },
-    {
-      title: "Sales",
-      description: "Report with all Fixed Price contract jobs grouped by sales lead"
-    },
-    {
-      title: "Change Order Report",
-      description: "Report with all the company change orders"
-    }
-  ];
-
-  return (
-    <div className="container py-4 bg-white">
-      <div className="row">
-        <div className="col-12">
-          {reports.map((report, index) => (
-            <div key={index} className="mb-4">
-              <h6 className="text-primary fw-semibold">{report.title}</h6>
-              <p className="text-muted small mb-0">{report.description}</p>
-            </div>
-          ))}
-        </div>
-      </div>
-    </div>
-  );
-};
 
 const NewContractJobPage = ({ onClose, onSave }) => {
   const [jobName, setJobName] = useState('');
@@ -431,25 +332,11 @@ const tabs = [
 ];
 
 
-// const tabs = [
-//   { label: 'Lead', value: 'Active' },
-//   { label: 'Bidding', value: 'Pending ' },
-//   { label: 'Signature', value: 'Closed' },
-//   { label: 'Expired', value: 'Rejected' },
-//   { label: 'All', value: 'All' },
-// ];
-
 const LeadFlow = ({ data }) => {
-  const [stageFilter, setStageFilter] = useState(stageOptions.map(opt => opt.id)); // all checked by default
-  const [dropdownOpen, setDropdownOpen] = useState(false);
-  const [tempStageFilter, setTempStageFilter] = useState(stageFilter);
   const [showNewContractPage, setShowNewContractPage] = useState(false);
   const [activeTab, setActiveTab] = useState('manage');
   const [workflowView, setWorkflowView] = useState('workflow');
-  const dropdownRef = useRef(null); // ✅ define the ref before using it
-  const [showFilterPopover, setShowFilterPopover] = useState(false);
-  const filterBtnRef = useRef(null);
-  const [filteredData, setFilteredData] = useState(data); // `data` is your original list
+  const dropdownRef = useRef(null);
   const dispatch = useDispatch()
   const [setData] = useState([]);
 
@@ -460,16 +347,12 @@ const LeadFlow = ({ data }) => {
   }, []);
 
   useEffect(() => {
-    dispatch(fetchAllProposals())
     dispatch(fetchProject())
   }, [dispatch])
 
 
   const project = useSelector((state) => state?.projects?.project?.data) || [];
-  // console.log("abc", project)
-  const { reduxProposals, loading } = useSelector((state) => state?.proposal?.proposals);
-  // console.log(reduxProposals, "reduxProposals");
-  const proposals = reduxProposals && reduxProposals.length > 0 ? reduxProposals : initialProposals;
+
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -542,7 +425,6 @@ const LeadFlow = ({ data }) => {
       ...prev
     ]);
     // 2. Refresh proposals from Redux (temporary workaround)
-    dispatch(fetchAllProposals());
     setShowNewContractPage(false);
     setWorkflowView('workflow'); // Switch to workflow view
   };
@@ -552,311 +434,8 @@ const LeadFlow = ({ data }) => {
   };
 
 
-  // const ProposalWorkflowBoard = ({ onNavigate, selectedStatus }) => {
-  //   const reduxProposals = useSelector((state) => state?.proposal?.proposals);
-  //   const dispatch = useDispatch();
-  //   const [isUpdating, setIsUpdating] = useState(false);
-  //   const [kanbanData, setKanbanData] = useState({
-  //     active: [],
-  //     pending: [],
-  //     closed: [],
-  //     rejected: []
-  //   });
-
-  //   const [loadingSpinner, setLoadingSpinner] = useState(false); // 👈 Add loading state
-
-  //   // Fetch document records
-  //   useEffect(() => {
-  //     dispatch(getAllDocumentsRecord());
-  //   }, [dispatch]);
-
-  //   const records = useSelector((state) => state?.documentRecord?.records?.data) || [];
-
-  //   const proposalTotalsMap = records.reduce((acc, record) => {
-  //     const proposalId = record.proposal_id;
-  //     const total = record.line_items?.reduce((sum, item) => sum + (item.amount || 0), 0);
-  //     acc[proposalId] = (acc[proposalId] || 0) + total;
-  //     return acc;
-  //   }, {});
-
-
-  //   useEffect(() => {
-  //     const processProjects = async () => {
-  //       if (!Array.isArray(project)) return;
-  //       setLoadingSpinner(true);
-
-  //       const updatedProjects = await Promise.all(
-  //         project.map(async (p) => {
-  //           const status = (p.status || "").toLowerCase();
-
-  //           if (status === "signature") {
-  //             const isTempPoles = p.tempPoles === "true";
-  //             const newStatus = isTempPoles ? "Open" : "Active Project";
-
-  //             await dispatch(
-  //               updateProject({
-  //                 id: p._id,
-  //                 payload: { status: newStatus },
-  //               })
-  //             );
-  //             return { ...p, status: "completed" };
-  //           }
-
-  //           return p;
-  //         })
-  //       );
-
-  //       // Step 2: Filter into Kanban columns
-  //       const result = {
-  //         active: updatedProjects.filter(
-  //           (p) => (p.status || "").toLowerCase() === "lead"
-  //         ),
-  //         pending: updatedProjects.filter(
-  //           (p) => (p.status || "").toLowerCase() === "bidding"
-  //         ),
-  //         closed: updatedProjects.filter(
-  //           (p) => ["open", "active project", "signature", "Open", "Active Project", "Signature", "active"].includes(
-  //             (p.status || "")
-  //           )
-  //         ),
-  //         rejected: updatedProjects.filter(
-  //           (p) => (p.status || "").toLowerCase() === "expired"
-  //         ),
-  //       };
-
-  //       setKanbanData(result);
-  //       setLoadingSpinner(false);
-  //     };
-
-  //     processProjects();
-  //   }, []);
-
-
-  //   const handleCardDrop = async (result) => {
-  //     const { source, destination, draggableId } = result;
-  //     if (!destination || (source.droppableId === destination.droppableId && source.index === destination.index)) return;
-
-  //     const statusMap = {
-  //       active: "Lead",
-  //       pending: "Bidding",
-  //       closed: "Signature",
-  //       rejected: "Expired"
-  //     };
-
-  //     const newStatus = statusMap[destination.droppableId];
-
-  //     setIsUpdating(true);
-
-  //     try {
-  //       // Update DB status
-  //       await dispatch(updateProject({ id: draggableId, payload: { status: newStatus } }));
-
-  //       // Fetch updated list
-  //       await dispatch(fetchProject());
-  //       // console.log("fetcing project...");
-
-  //       setKanbanData(prevData => {
-  //         const updatedData = { ...prevData };
-
-  //         // Remove from current column
-  //         const currentStage = Object.keys(prevData).find(key =>
-  //           prevData[key].some(item => item._id === draggableId)
-  //         );
-  //         updatedData[currentStage] = updatedData[currentStage].filter(item => item._id !== draggableId);
-
-  //         // Add to new column
-  //         const movedItem = prevData[currentStage].find(item => item._id === draggableId);
-  //         if (movedItem) {
-  //           const updatedItem = { ...movedItem, status: newStatus };
-  //           updatedData[destination.droppableId] = [...updatedData[destination.droppableId], updatedItem];
-  //         }
-
-  //         return updatedData;
-  //       });
-
-  //     } catch (error) {
-  //       console.error("Failed to update status", error);
-  //     }
-
-  //     setIsUpdating(false);
-  //   };
-
-
-  //   let columns = [
-  //     { id: 'active', title: 'Lead' },
-  //     { id: 'pending', title: 'Bidding' },
-  //     { id: 'closed', title: 'Signature' },
-  //     { id: 'rejected', title: 'Expired' },
-  //   ];
-
-  //   if (selectedStatus && selectedStatus !== 'All') {
-  //     const selectedColumn = columns.find(c => c.title.toLowerCase() === selectedStatus.toLowerCase());
-  //     if (selectedColumn) {
-  //       columns = [selectedColumn, ...columns.filter(c => c.id !== selectedColumn.id)];
-  //     }
-  //   }
-
-
-  //   const handleUpdateProjectCard = (project) => {
-  //     navigate(`/admin/AddProjectList`, { state: { project } });
-  //   };
-
-  //   const { job } = useSelector((state) => state.jobs);
-  //   useEffect(() => {
-  //     dispatch(fetchjobs());
-  //   }, [dispatch]);
-
-  //   const handleDeleteProject = async (projectId) => {
-  //     Swal.fire({
-  //       title: 'Are you sure?',
-  //       text: 'This will permanently delete the project and all related jobs!',
-  //       icon: 'warning',
-  //       showCancelButton: true,
-  //       confirmButtonText: 'Yes, delete it!',
-  //       cancelButtonText: 'Cancel',
-  //     }).then(async (result) => {
-  //       if (result.isConfirmed) {
-  //         try {
-
-
-  //           const relatedJobs = job?.jobs?.filter((jobItem) =>
-  //             jobItem.projectId?.some((p) => p._id === projectId)
-  //           );
-
-  //           // Step 2: Delete all related jobs
-  //           for (const job of relatedJobs) {
-  //             await dispatch(deletejob(job._id));
-  //           }
-
-  //           // Step 3: Delete the project
-  //           await dispatch(deleteproject(projectId));
-
-  //           await Swal.fire('Deleted!', 'Project and related jobs deleted.', 'success');
-  //           dispatch(fetchjobs()); // refresh job list
-  //           dispatch(fetchProject()); // refresh project list
-  //         } catch (error) {
-  //           Swal.fire('Error!', 'Something went wrong.', 'error');
-  //         }
-  //       }
-  //     });
-  //   };
-
-
-  //   return (
-  //     <div style={{ position: 'relative' }}>
-  //       {isUpdating && (
-  //         <div className="kanban-loading-overlay">
-  //           Updating...
-  //         </div>
-  //       )}
-  //       {loadingSpinner ? (
-  //         <div className="d-flex flex-column justify-content-center align-items-center" style={{ minHeight: "400px" }}>
-  //           <div className="spinner-border text-primary" role="status">
-  //             <span className="visually-hidden">Loading...</span>
-  //           </div>
-  //           <div className="mt-3">Loading...</div>
-  //         </div>
-  //       ) : (
-  //         <DragDropContext key={project.map(p => p.id).join('-')} onDragEnd={handleCardDrop}>
-  //           <div className="kanban-board d-flex flex-nowrap gap-3 py-3" style={{ overflowX: "auto", minHeight: 350, marginLeft: "20px", WebkitOverflowScrolling: 'touch' }}>
-  //             {columns.map(col => (
-  //               <Droppable droppableId={col.id} key={col.id}>
-  //                 {(provided, snapshot) => (
-  //                   <div
-  //                     ref={provided.innerRef}
-  //                     {...provided.droppableProps}
-  //                     className="kanban-stage bg-light border rounded p-2 flex-shrink-0 d-flex flex-column"
-  //                     style={{ minWidth: 220, maxWidth: 320, minHeight: 320, width: '100%', flex: '1 1 260px', background: snapshot.isDraggingOver ? '#e3f2fd' : undefined }}
-  //                   >
-  //                     <div className="fw-bold mb-2 d-flex align-items-center gap-2">
-  //                       <span className="text-dark" style={{ fontSize: 14 }}>
-  //                         <span className="me-1" style={{ fontSize: 10 }}>●</span>
-  //                         {col.title}
-  //                       </span>
-  //                       <span className="badge bg-light text-dark border ms-auto">{kanbanData[col.id]?.length || 0}</span>
-  //                     </div>
-  //                     {kanbanData[col.id]?.map((item, idx) => (
-  //                       <Draggable draggableId={String(item._id)} index={idx} key={item._id}>
-  //                         {(provided, snapshot) => (
-  //                           <div
-  //                             ref={provided.innerRef}
-  //                             {...provided.draggableProps}
-  //                             {...provided.dragHandleProps}
-  //                             className="bg-white border rounded mb-2 p-2 shadow-sm"
-  //                             style={{
-  //                               minHeight: 110,
-  //                               wordBreak: 'break-word',
-  //                               maxWidth: '100%',
-  //                               background: snapshot.isDragging ? '#fffde7' : undefined,
-  //                               ...provided.draggableProps.style
-  //                             }}
-  //                             onClick={() => {
-  //                               localStorage.setItem("proposalId", item?._id);
-  //                               localStorage.setItem("invoice", JSON.stringify(item));
-  //                               navigate("/admin/LeadFlow/Details", { state: { item: item } });
-  //                             }}
-  //                           >
-  //                             <div className="d-flex justify-content-between align-items-start mb-1">
-  //                               <div className="fw-semibold text-primary" style={{ fontSize: 15, maxWidth: '80%', wordBreak: 'break-word' }}>
-  //                                 {item.projectName || item.title}
-  //                               </div>
-  //                               <Dropdown align="end" onClick={(e) => e.stopPropagation()}>
-  //                                 <Dropdown.Toggle as="div" style={{ cursor: "pointer" }}>
-  //                                   <BsThreeDotsVertical size={16} />
-  //                                 </Dropdown.Toggle>
-  //                                 <Dropdown.Menu>
-  //                                   <Dropdown.Item onClick={() => handleUpdateProjectCard(item)}>Edit</Dropdown.Item>
-  //                                   <Dropdown.Item onClick={() => handleDeleteProject(item._id)} className="text-danger">Delete</Dropdown.Item>
-  //                                 </Dropdown.Menu>
-  //                               </Dropdown>
-  //                             </div>
-  //                             <div className="text-muted small mb-1">Client: {item?.clientId?.clientName}</div>
-  //                             <div className="small text-secondary mb-1">Address: {item.billing || item.projectAddress}</div>
-  //                             <div className="small text-secondary mb-1">Phases: {item.phases}</div>
-  //                             {/* <div className="fw-semibold text-success" style={{ fontSize: 15 }}>
-  //                               Total: ${proposalTotalsMap[item._id] || 0}
-  //                             </div> */}
-  //                             {/* <div className="fw-semibold text-success" style={{ fontSize: 15 }}>
-  //                               Total Paid: {item.paid || 0}
-  //                             </div>
-  //                             <div className="fw-semibold text-danger" style={{ fontSize: 15 }}>
-  //                               Total Due: {item.due || 0}
-  //                             </div> */}
-  //                             {item.status == "signature" || item.status == "Signature" || item.status == "open" || item.status == "Open" || item.status == 'Active Project' ?
-  //                               <div className="d-flex flex-wrap justify-content-between gap-2 align-items-center mb-1">
-  //                                 <Badge
-  //                                   bg={item.status === 'Open' || item.status === 'Active Project' ? 'success' : (item.status === 'Bidding' ? 'warning' : 'info')}
-  //                                   className="me-1"
-  //                                 >
-  //                                   {item.status === 'Open' || item.status === 'Active Project' ? 'Signature' : (item.status == "Bidding" ? "mail sent" : item.status)}
-  //                                 </Badge>
-  //                                 ✅
-  //                               </div> : <div className="d-flex flex-wrap gap-2 align-items-center mb-1">
-  //                                 <Badge
-  //                                   bg={item.status === 'Open' || item.status === 'Active Project' ? 'success' : (item.status === 'Bidding' ? 'warning' : 'info')}
-  //                                   className="me-1"
-  //                                 >
-  //                                   {item.status === 'Open' || item.status === 'Active Project' || item.status === 'active' ? 'Signature' : (item.status == "Bidding" ? "mail sent" : item.status)}
-  //                                 </Badge>
-  //                               </div>}
-  //                           </div>
-  //                         )}
-  //                       </Draggable>
-  //                     ))}
-  //                     {provided.placeholder}
-  //                   </div>
-  //                 )}
-  //               </Droppable>
-  //             ))}
-  //           </div>
-  //         </DragDropContext>
-  //       )}
-  //     </div>
-  //   );
-  // };
-
   const ProposalWorkflowBoard = ({ onNavigate, selectedStatus }) => {
-    const reduxProposals = useSelector((state) => state?.proposal?.proposals);
+
     const dispatch = useDispatch();
     const [isUpdating, setIsUpdating] = useState(false);
     const [kanbanData, setKanbanData] = useState({
@@ -867,6 +446,11 @@ const LeadFlow = ({ data }) => {
       hold: [],
       approved: []
     });
+
+    const canEdit = can("proposal", "edit");
+    const canDelete = can("proposal", "delete");
+
+
 
     const [loadingSpinner, setLoadingSpinner] = useState(false); // 👈 Add loading state
 
@@ -1158,8 +742,28 @@ const LeadFlow = ({ data }) => {
                                     <BsThreeDotsVertical size={16} />
                                   </Dropdown.Toggle>
                                   <Dropdown.Menu>
-                                    <Dropdown.Item onClick={() => handleUpdateProjectCard(item)}>Edit</Dropdown.Item>
-                                    <Dropdown.Item onClick={() => handleDeleteProject(item._id)} className="text-danger">Delete</Dropdown.Item>
+                                    <Dropdown.Item
+                                      onClick={() => canEdit && handleUpdateProjectCard(item)}
+                                      disabled={!canEdit}
+                                      style={{
+                                        cursor: canEdit ? "pointer" : "not-allowed",
+                                        opacity: canEdit ? 1 : 0.6,
+                                      }}
+                                    >
+                                      Edit
+                                    </Dropdown.Item>
+
+                                    <Dropdown.Item
+                                      onClick={() => canDelete && handleDeleteProject(item._id)}
+                                      className="text-danger"
+                                      disabled={!canDelete}
+                                      style={{
+                                        cursor: canDelete ? "pointer" : "not-allowed",
+                                        opacity: canDelete ? 1 : 0.6,
+                                      }}
+                                    >
+                                      Delete
+                                    </Dropdown.Item>
                                   </Dropdown.Menu>
                                 </Dropdown>
                               </div>
@@ -1249,8 +853,6 @@ const LeadFlow = ({ data }) => {
 
   const renderTabContent = () => {
     switch (activeTab) {
-      case 'reports':
-        return <ReportsDashboard />;
       case 'manage':
       default:
         return (
@@ -1328,6 +930,10 @@ const LeadFlow = ({ data }) => {
     }
   };
 
+  const permissions = JSON.parse(localStorage.getItem("permissions"));
+  const canCreateProject = permissions?.proposal?.create === "true";
+
+
   return (
     <>
       {showNewContractPage ? (
@@ -1389,6 +995,7 @@ const LeadFlow = ({ data }) => {
                     // onClick={() => navigate("/admin/AddProjectList")}
                     onClick={() => navigate("/admin/AddProjectList")}
                     className="d-flex align-items-center"
+                    disabled={!canCreateProject}
                   >
                     {/* Create Project */}
                     {/* Create Proposal */}
@@ -1439,12 +1046,12 @@ const LeadFlow = ({ data }) => {
             </div>
 
             {/* Loader */}
-            {loading && (
+            {/* {loading && (
               <div className="text-center my-5">
                 <Spinner animation="border" variant="primary" />
                 <div className="mt-2">Loading projects...</div>
               </div>
-            )}
+            )} */}
 
           </div>
           {/* Tabs Section */}

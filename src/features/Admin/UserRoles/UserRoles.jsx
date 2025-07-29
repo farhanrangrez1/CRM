@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { deleteusers, fetchusers } from '../../../redux/slices/userSlice';
 import Swal from 'sweetalert2';
 import { Modal, Form, Table, Badge, Dropdown, Button } from "react-bootstrap";
+import { can } from '../../../redux/helper';
 
 function UserRoles() {
   const dispatch = useDispatch()
@@ -138,6 +139,12 @@ function UserRoles() {
     });
   }
 
+
+  const canAdd = can("user", "create");
+  const canEdit = can("user", "edit");
+  const canDelete = can("user", "delete");
+
+
   return (
     <div className=" p-4 m-3" style={{ backgroundColor: "white", borderRadius: "10px", }}>
       <div className="d-flex flex-wrap justify-content-between align-items-center mb-4 gap-2">
@@ -168,7 +175,7 @@ function UserRoles() {
         </div>
 
         <Link to="/admin/UserRoleModal">
-          <button id="All_btn" className="btn btn-dark">
+          <button id="All_btn" className="btn btn-dark" disabled={!canAdd}>
             + Add User
           </button>
         </Link>
@@ -189,6 +196,7 @@ function UserRoles() {
                 </tr>
               </thead>
               <tbody>
+                {/* {currentUsers?.map(user => ( */}
                 {currentUsers?.filter((item) => {
                   return item?.isAdmin === false;
                 }).map(user => (
@@ -245,12 +253,14 @@ function UserRoles() {
                         <button
                           className="btn btn-sm btn-outline-secondary"
                           onClick={() => handleEditUser(user)}
+                          disabled={!canEdit}
                         >
                           <FaEdit />
                         </button>
                         <button
                           className="btn btn-sm btn-outline-danger"
                           onClick={() => handleDeleteUser(user._id)}
+                          disabled={!canDelete}
                         >
                           <FaTrashAlt />
                         </button>

@@ -417,10 +417,6 @@ const ProjectViewEditpurposal = () => {
 
   const [selectedJobCost, setSelectedJobCost] = useState(null);
 
-  console.log(selectedJobCost);
-
-
-
   const renderTabContent = () => {
     switch (activeTab) {
       case "Summary":
